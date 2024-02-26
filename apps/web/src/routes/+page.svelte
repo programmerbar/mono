@@ -9,9 +9,9 @@
 <p class="py-10 italic text-centeer font-medium text-lg">Nå "Ballmer Peak" med Programmerbar</p>
 
 <div class="py-10 grid grid-cols-2 gap-4">
-	<div class="border-2 border-black rounded-md divide-y divide-black shadow">
-		<h2 class="text-center font-medium text-2xl py-6">Meny</h2>
-		<ul class="divide-y divide-black">
+	<div>
+		<h2 class="text-center font-medium text-3xl py-6">Meny</h2>
+		<ul class="border-2 border-black rounded-md divide-y divide-black shadow">
 			{#each data.products as { name, producer, price }}
 				<li>
 					<div class="flex items-center justify-between p-2">
@@ -29,9 +29,9 @@
 		</ul>
 	</div>
 
-	<div class="border-2 border-black rounded-md divide-y divide-black shadow">
-		<h2 class="text-center font-medium text-2xl py-6">Åpningstider</h2>
-		<ul class="divide-y divide-black">
+	<div>
+		<h2 class="text-center font-medium text-3xl py-6">Arrangementer</h2>
+		<ul class="border-2 border-black rounded-md divide-y divide-black shadow">
 			{#each data.events as { title, start }}
 				<li>
 					<div class="flex items-center justify-between p-2">

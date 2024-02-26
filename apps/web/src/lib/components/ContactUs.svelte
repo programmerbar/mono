@@ -3,6 +3,7 @@
 	import FormControl from './ui/FormControl.svelte';
 	import Input from './ui/Input.svelte';
 	import Label from './ui/Label.svelte';
+	import Textarea from './ui/Textarea.svelte';
 </script>
 
 <div class="py-10">
@@ -21,20 +22,14 @@
 				</FormControl>
 				<FormControl>
 					<Label for="message">Melding</Label>
-					<textarea
-						rows="5"
-						id="message"
-						name="message"
-						class="bg-gray-100 rounded-md border p-2 shadow"
-						placeholder="Din melding..."
-					/>
+					<Textarea rows={5} id="message" name="message" placeholder="Din melding..." />
 				</FormControl>
 
 				<Button>Send inn</Button>
 			</form>
 		</div>
 
-		<div class="w-full rounded-md overflow-hidden shadow">
+		<div class="w-full border-2 border-black rounded-md overflow-hidden shadow">
 			<iframe
 				title="Map"
 				width="100%"
