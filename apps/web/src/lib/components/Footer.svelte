@@ -14,7 +14,7 @@
 
 		<div class="text-center space-y-20">
 			<p class="text-lg mx-auto">Hovedsamarbeidspartner</p>
-			<a href="https://lervig.com">
+			<a href="https://lervig.no">
 				<img src="/lervig-logo-black.png" alt="Lervig" class="h-16 mx-auto" />
 			</a>
 		</div>
