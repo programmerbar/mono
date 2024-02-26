@@ -1,0 +1,12 @@
+{
+  "name": "programmerbar-mono",
+  "version": "1.0.0",
+  "main": "package.json",
+  "license": "MIT",
+  "scripts": {
+    "web:dev": "pnpm --filter=web run dev",
+    "web:deploy": "fly deploy",
+    "cms:dev": "pnpm --filter=cms run dev",
+    "cms:deploy": "pnpm --filter=cms run deploy"
+  }
+}

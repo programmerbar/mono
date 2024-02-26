@@ -1,0 +1,34 @@
+<div class="border-t-2 border-black">
+	<footer class="flex items-center justify-between px-4 py-8 bg-yellow-200">
+		<div>
+			<p>echo Programmerbar</p>
+			<p>
+				Org. nr.: <a
+					href="https://www.proff.no/selskap/echo-programmerbar/bergen/medlemsorganisasjoner/IFC3FCQ10PU/"
+					>927 307 898</a
+				>
+			</p>
+		</div>
+
+		<div class="text-center space-y-20">
+			<p class="text-lg mx-auto">Hovedsamarbeidspartner</p>
+			<a href="https://lervig.com">
+				<img src="/lervig-logo-black.png" alt="Lervig" class="h-16 mx-auto" />
+			</a>
+		</div>
+
+		<div class="text-right">
+			<p class="text-lg font-medium">Kontakt oss</p>
+			<ul>
+				<li>
+					<a class="hover:underline" href="https://www.instagram.com/echo_programmerbar"
+						>@echo_programmerbar</a
+					>
+				</li>
+				<li>
+					<a class="hover:underline" href="mailto:hei@programmerbar.no">hei@programmerbar.no</a>
+				</li>
+			</ul>
+		</div>
+	</footer>
+</div>
