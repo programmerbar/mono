@@ -1,6 +1,8 @@
 <div class="border-t-2 border-black">
-	<footer class="flex items-center justify-between px-4 py-8 bg-yellow-200">
-		<div>
+	<footer
+		class="flex flex-col gap-10 md:flex-row items-center justify-between px-4 py-8 bg-yellow-200"
+	>
+		<div class="text-center md:text-left">
 			<p>echo Programmerbar</p>
 			<p>
 				Org. nr.: <a
@@ -17,7 +19,7 @@
 			</a>
 		</div>
 
-		<div class="text-right">
+		<div class="text-center md:text-right">
 			<p class="text-lg font-medium">Kontakt oss</p>
 			<ul>
 				<li>

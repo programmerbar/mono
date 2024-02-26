@@ -8,7 +8,7 @@
 
 <p class="py-10 italic text-centeer font-medium text-lg">Nå "Ballmer Peak" med Programmerbar</p>
 
-<div class="py-10 grid grid-cols-2 gap-4">
+<div class="py-10 grid grid-cols-1 md:grid-cols-2 gap-4">
 	<div>
 		<h2 class="text-center font-medium text-3xl py-6">Meny</h2>
 		<ul class="border-2 border-black rounded-md divide-y divide-black shadow">

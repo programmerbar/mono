@@ -9,7 +9,7 @@
 <div class="flex flex-col min-h-screen">
 	<Header />
 
-	<div class="flex-1 max-w-7xl mx-auto w-full">
+	<div class="flex-1 max-w-7xl mx-auto w-full px-4">
 		{@render children()}
 	</div>
 
