@@ -4,6 +4,21 @@
 	import { nb } from 'date-fns/locale/nb';
 
 	let { data } = $props();
+
+	const MAX = 3;
+	const TOTAL_PAGES = Math.ceil(data.products.length / MAX);
+	let page = $state(0);
+
+	$effect(() => {
+		const interval = setInterval(() => {
+			page = (page + 1) % TOTAL_PAGES;
+		}, 5000);
+
+		return () => clearInterval(interval);
+	});
+
+	const start = $derived(page * MAX);
+	const end = $derived(start + MAX);
 </script>
 
 <p class="py-10 italic text-centeer font-medium text-lg">Nå "Ballmer Peak" med Programmerbar</p>
@@ -12,7 +27,7 @@
 	<div>
 		<h2 class="text-center font-medium text-3xl py-6">Meny</h2>
 		<ul class="border-2 border-black rounded-md divide-y divide-black shadow overflow-hidden">
-			{#each data.products as { name, producer, price }}
+			{#each data.products.slice(start, end) as { name, producer, price }}
 				<li>
 					<div class="flex items-center justify-between p-2 hover:bg-yellow-100">
 						<div class="flex flex-col">
@@ -28,8 +43,7 @@
 			{/each}
 		</ul>
 
-		<!-- TODO animate through all products -->
-		<p class="text-center text-sm font-medium mt-2">Side 1 / 3</p>
+		<p class="text-center text-sm font-medium mt-2">Side {page + 1} / {TOTAL_PAGES}</p>
 	</div>
 
 	<div>
