@@ -5,6 +5,10 @@
 			href: '/'
 		},
 		{
+			name: 'Meny',
+			href: '/meny'
+		},
+		{
 			name: 'Frivillige',
 			href: '/frivillige'
 		},

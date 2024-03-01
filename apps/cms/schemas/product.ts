@@ -18,6 +18,19 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "volume",
+      title: "Volum",
+      description: "Volum i liter. F.eks. 0.5 for en halvliter.",
+      type: "number",
+    }),
+    defineField({
+      name: "variants",
+      title: "Varianter",
+      description: "Varianter av smak eller type. Tom for ingen varianter.",
+      type: "array",
+      of: [{ type: "string" }],
+    }),
+    defineField({
       name: "image",
       title: "Bilde",
       type: "image",
@@ -29,4 +42,11 @@ export default defineType({
       to: [{ type: "producer" }],
     }),
   ],
+  preview: {
+    select: {
+      title: "name",
+      subtitle: "producer.name",
+      media: "image",
+    },
+  },
 });
