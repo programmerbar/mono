@@ -1,5 +1,5 @@
-<div class="space-y-8">
-	<h1 class="text-3xl font-medium text-center">Om oss</h1>
+<div class="space-y-8 py-10 max-w-2xl mx-auto">
+	<h1 class="text-4xl font-medium text-center">Om oss</h1>
 
 	<div class="h-72 w-full flex flex-col justify-center items-center border">Bilde</div>
 

@@ -1,6 +1,6 @@
-<div class="border-t-2 border-black">
+<div class="border-t-2 border-black bg-yellow-200">
 	<footer
-		class="flex flex-col gap-10 md:flex-row items-center justify-between px-4 py-8 bg-yellow-200"
+		class="flex flex-col gap-10 md:flex-row items-center justify-between px-4 py-8 max-w-5xl mx-auto"
 	>
 		<div class="text-center md:text-left">
 			<p>echo Programmerbar</p>

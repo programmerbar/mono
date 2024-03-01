@@ -31,14 +31,14 @@
 
 		<div class="w-full border-2 border-black rounded-md overflow-hidden shadow">
 			<iframe
-				title="Map"
+				title="Programmerbar"
 				width="100%"
 				height="600"
 				frameborder="0"
 				scrolling="no"
 				marginheight="0"
 				marginwidth="0"
-				src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=thorm%C3%B8hlensgate%2055+(H%C3%B8yteknologisenteret)&amp;t=&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+				src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Lesesalen,%20Thorm%C3%B8hlens%20Gate%2055,%205006%20Bergen+(Programmerbar)&amp;t=&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
 			></iframe>
 		</div>
 	</div>

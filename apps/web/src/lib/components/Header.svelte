@@ -24,7 +24,7 @@
 </script>
 
 <div class="border-b-2 border-black">
-	<header class="flex items-center justify-between p-4">
+	<header class="flex items-center justify-between p-4 mx-auto max-w-7xl">
 		<div>
 			<a class="text-3xl font-medium" href="/">Programmerbar</a>
 		</div>
