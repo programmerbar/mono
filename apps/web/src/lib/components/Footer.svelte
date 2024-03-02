@@ -6,17 +6,20 @@
 			<p>echo Programmerbar</p>
 			<p>
 				Org. nr.: <a
+					class="hover:underline"
 					href="https://www.proff.no/selskap/echo-programmerbar/bergen/medlemsorganisasjoner/IFC3FCQ10PU/"
 					>927 307 898</a
 				>
 			</p>
 		</div>
 
-		<div class="text-center space-y-20">
-			<p class="text-lg mx-auto">Hovedsamarbeidspartner</p>
-			<a href="https://lervig.no">
-				<img src="/lervig-logo-black.png" alt="Lervig" class="h-16 mx-auto" />
-			</a>
+		<div class="text-center space-y-2">
+			<p class="text-xl font-medium mx-auto">Hovedsamarbeidspartner</p>
+			<div>
+				<a href="https://lervig.no">
+					<img src="/lervig-logo-black.png" alt="Lervig" class="h-16 mx-auto" />
+				</a>
+			</div>
 		</div>
 
 		<div class="text-center md:text-right">

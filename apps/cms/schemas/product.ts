@@ -22,6 +22,7 @@ export default defineType({
       title: "Volum",
       description: "Volum i liter. F.eks. 0.5 for en halvliter.",
       type: "number",
+      validation: (Rule) => Rule.greaterThan(0),
     }),
     defineField({
       name: "variants",

@@ -5,6 +5,8 @@ export type Product = {
 	price: number;
 	image: string | null;
 	producer: string | null;
+	volume: number | null;
+	variants: Array<string> | null;
 };
 
 export const getProducts = async () => {
@@ -12,7 +14,9 @@ export const getProducts = async () => {
         name,
         price,
         "image": image.asset->url,
-        "producer": producer->name
+        "producer": producer->name,
+        volume,
+        variants,
     }`;
 
 	return await sanity.fetch<Array<Product>>(query);
