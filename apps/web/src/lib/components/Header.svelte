@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { cn } from '$lib/cn';
+
 	const links = [
 		{
 			name: 'Hjem',
@@ -8,10 +10,10 @@
 			name: 'Meny',
 			href: '/meny'
 		},
-		{
-			name: 'Frivillige',
-			href: '/frivillige'
-		},
+		// {
+		// 	name: 'Frivillige',
+		// 	href: '/frivillige'
+		// },
 		{
 			name: 'Booking',
 			href: 'https://forms.google.com'
@@ -21,16 +23,31 @@
 			href: '/om-oss'
 		}
 	];
+
+	let isOpen = $state(false);
 </script>
 
-<div class="border-b-2 border-black">
-	<header class="flex items-center justify-between p-4 mx-auto max-w-7xl">
+<div
+	class={cn('border-b-2 border-black', {
+		'min-h-full h-full z-30 flex flex-col': isOpen
+	})}
+>
+	<header class="flex items-center w-full justify-between p-4 mx-auto max-w-7xl">
 		<div>
-			<a class="text-3xl font-medium" href="/">Programmerbar</a>
+			<a class="text-2xl md:text-3xl font-medium" href="/">Programmerbar</a>
 		</div>
 
 		<div>
-			<nav>
+			<div class="block md:hidden">
+				<button onclick={() => (isOpen = !isOpen)} class="text-lg text-gray-600 hover:underline">
+					{#if isOpen}
+						Lukk
+					{:else}
+						Åpne
+					{/if}
+				</button>
+			</div>
+			<nav class="hidden md:block">
 				<ul class="flex items-center gap-4">
 					{#each links as { href, name }}
 						{@const isExternal = href.startsWith('http')}
@@ -67,4 +84,20 @@
 			</nav>
 		</div>
 	</header>
+
+	{#if isOpen}
+		<div class="flex flex-col md:hidden">
+			{#each links as { href, name }}
+				{@const isExternal = href.startsWith('http')}
+				<a
+					class="block text-lg text-gray-600 hover:text-gray-900 hover:bg-gray-200 p-4"
+					{href}
+					target={isExternal ? '_blank' : undefined}
+					rel={isExternal ? 'noopener noreferrer' : undefined}
+				>
+					{name}
+				</a>
+			{/each}
+		</div>
+	{/if}
 </div>
