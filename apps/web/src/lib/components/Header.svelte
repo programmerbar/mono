@@ -1,40 +1,48 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import { onNavigate } from '$app/navigation';
 	import { cn } from '$lib/cn';
 
 	const links = [
 		{
-			name: 'Hjem',
+			name: '/hjem',
 			href: '/'
 		},
 		{
-			name: 'Meny',
+			name: '/meny',
 			href: '/meny'
 		},
-		// {
-		// 	name: 'Frivillige',
-		// 	href: '/frivillige'
-		// },
 		{
-			name: 'Booking',
+			name: '/booking',
 			href: 'https://forms.google.com'
 		},
 		{
-			name: 'Om oss',
+			name: '/om-oss',
 			href: '/om-oss'
 		}
 	];
 
 	let isOpen = $state(false);
+
+	onNavigate(() => {
+		isOpen = false;
+	});
+
+	$effect(() => {
+		document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+
+		return () => (document.body.style.overflow = 'auto');
+	});
 </script>
 
 <div
-	class={cn('border-b-2 border-black', {
-		'min-h-full h-full z-30 flex flex-col': isOpen
+	class={cn('', {
+		'min-h-full fixed bg-background overflow-y-auto w-full h-full z-30 flex flex-col': isOpen
 	})}
 >
 	<header class="flex items-center w-full justify-between p-4 mx-auto max-w-7xl">
 		<div>
-			<a class="text-2xl md:text-3xl font-medium" href="/">Programmerbar</a>
+			<a class="text-2xl md:text-3xl font-medium font-mono" href="/">$ programmerbar</a>
 		</div>
 
 		<div>
@@ -53,7 +61,7 @@
 						{@const isExternal = href.startsWith('http')}
 						<li>
 							<a
-								class="text-lg text-gray-600 stroke-gray-600 stroke-2 flex items-center gap-1 hover:text-gray-900 hover:stroke-gray-900 hover:underline"
+								class="text-lg text-gray-600 font-mono stroke-gray-600 stroke-2 flex items-center gap-1 hover:text-gray-900 hover:stroke-gray-900 hover:underline"
 								{href}
 								target={isExternal ? '_blank' : undefined}
 								rel={isExternal ? 'noopener noreferrer' : undefined}
@@ -90,7 +98,7 @@
 			{#each links as { href, name }}
 				{@const isExternal = href.startsWith('http')}
 				<a
-					class="block text-lg text-gray-600 hover:text-gray-900 hover:bg-gray-200 p-4"
+					class="block text-2xl font-mono hover:text-gray-900 hover:bg-primary p-4"
 					{href}
 					target={isExternal ? '_blank' : undefined}
 					rel={isExternal ? 'noopener noreferrer' : undefined}
