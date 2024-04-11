@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { onNavigate } from '$app/navigation';
 	import { cn } from '$lib/cn';
 

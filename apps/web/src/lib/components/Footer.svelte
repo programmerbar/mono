@@ -2,7 +2,7 @@
 	<footer
 		class="flex flex-col gap-10 md:flex-row items-center justify-between px-4 py-8 max-w-5xl mx-auto"
 	>
-		<div class="text-center font-semibold md:text-left">
+		<div class="text-center font-medium md:text-left">
 			<p>echo Programmerbar</p>
 			<p>
 				Org. nr.: <a
