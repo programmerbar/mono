@@ -1,3 +1,7 @@
+<svelte:head>
+	<title>Om oss</title>
+</svelte:head>
+
 <div class="space-y-8 py-10 max-w-2xl mx-auto">
 	<h1 class="text-4xl font-medium text-center">Om oss</h1>
 

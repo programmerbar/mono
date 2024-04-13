@@ -25,6 +25,13 @@
 	const cycle = createTypewriteCycle(['programmerbar', 'lesesalen', 'hjem', 'beste baren'], 500);
 </script>
 
+
+<svelte:head>
+	<title>Programmerbar</title>
+	<meta name="description" content="Programmerbar er studentbar ved Institutt for informatikk på Universitetet i Bergen. Du finner oss på bachelor lesesalen på høyteknologisenteret." />
+</svelte:head>
+
+
 <div class="py-24 space-y-4">
 	<div
 		class="bg-background font-medium text-sm flex items-center gap-2 rounded-xl shadow-xl px-4 py-1 border w-fit mx-auto"
