@@ -1,7 +1,6 @@
 {
 	"name": "@programmerbar/web",
-	"version": "0.0.1",
-	"private": true,
+	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -30,7 +29,7 @@
 		"postcss": "^8.4.35",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
-		"svelte": "^5.0.0-next.69",
+		"svelte": "^5.0.0-next.102",
 		"svelte-check": "^3.6.0",
 		"tailwindcss": "^3.4.1",
 		"tslib": "^2.4.1",
@@ -38,12 +37,13 @@
 		"vite": "^5.0.3",
 		"vitest": "^1.2.0"
 	},
-	"type": "module",
 	"dependencies": {
 		"@sanity/client": "^6.14.3",
 		"clsx": "^2.1.0",
 		"date-fns": "^3.3.1",
 		"groq": "^3.30.0",
+		"lucide-svelte": "^0.368.0",
+		"svelte-markdown": "^0.4.1",
 		"tailwind-merge": "^2.2.1"
 	}
 }

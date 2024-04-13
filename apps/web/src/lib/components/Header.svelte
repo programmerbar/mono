@@ -39,7 +39,7 @@
 		'min-h-full fixed bg-background overflow-y-auto w-full h-full z-30 flex flex-col': isOpen
 	})}
 >
-	<header class="flex items-center w-full justify-between p-4 mx-auto max-w-7xl">
+	<header class="flex items-center w-full justify-between px-4 py-8 mx-auto max-w-7xl">
 		<div>
 			<a class="text-2xl md:text-3xl font-medium font-mono" href="/">$ programmerbar</a>
 		</div>

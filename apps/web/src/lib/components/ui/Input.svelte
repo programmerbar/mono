@@ -7,4 +7,4 @@
 	let { class: className, ...props } = $props<Props>();
 </script>
 
-<input {...props} class={cn('h-10 rounded-md px-2 border-2 border-black shadow', className)} />
+<input {...props} class={cn('h-10 rounded-md px-2 border-2 border-black shadow-xl', className)} />

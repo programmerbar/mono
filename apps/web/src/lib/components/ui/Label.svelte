@@ -10,6 +10,6 @@
 	let { class: className, for: htmlFor, children, ...props } = $props<Props>();
 </script>
 
-<label {...props} for={htmlFor} class={cn('text-sm font-medium', className)}>
+<label {...props} for={htmlFor} class={cn('font-medium', className)}>
 	{@render children()}
 </label>

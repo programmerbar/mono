@@ -10,7 +10,7 @@
 	<meta name="description" content="Programmerbar er studentbar ved Institutt for informatikk på Universitetet i Bergen. Du finner oss på bachelor lesesalen på høyteknologisenteret." />
 </svelte:head>
 
-<div class="flex flex-col min-h-screen">
+<div class="flex flex-col min-h-screen bg-[url('/circuit-board.svg')]">
 	<Header />
 
 	<div class="flex-1 max-w-7xl mx-auto w-full px-4">
@@ -19,3 +19,4 @@
 
 	<Footer />
 </div>
+

@@ -1,15 +1,22 @@
 <script lang="ts">
+	import { Martini } from 'lucide-svelte';
+
 	let { data } = $props();
 </script>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-10">
 	{#each data.products as { name, price, producer, image, variants }}
-		<div class="border-2 border-black rounded-lg overflow-hidden">
-			{#if image}
-				<img src={image} alt={name} class="w-24 h-24 object-cover rounded-lg" />
-			{:else}
-				<div class="h-48 w-full border-b-2 border-b-black bg-gray-200"></div>
-			{/if}
+		<div class="border-2 border-black rounded-xl overflow-hidden bg-background shadow-xl">
+			<div class="border-b-2 border-b-black">
+				{#if image}
+					<img src={image} alt={name} class="w-full h-48 object-cover" />
+				{:else}
+					<div class="h-48 w-full bg-gray-200 flex items-center justify-center">
+						<Martini class="text-gray-500 h-16 w-16" />
+					</div>
+				{/if}
+			</div>
+
 			<div class="p-4">
 				<h2 class="text-2xl font-medium">
 					{name}

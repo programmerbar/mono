@@ -12,6 +12,15 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: {
+        source: "title",
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "start",
       title: "Startdato",
       type: "datetime",
@@ -21,30 +30,13 @@ export default defineType({
       name: "end",
       title: "Sluttdato",
       type: "datetime",
-      validation: (Rule) =>
-        Rule.custom((end, context) => {
-          if (!context.document?.start) {
-            return true;
-          }
-
-          if (!end) {
-            return "Sluttdato må være satt";
-          }
-
-          const startDate = new Date(String(context.document.start));
-          const endDate = new Date(end);
-
-          if (endDate < startDate) {
-            return "Sluttdato må være etter startdato";
-          }
-
-          return true;
-        }),
+      validation: (Rule) => Rule.required().min(Rule.valueOfField("start")),
     }),
     defineField({
       name: "body",
       title: "Brødtekst",
       type: "markdown",
+      validation: (Rule) => Rule.required(),
     }),
   ],
 });
