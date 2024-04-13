@@ -18,7 +18,7 @@
 </script>
 
 <div class="bg-primary min-h-screen flex flex-col p-6">
-	<div class="bg-white p-4 flex-1 rounded-xl flex flex-col">
+	<div class="bg-background p-4 flex-1 rounded-xl flex flex-col shadow-xl border">
 		<div class="mb-10 flex items-center justify-between p-4">
 			<h1 class="text-6xl italic">Vår meny</h1>
 
