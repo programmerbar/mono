@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "web:dev": "pnpm --filter=web run dev",
-    "web:deploy": "fly deploy",
-    "cms:dev": "pnpm --filter=cms run dev",
-    "cms:deploy": "pnpm --filter=cms run deploy"
+    "dev": "turbo run dev"
+  },
+  "dependencies": {
+    "turbo": "^1.13.2"
   }
 }
