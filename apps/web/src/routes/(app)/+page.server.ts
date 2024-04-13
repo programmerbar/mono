@@ -1,4 +1,4 @@
-import { getStatus } from '$lib/server/is-open';
+import { getStatus } from '$lib/server/api';
 import { getEvents } from '$lib/server/sanity/events';
 import { getProducts } from '$lib/server/sanity/products';
 import type { PageServerLoad } from './$types';
