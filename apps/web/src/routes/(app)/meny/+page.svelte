@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>Meny</title>
+	<title>Meny — Programmerbar</title>
 </svelte:head>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-10">

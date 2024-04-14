@@ -17,6 +17,10 @@
 	const end = $derived(start + MAX);
 </script>
 
+<svelte:head>
+	<title>Screen — Programmerbar</title>
+</svelte:head>
+
 <div class="bg-primary min-h-screen flex flex-col p-6">
 	<div class="bg-background p-4 flex-1 rounded-xl flex flex-col shadow-xl border">
 		<div class="mb-10 flex items-center justify-between p-4">

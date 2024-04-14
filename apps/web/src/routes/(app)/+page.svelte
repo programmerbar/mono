@@ -27,7 +27,7 @@
 </script>
 
 <svelte:head>
-	<title>Programmerbar</title>
+	<title>Hjem — Programmerbar</title>
 	<meta
 		name="description"
 		content="Programmerbar er studentbar ved Institutt for informatikk på Universitetet i Bergen. Du finner oss på bachelor lesesalen på høyteknologisenteret."

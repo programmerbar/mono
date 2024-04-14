@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-	<title>{data.event.title}</title>
+	<title>{data.event.title} — Programmerbar</title>
 </svelte:head>
 
 <main class="flex gap-24 md:gap-8 flex-col md:flex-row justify-between">

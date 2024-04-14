@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>Om oss</title>
+	<title>Om oss — Programmerbar</title>
 </svelte:head>
 
 <div class="space-y-8 py-10 max-w-2xl mx-auto">
