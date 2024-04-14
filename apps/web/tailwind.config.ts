@@ -1,5 +1,5 @@
-import { type Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
+import { type Config } from 'tailwindcss';
+import { fontFamily } from 'tailwindcss/defaultTheme';
 
 export default {
 	content: ['./src/**/*.{html,svelte,js,ts}'],
@@ -14,7 +14,7 @@ export default {
 			fontFamily: {
 				sans: ['Ubuntu', ...fontFamily.sans],
 				mono: ['IBM Plex Mono', ...fontFamily.mono]
-			},
+			}
 		}
 	},
 	plugins: []

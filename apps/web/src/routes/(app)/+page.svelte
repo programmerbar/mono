@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { cn } from '$lib/cn';
 	import ContactUs from '$lib/components/ContactUs.svelte';
+	import StatusLabel from '$lib/components/StatusLabel.svelte';
 	import { createTypewriteCycle } from '$lib/stores/typewrite-cycle.svelte';
 	import { format } from 'date-fns';
 	import { nb } from 'date-fns/locale/nb';
 
-	let { data } = $props();
+	const { data } = $props();
 
 	const MAX = 6;
 	const TOTAL_PAGES = Math.ceil(data.products.length / MAX);
@@ -33,22 +34,13 @@
 	/>
 </svelte:head>
 
-<div class="py-24 space-y-8">
-	<div
-		class="bg-background font-medium text-sm flex items-center gap-2 rounded-xl shadow-xl px-4 py-1 border w-fit mx-auto"
-	>
-		<div
-			class={cn('w-3 h-3 rounded-full shadow-lg', {
-				'bg-green-500 shadow-green-500': data.status.status === 1,
-				'bg-red-500 shadow-red-500 ': data.status.status !== 1
-			})}
-		/>
+<div class="pb-24 pt-16 space-y-8">
+	<StatusLabel status={data.status.status}>
 		{data.status.message}
-	</div>
+	</StatusLabel>
 
-	<h1 class="text-4xl sm:text-6xl text-center flex flex-col gap-6">
-		<span class="font-bold">Velkommen til</span>
-		<span class="font-mono w-fit mx-auto px-6 bg-background rounded-xl py-4">$ {cycle.text}</span>
+	<h1 class="text-[min(80px,8vw)] text-center flex flex-col gap-6">
+		<span class="font-mono w-fit mx-auto px-6 font-light rounded-xl py-4">$ {cycle.text}</span>
 	</h1>
 </div>
 

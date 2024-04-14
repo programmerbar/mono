@@ -48,7 +48,7 @@
 			<div class="block md:hidden">
 				<button
 					onclick={() => (isOpen = !isOpen)}
-					class="text-xl font-medium text-gray-600 hover:underline"
+					class="text-xl font-mono font-medium text-gray-600 hover:underline"
 				>
 					{#if isOpen}
 						Lukk
