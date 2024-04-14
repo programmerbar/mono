@@ -81,7 +81,7 @@
 			{#each data.events as { title, start, slug }}
 				<li>
 					<div class="h-16 px-2 flex items-center justify-between hover:bg-primary">
-						<a href={`/arrangement/${slug}`} class="text-xl">{title}</a>
+						<a href={`/arrangement/${slug}`} class="text-xl hover:underline">{title}</a>
 
 						<p>{format(new Date(start), 'EEEE d. MMMM', { locale: nb })}</p>
 					</div>

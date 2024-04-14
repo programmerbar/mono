@@ -6,6 +6,8 @@ export type Event = {
 	slug: string;
 	start: string;
 	end: string;
+	isPrivate: boolean;
+	registrationLink: string | null;
 	body: string;
 };
 
@@ -15,6 +17,8 @@ export const getEvents = async () => {
 		"slug": slug.current,
         start,
         end,
+		isPrivate,
+		registrationLink,
         body
     }`;
 
@@ -27,6 +31,8 @@ export const getEventBySlug = async (slug: string) => {
 		"slug": slug.current,
 		start,
 		end,
+		isPrivate,
+		registrationLink,
 		body
 	}[0]`;
 

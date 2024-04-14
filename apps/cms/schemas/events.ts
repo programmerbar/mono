@@ -33,6 +33,21 @@ export default defineType({
       validation: (Rule) => Rule.required().min(Rule.valueOfField("start")),
     }),
     defineField({
+      name: "isPrivate",
+      title: "Er arrangementet privat?",
+      type: "boolean",
+      options: {
+        layout: "switch",
+      },
+      initialValue: false,
+    }),
+    defineField({
+      name: "registrationLink",
+      title: "Påmeldingslenke",
+      description: "Lenke til påmeldingsskjema. Tomt om det ikke er påmelding.",
+      type: "url",
+    }),
+    defineField({
       name: "body",
       title: "Brødtekst",
       type: "markdown",

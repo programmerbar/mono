@@ -39,14 +39,17 @@
 		'min-h-full fixed bg-background overflow-y-auto w-full h-full z-30 flex flex-col': isOpen
 	})}
 >
-	<header class="flex items-center w-full justify-between px-4 py-8 mx-auto max-w-7xl">
+	<header class="flex items-center w-full justify-between px-4 py-12 mx-auto max-w-7xl">
 		<div>
 			<a class="text-2xl md:text-3xl font-medium font-mono" href="/">$ programmerbar</a>
 		</div>
 
 		<div>
 			<div class="block md:hidden">
-				<button onclick={() => (isOpen = !isOpen)} class="text-lg text-gray-600 hover:underline">
+				<button
+					onclick={() => (isOpen = !isOpen)}
+					class="text-xl font-medium text-gray-600 hover:underline"
+				>
 					{#if isOpen}
 						Lukk
 					{:else}
@@ -60,7 +63,7 @@
 						{@const isExternal = href.startsWith('http')}
 						<li>
 							<a
-								class="text-lg text-gray-600 font-mono stroke-gray-600 stroke-2 flex items-center gap-1 hover:text-gray-900 hover:stroke-gray-900 hover:underline"
+								class="text-xl font-medium text-gray-600 font-mono stroke-gray-600 stroke-2 flex items-center gap-1 hover:text-gray-900 hover:stroke-gray-900 hover:underline"
 								{href}
 								target={isExternal ? '_blank' : undefined}
 								rel={isExternal ? 'noopener noreferrer' : undefined}

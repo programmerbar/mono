@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Markdown from '$lib/components/Markdown.svelte';
-	import { formatDate } from '$lib/utils/date.js';
+	import Sidebar from './Sidebar.svelte';
 
 	const { data } = $props();
 </script>
@@ -9,17 +9,7 @@
 	<title>{data.event.title}</title>
 </svelte:head>
 
-<main class="space-y-8">
-	<div class="flex items-center justify-between p-4 border bg-gray-200 text-gray-800">
-		<div>
-			<p>Start: {formatDate(data.event.start)}</p>
-		</div>
-		<div>
-			<p>Slutt: {formatDate(data.event.start)}</p>
-		</div>
-	</div>
-
-	<article>
-		<Markdown source={data.event.body} />
-	</article>
+<main class="flex gap-24 md:gap-8 flex-col md:flex-row justify-between">
+	<Markdown class="p-6 bg-background rounded-xl border-2" source={data.event.body} />
+	<Sidebar event={data.event} />
 </main>

@@ -1,4 +1,9 @@
-<div class="border-t-2 bg-primary border-black">
+<div class="border-t-2 bg-primary border-black mt-10 relative">
+	<div class="absolute text-xs flex items-center gap-2 px-2 py-1 text-gray-600 left-0 bottom-0">
+		<a class="hover:underline" href="/screen">Skjerm</a>
+		<a class="hover:underline" href="https://programmerbar.sanity.studio">Sanity</a>
+	</div>
+
 	<footer
 		class="flex flex-col gap-10 md:flex-row items-center justify-between px-4 py-16 max-w-5xl mx-auto"
 	>
