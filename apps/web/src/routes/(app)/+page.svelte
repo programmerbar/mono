@@ -54,14 +54,16 @@
 
 <div class="py-10 grid grid-cols-1 md:grid-cols-2 gap-4">
 	<div class="bg-background border-black rounded-xl shadow-xl border-2 p-2">
-		<h2 class="text-center font-medium font-mono text-3xl md:text-4xl py-6">Meny</h2>
+		<h2 class="text-center font-medium font-mono text-3xl md:text-4xl py-6">
+			<a href="/meny" class="hover:underline">Meny</a>
+		</h2>
 		<ul class="divide-y-2 divide overflow-hidden">
 			{#each data.products.slice(start, end) as { name, producer, price }}
 				<li>
 					<div class="h-16 px-2 flex items-center justify-between hover:bg-primary">
 						<div class="flex flex-col">
 							<p class="text-xl">{name}</p>
-							<p class="text-gray-700">{producer}</p>
+							<p class="text-sm font-medium font-mono text-gray-700">{producer}</p>
 						</div>
 
 						<div>

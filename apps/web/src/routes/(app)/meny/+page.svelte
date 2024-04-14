@@ -29,7 +29,7 @@
 					<p class="text-sm text-gray-700">({variants.join(', ')})</p>
 				{/if}
 				<p class="text-lg">{price} kr</p>
-				<p class="text-sm text-gray-700">{producer}</p>
+				<p class="text-sm text-gray-700 font-mono font-medium">{producer}</p>
 			</div>
 		</div>
 	{/each}
