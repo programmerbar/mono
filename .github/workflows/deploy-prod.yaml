@@ -1,4 +1,4 @@
-name: Deploy apps
+name: Deploy to production
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy-web:
-    name: Deploy web app
+    name: Deploy app to cloudflare
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +26,7 @@ jobs:
           command: pages deploy .svelte-kit/cloudflare --project-name=programmerbar-web
 
   deploy-sanity:
-    name: Deploy sanity app
+    name: Deploy CMS to sanity
     runs-on: ubuntu-latest
 
     steps:

@@ -1,9 +1,13 @@
-<script>
+<script lang="ts">
 	import Button from './ui/Button.svelte';
 	import FormControl from './ui/FormControl.svelte';
 	import Input from './ui/Input.svelte';
 	import Label from './ui/Label.svelte';
 	import Textarea from './ui/Textarea.svelte';
+
+	const onclick = () => {
+		alert('Ingen funksjonalitet implementert ennå. Kom tilbake senere.');
+	};
 </script>
 
 <div class="py-10">
@@ -25,7 +29,7 @@
 					<Textarea rows={5} id="message" name="message" placeholder="Din melding..." />
 				</FormControl>
 
-				<Button>Send inn</Button>
+				<Button {onclick}>Send inn</Button>
 			</form>
 		</div>
 
