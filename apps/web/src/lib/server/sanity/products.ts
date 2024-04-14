@@ -1,13 +1,5 @@
 import { sanity } from './client';
-
-export type Product = {
-	name: string;
-	price: number;
-	image: string | null;
-	producer: string | null;
-	volume: number | null;
-	variants: Array<string> | null;
-};
+import { type Product } from '$lib/types';
 
 export const getProducts = async () => {
 	const query = `*[_type == "product"] {

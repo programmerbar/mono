@@ -12,10 +12,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: cd apps/web && flyctl deploy --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - uses: ./.github/actions/pnpm-install
+      - run: pnpm --filter=web run build
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          packageManager: "pnpm"
+          workingDirectory: apps/web
+          command: pages deploy .svelte-kit/cloudflare --project-name=programmerbar-web
 
   deploy-sanity:
     name: Deploy sanity app

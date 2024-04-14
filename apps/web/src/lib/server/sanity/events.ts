@@ -1,15 +1,6 @@
 import groq from 'groq';
 import { sanity } from './client';
-
-export type Event = {
-	title: string;
-	slug: string;
-	start: string;
-	end: string;
-	isPrivate: boolean;
-	registrationLink: string | null;
-	body: string;
-};
+import { type Event } from '$lib/types';
 
 export const getEvents = async () => {
 	const query = groq`*[_type == "event" && start > now()] | order(start asc) {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Product } from '$lib/server/sanity/products';
+	import { type Product } from '$lib/types';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
