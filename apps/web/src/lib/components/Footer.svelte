@@ -2,6 +2,7 @@
 	<div class="absolute text-xs flex items-center gap-2 px-2 py-1 text-gray-600 left-0 bottom-0">
 		<a class="hover:underline" href="/screen">Skjerm</a>
 		<a class="hover:underline" href="https://programmerbar.sanity.studio">Sanity</a>
+		<a class="hover:underline" href="https://github.com/programmerbar/mono">GitHub</a>
 	</div>
 
 	<footer
