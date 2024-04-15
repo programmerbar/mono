@@ -52,7 +52,7 @@
 		<ul class="divide-y-2 divide overflow-hidden">
 			{#each data.products.slice(start, end) as { name, producer, price }}
 				<li>
-					<div class="h-16 px-2 flex items-center justify-between hover:bg-primary">
+					<div class="h-16 px-2 flex items-center justify-between hover:bg-primary-light">
 						<div class="flex flex-col">
 							<p class="text-xl">{name}</p>
 							<p class="text-sm font-medium font-mono text-gray-700">{producer}</p>
@@ -74,7 +74,7 @@
 		<ul class="divide-y-2 divide overflow-hidden">
 			{#each data.events as { title, start, slug }}
 				<li>
-					<div class="h-16 px-2 flex items-center justify-between hover:bg-primary">
+					<div class="h-16 px-2 flex items-center justify-between hover:bg-primary-light">
 						<a href={`/arrangement/${slug}`} class="text-xl hover:underline">{title}</a>
 
 						<p>{format(new Date(start), 'EEEE d. MMMM', { locale: nb })}</p>

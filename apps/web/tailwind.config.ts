@@ -6,8 +6,11 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				primary: 'var(--primary)',
-				secondary: 'var(--secondary)',
+				primary: {
+					DEFAULT: 'var(--primary)',
+					dark: 'var(--primary-dark)',
+					light: 'var(--primary-light)'
+				},
 				foreground: 'var(--foreground)',
 				background: 'var(--background)'
 			},

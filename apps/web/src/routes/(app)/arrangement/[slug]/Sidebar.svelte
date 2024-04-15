@@ -27,7 +27,7 @@
 		{#if event.registrationLink}
 			<li>
 				<a
-					class="bg-primary rounded py-2 px-4 font-medium border-2 border-black h-10 flex justify-center items-center hover:bg-yellow-100 transition-colors"
+					class="bg-primary rounded py-2 px-4 font-medium border-2 border-black h-10 flex justify-center items-center hover:bg-primary-light transition-colors"
 					href={event.registrationLink}>Lenke til påmelding</a
 				>
 			</li>

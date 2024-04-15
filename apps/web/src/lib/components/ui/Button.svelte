@@ -14,7 +14,7 @@
 	type="button"
 	{...props}
 	class={cn(
-		'bg-primary rounded py-2 px-4 font-medium border-2 border-black h-10 flex justify-center items-center shadow-xl hover:bg-yellow-100 transition-colors',
+		'bg-primary rounded py-2 px-4 font-medium border-2 border-black h-10 flex justify-center items-center shadow-xl hover:bg-primary-light transition-colors',
 		className
 	)}
 >

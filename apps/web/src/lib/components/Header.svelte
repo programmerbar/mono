@@ -63,7 +63,7 @@
 						{@const isExternal = href.startsWith('http')}
 						<li>
 							<a
-								class="text-xl font-medium text-gray-600 font-mono stroke-gray-600 stroke-2 flex items-center gap-1 hover:text-gray-900 hover:stroke-gray-900 hover:underline"
+								class="text-xl font-medium text-gray-600 font-mono stroke-gray-600 stroke-2 flex items-center gap-1 hover:text-gray-800 hover:stroke-gray-900 hover:underline"
 								{href}
 								target={isExternal ? '_blank' : undefined}
 								rel={isExternal ? 'noopener noreferrer' : undefined}

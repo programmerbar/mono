@@ -10,10 +10,10 @@
 	<h1 class="text-4xl font-medium text-center font-mono">Om oss</h1>
 
 	<div class="h-72 w-full flex gap-4 justify-center items-center border-2 rounded-xl bg-gray-100">
-		<Smile class="w-16 h-16 text-secondary" />
-		<Beer class="w-16 h-16 text-secondary" />
-		<Wine class="w-16 h-16 text-secondary" />
-		<Wifi class="w-16 h-16 text-secondary" />
+		<Smile class="w-16 h-16 text-primary" />
+		<Beer class="w-16 h-16 text-primary" />
+		<Wine class="w-16 h-16 text-primary" />
+		<Wifi class="w-16 h-16 text-primary" />
 	</div>
 
 	<p class="text-lg text-gray-800">
