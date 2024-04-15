@@ -1,13 +1,21 @@
 <script lang="ts">
+	import { applyAction, enhance } from '$app/forms';
+	import { toast } from 'svelte-sonner';
 	import Button from './ui/Button.svelte';
 	import FormControl from './ui/FormControl.svelte';
 	import Input from './ui/Input.svelte';
 	import Label from './ui/Label.svelte';
 	import Textarea from './ui/Textarea.svelte';
 
-	const onclick = () => {
-		alert('Ingen funksjonalitet implementert ennå. Kom tilbake senere.');
-	};
+	let errors = $state<{
+		name: Array<string>;
+		email: Array<string>;
+		message: Array<string>;
+	}>({
+		name: [],
+		email: [],
+		message: []
+	});
 </script>
 
 <div class="py-10">
@@ -15,21 +23,78 @@
 
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 		<div>
-			<form class="space-y-4">
+			<form
+				method="post"
+				action="/contact-us"
+				class="space-y-4"
+				use:enhance={({ formData, cancel }) => {
+					const { name, email, message } = Object.fromEntries(formData.entries());
+
+					if (!name) {
+						errors.name = ['Navn er påkrevd'];
+					} else {
+						errors.name = [];
+					}
+
+					if (!email) {
+						errors.email = ['E-post er påkrevd'];
+					} else {
+						errors.email = [];
+					}
+
+					if (!message) {
+						errors.message = ['Melding er påkrevd'];
+					} else {
+						errors.message = [];
+					}
+
+					if (Object.values(errors).some((error) => error.length > 0)) {
+						cancel();
+					}
+
+					return async ({ result, update }) => {
+						if (result.type === 'success') {
+							toast.success('Meldingen ble sendt inn!');
+							await update({ reset: true });
+						} else {
+							toast.error('Noe gikk galt. Prøv igjen senere.');
+						}
+
+						await applyAction(result);
+					};
+				}}
+			>
 				<FormControl>
-					<Label for="name">Navn</Label>
-					<Input type="text" id="name" name="name" placeholder="Kari Nordmann" />
+					<Label required for="name">Navn</Label>
+					<Input required type="text" id="name" name="name" placeholder="Kari Nordmann" />
+					{#each errors.name as error}
+						<p class="text-red-500 text-sm">{error}</p>
+					{/each}
 				</FormControl>
 				<FormControl>
-					<Label for="email">E-post</Label>
-					<Input type="email" id="email" name="email" placeholder="kari.nordmann@norge.no" />
+					<Label required for="email">E-post</Label>
+					<Input
+						required
+						type="email"
+						id="email"
+						name="email"
+						placeholder="kari.nordmann@norge.no"
+					/>
+					{#each errors.email as error}
+						<p class="text-red-500 text-sm">{error}</p>
+					{/each}
 				</FormControl>
 				<FormControl>
-					<Label for="message">Melding</Label>
-					<Textarea rows={5} id="message" name="message" placeholder="Din melding..." />
+					<Label required for="message">Melding</Label>
+					<Textarea required rows={5} id="message" name="message" placeholder="Din melding..." />
+					{#each errors.message as error}
+						<p class="text-red-500 text-sm">{error}</p>
+					{/each}
 				</FormControl>
 
-				<Button {onclick}>Send inn</Button>
+				<input type="text" name="subject" class="hidden" />
+
+				<Button type="submit">Send inn</Button>
 			</form>
 		</div>
 
