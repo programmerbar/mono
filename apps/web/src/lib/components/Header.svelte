@@ -39,9 +39,11 @@
 		'min-h-full fixed bg-background overflow-y-auto w-full h-full z-30 flex flex-col': isOpen
 	})}
 >
-	<header class="flex items-center w-full justify-between px-4 py-12 mx-auto max-w-7xl">
+	<header class="flex items-center w-full justify-between px-4 py-8 mx-auto max-w-7xl">
 		<div>
-			<a class="text-2xl md:text-3xl font-medium font-mono" href="/">$ programmerbar</a>
+			<a href="/">
+				<img class="h-24 w-24" src="/progbar-logo-ish.png" alt="Programmerbar logo" />
+			</a>
 		</div>
 
 		<div>
