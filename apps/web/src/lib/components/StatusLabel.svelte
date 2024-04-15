@@ -15,8 +15,9 @@
 >
 	<div
 		class={cn('w-3 h-3 rounded-full shadow-lg', {
+			'bg-red-500 shadow-red-500': status === 0,
 			'bg-green-500 shadow-green-500': status === 1,
-			'bg-red-500 shadow-red-500': status !== 1
+			'bg-yellow-500 shadow-yellow-500': status === 2
 		})}
 	/>
 
