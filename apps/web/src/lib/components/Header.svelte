@@ -13,7 +13,7 @@
 		},
 		{
 			name: '/booking',
-			href: 'https://forms.google.com'
+			href: 'https://forms.gle/BLdygdoRJgjMbQZj6'
 		},
 		{
 			name: '/om-oss',
