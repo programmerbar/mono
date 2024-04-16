@@ -2,6 +2,8 @@
 
 ## Development
 
+Uses Cloudflare and Wrangler as infra.
+
 ### Prerequisites
 
 - Node.js
