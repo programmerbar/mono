@@ -9,7 +9,9 @@
 	const { event }: Props = $props();
 </script>
 
-<aside class="md:max-w-[350px] w-full h-fit p-6 border-2 bg-background rounded-xl">
+<aside
+	class="md:max-w-[350px] w-full h-fit p-6 border-2 bg-background border-black rounded-xl shadow-xl"
+>
 	<ul class="space-y-8">
 		<li>
 			<h3 class="font-medium text-lg font-mono">Start:</h3>
