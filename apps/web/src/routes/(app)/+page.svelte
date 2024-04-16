@@ -49,7 +49,7 @@
 		<h2 class="text-center font-medium font-mono text-3xl md:text-4xl py-6">
 			<a href="/meny" class="hover:underline">Meny</a>
 		</h2>
-		<ul class="divide-y-2 divide overflow-hidden">
+		<ul class="divide-y-2 overflow-hidden">
 			{#each data.products.slice(start, end) as { name, producer, price }}
 				<li>
 					<div class="h-16 px-2 flex items-center justify-between hover:bg-primary-light">
@@ -71,16 +71,12 @@
 
 	<div class="bg-background border-black rounded-xl shadow-xl border-2 p-2">
 		<h2 class="text-center font-medium font-mono text-3xl md:text-4xl py-6">Arrangementer</h2>
-		<ul class="divide-y-2 divide overflow-hidden">
+		<ul class="divide-y-2 overflow-hidden">
 			{#each data.events as { title, start, slug }}
 				<li>
-					<a href={`/arrangement/${slug}`} class="text-xl hover:underline">
-						<div
-							class="h-16 px-2 flex-col sm:flex-row items-center justify-between hover:bg-primary-light"
-						>
-							<p>
-								{title}
-							</p>
+					<a href="/arrangement/{slug}" class="text-xl hover:underline">
+						<div class="h-16 px-2 flex items-center justify-between hover:bg-primary-light">
+							<p>{title}</p>
 
 							<p class="text-sm font-medium font-mono text-gray-700">
 								{format(new Date(start), 'EEEE d. MMMM', { locale: nb })}
