@@ -12,6 +12,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "productType",
+      title: "Type",
+      type: "reference",
+      to: [{ type: "productType" }],
+    }),
+    defineField({
       name: "isSoldOut",
       title: "Utsolgt",
       type: "boolean",

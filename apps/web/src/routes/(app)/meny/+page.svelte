@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Label from '$lib/components/ui/Label.svelte';
+	import type { ProductType } from '$lib/types';
 	import { Martini } from 'lucide-svelte';
 
 	const { data } = $props();
@@ -16,6 +17,18 @@
 	let hideSoldOut = $state(true);
 	let sort = $state<SortOption>('name-asc');
 	let search = $state('');
+	let selectedProductType = $state<string | null>(null);
+	let productTypes = $derived(
+		(
+			data.products.map((product) => product.productType).filter(Boolean) as Array<ProductType>
+		).reduce((acc, productType) => {
+			if (!acc.find((type) => type._id === productType._id)) {
+				acc.push(productType);
+			}
+
+			return acc;
+		}, [] as Array<ProductType>)
+	);
 
 	let filteredProducts = $derived(
 		data.products
@@ -25,6 +38,10 @@
 				}
 
 				if (!product.name.toLowerCase().includes(search.toLowerCase())) {
+					return false;
+				}
+
+				if (selectedProductType && product.productType?._id !== selectedProductType) {
 					return false;
 				}
 
@@ -68,6 +85,19 @@
 		<select class="w-fit px-2 py-1 border rounded-xl" bind:value={sort} id="sort">
 			{#each SORT_OPTIONS as option}
 				<option value={option.value}>{option.label}</option>
+			{/each}
+		</select>
+	</div>
+	<div class="flex flex-row items-center px-4">
+		<Label class="mr-2" for="productType">Type</Label>
+		<select
+			class="w-fit px-2 py-1 border rounded-xl"
+			bind:value={selectedProductType}
+			id="productType"
+		>
+			<option value={null}>Alle</option>
+			{#each productTypes as productType}
+				<option value={productType._id}>{productType.title}</option>
 			{/each}
 		</select>
 	</div>

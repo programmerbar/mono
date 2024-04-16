@@ -3,7 +3,7 @@ import { sanity } from './client';
 import { type Event } from '$lib/types';
 
 export const getEvents = async () => {
-	const query = groq`*[_type == "event" && start > now()] | order(start asc) {
+	const query = groq`*[_type == "event" && !(_id in path("drafts.**")) && start > now()] | order(start asc) {
         title,
 		"slug": slug.current,
         start,
@@ -17,7 +17,7 @@ export const getEvents = async () => {
 };
 
 export const getEventBySlug = async (slug: string) => {
-	const query = groq`*[_type == "event" && slug.current == $slug] {
+	const query = groq`*[_type == "event" && !(_id in path("drafts.**")) && slug.current == $slug] {
 		title,
 		"slug": slug.current,
 		start,
