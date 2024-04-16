@@ -21,11 +21,11 @@
 	let productTypes = $derived(
 		data.products
 			.map((product) => product.productTypes)
-			.filter(Boolean)
 			.flat()
+			.filter(Boolean)
 			.reduce((acc, productType) => {
-				if (!acc.find((type) => type._id === productType._id)) {
-					acc.push(productType);
+				if (!acc.find((type) => type._id === productType!._id)) {
+					acc.push(productType!);
 				}
 
 				return acc;

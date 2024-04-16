@@ -18,7 +18,5 @@ export const getProducts = async () => {
 
 	const res = await sanity.fetch<Array<Product>>(query);
 
-	console.log(res.find((product) => product.name.startsWith('Pilsner LITE')));
-
 	return res;
 };
