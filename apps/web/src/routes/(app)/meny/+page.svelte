@@ -19,15 +19,17 @@
 	let search = $state('');
 	let selectedProductType = $state<string | null>(null);
 	let productTypes = $derived(
-		(
-			data.products.map((product) => product.productType).filter(Boolean) as Array<ProductType>
-		).reduce((acc, productType) => {
-			if (!acc.find((type) => type._id === productType._id)) {
-				acc.push(productType);
-			}
+		data.products
+			.map((product) => product.productTypes)
+			.filter(Boolean)
+			.flat()
+			.reduce((acc, productType) => {
+				if (!acc.find((type) => type._id === productType._id)) {
+					acc.push(productType);
+				}
 
-			return acc;
-		}, [] as Array<ProductType>)
+				return acc;
+			}, [] as Array<ProductType>)
 	);
 
 	let filteredProducts = $derived(
@@ -41,7 +43,10 @@
 					return false;
 				}
 
-				if (selectedProductType && product.productType?._id !== selectedProductType) {
+				if (
+					selectedProductType &&
+					!product.productTypes?.map((type) => type._id).includes(selectedProductType)
+				) {
 					return false;
 				}
 

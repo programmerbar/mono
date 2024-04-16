@@ -14,8 +14,8 @@ export default defineType({
     defineField({
       name: "productType",
       title: "Type",
-      type: "reference",
-      to: [{ type: "productType" }],
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "productType" }] }],
     }),
     defineField({
       name: "isSoldOut",
