@@ -7,7 +7,7 @@ interface Env {
 declare global {
 	namespace App {
 		interface Locals {
-			resend: import('resend').Resend;
+			resend: import('resend').Resend | null;
 		}
 		interface Platform {
 			env: Env;

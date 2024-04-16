@@ -23,7 +23,7 @@ export const actions: Actions = {
 			throw error(400, 'Bad request');
 		}
 
-		if (!dev) {
+		if (locals.resend) {
 			await locals.resend.emails.send({
 				from: 'ikkesvar@echo-webkom.no',
 				subject: 'Kontaktskjema på hjemmesiden',
