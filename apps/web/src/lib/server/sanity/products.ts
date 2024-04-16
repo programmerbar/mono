@@ -4,6 +4,7 @@ import { type Product } from '$lib/types';
 export const getProducts = async () => {
 	const query = `*[_type == "product"] {
         name,
+        isSoldOut,
         price,
         "image": image.asset->url,
         "producer": producer->name,

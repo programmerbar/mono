@@ -12,8 +12,19 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "isSoldOut",
+      title: "Utsolgt",
+      type: "boolean",
+      validation: (Rule) => Rule.required(),
+      options: {
+        layout: "switch",
+      },
+      initialValue: false,
+    }),
+    defineField({
       name: "price",
       title: "Pris",
+      description: "Pris i kroner.",
       type: "number",
       validation: (Rule) => Rule.required(),
     }),

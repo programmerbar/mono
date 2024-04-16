@@ -10,6 +10,7 @@ export type Event = {
 
 export type Product = {
 	name: string;
+	isSoldOut: boolean;
 	price: number;
 	image: string | null;
 	producer: string | null;
