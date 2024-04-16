@@ -42,7 +42,7 @@
 	<header class="flex items-center w-full justify-between px-4 py-8 mx-auto max-w-7xl">
 		<div>
 			<a href="/">
-				<img class="h-24 w-24" src="/progbar-logo-ish.png" alt="Programmerbar logo" />
+				<img class="h-24 w-24" src="/programmerbar-logo.png" alt="Programmerbar logo" />
 			</a>
 		</div>
 
