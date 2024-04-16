@@ -3,6 +3,7 @@ import { type Product } from '$lib/types';
 
 export const getProducts = async () => {
 	const query = `*[_type == "product" && !(_id in path("drafts.**"))] {
+        _id,
         name,
         "productTypes": productType[]->{
             _id,
@@ -16,7 +17,24 @@ export const getProducts = async () => {
         variants,
     }`;
 
-	const res = await sanity.fetch<Array<Product>>(query);
+	return await sanity.fetch<Array<Product>>(query);
+};
 
-	return res;
+export const getProductById = async (id: string) => {
+	const query = `*[_type == "product" && _id == $id && !(_id in path("drafts.**"))] {
+        _id,
+        name,
+        "productTypes": productType[]->{
+            _id,
+            title
+        },
+        isSoldOut,
+        price,
+        "image": image.asset->url,
+        "producer": producer->name,
+        volume,
+        variants,
+    }[0]`;
+
+	return await sanity.fetch<Product | null>(query, { id });
 };

@@ -74,11 +74,15 @@
 		<ul class="divide-y-2 divide overflow-hidden">
 			{#each data.events as { title, start, slug }}
 				<li>
-					<div class="h-16 px-2 flex items-center justify-between hover:bg-primary-light">
-						<a href={`/arrangement/${slug}`} class="text-xl hover:underline">{title}</a>
+					<a href={`/arrangement/${slug}`} class="text-xl hover:underline">
+						<div class="h-16 px-2 flex items-center justify-between hover:bg-primary-light">
+							<p>
+								{title}
+							</p>
 
-						<p>{format(new Date(start), 'EEEE d. MMMM', { locale: nb })}</p>
-					</div>
+							<p>{format(new Date(start), 'EEEE d. MMMM', { locale: nb })}</p>
+						</div>
+					</a>
 				</li>
 			{:else}
 				<li>

@@ -122,7 +122,7 @@
 	<p class="text-center text-3xl mt-16">Finner ingen produkter som matcher dine filter</p>
 {/if}
 <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-10">
-	{#each filteredProducts as { name, image, price, producer, variants, isSoldOut }}
+	{#each filteredProducts as { _id, name, image, price, producer, variants, isSoldOut }}
 		<li class="border-2 border-black rounded-xl overflow-hidden bg-background shadow-xl relative">
 			{#if isSoldOut}
 				<div
@@ -143,9 +143,11 @@
 			</div>
 
 			<div class="p-4">
-				<h2 class="text-2xl font-medium">
-					{name}
-				</h2>
+				<a class="hover:underline" href="/produkt/{_id}">
+					<h2 class="text-2xl font-medium">
+						{name}
+					</h2>
+				</a>
 				{#if variants && variants.length > 1}
 					<p class="text-sm text-gray-700">({variants.join(', ')})</p>
 				{/if}

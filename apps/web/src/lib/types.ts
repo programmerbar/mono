@@ -14,6 +14,7 @@ export type Event = {
 };
 
 export type Product = {
+	_id: string;
 	name: string;
 	isSoldOut: boolean;
 	productTypes: Array<ProductType> | null;
