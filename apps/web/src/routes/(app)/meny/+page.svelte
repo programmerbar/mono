@@ -13,7 +13,7 @@
 		<div class="border-2 border-black rounded-xl overflow-hidden bg-background shadow-xl">
 			<div class="border-b-2 border-b-black">
 				{#if image}
-					<img src={image} alt={name} class="w-full h-48 object-cover" />
+					<img src={image} alt={name} class="w-full bg-white h-48 object-contain" />
 				{:else}
 					<div class="h-48 w-full bg-gray-200 flex items-center justify-center">
 						<Martini class="text-gray-500 h-16 w-16" />
