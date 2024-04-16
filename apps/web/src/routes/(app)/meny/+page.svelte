@@ -78,82 +78,90 @@
 	<title>Meny — Programmerbar</title>
 </svelte:head>
 
-<div
-	class="border-2 border-black p-4 rounded-xl flex flex-col md:flex-row gap-8 md:gap-0 items-center md:divide-x shadow-xl bg-background"
->
-	<div class="flex flex-row items-center px-4">
-		<input class="h-4 w-4 mr-2" type="checkbox" bind:checked={hideSoldOut} id="hideSoldOut" />
-		<Label for="hideSoldOut">Skjul utsolgte</Label>
+<div class="flex md:flex-row flex-col py-10 gap-8">
+	<div
+		class="w-full md:sticky md:top-4 md:w-1/4 border-2 border-black divide-y p-4 rounded-xl h-fit flex flex-col shadow-xl bg-background"
+	>
+		<div class="flex flex-col gap-2 py-2">
+			<Label for="search">Søk</Label>
+			<div>
+				<input
+					class="w-full px-2 py-1 border rounded-xl"
+					type="text"
+					bind:value={search}
+					id="search"
+					placeholder="Søk etter produkt"
+				/>
+			</div>
+		</div>
+		<div class="flex flex-col gap-2 py-4">
+			<Label for="sort">Sorter etter</Label>
+			<select class="w-full px-2 py-1 border rounded-xl" bind:value={sort} id="sort">
+				{#each SORT_OPTIONS as option}
+					<option value={option.value}>{option.label}</option>
+				{/each}
+			</select>
+		</div>
+		<div class="flex flex-col gap-2 py-4">
+			<Label for="productType">Type</Label>
+			<select
+				class="w-full px-2 py-1 border rounded-xl"
+				bind:value={selectedProductType}
+				id="productType"
+			>
+				<option value={null}>Alle</option>
+				{#each productTypes as productType}
+					<option value={productType._id}>{productType.title}</option>
+				{/each}
+			</select>
+		</div>
+		<div class="flex flex-row items-center gap-4 py-4">
+			<Label for="hideSoldOut">Skjul utsolgte</Label>
+			<input class="h-4 w-4" type="checkbox" bind:checked={hideSoldOut} id="hideSoldOut" />
+		</div>
 	</div>
-	<div class="flex flex-row items-center px-4">
-		<Label class="mr-2" for="sort">Sorter etter</Label>
-		<select class="w-fit px-2 py-1 border rounded-xl" bind:value={sort} id="sort">
-			{#each SORT_OPTIONS as option}
-				<option value={option.value}>{option.label}</option>
+
+	<div class="flex-1">
+		{#if filteredProducts.length === 0}
+			<p class="text-center text-3xl mt-16">Finner ingen produkter som matcher dine filter</p>
+		{/if}
+		<ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+			{#each filteredProducts as { _id, name, image, price, producer, variants, isSoldOut }}
+				<li
+					class="border-2 border-black rounded-xl overflow-hidden bg-background shadow-xl relative"
+				>
+					{#if isSoldOut}
+						<div
+							class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-30 flex items-center justify-center"
+						>
+							<p class="text-white text-4xl rotate-45 font-medium">Utsolgt</p>
+						</div>
+					{/if}
+
+					<div class="border-b-2 border-b-black">
+						{#if image}
+							<img src={image} alt={name} class="w-full bg-white h-48 object-contain" />
+						{:else}
+							<div class="h-48 w-full bg-gray-200 flex items-center justify-center">
+								<Martini class="text-gray-500 h-16 w-16" />
+							</div>
+						{/if}
+					</div>
+
+					<div class="p-4">
+						<a class="hover:underline" href="/produkt/{_id}">
+							<h2 class="text-2xl font-medium">
+								{name}
+							</h2>
+						</a>
+						{#if variants && variants.length > 1}
+							<p class="text-sm text-gray-700">({variants.join(', ')})</p>
+						{/if}
+						<p class="text-lg">{price} kr</p>
+						<p class="text-sm text-gray-700 font-mono font-medium">{producer}</p>
+					</div>
+				</li>
 			{/each}
-		</select>
-	</div>
-	<div class="flex flex-row items-center px-4">
-		<Label class="mr-2" for="productType">Type</Label>
-		<select
-			class="w-fit px-2 py-1 border rounded-xl"
-			bind:value={selectedProductType}
-			id="productType"
-		>
-			<option value={null}>Alle</option>
-			{#each productTypes as productType}
-				<option value={productType._id}>{productType.title}</option>
-			{/each}
-		</select>
-	</div>
-	<div class="flex flex-row items-center gap-4 px-4">
-		<Label for="search">Søk</Label>
-		<input
-			class="w-full px-2 py-1 border rounded-xl"
-			type="text"
-			bind:value={search}
-			id="search"
-			placeholder="Søk etter produkt"
-		/>
+		</ul>
 	</div>
 </div>
-
-{#if filteredProducts.length === 0}
-	<p class="text-center text-3xl mt-16">Finner ingen produkter som matcher dine filter</p>
-{/if}
-<ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-10">
-	{#each filteredProducts as { _id, name, image, price, producer, variants, isSoldOut }}
-		<li class="border-2 border-black rounded-xl overflow-hidden bg-background shadow-xl relative">
-			{#if isSoldOut}
-				<div
-					class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-30 flex items-center justify-center"
-				>
-					<p class="text-white text-4xl rotate-45 font-medium">Utsolgt</p>
-				</div>
-			{/if}
-
-			<div class="border-b-2 border-b-black">
-				{#if image}
-					<img src={image} alt={name} class="w-full bg-white h-48 object-contain" />
-				{:else}
-					<div class="h-48 w-full bg-gray-200 flex items-center justify-center">
-						<Martini class="text-gray-500 h-16 w-16" />
-					</div>
-				{/if}
-			</div>
-
-			<div class="p-4">
-				<a class="hover:underline" href="/produkt/{_id}">
-					<h2 class="text-2xl font-medium">
-						{name}
-					</h2>
-				</a>
-				{#if variants && variants.length > 1}
-					<p class="text-sm text-gray-700">({variants.join(', ')})</p>
-				{/if}
-				<p class="text-lg">{price} kr</p>
-				<p class="text-sm text-gray-700 font-mono font-medium">{producer}</p>
-			</div>
-		</li>
-	{/each}
-</ul>
