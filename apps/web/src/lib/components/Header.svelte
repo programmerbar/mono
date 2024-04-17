@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { onNavigate } from '$app/navigation';
 	import { cn } from '$lib/cn';
 	import { Menu, X } from 'lucide-svelte';
+
+	let windowWidth = $state(browser ? window.innerWidth : 0);
 
 	const links = [
 		{
@@ -33,7 +36,15 @@
 
 		return () => (document.body.style.overflow = 'auto');
 	});
+
+	$effect(() => {
+		if (windowWidth > 768) {
+			isOpen = false;
+		}
+	});
 </script>
+
+<svelte:window onresize={(e) => (windowWidth = e.currentTarget.innerWidth)} />
 
 <div
 	class={cn('', {
