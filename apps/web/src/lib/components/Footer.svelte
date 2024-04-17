@@ -10,15 +10,22 @@
 	<footer
 		class="flex flex-col gap-10 md:flex-row items-center justify-between px-4 py-16 max-w-5xl mx-auto"
 	>
-		<div class="text-center font-medium md:text-left">
-			<p>echo Programmerbar</p>
-			<p>
-				Org. nr.: <a
-					class="hover:underline"
-					href="https://www.proff.no/selskap/echo-programmerbar/bergen/medlemsorganisasjoner/IFC3FCQ10PU/"
-					>927 307 898</a
-				>
-			</p>
+		<div class="text-center md:text-left">
+			<p class="text-lg font-medium">Informasjon</p>
+			<ul>
+				<li>
+					<p>echo Programmerbar</p>
+				</li>
+				<li>
+					<p>
+						Org. nr.: <a
+							class="hover:underline"
+							href="https://www.proff.no/selskap/echo-programmerbar/bergen/medlemsorganisasjoner/IFC3FCQ10PU/"
+							>927 307 898</a
+						>
+					</p>
+				</li>
+			</ul>
 		</div>
 
 		<div class="text-center space-y-4">
