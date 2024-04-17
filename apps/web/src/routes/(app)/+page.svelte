@@ -42,6 +42,13 @@
 	<h1 class="text-[min(80px,8vw)] text-center flex flex-col gap-6">
 		<span class="font-mono w-fit mx-auto px-6 font-light rounded-xl py-4">$ {cycle.text}</span>
 	</h1>
+
+	<div class="flex justify-center">
+		<a
+			class="px-4 py-2 rounded-xl shadow-xl border-2 border-black bg-secondary font-medium"
+			href="/booking">Book nå!</a
+		>
+	</div>
 </div>
 
 <div class="py-10 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -74,9 +81,9 @@
 		<ul class="divide-y-2 overflow-hidden">
 			{#each data.events as { title, start, slug }}
 				<li>
-					<a href="/arrangement/{slug}" class="text-xl hover:underline">
-						<div class="h-16 px-2 flex items-center justify-between hover:bg-primary-light">
-							<p>{title}</p>
+					<a href="/arrangement/{slug}" class="text-xl group">
+						<div class="h-16 px-2 flex flex-col justify-center hover:bg-primary-light">
+							<p class="group-hover:underline">{title}</p>
 
 							<p class="text-sm font-medium font-mono text-gray-700">
 								{format(new Date(start), 'EEEE d. MMMM', { locale: nb })}

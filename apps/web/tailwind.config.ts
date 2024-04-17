@@ -11,6 +11,9 @@ export default {
 					dark: 'var(--primary-dark)',
 					light: 'var(--primary-light)'
 				},
+				secondary: {
+					DEFAULT: 'var(--secondary)'
+				},
 				foreground: 'var(--foreground)',
 				background: 'var(--background)'
 			},

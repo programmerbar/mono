@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onNavigate } from '$app/navigation';
 	import { cn } from '$lib/cn';
+	import { Menu, X } from 'lucide-svelte';
 
 	const links = [
 		{
@@ -53,9 +54,9 @@
 					class="text-xl font-mono font-medium text-gray-600 hover:underline"
 				>
 					{#if isOpen}
-						Lukk
+						<X class="h-8 w-8" />
 					{:else}
-						Åpne
+						<Menu class="h-8 w-8" />
 					{/if}
 				</button>
 			</div>
