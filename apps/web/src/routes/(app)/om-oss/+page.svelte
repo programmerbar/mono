@@ -6,10 +6,12 @@
 	<title>Om oss — Programmerbar</title>
 </svelte:head>
 
-<div class="space-y-8 py-10 max-w-2xl mx-auto">
-	<h1 class="text-4xl font-medium text-center font-mono">Om oss</h1>
+<div class="space-y-4 max-w-4xl mx-auto mb-10">
+	<h1 class="text-4xl font-medium font-mono">Om oss</h1>
 
-	<div class="h-72 w-full flex gap-4 justify-center items-center border-2 rounded-xl bg-gray-100">
+	<div
+		class="h-72 w-96 flex gap-4 justify-center items-center border-2 rounded-xl bg-gray-100 float-right ml-4"
+	>
 		<Smile class="w-16 h-16 text-primary" />
 		<Beer class="w-16 h-16 text-primary" />
 		<Wine class="w-16 h-16 text-primary" />
@@ -17,12 +19,30 @@
 	</div>
 
 	<p class="text-lg text-gray-800">
-		Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-		the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
-		of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-		but also the leap into electronic typesetting, remaining essentially unchanged. It was
-		popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-		and more recently with desktop publishing software like Aldus PageMaker including versions of
-		Lorem Ipsum.
+		Programmerbar er en gjeng med studenter som jobber for å få bygget og drifte en bar for
+		studentene på Informatikk! Vi stiller med mange forskjellige arrangementer i løpet av semesteret
+		som fester, quizer, spillekvelder og bedriftspresentasjoner for å nevne noen. Vi tar alltid imot
+		søkere til å bli frivillig, da er du frivillig semester for semester. I tiden fremover blir det
+		mye fokus på å gjøre Programmerbar om til den soleklare plassen hvor alle informatikkstudenter
+		samles.
+	</p>
+
+	<p class="text-lg text-gray-800">
+		Neste byggeprosjekt er å vårt å få et eget lokale i det nye bygget på Nygårdshøyden sør.
+	</p>
+
+	<p class="text-lg text-gray-800">
+		Programmerbar har ikke et fastsatt medlemstall, men rekrutterer nye medlemmer ved behov.
+	</p>
+
+	<h2 class="text-2xl font-medium text-gray-900">Kontakt:</h2>
+
+	<p class="text-lg text-gray-800">
+		Du kan ta kontakt med oss på epost: <a
+			class="text-primary hover:underline"
+			href="mailto:leder@pogramerbar.no"
+		>
+			leder@programmerbar.no
+		</a>.
 	</p>
 </div>
