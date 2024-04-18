@@ -21,7 +21,7 @@
 <div class="py-10">
 	<h2 class="text-3xl font-medium pb-4">Kontakt oss</h2>
 
-	<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+	<div class="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-4">
 		<div>
 			<form
 				method="post"
@@ -94,7 +94,7 @@
 
 				<input type="text" name="subject" class="hidden" />
 
-				<Button type="submit">Send inn</Button>
+				<Button class="w-full md:w-fit" type="submit">Send inn</Button>
 			</form>
 		</div>
 
