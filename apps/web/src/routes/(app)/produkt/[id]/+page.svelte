@@ -32,9 +32,11 @@
 		<div>
 			<h2 class="text-xl font-semibold mb-2">Detaljer</h2>
 			<ul>
-				<li>
-					<p class="text-lg">Produsent: {producer}</p>
-				</li>
+				{#if producer}
+					<li>
+						<p class="text-lg">Produsent: {producer}</p>
+					</li>
+				{/if}
 				<li>
 					<p class="text-lg">Pris: {price} kr</p>
 				</li>
