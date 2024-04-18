@@ -126,7 +126,7 @@
 			<p class="text-center text-3xl mt-16">Finner ingen produkter som matcher dine filter</p>
 		{/if}
 		<ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-			{#each filteredProducts as { _id, name, image, price, producer, variants, isSoldOut }}
+			{#each filteredProducts as { _id, name, image, price, producer, variants, isSoldOut, productTypes }}
 				<li
 					class="border-2 border-black rounded-xl overflow-hidden bg-background shadow-xl relative"
 				>
@@ -159,6 +159,16 @@
 						{/if}
 						<p class="text-lg">{price} kr</p>
 						<p class="text-sm text-gray-700 font-mono font-medium">{producer}</p>
+						{#if productTypes}
+							<div class="flex items-center mt-2 gap-1 flex-wrap">
+								{#each productTypes as productType}
+									<span
+										class="px-2 py-1 bg-primary bg-opacity-10 text-white text-xs font-medium rounded-xl"
+										>{productType.title}</span
+									>
+								{/each}
+							</div>
+						{/if}
 					</div>
 				</li>
 			{/each}

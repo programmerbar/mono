@@ -16,8 +16,10 @@ export type Event = {
 export type Product = {
 	_id: string;
 	name: string;
+	description: string | null;
 	isSoldOut: boolean;
 	productTypes: Array<ProductType> | null;
+	alcoholContent: number | null;
 	price: number;
 	image: string | null;
 	producer: string | null;

@@ -12,6 +12,11 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "description",
+      title: "Beskrivelse",
+      type: "text",
+    }),
+    defineField({
       name: "productType",
       title: "Type",
       type: "array",
@@ -40,6 +45,13 @@ export default defineType({
       description: "Volum i liter. F.eks. 0.5 for en halvliter.",
       type: "number",
       validation: (Rule) => Rule.greaterThan(0),
+    }),
+    defineField({
+      name: "alcoholContent",
+      title: "Alkoholinnhold",
+      description:
+        "Alkoholinnhold i prosent. F.eks. 4.7 for 4.7%. Tom om det ikke er alkoholholdig.",
+      type: "number",
     }),
     defineField({
       name: "variants",
