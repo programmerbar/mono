@@ -70,7 +70,12 @@
 		{/each}
 		<div class="flex items-center gap-2">
 			<span>$</span>
-			<input type="text" class="bg-transparent w-full outline-0" bind:value={command} {onkeydown} />
+			<input
+				type="text"
+				class="bg-transparent w-full outline-0 border-0 active:outline-0 focus:outline-0 text-green-400 active:border-0 focus:border-0 focus-within:border-0 focus-within:outline-0"
+				bind:value={command}
+				{onkeydown}
+			/>
 		</div>
 	</div>
 </div>
