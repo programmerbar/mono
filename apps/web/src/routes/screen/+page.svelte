@@ -39,7 +39,7 @@
 					out:fly={{ x: -100, duration: 500 }}
 				>
 					{#each current as { name, producer, image, priceList: { student } }}
-						<div class="flex items-center rounded-xl h-full bg-neutral-50 overflow-hidden border-2">
+						<div class="flex items-center rounded-xl h-full bg-neutral-50 border-2 overflow-hidden">
 							{#if image}
 								<div class="h-full border-r bg-white flex items-center justify-center">
 									<img src={image} alt={name} class="w-auto h-52" />
@@ -48,13 +48,11 @@
 
 							<div class="flex items-center justify-between px-6 flex-1">
 								<div class="flex flex-col gap-2">
-									<p class="text-6xl truncate">{name}</p>
+									<p class="text-6xl truncate font-light">{name}</p>
 									<p class="text-gray-700 text-2xl font-mono">{producer}</p>
 								</div>
 
-								<div>
-									<p class="text-6xl font-light italic">{student} kr</p>
-								</div>
+								<p class="text-6xl font-light italic text-nowrap">{student} kr</p>
 							</div>
 						</div>
 					{/each}
