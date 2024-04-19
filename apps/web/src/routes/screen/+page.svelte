@@ -3,8 +3,9 @@
 
 	let { data } = $props();
 
+	const products = data.products.filter((product) => !product.isSoldOut);
 	const MAX = data.count;
-	const TOTAL_PAGES = Math.ceil(data.products.length / MAX);
+	const TOTAL_PAGES = Math.ceil(products.length / MAX);
 
 	let page = $state(0);
 
@@ -16,8 +17,9 @@
 		return () => clearInterval(interval);
 	});
 
-	const start = $derived(page * MAX);
-	const end = $derived(start + MAX);
+	let start = $derived(page * MAX);
+	let end = $derived(start + MAX);
+	let current = $derived(products.slice(start, end));
 </script>
 
 <svelte:head>
@@ -49,7 +51,7 @@
 					in:fly={{ x: 50, duration: 500 }}
 					out:fly={{ x: -50, duration: 500 }}
 				>
-					{#each data.products.slice(start, end) as { name, producer, priceList: { student } }}
+					{#each current as { name, producer, priceList: { student } }}
 						<div
 							class="flex items-center justify-between h-full rounded-xl bg-neutral-50 p-6 border-2"
 						>
