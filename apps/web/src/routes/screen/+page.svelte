@@ -35,8 +35,8 @@
 			{#key page}
 				<div
 					class="absolute w-full grid grid-cols-1 md:grid-cols-2 gap-4 justify-center items-center h-full"
-					in:fly={{ x: 50, duration: 500 }}
-					out:fly={{ x: -50, duration: 500 }}
+					in:fly={{ x: 100, duration: 500 }}
+					out:fly={{ x: -100, duration: 500 }}
 				>
 					{#each current as { name, producer, image, priceList: { student } }}
 						<div class="flex items-center rounded-xl h-full bg-neutral-50 overflow-hidden border-2">
@@ -64,10 +64,12 @@
 
 		<div class="flex flex-row items-center gap-2 mx-auto pt-5">
 			{#each Array.from({ length: TOTAL_PAGES }) as _, i}
-				<div
-					class="w-6 h-6 rounded-full bg-background border-[var(--theme-color)] border-2"
-					class:active={i === page}
-				></div>
+				<button onclick={() => (page = i)}>
+					<div
+						class="w-6 h-6 rounded-full bg-background border-[var(--theme-color)] border-2"
+						class:active={i === page}
+					></div>
+				</button>
 			{/each}
 		</div>
 	</div>
