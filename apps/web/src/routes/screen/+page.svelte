@@ -31,42 +31,44 @@
 	class="min-h-screen flex flex-col p-6"
 >
 	<div class="bg-background p-4 overflow-hidden flex-1 rounded-xl flex flex-col shadow-xl border">
-		<div class="mb-10 flex items-center justify-between p-4">
-			<h1 class="text-7xl italic font-mono font-medium">Vår meny</h1>
-
-			<div class="flex flex-row items-center gap-2">
-				{#each Array.from({ length: TOTAL_PAGES }) as _, i}
-					<div
-						class="w-6 h-6 rounded-full bg-background border-[var(--theme-color)] border-2"
-						class:active={i === page}
-					></div>
-				{/each}
-			</div>
-		</div>
-
-		<div class="relative">
+		<div class="relative flex-1">
 			{#key page}
 				<div
-					class="absolute w-full grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 justify-center items-center"
+					class="absolute w-full grid grid-cols-1 md:grid-cols-2 gap-4 justify-center items-center h-full"
 					in:fly={{ x: 50, duration: 500 }}
 					out:fly={{ x: -50, duration: 500 }}
 				>
-					{#each current as { name, producer, priceList: { student } }}
-						<div
-							class="flex items-center justify-between h-full rounded-xl bg-neutral-50 p-6 border-2"
-						>
-							<div class="flex flex-col">
-								<p class="text-4xl">{name}</p>
-								<p class="text-gray-700 text-lg font-mono">{producer}</p>
-							</div>
+					{#each current as { name, producer, image, priceList: { student } }}
+						<div class="flex items-center rounded-xl h-full bg-neutral-50 overflow-hidden border-2">
+							{#if image}
+								<div class="h-full border-r bg-white flex items-center justify-center">
+									<img src={image} alt={name} class="w-auto h-52" />
+								</div>
+							{/if}
 
-							<div>
-								<p class="text-4xl font-light italic">{student} kr</p>
+							<div class="flex items-center justify-between px-6 flex-1">
+								<div class="flex flex-col gap-2">
+									<p class="text-6xl truncate">{name}</p>
+									<p class="text-gray-700 text-2xl font-mono">{producer}</p>
+								</div>
+
+								<div>
+									<p class="text-6xl font-light italic">{student} kr</p>
+								</div>
 							</div>
 						</div>
 					{/each}
 				</div>
 			{/key}
+		</div>
+
+		<div class="flex flex-row items-center gap-2 mx-auto pt-5">
+			{#each Array.from({ length: TOTAL_PAGES }) as _, i}
+				<div
+					class="w-6 h-6 rounded-full bg-background border-[var(--theme-color)] border-2"
+					class:active={i === page}
+				></div>
+			{/each}
 		</div>
 	</div>
 </div>
