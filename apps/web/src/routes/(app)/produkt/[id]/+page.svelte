@@ -5,7 +5,7 @@
 			name,
 			description,
 			producer,
-			price,
+			priceList,
 			image,
 			productTypes,
 			variants,
@@ -38,7 +38,10 @@
 					</li>
 				{/if}
 				<li>
-					<p class="text-lg">Pris: {price} kr</p>
+					<p class="text-lg">Ordinær pris: {priceList.ordinary} kr</p>
+				</li>
+				<li>
+					<p class="text-lg">Studentpris: {priceList.student} kr</p>
 				</li>
 				<li>
 					<p class="text-lg">Volum: {volume} L</p>

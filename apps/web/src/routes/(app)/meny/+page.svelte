@@ -62,11 +62,11 @@
 				}
 
 				if (sort === 'price-asc') {
-					return a.price - b.price;
+					return a.priceList.student - b.priceList.student;
 				}
 
 				if (sort === 'price-desc') {
-					return b.price - a.price;
+					return b.priceList.student - a.priceList.student;
 				}
 
 				return 0;
@@ -126,7 +126,7 @@
 			<p class="text-center text-3xl mt-16">Finner ingen produkter som matcher dine filter</p>
 		{/if}
 		<ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-			{#each filteredProducts as { _id, name, image, price, producer, variants, isSoldOut, productTypes }}
+			{#each filteredProducts as { _id, name, image, priceList, producer, variants, isSoldOut, productTypes }}
 				<li
 					class="border-2 border-black rounded-xl overflow-hidden bg-background shadow-xl relative"
 				>
@@ -157,7 +157,7 @@
 						{#if variants && variants.length > 1}
 							<p class="text-sm text-gray-700">({variants.join(', ')})</p>
 						{/if}
-						<p class="text-lg">{price} kr</p>
+						<p class="text-lg">{priceList.student} kr</p>
 						<p class="text-sm text-gray-700 font-mono font-medium">{producer}</p>
 						{#if productTypes}
 							<div class="flex items-center mt-2 gap-1 flex-wrap">

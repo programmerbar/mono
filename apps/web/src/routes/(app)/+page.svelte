@@ -57,7 +57,7 @@
 			<a href="/meny" class="hover:underline">Meny</a>
 		</h2>
 		<ul class="divide-y-2 overflow-hidden">
-			{#each data.products.slice(start, end) as { name, producer, price }}
+			{#each data.products.slice(start, end) as { name, producer, priceList }}
 				<li>
 					<div class="h-16 px-2 flex items-center justify-between hover:bg-primary-light">
 						<div class="flex flex-col">
@@ -66,7 +66,7 @@
 						</div>
 
 						<div>
-							<p class="font-medium">{price} kr</p>
+							<p class="font-medium">{priceList.student} kr</p>
 						</div>
 					</div>
 				</li>

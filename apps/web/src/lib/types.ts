@@ -20,7 +20,11 @@ export type Product = {
 	isSoldOut: boolean;
 	productTypes: Array<ProductType> | null;
 	alcoholContent: number | null;
-	price: number;
+	priceList: {
+		ordinary: number;
+		student: number;
+		internal: number;
+	};
 	image: string | null;
 	producer: string | null;
 	volume: number | null;

@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { cn } from '$lib/cn';
 	import { fly } from 'svelte/transition';
 
 	let { data } = $props();
 
-	const MAX = 10;
+	const MAX = data.count;
 	const TOTAL_PAGES = Math.ceil(data.products.length / MAX);
+
 	let page = $state(0);
 
 	$effect(() => {
 		const interval = setInterval(() => {
 			page = (page + 1) % TOTAL_PAGES;
-		}, 5000);
+		}, data.delay * 1000);
 
 		return () => clearInterval(interval);
 	});
@@ -24,7 +24,10 @@
 	<title>Screen — Programmerbar</title>
 </svelte:head>
 
-<div class="bg-primary min-h-screen flex flex-col p-6">
+<div
+	style="--theme-color: {data.color}; background-color: var(--theme-color)"
+	class="min-h-screen flex flex-col p-6"
+>
 	<div class="bg-background p-4 overflow-hidden flex-1 rounded-xl flex flex-col shadow-xl border">
 		<div class="mb-10 flex items-center justify-between p-4">
 			<h1 class="text-7xl italic font-mono font-medium">Vår meny</h1>
@@ -32,9 +35,8 @@
 			<div class="flex flex-row items-center gap-2">
 				{#each Array.from({ length: TOTAL_PAGES }) as _, i}
 					<div
-						class={cn('w-6 h-6 rounded-full bg-background border-primary border-2', {
-							'bg-primary': i === page
-						})}
+						class="w-6 h-6 rounded-full bg-background border-[var(--theme-color)] border-2"
+						class:active={i === page}
 					></div>
 				{/each}
 			</div>
@@ -47,7 +49,7 @@
 					in:fly={{ x: 50, duration: 500 }}
 					out:fly={{ x: -50, duration: 500 }}
 				>
-					{#each data.products.slice(start, end) as { name, producer, price }}
+					{#each data.products.slice(start, end) as { name, producer, priceList: { student } }}
 						<div
 							class="flex items-center justify-between h-full rounded-xl bg-neutral-50 p-6 border-2"
 						>
@@ -57,7 +59,7 @@
 							</div>
 
 							<div>
-								<p class="text-4xl font-light italic">{price} kr</p>
+								<p class="text-4xl font-light italic">{student} kr</p>
 							</div>
 						</div>
 					{/each}
@@ -66,3 +68,9 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.active {
+		background-color: var(--theme-color);
+	}
+</style>
