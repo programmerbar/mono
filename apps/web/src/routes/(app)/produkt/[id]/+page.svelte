@@ -43,9 +43,11 @@
 				<li>
 					<p class="text-lg">Studentpris: {priceList.student} kr</p>
 				</li>
-				<li>
-					<p class="text-lg">Volum: {volume} L</p>
-				</li>
+				{#if volume}
+					<li>
+						<p class="text-lg">Volum: {volume} L</p>
+					</li>
+				{/if}
 				{#if productTypes && productTypes.length > 0}
 					<li>
 						<p class="text-lg">Type: {productTypes.map((type) => type.title).join(', ')}</p>
@@ -65,7 +67,15 @@
 		</div>
 	</div>
 
-	<div class="md:w-1/3 mt-6 md:mt-0 bg-background h-fit rounded-xl border-2 border-black shadow-xl">
-		<img class="w-full h-64 md:h-auto object-contain bg-white rounded-xl" src={image} alt={name} />
-	</div>
+	{#if image}
+		<div
+			class="md:w-1/3 mt-6 md:mt-0 bg-background h-fit rounded-xl border-2 border-black shadow-xl"
+		>
+			<img
+				class="w-full h-64 md:h-auto object-contain bg-white rounded-xl"
+				src={image}
+				alt={name}
+			/>
+		</div>
+	{/if}
 </div>

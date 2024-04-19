@@ -57,18 +57,20 @@
 			<a href="/meny" class="hover:underline">Meny</a>
 		</h2>
 		<ul class="divide-y-2 overflow-hidden">
-			{#each data.products.slice(start, end) as { name, producer, priceList }}
+			{#each data.products.slice(start, end) as { _id, name, producer, priceList }}
 				<li>
-					<div class="h-16 px-2 flex items-center justify-between hover:bg-primary-light">
-						<div class="flex flex-col">
-							<p class="text-xl">{name}</p>
-							<p class="text-sm font-medium font-mono text-gray-700">{producer}</p>
-						</div>
+					<a href="/produkt/{_id}" class="group">
+						<div class="h-16 px-2 flex items-center justify-between hover:bg-primary-light">
+							<div class="flex flex-col">
+								<p class="text-xl group-hover:underline">{name}</p>
+								<p class="text-sm font-medium font-mono text-gray-700">{producer}</p>
+							</div>
 
-						<div>
-							<p class="font-medium">{priceList.student} kr</p>
+							<div>
+								<p class="font-medium">{priceList.student} kr</p>
+							</div>
 						</div>
-					</div>
+					</a>
 				</li>
 			{/each}
 		</ul>
