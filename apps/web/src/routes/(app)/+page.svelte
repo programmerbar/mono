@@ -23,7 +23,10 @@
 	const start = $derived(page * MAX);
 	const end = $derived(start + MAX);
 
-	const cycle = createTypewriteCycle(['programmerbar', 'lesesalen', 'hjem', 'beste baren'], 500);
+	const cycle = createTypewriteCycle(
+		['programmerbar', 'lesesalen', 'hjem', 'beste baren', 'god stemning'],
+		500
+	);
 </script>
 
 <svelte:head>
