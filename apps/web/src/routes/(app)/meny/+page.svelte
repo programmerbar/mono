@@ -18,6 +18,8 @@
 	let sort = $state<SortOption>('name-asc');
 	let search = $state('');
 	let selectedProductType = $state<string | null>(null);
+	let studentPrice = $state(true);
+
 	let productTypes = $derived(
 		data.products
 			.map((product) => product.productTypes)
@@ -61,12 +63,15 @@
 					return b.name.localeCompare(a.name);
 				}
 
+				const aPrice = studentPrice ? a.priceList.student : a.priceList.ordinary;
+				const bPrice = studentPrice ? b.priceList.student : b.priceList.ordinary;
+
 				if (sort === 'price-asc') {
-					return a.priceList.student - b.priceList.student;
+					return aPrice - bPrice;
 				}
 
 				if (sort === 'price-desc') {
-					return b.priceList.student - a.priceList.student;
+					return bPrice - aPrice;
 				}
 
 				return 0;
@@ -117,7 +122,21 @@
 		</div>
 		<div class="flex flex-row items-center gap-4 py-4">
 			<Label for="hideSoldOut">Skjul utsolgte</Label>
-			<input class="h-4 w-4" type="checkbox" bind:checked={hideSoldOut} id="hideSoldOut" />
+			<input
+				class="h-4 w-4 rounded-sm checked:bg-primary checked:border-primary checked:border-2"
+				type="checkbox"
+				bind:checked={hideSoldOut}
+				id="hideSoldOut"
+			/>
+		</div>
+		<div class="flex flex-row items-center gap-4 py-4">
+			<Label for="studentPrice">Vis studentpris</Label>
+			<input
+				class="h-4 w-4 rounded-sm checked:bg-primary checked:border-primary checked:border-2"
+				type="checkbox"
+				bind:checked={studentPrice}
+				id="studentPrice"
+			/>
 		</div>
 	</div>
 
@@ -157,7 +176,7 @@
 						{#if variants && variants.length > 1}
 							<p class="text-sm text-gray-700">({variants.join(', ')})</p>
 						{/if}
-						<p class="text-lg">{priceList.student} kr</p>
+						<p class="text-lg">{studentPrice ? priceList.student : priceList.ordinary} kr</p>
 						<p class="text-sm text-gray-700 font-mono font-medium">{producer}</p>
 						{#if productTypes}
 							<div class="flex items-center mt-2 gap-1 flex-wrap">

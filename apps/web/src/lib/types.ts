@@ -3,6 +3,14 @@ export type ProductType = {
 	title: string;
 };
 
+export type PriceList = {
+	ordinary: number;
+	student: number;
+	internal: number;
+};
+
+export type PriceTypes = keyof PriceList;
+
 export type Event = {
 	title: string;
 	slug: string;
@@ -20,11 +28,7 @@ export type Product = {
 	isSoldOut: boolean;
 	productTypes: Array<ProductType> | null;
 	alcoholContent: number | null;
-	priceList: {
-		ordinary: number;
-		student: number;
-		internal: number;
-	};
+	priceList: PriceList;
 	image: string | null;
 	producer: string | null;
 	volume: number | null;
