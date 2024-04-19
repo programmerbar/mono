@@ -24,7 +24,7 @@
 				.then((res) => res.json())
 				.then((data) => data as Array<Product>);
 			for (const product of products) {
-				history.push(`${product.name} - ${product.price} kr`);
+				history.push(`${product.name} - ${product.priceList.student} kr`);
 			}
 
 			return;
