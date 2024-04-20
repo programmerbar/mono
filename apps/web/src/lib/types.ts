@@ -36,3 +36,16 @@ export type Product = {
 	volume: number | null;
 	variants: Array<string> | null;
 };
+
+export type Profile = {
+	_id: string;
+	name: string;
+};
+
+export type StandPlan = {
+	_id: string;
+	start: string;
+	end: string;
+	event: Event | null;
+	members: Array<Profile>;
+};

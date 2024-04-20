@@ -29,6 +29,7 @@ export default defineType({
       title: "Medlemmer",
       type: "array",
       of: [{ type: "reference", to: [{ type: "profile" }] }],
+      validation: (Rule) => Rule.required().min(1),
     }),
   ],
   preview: {
