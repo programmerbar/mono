@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { urlFor } from '$lib/data/sanity/image';
+
 	let { data } = $props();
 	let {
 		product: {
@@ -73,7 +75,7 @@
 		>
 			<img
 				class="w-full h-64 md:h-auto object-contain bg-white rounded-xl"
-				src={image}
+				src={urlFor(image).height(800).width(800).url()}
 				alt={name}
 			/>
 		</div>

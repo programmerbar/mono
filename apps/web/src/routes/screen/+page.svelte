@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { urlFor } from '$lib/data/sanity/image';
 	import { fly } from 'svelte/transition';
 
 	let { data } = $props();
@@ -42,7 +43,11 @@
 						<div class="flex items-center rounded-xl h-full bg-neutral-50 border-2 overflow-hidden">
 							{#if image}
 								<div class="h-full border-r bg-white flex items-center justify-center">
-									<img src={image} alt={name} class="w-auto h-52" />
+									<img
+										src={urlFor(image).height(600).width(600).url()}
+										alt={name}
+										class="w-auto h-52"
+									/>
 								</div>
 							{/if}
 

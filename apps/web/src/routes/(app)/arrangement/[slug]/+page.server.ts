@@ -1,4 +1,4 @@
-import { getEventBySlug } from '$lib/server/sanity/events';
+import { getEventBySlug } from '$lib/data/sanity/events';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 

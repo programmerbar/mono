@@ -1,3 +1,5 @@
+import type { Image } from './data/sanity/image';
+
 export type ProductType = {
 	_id: string;
 	title: string;
@@ -29,7 +31,7 @@ export type Product = {
 	productTypes: Array<ProductType> | null;
 	alcoholContent: number | null;
 	priceList: PriceList;
-	image: string | null;
+	image: Image | null;
 	producer: string | null;
 	volume: number | null;
 	variants: Array<string> | null;

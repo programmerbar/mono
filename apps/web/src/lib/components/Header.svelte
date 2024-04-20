@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { onNavigate } from '$app/navigation';
+	import logo from '$lib/assets/programmerbar-logo.png?enhanced';
 	import { cn } from '$lib/cn';
 	import { Menu, X } from 'lucide-svelte';
 
@@ -54,7 +55,7 @@
 	<header class="flex items-center w-full justify-between px-4 py-8 mx-auto max-w-7xl">
 		<div>
 			<a href="/">
-				<img class="h-24 w-24" src="/programmerbar-logo.png" alt="Programmerbar logo" />
+				<enhanced:img class="h-24 w-24" src={logo} alt="Programmerbar logo" />
 			</a>
 		</div>
 

@@ -1,4 +1,4 @@
-import { getProducts } from '$lib/server/sanity/products';
+import { getProducts } from '$lib/data/sanity/products';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {

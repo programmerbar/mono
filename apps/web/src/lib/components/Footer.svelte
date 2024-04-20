@@ -1,3 +1,7 @@
+<script lang="ts">
+	import lervigLogo from '$lib/assets/lervig-logo-black.png?enhanced';
+</script>
+
 <div class="border-t-2 bg-primary border-black mt-10 relative">
 	<div class="absolute text-xs flex items-center gap-2 px-2 py-1 text-primary-dark left-0 bottom-0">
 		<a class="hover:underline" target="_blank" href="/screen">Skjerm</a>
@@ -32,7 +36,7 @@
 			<p class="text-xl font-medium mx-auto">Hovedsamarbeidspartner</p>
 			<div>
 				<a href="https://lervig.no">
-					<img src="/lervig-logo-black.png" alt="Lervig" class="h-24 mx-auto" />
+					<enhanced:img src={lervigLogo} alt="Lervig" class="h-24 w-auto mx-auto" />
 				</a>
 			</div>
 		</div>
