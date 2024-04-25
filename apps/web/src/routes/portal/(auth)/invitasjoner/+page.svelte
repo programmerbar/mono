@@ -101,7 +101,7 @@
 	<hr class="my-8" />
 
 	<h3 class="text-lg font-medium mt-4">Brukte invitasjoner</h3>
-	<ul class="mt-2 grid grid-cols-2">
+	<ul class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
 		{#each redeemedInvitations as invitation}
 			<li>
 				<div class="rounded-lg border p-4">
