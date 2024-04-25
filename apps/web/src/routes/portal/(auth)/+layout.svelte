@@ -37,7 +37,9 @@
 			</li>
 		</menu>
 
-		<div class="mt-auto">
+		<div class="mt-auto space-y-2">
+			<p class="text-xs">Logget inn som, <span class="font-medium">{data.user.name}</span></p>
+
 			<SidebarItem href="/logout" class="border"><DoorOpen class="h-5 w-5" /> Logg ut</SidebarItem>
 		</div>
 	</div>

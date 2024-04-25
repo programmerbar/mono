@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SEO from '$lib/components/SEO.svelte';
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
 	import { formatDate } from '$lib/utils/date';
@@ -13,6 +14,8 @@
 		data.invitations.filter((invitation) => invitation.redeemedAt !== null)
 	);
 </script>
+
+<SEO title="Invitasjoner" />
 
 <main class="max-w-screen-md flex flex-col w-full">
 	<h1 class="text-2xl font-medium">Invitasjoner</h1>

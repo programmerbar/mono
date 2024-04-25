@@ -174,6 +174,9 @@ importers:
       tailwind-merge:
         specifier: ^2.2.2
         version: 2.2.2
+      zod:
+        specifier: ^3.23.4
+        version: 3.23.4
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20240405.0
@@ -7774,8 +7777,8 @@ packages:
     resolution: {integrity: sha512-UfZ0oa0C8LI58wJ+moL46BDIMgCQbnsb+2PoiJYtonhBsMh2bq1eRBVkvjfVsqbEHd9/EgKPUuL9saSSsec8OA==}
     engines: {node: '>= 12.0.0'}
 
-  zod@3.22.4:
-    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+  zod@3.23.4:
+    resolution: {integrity: sha512-/AtWOKbBgjzEYYQRNfoGKHObgfAZag6qUJX1VbHo2PRBgS+wfWagEY2mizjfyAPcGesrJOcx/wcl0L9WnVrHFw==}
 
 snapshots:
 
@@ -9278,10 +9281,10 @@ snapshots:
 
   '@hono/node-server@1.11.0': {}
 
-  '@hono/zod-validator@0.2.1(hono@4.2.7)(zod@3.22.4)':
+  '@hono/zod-validator@0.2.1(hono@4.2.7)(zod@3.23.4)':
     dependencies:
       hono: 4.2.7
-      zod: 3.22.4
+      zod: 3.23.4
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
@@ -12033,7 +12036,7 @@ snapshots:
     dependencies:
       '@esbuild-kit/esm-loader': 2.6.5
       '@hono/node-server': 1.11.0
-      '@hono/zod-validator': 0.2.1(hono@4.2.7)(zod@3.22.4)
+      '@hono/zod-validator': 0.2.1(hono@4.2.7)(zod@3.23.4)
       camelcase: 7.0.1
       chalk: 5.3.0
       commander: 9.5.0
@@ -12047,7 +12050,7 @@ snapshots:
       minimatch: 7.4.6
       semver: 7.6.0
       superjson: 2.2.1
-      zod: 3.22.4
+      zod: 3.23.4
     transitivePeerDependencies:
       - supports-color
 
@@ -13758,7 +13761,7 @@ snapshots:
       workerd: 1.20240405.0
       ws: 8.16.0
       youch: 3.3.3
-      zod: 3.22.4
+      zod: 3.23.4
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -16106,4 +16109,4 @@ snapshots:
       compress-commons: 5.0.1
       readable-stream: 3.6.2
 
-  zod@3.22.4: {}
+  zod@3.23.4: {}

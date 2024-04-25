@@ -5,7 +5,7 @@ import { createInvitationId } from '$lib/id';
 import { eq } from 'drizzle-orm';
 import { BASE_URL } from '$lib/utils/base-url';
 // @ts-expect-error React
-import InvitationEmail from '@programmerbar/email/contact-us';
+import InvitationEmail from '@programmerbar/email/invitation';
 
 export const load: PageServerLoad = async ({ locals, depends, parent }) => {
 	depends('invitations');
