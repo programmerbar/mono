@@ -14,6 +14,7 @@ export type PriceList = {
 export type PriceTypes = keyof PriceList;
 
 export type Event = {
+	_id: string;
 	title: string;
 	slug: string;
 	start: string;

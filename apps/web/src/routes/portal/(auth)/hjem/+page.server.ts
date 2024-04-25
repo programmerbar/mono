@@ -3,15 +3,23 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ parent, locals }) => {
 	const { user } = await parent();
 
-	const upcomingShifts = await locals.db.query.shiftTable.findMany({
-		where: (shift, { and, gte, eq }) => and(gte(shift.start, new Date())),
+	const shifts = await locals.db.query.usersToShiftsTable.findMany({
+		where: (shift, { eq }) => eq(shift.userId, user.id),
 		with: {
-			members: true
+			shift: {
+				with: {
+					members: {
+						with: {
+							user: true
+						}
+					}
+				}
+			}
 		}
 	});
 
 	return {
 		user,
-		upcomingShifts
+		shifts
 	};
 };

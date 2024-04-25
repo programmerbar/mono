@@ -26,7 +26,7 @@
 					} else {
 						toast.error('Noe gikk galt. Prøv igjen senere.');
 					}
-					applyAction(result);
+					await applyAction(result);
 				};
 			}}
 		>

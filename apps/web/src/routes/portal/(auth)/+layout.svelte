@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Home, Users, User, DoorOpen, Martini, Mail } from 'lucide-svelte';
+	import { Home, Users, User, DoorOpen, Martini, Mail, Calendar } from 'lucide-svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 
 	let { data, children } = $props();
@@ -14,13 +14,11 @@
 				<SidebarItem href="/portal/hjem"><Home class="h-5 w-5" /> Hjem</SidebarItem>
 			</li>
 			<li>
-				<SidebarItem href="/portal/staplan"><Users class="h-5 w-5" /> Ståplan</SidebarItem>
+				<SidebarItem href="/portal/staplan"><Calendar class="h-5 w-5" /> Ståplan</SidebarItem>
 			</li>
-			{#if data.user.type === 'admin'}
-				<li>
-					<SidebarItem href="/portal/brukere"><Users class="h-5 w-5" /> Brukere</SidebarItem>
-				</li>
-			{/if}
+			<li>
+				<SidebarItem href="/portal/frivillige"><Users class="h-5 w-5" /> Frivillige</SidebarItem>
+			</li>
 			{#if data.user.type === 'admin'}
 				<li>
 					<SidebarItem href="/portal/invitasjoner"
@@ -38,9 +36,8 @@
 		</menu>
 
 		<div class="mt-auto space-y-2">
-			<p class="text-xs">Logget inn som, <span class="font-medium">{data.user.name}</span></p>
-
 			<SidebarItem href="/logout" class="border"><DoorOpen class="h-5 w-5" /> Logg ut</SidebarItem>
+			<p class="text-xs">Logget inn som, <span class="font-medium">{data.user.name}</span></p>
 		</div>
 	</div>
 

@@ -5,19 +5,19 @@
 
 	type Props = {
 		href: string;
-		active?: boolean;
 		class?: string;
 		children: Snippet;
 	};
 
-	let { href, children, active = false, class: className }: Props = $props();
+	let { href, children, class: className }: Props = $props();
+	let active = $derived($page.url.pathname === href);
 </script>
 
 <a
 	class={cn(
 		'flex w-full px-4 items-center rounded-lg gap-2 hover:bg-gray-200 h-10 transition-all',
 		{
-			'bg-gray-200': active
+			'bg-gray-200 font-medium': active
 		},
 		className
 	)}

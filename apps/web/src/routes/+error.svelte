@@ -64,7 +64,7 @@
 	<div
 		class="border border-gray-800 p-2 max-h-[600px] max-w-screen-sm w-full h-full flex-1 flex flex-col overflow-y-scroll hide-scrollbar"
 	>
-		<div class="flex-1" />
+		<div class="flex-1"></div>
 		{#each history as item}
 			<div>{item}</div>
 		{/each}

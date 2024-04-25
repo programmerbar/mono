@@ -83,8 +83,6 @@ export const GET = async ({ locals, cookies, url }) => {
 			}
 		});
 	} catch (error) {
-		console.log(error);
-
 		if (error instanceof OAuth2RequestError) {
 			return new Response('Invalid code', { status: 400 });
 		}
