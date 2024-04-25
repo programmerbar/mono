@@ -24,7 +24,7 @@
 	const end = $derived(start + MAX);
 
 	const cycle = createTypewriteCycle(
-		['programmerbar', 'lesesalen', 'hjem', 'beste baren', 'god stemning'],
+		['programmerbar', 'lesesalen', 'hjem', 'beste baren', 'god stemning', 'ballmer peak'],
 		500
 	);
 </script>
