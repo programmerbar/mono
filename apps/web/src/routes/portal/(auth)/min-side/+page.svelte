@@ -37,7 +37,7 @@
 	<h1 class="text-2xl font-medium mb-8">Min side</h1>
 
 	<div>
-		<h2 class="text-xl font-medium">Dine opplysninger</h2>
+		<h2 class="text-xl font-medium mb-4">Dine opplysninger</h2>
 
 		<form
 			method="post"

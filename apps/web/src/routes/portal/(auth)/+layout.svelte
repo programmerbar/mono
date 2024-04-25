@@ -43,7 +43,7 @@
 		})}
 	>
 		<div
-			class={cn('hidden md:flex w-72 border-r h-full flex-col p-8', {
+			class={cn('hidden z-50 md:flex w-72 border-r h-full flex-col p-8', {
 				'flex w-full h-full absolute bg-background': isOpen
 			})}
 		>
