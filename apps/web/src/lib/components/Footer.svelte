@@ -5,6 +5,7 @@
 <div class="border-t-2 bg-primary border-black mt-10 relative">
 	<div class="absolute text-xs flex items-center gap-2 px-2 py-1 text-primary-dark left-0 bottom-0">
 		<a class="hover:underline" target="_blank" href="/screen">Skjerm</a>
+		<a class="hover:underline" href="/portal">Frivillig</a>
 		<a class="hover:underline" target="_blank" href="https://programmerbar.sanity.studio">Sanity</a>
 		<a class="hover:underline" target="_blank" href="https://github.com/programmerbar/mono"
 			>GitHub</a

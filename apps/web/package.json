@@ -13,7 +13,10 @@
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
 		"deploy": "pnpm run build && wrangler pages deploy .svelte-kit/cloudflare",
-		"build-cf-types": "wrangler types && mv worker-configuration.d.ts src/"
+		"build-cf-types": "wrangler types && mv worker-configuration.d.ts src/",
+		"db:generate": "drizzle-kit generate:sqlite",
+		"db:apply": "wrangler d1 migrations apply progbar-db",
+		"db:studio": "drizzle-kit studio"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20240405.0",
@@ -29,6 +32,7 @@
 		"@typescript-eslint/eslint-plugin": "^7.6.0",
 		"@typescript-eslint/parser": "^7.6.0",
 		"autoprefixer": "^10.4.19",
+		"drizzle-kit": "^0.20.17",
 		"eslint": "^9.0.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.37.0",
@@ -45,13 +49,19 @@
 		"wrangler": "^3.50.0"
 	},
 	"dependencies": {
+		"@lucia-auth/adapter-sqlite": "^3.0.1",
 		"@programmerbar/email": "workspace:*",
 		"@sanity/client": "^6.15.14",
 		"@sanity/image-url": "^1.0.2",
+		"arctic": "^1.5.0",
 		"clsx": "^2.1.0",
 		"date-fns": "^3.6.0",
+		"drizzle-orm": "^0.30.9",
 		"groq": "^3.37.2",
+		"lucia": "^3.2.0",
 		"lucide-svelte": "^0.368.0",
+		"nanoid": "^5.0.7",
+		"oslo": "^1.2.0",
 		"resend": "^3.2.0",
 		"svelte-markdown": "^0.4.1",
 		"svelte-sonner": "^0.3.22",
