@@ -82,6 +82,7 @@
 						{/if}
 					</div>
 				</button>
+				<p class="text-xs text-gray-400 mt-2">Bildet ser best ut om det er firkantet.</p>
 			</div>
 
 			<div>
