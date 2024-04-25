@@ -79,7 +79,7 @@ export const GET = async ({ locals, cookies, url }) => {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: '/'
+				Location: '/portal/hjem'
 			}
 		});
 	} catch (error) {
