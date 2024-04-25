@@ -14,9 +14,9 @@ const getResendClient = (apiKey: string | null) => {
 };
 
 const setup: Handle = ({ event, resolve }) => {
-	if (!event.platform) return resolve(event);
+	if (!event.platform?.env) return resolve(event);
 
-	event.locals.resend = getResendClient(event.platform?.env.RESEND_API_KEY ?? null);
+	event.locals.resend = getResendClient(event.platform.env.RESEND_API_KEY ?? null);
 
 	const dbBinding = event.platform.env.DB;
 	event.locals.db = createDatabase(dbBinding);
@@ -50,17 +50,15 @@ const auth: Handle = async ({ event, resolve }) => {
 	const { session, user } = await lucia.validateSession(sessionId);
 	if (session && session.fresh) {
 		const sessionCookie = lucia.createSessionCookie(session.id);
-		// sveltekit types deviates from the de-facto standard
-		// you can use 'as any' too
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
+			path: '/',
 			...sessionCookie.attributes
 		});
 	}
 	if (!session) {
 		const sessionCookie = lucia.createBlankSessionCookie();
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
+			path: '/',
 			...sessionCookie.attributes
 		});
 	}

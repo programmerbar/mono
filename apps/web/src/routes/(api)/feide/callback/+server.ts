@@ -73,7 +73,7 @@ export const GET = async ({ locals, cookies, url }) => {
 				path: '/'
 			});
 		} else {
-			return new Response('Internal server error', { status: 500 });
+			return new Response('Du trenger en invitasjon for å lage en bruker.', { status: 400 });
 		}
 
 		return new Response(null, {
