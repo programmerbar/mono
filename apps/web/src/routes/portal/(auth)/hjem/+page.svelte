@@ -6,8 +6,10 @@
 	let { data } = $props();
 	let { user, shifts } = data;
 
-	let upcomingShifts = shifts.filter(({ shift }) => new Date(shift.start) > new Date());
-	let pastShifts = shifts.filter(({ shift }) => new Date(shift.start) < new Date());
+	$inspect(shifts);
+
+	let upcomingShifts = shifts.filter(({ shift }) => new Date(shift.end) > new Date());
+	let pastShifts = shifts.filter(({ shift }) => new Date(shift.end) < new Date());
 </script>
 
 <SEO title="Hjem" />
@@ -18,7 +20,7 @@
 	<div class="grid grid-cols-2 gap-4">
 		<div class="p-4 rounded-lg border">
 			<p class="text-lg">Antall vakter</p>
-			<p class="text-2xl font-bold">{shifts.length}</p>
+			<p class="text-2xl font-bold">{pastShifts.length}</p>
 		</div>
 
 		<div class="p-4 rounded-lg border">
