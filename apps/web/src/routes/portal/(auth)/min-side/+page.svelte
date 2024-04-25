@@ -62,6 +62,7 @@
 					id="avatar"
 					name="avatar"
 					class="hidden"
+					accept="image/*"
 					onchange={handlePictureChange}
 				/>
 				<button type="button" onclick={() => pictureInput?.click()}>
