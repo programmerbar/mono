@@ -5,7 +5,8 @@ import { z } from 'zod';
 
 const userSchema = z.object({
 	name: z.string().min(1),
-	email: z.string().email()
+	email: z.string().email(),
+	avatar: z.instanceof(File).nullable()
 });
 
 export const load: PageServerLoad = async ({ parent }) => {
@@ -17,7 +18,7 @@ export const load: PageServerLoad = async ({ parent }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ locals, request }) => {
+	default: async ({ locals, request, platform }) => {
 		if (!locals.user) {
 			return { success: false, errors: { user: ['Not logged in'] } };
 		}
@@ -29,7 +30,18 @@ export const actions: Actions = {
 			return { success: false, errors: resp.error.flatten() };
 		}
 
-		const user = resp.data;
+		console.log(resp.data);
+
+		const { avatar, ...user } = resp.data;
+
+		const avatarPath = `avatars/${locals.user.id}`;
+		if (avatar && avatar.size > 0) {
+			await platform?.env.R2.put(avatarPath, await avatar.arrayBuffer());
+		}
+
+		if (avatar === null) {
+			await platform?.env.R2.delete(avatarPath);
+		}
 
 		await locals.db.update(userTable).set(user).where(eq(userTable.id, locals.user.id));
 

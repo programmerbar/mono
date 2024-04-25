@@ -1,15 +1,13 @@
 <script lang="ts">
+	import ProfilePreview from '$lib/components/ProfilePreview.svelte';
 	import SEO from '$lib/components/SEO.svelte';
-	import { mailTo } from '$lib/utils/prefixes.js';
-	import type { User } from 'lucia';
-	import { User2 } from 'lucide-svelte';
 
 	let { data } = $props();
 
 	let search = $state('');
 
-	let filteredUsers = data.users.filter((user) =>
-		user.name.toLowerCase().includes(search.toLowerCase())
+	let filteredUsers = $derived(
+		data.users.filter((user) => user.name.toLowerCase().includes(search.toLowerCase()))
 	);
 </script>
 
@@ -31,24 +29,11 @@
 		{#each filteredUsers as user}
 			{@const isUser = user.id === data.user.id}
 			<li>
-				<div class="p-4 rounded-lg border h-full space-y-2">
-					<div
-						class="h-20 w-20 rounded-full bg-gray-200 mx-auto border-2 border-gray-400 flex flex-col items-center justify-center"
-					>
-						<User2 class="h-10 w-10 text-gray-500" />
-					</div>
-
-					<h2 class="text-xl font-medium text-center">
-						{user.name}
-						{#if isUser}
-							<span class="text-xs text-gray-500">(deg)</span>
-						{/if}
-					</h2>
-
-					<p class="text-center">
-						<a class="hover:underline text-blue-500" href={mailTo(user.email)}>{user.email}</a>
-					</p>
-				</div>
+				<ProfilePreview id={user.id} name={user.name} email={user.email} {isUser} />
+			</li>
+		{:else}
+			<li>
+				<p class="text-xl text-gray-600">Fant ingen brukere</p>
 			</li>
 		{/each}
 	</ul>

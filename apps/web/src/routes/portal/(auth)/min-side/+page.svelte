@@ -3,8 +3,31 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
+	import { getProfilePicture } from '$lib/data/api';
+	import type { ChangeEventHandler } from 'svelte/elements';
 
 	let { data } = $props();
+
+	let pictureInput = $state<HTMLInputElement | null>(null);
+	let picture = $state<string | null>(null);
+	let loading = $state(false);
+
+	$effect(() => {
+		const fetchProfilePicture = async () => {
+			loading = true;
+			picture = await getProfilePicture(data.user.id);
+			loading = false;
+		};
+
+		fetchProfilePicture();
+	});
+
+	const handlePictureChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+		const file = event.currentTarget.files?.[0];
+		if (file) {
+			picture = URL.createObjectURL(file);
+		}
+	};
 </script>
 
 <SEO title="Min side" />
@@ -18,6 +41,7 @@
 		<form
 			method="post"
 			class="space-y-4"
+			enctype="multipart/form-data"
 			use:enhance={() => {
 				return async ({ result }) => {
 					if (result.type === 'success') {
@@ -30,6 +54,24 @@
 				};
 			}}
 		>
+			<div>
+				<input
+					bind:this={pictureInput}
+					type="file"
+					id="avatar"
+					name="avatar"
+					class="hidden"
+					onchange={handlePictureChange}
+				/>
+				{#if picture}
+					<button type="button" onclick={() => pictureInput?.click()}>
+						<img src={picture} alt="Profilbilde" class="w-24 h-24 border rounded-full" />
+					</button>
+				{:else}
+					<div class="w-24 h-24 border bg-gray-200 rounded-full"></div>
+				{/if}
+			</div>
+
 			<div>
 				<label for="name" class="text-sm font-medium">Navn</label>
 				<input

@@ -4,3 +4,14 @@ export const getStatus = async () => {
 		message: string;
 	};
 };
+
+export const getProfilePicture = async (id: string) => {
+	const response = await fetch(`/profile-pic/${id}`);
+
+	if (response.ok) {
+		const blob = await response.blob();
+		return URL.createObjectURL(blob);
+	}
+
+	return null;
+};
