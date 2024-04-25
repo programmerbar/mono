@@ -5,6 +5,7 @@
 	import { toast } from 'svelte-sonner';
 	import { getProfilePicture } from '$lib/data/api';
 	import type { ChangeEventHandler } from 'svelte/elements';
+	import { Upload } from 'lucide-svelte';
 
 	let { data } = $props();
 
@@ -63,13 +64,23 @@
 					class="hidden"
 					onchange={handlePictureChange}
 				/>
-				{#if picture}
-					<button type="button" onclick={() => pictureInput?.click()}>
-						<img src={picture} alt="Profilbilde" class="w-24 h-24 border rounded-full" />
-					</button>
-				{:else}
-					<div class="w-24 h-24 border bg-gray-200 rounded-full"></div>
-				{/if}
+				<button type="button" onclick={() => pictureInput?.click()}>
+					<div
+						class="group w-24 h-24 border-2 border-gray-400 bg-gray-200 rounded-full relative overflow-hidden flex flex-col items-center justify-center"
+					>
+						{#if picture}
+							<img src={picture} alt="Profilbilde" class="w-full h-full absolute" />
+							<div
+								class="hidden group-hover:flex transition-all absolute inset-0 bg-black bg-opacity-30 items-center justify-center"
+							>
+								<p class="text-gray-200 text-sm">Endre</p>
+							</div>
+						{:else}
+							<Upload class="w-8 h-8 text-gray-500" />
+							<p class="text-sm text-gray-500">Last opp</p>
+						{/if}
+					</div>
+				</button>
 			</div>
 
 			<div>
