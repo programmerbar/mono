@@ -1,10 +1,20 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import ProfilePreview from '$lib/components/ProfilePreview.svelte';
 	import SEO from '$lib/components/SEO.svelte';
 
 	let { data } = $props();
 
-	let search = $state('');
+	let search = $state($page.url.searchParams.get('q') || '');
+
+	$effect(() => {
+		const params = new URLSearchParams();
+		if (search) params.set('q', encodeURIComponent(search));
+		if (!search) params.delete('q');
+
+		goto(`?${params.toString()}`, { keepFocus: true });
+	});
 
 	let filteredUsers = $derived(
 		data.users.filter((user) => user.name.toLowerCase().includes(search.toLowerCase()))
@@ -25,7 +35,7 @@
 		/>
 	</div>
 
-	<ul class="grid gird-cols-1 md:grid-cols-3 gap-4">
+	<ul class="grid gird-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 		{#each filteredUsers as user}
 			{@const isUser = user.id === data.user.id}
 			<li>

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { getProfilePicture } from '$lib/data/api';
 	import { mailTo } from '$lib/utils/prefixes';
 	import { User2 } from 'lucide-svelte';
 
@@ -15,7 +14,7 @@
 	let imageError = $state(false);
 </script>
 
-<div class="p-4 rounded-lg border h-full space-y-2">
+<div class="p-4 rounded-lg border overflow-hidden h-full space-y-2">
 	<div
 		class="h-20 w-20 rounded-full bg-gray-200 mx-auto border-2 border-gray-400 flex flex-col items-center justify-center"
 	>

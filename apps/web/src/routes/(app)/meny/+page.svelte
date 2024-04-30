@@ -1,10 +1,20 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import Label from '$lib/components/ui/Label.svelte';
 	import { urlFor } from '$lib/data/sanity/image.js';
 	import type { ProductType } from '$lib/types';
 	import { Martini } from 'lucide-svelte';
 
-	const { data } = $props();
+	type SortOption = (typeof SORT_OPTIONS)[number]['value'];
+
+	const QUERY_PARAM_KEYS = {
+		hideSoldOut: 'hideSoldOut',
+		sort: 'sort',
+		search: 'search',
+		selectedProductType: 'selectedProductType',
+		studentPrice: 'studentPrice'
+	} as const;
 
 	const SORT_OPTIONS = [
 		{ label: 'Navn A-Å', value: 'name-asc' },
@@ -13,13 +23,21 @@
 		{ label: 'Pris høy-lav', value: 'price-desc' }
 	] as const;
 
-	type SortOption = (typeof SORT_OPTIONS)[number]['value'];
+	const { data } = $props();
 
-	let hideSoldOut = $state(true);
-	let sort = $state<SortOption>('name-asc');
-	let search = $state('');
-	let selectedProductType = $state<string | null>(null);
-	let studentPrice = $state(true);
+	let hideSoldOut = $state(
+		Boolean($page.url.searchParams.get(QUERY_PARAM_KEYS.hideSoldOut)) || true
+	);
+	let sort = $state<SortOption>(
+		($page.url.searchParams.get(QUERY_PARAM_KEYS.sort) as SortOption) || 'name-asc'
+	);
+	let search = $state($page.url.searchParams.get(QUERY_PARAM_KEYS.search) || '');
+	let selectedProductType = $state<string | null>(
+		$page.url.searchParams.get(QUERY_PARAM_KEYS.selectedProductType) || null
+	);
+	let studentPrice = $state(
+		Boolean($page.url.searchParams.get(QUERY_PARAM_KEYS.studentPrice)) || false
+	);
 
 	let productTypes = $derived(
 		data.products
@@ -78,6 +96,28 @@
 				return 0;
 			})
 	);
+
+	$effect(() => {
+		const params = new URLSearchParams();
+
+		if (!hideSoldOut) params.set(QUERY_PARAM_KEYS.hideSoldOut, encodeURIComponent(hideSoldOut));
+		if (hideSoldOut) params.delete(QUERY_PARAM_KEYS.hideSoldOut);
+
+		if (sort !== 'name-asc') params.set(QUERY_PARAM_KEYS.sort, encodeURIComponent(sort));
+		if (!sort || sort === 'name-asc') params.delete(QUERY_PARAM_KEYS.sort);
+
+		if (search) params.set(QUERY_PARAM_KEYS.search, encodeURIComponent(search));
+		if (!search) params.delete(QUERY_PARAM_KEYS.search);
+
+		if (selectedProductType)
+			params.set(QUERY_PARAM_KEYS.selectedProductType, encodeURIComponent(selectedProductType));
+		if (!selectedProductType) params.delete(QUERY_PARAM_KEYS.selectedProductType);
+
+		if (!studentPrice) params.set(QUERY_PARAM_KEYS.studentPrice, encodeURIComponent(studentPrice));
+		if (studentPrice) params.delete(QUERY_PARAM_KEYS.studentPrice);
+
+		goto(`?${params.toString()}`, { keepFocus: true });
+	});
 </script>
 
 <svelte:head>
