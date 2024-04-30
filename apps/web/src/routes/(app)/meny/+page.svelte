@@ -36,7 +36,7 @@
 		$page.url.searchParams.get(QUERY_PARAM_KEYS.selectedProductType) || null
 	);
 	let studentPrice = $state(
-		Boolean($page.url.searchParams.get(QUERY_PARAM_KEYS.studentPrice)) || false
+		Boolean($page.url.searchParams.get(QUERY_PARAM_KEYS.studentPrice)) || true
 	);
 
 	let productTypes = $derived(
