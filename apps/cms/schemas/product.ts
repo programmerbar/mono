@@ -33,15 +33,6 @@ export default defineType({
       initialValue: false,
     }),
     defineField({
-      name: "price",
-      title: "Pris",
-      description: "Pris i kroner.",
-      deprecated: {
-        reason: "Bruk Prisliste i stedet.",
-      },
-      type: "number",
-    }),
-    defineField({
       name: "priceList",
       title: "Prisliste",
       description: "Prisliste for produktet.",
