@@ -1,13 +1,13 @@
 # Programmerbar Monorepo
 
-## Development
+The monorepo for Programmerbar. Uses Cloudflare Pages to host the app.
 
-Uses Cloudflare and Wrangler as infra.
+## Development
 
 ### Prerequisites
 
-- Node.js
-- pnpm
+- Node.js (v20)
+- pnpm (v9)
 
 ### Setup
 
@@ -21,8 +21,15 @@ pnpm install
 pnpm dev
 ```
 
+- Frontend: http://localhost:5173
+- CMS: http://localhost:3333
+- Email preview: http://localhost:3000
+
 ## Apps
 
 - `apps/web` - The frontend web app
 - `apps/cms` - A Sanity Studio CMS
 
+## Packages
+
+- `packages/email` - React email components

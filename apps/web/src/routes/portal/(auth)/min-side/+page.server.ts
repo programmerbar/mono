@@ -30,16 +30,12 @@ export const actions: Actions = {
 			return { success: false, errors: resp.error.flatten() };
 		}
 
-		console.log(resp.data);
-
 		const { avatar, ...user } = resp.data;
 
 		const avatarPath = `avatars/${locals.user.id}`;
 		if (avatar && avatar.size > 0) {
 			await platform?.env.R2.put(avatarPath, await avatar.arrayBuffer());
-		}
-
-		if (avatar === null) {
+		} else {
 			await platform?.env.R2.delete(avatarPath);
 		}
 

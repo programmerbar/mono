@@ -65,7 +65,13 @@
 					accept="image/*"
 					onchange={handlePictureChange}
 				/>
-				<button type="button" onclick={() => pictureInput?.click()}>
+				<button
+					type="button"
+					onclick={() => {
+						picture = null;
+						pictureInput?.click();
+					}}
+				>
 					<div
 						class="group w-24 h-24 border-2 border-gray-400 bg-gray-200 rounded-full relative overflow-hidden flex flex-col items-center justify-center"
 					>

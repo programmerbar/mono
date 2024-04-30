@@ -12,25 +12,22 @@
 
 	let { id, name, email, isUser }: Props = $props();
 
-	let picture = $state<string | null>(null);
-
-	$effect(() => {
-		const fetchProfilePicture = async () => {
-			picture = await getProfilePicture(id);
-		};
-
-		fetchProfilePicture();
-	});
+	let imageError = $state(false);
 </script>
 
 <div class="p-4 rounded-lg border h-full space-y-2">
 	<div
 		class="h-20 w-20 rounded-full bg-gray-200 mx-auto border-2 border-gray-400 flex flex-col items-center justify-center"
 	>
-		{#if picture}
-			<img class="h-20 w-20 rounded-full" src={picture} alt="Profilbilde" />
-		{:else}
+		{#if imageError}
 			<User2 class="h-10 w-10 text-gray-500" />
+		{:else}
+			<img
+				class="h-20 w-20 rounded-full"
+				onerror={() => (imageError = true)}
+				src="/profile-pic/{id}"
+				alt="Profilbilde"
+			/>
 		{/if}
 	</div>
 
