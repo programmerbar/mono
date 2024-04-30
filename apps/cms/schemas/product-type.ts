@@ -1,9 +1,11 @@
 import { defineType, defineField } from "sanity";
+import { HashIcon } from "@sanity/icons";
 
 export default defineType({
   name: "productType",
   title: "Produkttype",
   type: "document",
+  icon: HashIcon,
   fields: [
     defineField({
       name: "title",
