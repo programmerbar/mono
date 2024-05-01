@@ -116,7 +116,7 @@
 		if (!studentPrice) params.set(QUERY_PARAM_KEYS.studentPrice, encodeURIComponent(studentPrice));
 		if (studentPrice) params.delete(QUERY_PARAM_KEYS.studentPrice);
 
-		goto(`?${params.toString()}`, { keepFocus: true });
+		goto(`?${params.toString()}`, { keepFocus: true, noScroll: true });
 	});
 </script>
 
