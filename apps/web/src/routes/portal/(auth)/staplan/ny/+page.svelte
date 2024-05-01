@@ -5,9 +5,10 @@
 	import EventSelect from './EventSelect.svelte';
 	import UsersSelect from './UsersSelect.svelte';
 	import { invalidateAll } from '$app/navigation';
+	import TimePicker from '$lib/components/TimePicker.svelte';
 
 	let { data } = $props();
-	let { shifts, users, events } = data;
+	let { users, events } = data;
 </script>
 
 <SEO title="Ståplan" />
@@ -32,24 +33,26 @@
 				};
 			}}
 		>
-			<div>
-				<label for="name" class="text-sm font-medium">Start</label>
-				<input
-					type="datetime-local"
-					id="start"
-					name="start"
-					class="w-full border rounded-lg form-input bg-background h-10 border-gray-200"
-				/>
-			</div>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div>
+					<label for="name" class="text-sm font-medium">Start</label>
+					<input
+						type="datetime-local"
+						id="start"
+						name="start"
+						class="w-full border rounded-lg form-input bg-background h-10 border-gray-200"
+					/>
+				</div>
 
-			<div>
-				<label for="end" class="text-sm font-medium">Slutt</label>
-				<input
-					type="datetime-local"
-					id="end"
-					name="end"
-					class="w-full border rounded-lg form-input bg-background h-10 border-gray-200"
-				/>
+				<div>
+					<label for="end" class="text-sm font-medium">Slutt</label>
+					<input
+						type="datetime-local"
+						id="end"
+						name="end"
+						class="w-full border rounded-lg form-input bg-background h-10 border-gray-200"
+					/>
+				</div>
 			</div>
 
 			<div>

@@ -22,6 +22,10 @@
 			? users.filter((event) => event.value.includes(inputValue.toLowerCase()))
 			: users
 	);
+
+	let value = $derived(
+		selected.length === 0 ? null : selected.map((user) => user.label).join(', ')
+	);
 </script>
 
 <Combobox.Root
@@ -34,6 +38,7 @@
 	<div class="relative">
 		<Combobox.Input
 			class="inline-flex h-10 w-full truncate rounded-lg border border-gray-200 bg-background px-4 text-sm transition-colors placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"
+			{value}
 			placeholder="Søk etter brukere"
 			aria-label="Søk etter brukere"
 		/>
@@ -61,7 +66,6 @@
 			<span class="block px-5 py-2 text-sm text-muted-foreground">Fant ingen brukere</span>
 		{/each}
 	</Combobox.Content>
-	<p class="text-xs mt-1 text-gray-500">{selected.map((user) => user.label).join(', ')}</p>
 
 	<Combobox.HiddenInput name="users" />
 </Combobox.Root>
