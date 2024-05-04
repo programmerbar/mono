@@ -20,7 +20,11 @@
 		{ label: 'Navn A-Å', value: 'name-asc' },
 		{ label: 'Navn Å-A', value: 'name-desc' },
 		{ label: 'Pris lav-høy', value: 'price-asc' },
-		{ label: 'Pris høy-lav', value: 'price-desc' }
+		{ label: 'Pris høy-lav', value: 'price-desc' },
+		{ label: 'Alkohol lav-høy', value: 'alcohol-asc' },
+		{ label: 'Alkohol høy-lav', value: 'alcohol-desc' },
+		{ label: 'Volum lav-høy', value: 'volume-asc' },
+		{ label: 'Volum høy-lav', value: 'volume-desc' }
 	] as const;
 
 	const { data } = $props();
@@ -74,6 +78,13 @@
 				return true;
 			})
 			.sort((a, b) => {
+				const aAlcohol = a.alcoholContent ?? 0;
+				const bAlcohol = b.alcoholContent ?? 0;
+				const aVolume = a.volume ?? 0;
+				const bVolume = b.volume ?? 0;
+				const aPrice = studentPrice ? a.priceList.student : a.priceList.ordinary;
+				const bPrice = studentPrice ? b.priceList.student : b.priceList.ordinary;
+
 				if (sort === 'name-asc') {
 					return a.name.localeCompare(b.name);
 				}
@@ -82,8 +93,21 @@
 					return b.name.localeCompare(a.name);
 				}
 
-				const aPrice = studentPrice ? a.priceList.student : a.priceList.ordinary;
-				const bPrice = studentPrice ? b.priceList.student : b.priceList.ordinary;
+				if (sort === 'alcohol-asc') {
+					return aAlcohol - bAlcohol;
+				}
+
+				if (sort === 'alcohol-desc') {
+					return bAlcohol - aAlcohol;
+				}
+
+				if (sort === 'volume-asc') {
+					return aVolume - bVolume;
+				}
+
+				if (sort === 'volume-desc') {
+					return bVolume - aVolume;
+				}
 
 				if (sort === 'price-asc') {
 					return aPrice - bPrice;
