@@ -15,6 +15,7 @@ export const getProducts = async () => {
     image,
     "producer": producer->name,
     volume,
+    alcoholContent,
     variants,
 }`;
 
@@ -35,6 +36,7 @@ export const getProductById = async (id: string) => {
     image,
     "producer": producer->name,
     volume,
+    alcoholContent,
     variants,
 }[0]`;
 
