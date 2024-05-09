@@ -84,6 +84,9 @@ importers:
       bits-ui:
         specifier: ^0.21.4
         version: 0.21.4(svelte@5.0.0-next.120)
+      class-variance-authority:
+        specifier: ^0.7.0
+        version: 0.7.0
       clsx:
         specifier: ^2.1.0
         version: 2.1.0
@@ -92,7 +95,7 @@ importers:
         version: 3.6.0
       drizzle-orm:
         specifier: ^0.30.9
-        version: 0.30.9(@cloudflare/workers-types@4.20240405.0)(@types/react@18.2.33)(react@18.2.0)
+        version: 0.30.9(@cloudflare/workers-types@4.20240405.0)(@types/react@18.2.58)(react@18.2.0)
       groq:
         specifier: ^3.37.2
         version: 3.37.2
@@ -189,7 +192,7 @@ importers:
         version: 5.0.0-next.120
       svelte-check:
         specifier: ^3.6.9
-        version: 3.6.9(@babel/core@7.24.5)(postcss-load-config@5.0.3(jiti@1.21.0)(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.120)
+        version: 3.6.9(@babel/core@7.24.5)(postcss-load-config@5.0.3(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.120)
       tailwindcss:
         specifier: ^3.4.3
         version: 3.4.3
@@ -4097,6 +4100,9 @@ packages:
     resolution: {integrity: sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==}
     engines: {node: '>=6.0'}
 
+  class-variance-authority@0.7.0:
+    resolution: {integrity: sha512-jFI8IQw4hczaL4ALINxqLEXQbWcNjoSkloa4IaufXCJr6QawJyw7tuRysRsrE8w2p/4gGaxKIt/hX3qz/IbD1A==}
+
   classnames@2.5.1:
     resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
 
@@ -4125,6 +4131,10 @@ packages:
 
   clsx@1.2.1:
     resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+    engines: {node: '>=6'}
+
+  clsx@2.0.0:
+    resolution: {integrity: sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==}
     engines: {node: '>=6'}
 
   clsx@2.1.0:
@@ -12229,6 +12239,10 @@ snapshots:
 
   chrome-trace-event@1.0.3: {}
 
+  class-variance-authority@0.7.0:
+    dependencies:
+      clsx: 2.0.0
+
   classnames@2.5.1: {}
 
   cli-color@2.0.4:
@@ -12256,6 +12270,8 @@ snapshots:
   clone@1.0.4: {}
 
   clsx@1.2.1: {}
+
+  clsx@2.0.0: {}
 
   clsx@2.1.0: {}
 
@@ -12692,10 +12708,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.30.9(@cloudflare/workers-types@4.20240405.0)(@types/react@18.2.33)(react@18.2.0):
+  drizzle-orm@0.30.9(@cloudflare/workers-types@4.20240405.0)(@types/react@18.2.58)(react@18.2.0):
     optionalDependencies:
       '@cloudflare/workers-types': 4.20240405.0
-      '@types/react': 18.2.33
+      '@types/react': 18.2.58
       react: 18.2.0
 
   duplexify@3.7.1:
@@ -14924,12 +14940,11 @@ snapshots:
     optionalDependencies:
       postcss: 8.4.38
 
-  postcss-load-config@5.0.3(jiti@1.21.0)(postcss@8.4.38):
+  postcss-load-config@5.0.3(postcss@8.4.38):
     dependencies:
       lilconfig: 3.1.1
       yaml: 2.4.2
     optionalDependencies:
-      jiti: 1.21.0
       postcss: 8.4.38
     optional: true
 
@@ -16212,7 +16227,7 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  svelte-check@3.6.9(@babel/core@7.24.5)(postcss-load-config@5.0.3(jiti@1.21.0)(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.120):
+  svelte-check@3.6.9(@babel/core@7.24.5)(postcss-load-config@5.0.3(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.120):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       chokidar: 3.6.0
@@ -16221,7 +16236,7 @@ snapshots:
       picocolors: 1.0.0
       sade: 1.8.1
       svelte: 5.0.0-next.120
-      svelte-preprocess: 5.1.3(@babel/core@7.24.5)(postcss-load-config@5.0.3(jiti@1.21.0)(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.120)(typescript@5.4.5)
+      svelte-preprocess: 5.1.3(@babel/core@7.24.5)(postcss-load-config@5.0.3(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.120)(typescript@5.4.5)
       typescript: 5.4.5
     transitivePeerDependencies:
       - '@babel/core'
@@ -16258,7 +16273,7 @@ snapshots:
     dependencies:
       svelte: 5.0.0-next.120
 
-  svelte-preprocess@5.1.3(@babel/core@7.24.5)(postcss-load-config@5.0.3(jiti@1.21.0)(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.120)(typescript@5.4.5):
+  svelte-preprocess@5.1.3(@babel/core@7.24.5)(postcss-load-config@5.0.3(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.120)(typescript@5.4.5):
     dependencies:
       '@types/pug': 2.0.10
       detect-indent: 6.1.0
@@ -16269,7 +16284,7 @@ snapshots:
     optionalDependencies:
       '@babel/core': 7.24.5
       postcss: 8.4.38
-      postcss-load-config: 5.0.3(jiti@1.21.0)(postcss@8.4.38)
+      postcss-load-config: 5.0.3(postcss@8.4.38)
       typescript: 5.4.5
 
   svelte-sonner@0.3.22(svelte@5.0.0-next.120):

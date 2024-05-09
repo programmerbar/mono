@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import Button from '$lib/components/ui/portal/Button.svelte';
 
 	let { data } = $props();
 </script>
@@ -22,20 +23,9 @@
 		</div>
 
 		<div class="mt-4">
-			<button
-				type="submit"
-				class="h-10 px-4 rounded-lg border-2 bg-gray-200 hover:border-gray-300 transition-colors text-gray-700 font-medium"
-			>
-				Lagre
-			</button>
+			<Button intent="primary" type="submit">Lagre</Button>
 
-			<button
-				type="submit"
-				formaction="?/clear"
-				class="h-10 px-4 rounded-lg border-2 bg-red-200 hover:bg-red-300 transition-colors border-red-300 text-red-500 hover:text-red-700 font-medium"
-			>
-				Slett
-			</button>
+			<Button type="submit" formaction="?/clear" intent="danger">Slett</Button>
 		</div>
 	</form>
 
@@ -44,25 +34,8 @@
 	<h2 class="text-xl font-medium mb-4">Bar-status</h2>
 
 	<form action="?/open" method="post" use:enhance>
-		<button
-			type="submit"
-			class="h-10 px-4 rounded-lg border-2 bg-gray-200 hover:border-gray-300 transition-colors text-gray-700 font-medium"
-		>
-			Åpne
-		</button>
-		<button
-			type="submit"
-			formaction="?/private"
-			class="h-10 px-4 rounded-lg border-2 bg-yellow-200 hover:bg-yellow-300 transition-colors border-yellow-300 text-yellow-500 hover:text-yellow-700 font-medium"
-		>
-			Privat arrangement
-		</button>
-		<button
-			type="submit"
-			formaction="?/close"
-			class="h-10 px-4 rounded-lg border-2 bg-red-200 hover:bg-red-300 transition-colors border-red-300 text-red-500 hover:text-red-700 font-medium"
-		>
-			Lukk
-		</button>
+		<Button type="submit" intent="primary">Åpne</Button>
+		<Button type="submit" formaction="?/private" intent="warning">Privat arrangement</Button>
+		<Button type="submit" formaction="?/close" intent="danger">Lukk</Button>
 	</form>
 </main>

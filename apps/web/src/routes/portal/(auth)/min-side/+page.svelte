@@ -6,6 +6,7 @@
 	import { getProfilePicture } from '$lib/data/api';
 	import type { ChangeEventHandler } from 'svelte/elements';
 	import { Upload } from 'lucide-svelte';
+	import Button from '$lib/components/ui/portal/Button.svelte';
 
 	let { data } = $props();
 
@@ -113,12 +114,7 @@
 				/>
 			</div>
 
-			<button
-				type="submit"
-				class="mt-4 h-10 px-4 rounded-lg border hover:bg-gray-200 hover:border-gray-300 transition-colors text-gray-700 font-medium"
-			>
-				Lagre
-			</button>
+			<Button type="submit" class="mt-4">Lagre</Button>
 		</form>
 	</div>
 </main>

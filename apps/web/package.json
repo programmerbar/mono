@@ -55,6 +55,7 @@
 		"@sanity/image-url": "^1.0.2",
 		"arctic": "^1.5.0",
 		"bits-ui": "^0.21.4",
+		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.0",
 		"date-fns": "^3.6.0",
 		"drizzle-orm": "^0.30.9",

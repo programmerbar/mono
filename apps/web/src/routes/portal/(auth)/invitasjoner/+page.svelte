@@ -4,6 +4,7 @@
 	import { invalidate } from '$app/navigation';
 	import { formatDate } from '$lib/utils/date';
 	import { toast } from 'svelte-sonner';
+	import Button from '$lib/components/ui/portal/Button.svelte';
 
 	let { data } = $props();
 
@@ -48,11 +49,7 @@
 			/>
 		</div>
 
-		<button
-			type="submit"
-			class="mt-4 h-10 px-4 rounded-lg border hover:bg-gray-200 hover:border-gray-300 transition-colors text-gray-700 font-medium"
-			>Send invitasjon</button
-		>
+		<Button class="mt-4" type="submit">Send invitasjon</Button>
 	</form>
 
 	<h3 class="text-lg font-medium mt-4">Ventende invitasjoner</h3>
@@ -83,11 +80,7 @@
 						}}
 					>
 						<input type="hidden" name="id" value={invitation.id} />
-						<button
-							type="submit"
-							class="h-8 px-4 rounded-lg border bg-red-500 hover:bg-red-600 transition-colors text-white font-medium text-sm"
-							>Fjern</button
-						>
+						<Button intent="danger" type="submit">Fjern</Button>
 					</form>
 				</div>
 			</li>
