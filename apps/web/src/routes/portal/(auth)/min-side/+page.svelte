@@ -11,23 +11,12 @@
 	let { data } = $props();
 
 	let pictureInput = $state<HTMLInputElement | null>(null);
-	let picture = $state<string | null>(null);
-	let loading = $state(false);
-
-	$effect(() => {
-		const fetchProfilePicture = async () => {
-			loading = true;
-			picture = await getProfilePicture(data.user.id);
-			loading = false;
-		};
-
-		fetchProfilePicture();
-	});
+	let pictureURL = $state<string | null>(`/profile-pic/${data.user.id}`);
 
 	const handlePictureChange: ChangeEventHandler<HTMLInputElement> = (event) => {
 		const file = event.currentTarget.files?.[0];
 		if (file) {
-			picture = URL.createObjectURL(file);
+			pictureURL = URL.createObjectURL(file);
 		}
 	};
 </script>
@@ -69,15 +58,15 @@
 				<button
 					type="button"
 					onclick={() => {
-						picture = null;
+						pictureURL = null;
 						pictureInput?.click();
 					}}
 				>
 					<div
 						class="group w-24 h-24 border-2 border-gray-400 bg-gray-200 rounded-full relative overflow-hidden flex flex-col items-center justify-center"
 					>
-						{#if picture}
-							<img src={picture} alt="Profilbilde" class="w-full h-full absolute" />
+						{#if pictureURL}
+							<img src={pictureURL} alt="Profilbilde" class="w-full h-full absolute" />
 							<div
 								class="hidden group-hover:flex transition-all absolute inset-0 bg-black bg-opacity-30 items-center justify-center"
 							>

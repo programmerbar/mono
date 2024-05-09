@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { mailTo } from '$lib/utils/prefixes';
-	import { User2 } from 'lucide-svelte';
 
 	type Props = {
 		id: string;
@@ -18,16 +17,7 @@
 	<div
 		class="h-20 w-20 rounded-full bg-gray-200 mx-auto border-2 border-gray-400 flex flex-col items-center justify-center"
 	>
-		{#if imageError}
-			<User2 class="h-10 w-10 text-gray-500" />
-		{:else}
-			<img
-				class="h-20 w-20 rounded-full"
-				onerror={() => (imageError = true)}
-				src="/profile-pic/{id}"
-				alt="Profilbilde"
-			/>
-		{/if}
+		<img class="h-20 w-20 rounded-full" src="/profile-pic/{id}" alt="Profilbilde" />
 	</div>
 
 	<h2 class="text-xl font-medium text-center text-balance">
