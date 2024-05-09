@@ -1,5 +1,16 @@
 <script lang="ts">
-	import { Home, Users, User, DoorOpen, Martini, Mail, Calendar, Menu, X } from 'lucide-svelte';
+	import {
+		Home,
+		Users,
+		User,
+		DoorOpen,
+		Martini,
+		Mail,
+		Calendar,
+		Menu,
+		X,
+		Settings
+	} from 'lucide-svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { browser } from '$app/environment';
 	import { cn } from '$lib/cn';
@@ -63,6 +74,13 @@
 					<li>
 						<SidebarItem href="/portal/invitasjoner"
 							><Mail class="h-5 w-5" /> Invitasjoner</SidebarItem
+						>
+					</li>
+				{/if}
+				{#if data.user.type === 'admin'}
+					<li>
+						<SidebarItem href="/portal/instillinger"
+							><Settings class="h-5 w-5" /> Innstillinger</SidebarItem
 						>
 					</li>
 				{/if}

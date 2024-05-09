@@ -2,10 +2,18 @@
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 
-	let { children } = $props();
+	let { children, data } = $props();
 </script>
 
 <div class="flex flex-col min-h-screen bg-[url('/circuit-board.svg')]">
+	{#if data.banner}
+		<div class="bg-primary text-white font-medium text-sm top-0 sticky text-center py-2">
+			<p>
+				{data.banner}
+			</p>
+		</div>
+	{/if}
+
 	<Header />
 
 	<div class="flex-1 max-w-7xl mx-auto w-full px-4">

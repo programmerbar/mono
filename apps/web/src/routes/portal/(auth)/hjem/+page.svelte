@@ -6,8 +6,6 @@
 	let { data } = $props();
 	let { user, shifts } = data;
 
-	$inspect(shifts);
-
 	let upcomingShifts = shifts.filter(({ shift }) => new Date(shift.end) > new Date());
 	let pastShifts = shifts.filter(({ shift }) => new Date(shift.end) < new Date());
 </script>

@@ -5,6 +5,13 @@ export const getStatus = async () => {
 	};
 };
 
+export const mutateStatus = async (status: 0 | 1 | 2) => {
+	return await fetch('https://api.programmer.bar', {
+		method: 'POST',
+		body: JSON.stringify({ status })
+	});
+};
+
 export const getProfilePicture = async (id: string) => {
 	const response = await fetch(`/profile-pic/${id}`);
 

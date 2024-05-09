@@ -14,3 +14,7 @@ migrations_dir = "./migrations"
 [[r2_buckets]]
 binding = "R2"
 bucket_name = "profile-pics"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "6ea7665f68a7445baedeab6d9008263a"

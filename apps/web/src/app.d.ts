@@ -4,6 +4,7 @@ interface Env {
 	RESEND_API_KEY: string;
 	DB: D1Database;
 	R2: R2Bucket;
+	KV: KVNamespace;
 	FEIDE_CLIENT_ID: string;
 	FEIDE_CLIENT_SECRET: string;
 }
