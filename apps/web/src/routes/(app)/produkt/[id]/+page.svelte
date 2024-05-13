@@ -22,9 +22,7 @@
 </svelte:head>
 
 <div class="flex flex-col md:flex-row md:space-x-6">
-	<div
-		class="md:w-2/3 p-6 bg-background h-fit rounded-xl border-2 border-black shadow-xl space-y-6"
-	>
+	<div class="md:w-2/3 p-6 bg-background h-fit rounded-xl border-2 shadow-xl space-y-6">
 		<h1 class="text-3xl font-semibold text-gray-900">{name}</h1>
 
 		{#each (description ?? '').split('\n') as paragraph}
@@ -70,9 +68,7 @@
 	</div>
 
 	{#if image}
-		<div
-			class="md:w-1/3 mt-6 md:mt-0 bg-background h-fit rounded-xl border-2 border-black shadow-xl"
-		>
+		<div class="md:w-1/3 mt-6 md:mt-0 bg-background h-fit rounded-xl border-2 shadow-xl">
 			<img
 				class="w-full h-64 md:h-auto object-contain bg-white rounded-xl"
 				src={urlFor(image).height(800).width(800).url()}

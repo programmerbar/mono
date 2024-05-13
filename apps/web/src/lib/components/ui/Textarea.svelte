@@ -4,7 +4,8 @@
 
 	type Props = HTMLTextareaAttributes;
 
-	let { class: className, ...props } = $props<Props>();
+	let { class: className, ...props }: Props = $props();
 </script>
 
-<textarea {...props} class={cn('rounded-md p-2 border-2 border-black shadow', className)} />
+<textarea {...props} class={cn('rounded-md p-2 border-border border-2 shadow', className)}>
+</textarea>

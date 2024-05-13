@@ -48,14 +48,14 @@
 
 	<div class="flex justify-center">
 		<a
-			class="px-4 py-2 rounded-xl shadow-xl border-2 border-black bg-secondary font-medium"
+			class="px-6 py-2 text-lg rounded border-2 shadow-lg bg-secondary hover:bg-secondary-dark font-medium"
 			href="/booking">Book nå!</a
 		>
 	</div>
 </div>
 
 <div class="py-10 grid grid-cols-1 md:grid-cols-2 gap-4">
-	<div class="bg-background border-black rounded-xl shadow-xl border-2 p-2">
+	<div class="bg-background rounded-xl shadow-xl border-2 p-2">
 		<h2 class="text-center font-medium font-mono text-3xl md:text-4xl py-6">
 			<a href="/meny" class="hover:underline">Meny</a>
 		</h2>
@@ -81,7 +81,7 @@
 		<p class="text-center text-sm font-medium my-2">Side {page + 1} / {TOTAL_PAGES}</p>
 	</div>
 
-	<div class="bg-background border-black rounded-xl shadow-xl border-2 p-2">
+	<div class="bg-background rounded-xl shadow-xl border-2 p-2">
 		<h2 class="text-center font-medium font-mono text-3xl md:text-4xl py-6">Arrangementer</h2>
 		<ul class="divide-y-2 overflow-hidden">
 			{#each data.events as { title, start, slug }}

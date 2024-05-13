@@ -100,7 +100,7 @@
 			</div>
 		</div>
 
-		<div class="p-8 flex-1">
+		<div class="p-8 flex-1 max-h-screen overflow-y-scroll">
 			{@render children()}
 		</div>
 	</div>

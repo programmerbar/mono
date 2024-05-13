@@ -4,7 +4,7 @@
 
 	type Props = HTMLInputAttributes;
 
-	let { class: className, ...props } = $props<Props>();
+	let { class: className, ...props }: Props = $props();
 </script>
 
-<input {...props} class={cn('h-10 rounded-md px-2 border-2 border-black shadow-xl', className)} />
+<input {...props} class={cn('h-10 rounded-md px-2 border-2 border-border shadow-xl', className)} />

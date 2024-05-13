@@ -1,6 +1,9 @@
+import { type Config } from 'tailwindcss';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
-/** @type {import('tailwindcss').Config} */
+import typography from '@tailwindcss/typography';
+import forms from '@tailwindcss/forms';
+
 export default {
 	content: ['./src/**/*.{html,svelte,js,ts}'],
 	theme: {
@@ -12,10 +15,14 @@ export default {
 					light: 'var(--primary-light)'
 				},
 				secondary: {
-					DEFAULT: 'var(--secondary)'
+					DEFAULT: 'var(--secondary)',
+					dark: 'var(--secondary-dark)',
+					light: 'var(--secondary-light)'
 				},
 				foreground: 'var(--foreground)',
-				background: 'var(--background)'
+				background: 'var(--background)',
+				muted: 'var(--muted)',
+				border: 'var(--border)'
 			},
 			fontFamily: {
 				sans: ['Ubuntu', ...fontFamily.sans],
@@ -23,5 +30,5 @@ export default {
 			}
 		}
 	},
-	plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')]
-};
+	plugins: [typography, forms]
+} satisfies Config;

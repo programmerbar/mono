@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { cn } from '$lib/cn';
 	import Label from '$lib/components/ui/Label.svelte';
-	import { urlFor } from '$lib/data/sanity/image.js';
+	import { urlFor } from '$lib/data/sanity/image';
 	import type { ProductType } from '$lib/types';
 	import { Martini } from 'lucide-svelte';
+	import { getContext } from 'svelte';
 
 	type SortOption = (typeof SORT_OPTIONS)[number]['value'];
 
@@ -28,6 +30,8 @@
 	] as const;
 
 	const { data } = $props();
+
+	const banner = getContext<string | null>('banner');
 
 	let hideSoldOut = $state(
 		Boolean($page.url.searchParams.get(QUERY_PARAM_KEYS.hideSoldOut)) || true
@@ -150,7 +154,10 @@
 
 <div class="flex md:flex-row flex-col py-10 gap-8">
 	<div
-		class="w-full md:sticky md:top-4 md:w-1/4 border-2 border-black divide-y p-4 rounded-xl h-fit flex flex-col shadow-xl bg-background"
+		class={cn(
+			'w-full md:sticky md:w-1/4 border-2 divide-y p-4 rounded-xl h-fit flex flex-col shadow-xl bg-background',
+			banner ? 'md:top-16' : 'md:top-4'
+		)}
 	>
 		<div class="flex flex-col gap-2 py-2">
 			<Label for="search">Søk</Label>
@@ -211,9 +218,7 @@
 		{/if}
 		<ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 			{#each filteredProducts as { _id, name, image, priceList, producer, variants, isSoldOut, productTypes }}
-				<li
-					class="border-2 border-black rounded-xl overflow-hidden bg-background shadow-xl relative"
-				>
+				<li class="border-2 rounded-xl overflow-hidden bg-background shadow-xl relative">
 					{#if isSoldOut}
 						<div
 							class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-30 flex items-center justify-center"
@@ -222,7 +227,7 @@
 						</div>
 					{/if}
 
-					<div class="border-b-2 border-b-black">
+					<div class="border-b-2 border-border">
 						{#if image}
 							<img
 								src={urlFor(image).height(600).width(600).url()}

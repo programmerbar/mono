@@ -16,7 +16,7 @@
 		<form action="?/acceptInvitation" method="post" use:enhance>
 			<input type="hidden" name="code" bind:value={data.invitation.id} />
 			<button
-				class="hover:underline mx-auto h-10 font-medium bg-primary rounded-lg px-4 shadow-lg w-full flex items-center justify-center text-white border-2 border-black"
+				class="hover:underline mx-auto h-10 font-medium bg-primary rounded-lg px-4 shadow-lg w-full flex items-center justify-center text-white border-2"
 			>
 				Lag bruker med Feide
 			</button>

@@ -3,7 +3,6 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
-	import { getProfilePicture } from '$lib/data/api';
 	import type { ChangeEventHandler } from 'svelte/elements';
 	import { Upload } from 'lucide-svelte';
 	import Button from '$lib/components/ui/portal/Button.svelte';
@@ -11,7 +10,7 @@
 	let { data } = $props();
 
 	let pictureInput = $state<HTMLInputElement | null>(null);
-	let pictureURL = $state<string | null>(`/profile-pic/${data.user.id}`);
+	let pictureURL = $state<string | null>(`/avatar/${data.user.id}`);
 
 	const handlePictureChange: ChangeEventHandler<HTMLInputElement> = (event) => {
 		const file = event.currentTarget.files?.[0];

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { mailTo } from '$lib/utils/prefixes';
+	import Avatar from './Avatar.svelte';
 
 	type Props = {
 		id: string;
@@ -9,16 +10,10 @@
 	};
 
 	let { id, name, email, isUser }: Props = $props();
-
-	let imageError = $state(false);
 </script>
 
 <div class="p-4 rounded-lg border overflow-hidden h-full space-y-2">
-	<div
-		class="h-20 w-20 rounded-full bg-gray-200 mx-auto border-2 border-gray-400 flex flex-col items-center justify-center"
-	>
-		<img class="h-20 w-20 rounded-full" src="/profile-pic/{id}" alt="Profilbilde" />
-	</div>
+	<Avatar class="mx-auto mb-4" src="/avatar/{id}" alt={name} initials={name.slice(0, 2)} />
 
 	<h2 class="text-xl font-medium text-center text-balance">
 		{name}

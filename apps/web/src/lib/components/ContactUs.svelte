@@ -98,7 +98,7 @@
 			</form>
 		</div>
 
-		<div class="w-full border-2 border-black rounded-xl overflow-hidden shadow-xl h-fit">
+		<div class="w-full border-2 rounded-xl overflow-hidden shadow-xl h-fit">
 			<iframe
 				title="Programmerbar"
 				width="100%"

@@ -11,14 +11,3 @@ export const mutateStatus = async (status: 0 | 1 | 2) => {
 		body: JSON.stringify({ status })
 	});
 };
-
-export const getProfilePicture = async (id: string) => {
-	const response = await fetch(`/profile-pic/${id}`);
-
-	if (response.ok) {
-		const blob = await response.blob();
-		return URL.createObjectURL(blob);
-	}
-
-	return null;
-};

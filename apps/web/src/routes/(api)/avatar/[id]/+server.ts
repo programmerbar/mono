@@ -1,19 +1,11 @@
-import Avatar from '$lib/assets/avatar.png?url';
-
-export const GET = async ({ platform, params, fetch }) => {
+export const GET = async ({ platform, params }) => {
 	const id = params.id;
 
 	const avatarPath = `avatars/${id}`;
 	const avatar = await platform?.env.R2.get(avatarPath);
 
 	if (!avatar) {
-		const arrayBuffer = await fetch(Avatar).then((res) => res.arrayBuffer());
-		return new Response(arrayBuffer, {
-			status: 200,
-			headers: {
-				'Content-Type': 'image/png'
-			}
-		});
+		return new Response(null, { status: 404 });
 	}
 
 	const headers = new Headers(Object.entries(avatar?.httpMetadata ?? {}));
