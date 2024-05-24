@@ -36,9 +36,10 @@
 	</div>
 
 	<ul class="grid gird-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-		{#each filteredUsers as user}
+		{#each data.users as user}
 			{@const isUser = user.id === data.user.id}
-			<li>
+			{@const hidden = !filteredUsers.includes(user)}
+			<li class={hidden ? 'hidden' : 'block'}>
 				<ProfilePreview id={user.id} name={user.name} email={user.email} {isUser} />
 			</li>
 		{:else}

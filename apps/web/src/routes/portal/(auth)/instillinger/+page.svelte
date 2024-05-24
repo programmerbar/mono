@@ -31,7 +31,9 @@
 
 	<hr class="my-8" />
 
-	<h2 class="text-xl font-medium mb-4">Bar-status</h2>
+	<h2 class="text-xl font-medium mb-4">
+		Bar-status: <span class="font-normal">{data.status.message}</span>
+	</h2>
 
 	<form action="?/open" method="post" use:enhance>
 		<Button type="submit" intent="primary">Åpne</Button>

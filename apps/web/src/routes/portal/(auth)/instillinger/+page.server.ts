@@ -1,7 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { mutateStatus } from '$lib/data/api';
-import { privateDecrypt } from 'crypto';
+import { getStatus, mutateStatus } from '$lib/data/api';
 
 export const load: PageServerLoad = async ({ platform, parent }) => {
 	const { user } = await parent();
@@ -11,10 +10,12 @@ export const load: PageServerLoad = async ({ platform, parent }) => {
 	}
 
 	const banner = (await platform?.env.KV.get('banner')) || '';
+	const status = await getStatus();
 
 	return {
 		user,
-		banner
+		banner,
+		status
 	};
 };
 
