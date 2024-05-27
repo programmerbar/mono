@@ -66,7 +66,7 @@
 		</div>
 
 		<div class="flex flex-row items-center gap-2 mx-auto pt-5">
-			{#each Array.from({ length: TOTAL_PAGES }) as _, i}
+			{#each Array.from({ length: TOTAL_PAGES }) as _p, i}
 				<button onclick={() => (page = i)}>
 					<div
 						class="w-6 h-6 rounded-full bg-background border-[var(--theme-color)] border-2"

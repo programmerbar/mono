@@ -5,7 +5,6 @@
 	import EventSelect from './EventSelect.svelte';
 	import UsersSelect from './UsersSelect.svelte';
 	import { invalidateAll } from '$app/navigation';
-	import TimePicker from '$lib/components/TimePicker.svelte';
 
 	let { data } = $props();
 	let { users, events } = data;

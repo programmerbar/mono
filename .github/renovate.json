@@ -1,0 +1,17 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": ["config:base", ":semanticCommitScopeDisabled", ":semanticCommitsDisabled"],
+    "labels": ["dependencies :handshake:"],
+    "platform": "github",
+    "branchPrefix": "renovate/",
+    "commitMessageAction": "Update",
+    "rangeStrategy": "auto",
+    "packageRules": [
+      {
+        "matchPackagePatterns": ["^@programmerbar/"],
+        "enabled": false
+      }
+    ],
+    "prConcurrentLimit": 4,
+    "stabilityDays": 10
+}

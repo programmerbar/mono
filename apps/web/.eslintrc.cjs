@@ -19,12 +19,22 @@ module.exports = {
 		es2017: true,
 		node: true
 	},
+	rules: {
+		'no-underscore-dangle': 'off',
+		'@typescript-eslint/no-unused-vars': [
+			'warn',
+			{ argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+		]
+	},
 	overrides: [
 		{
 			files: ['*.svelte'],
 			parser: 'svelte-eslint-parser',
 			parserOptions: {
 				parser: '@typescript-eslint/parser'
+			},
+			rules: {
+				'svelte/valid-compile': 'off'
 			}
 		}
 	]

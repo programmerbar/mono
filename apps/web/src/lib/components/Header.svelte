@@ -55,8 +55,8 @@
 	<header class="flex items-center w-full justify-between px-4 py-8 mx-auto max-w-7xl">
 		<div>
 			<a href="/">
-				<enhanced:img class="h-24 w-24" src={logo} alt="Programmerbar logo" />
-			</a>
+				<enhanced:img class="h-24 w-24" src={logo} alt="Programmerbar logo"> </enhanced:img></a
+			>
 		</div>
 
 		<div>

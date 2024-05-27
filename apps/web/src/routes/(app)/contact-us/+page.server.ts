@@ -2,7 +2,6 @@ import { error } from '@sveltejs/kit';
 import type { Actions } from './$types';
 // @ts-expect-error React component
 import ContactUs from '@programmerbar/email/contact-us';
-import { dev } from '$app/environment';
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {

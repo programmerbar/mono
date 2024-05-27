@@ -19,7 +19,7 @@
 			'bg-green-500 shadow-green-500': status === 1,
 			'bg-yellow-500 shadow-yellow-500': status === 2
 		})}
-	/>
+	></div>
 
 	{@render children()}
 </div>

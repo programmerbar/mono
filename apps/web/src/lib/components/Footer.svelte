@@ -37,7 +37,7 @@
 			<p class="text-xl font-medium mx-auto">Hovedsamarbeidspartner</p>
 			<div>
 				<a href="https://lervig.no">
-					<enhanced:img src={lervigLogo} alt="Lervig" class="h-24 w-auto mx-auto" />
+					<enhanced:img src={lervigLogo} alt="Lervig" class="h-24 w-auto mx-auto"></enhanced:img>
 				</a>
 			</div>
 		</div>

@@ -1,9 +1,4 @@
-import type { Actions, PageServerLoad } from './$types';
-import { getEvents } from '$lib/data/sanity/events';
-import { z } from 'zod';
-import { isBefore } from 'date-fns';
-import { shiftTable, usersToShiftsTable } from '$lib/server/db/schema';
-import { createShiftId } from '$lib/id';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ parent, locals, depends }) => {
 	depends('shifts');

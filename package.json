@@ -4,7 +4,7 @@
     "build": "turbo run build"
   },
   "dependencies": {
-    "turbo": "^1.13.3"
+    "turbo": "1.13.3"
   },
   "packageManager": "pnpm@9.0.4"
 }

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { cn } from '$lib/cn';
 	import ContactUs from '$lib/components/ContactUs.svelte';
 	import StatusLabel from '$lib/components/StatusLabel.svelte';
 	import { createTypewriteCycle } from '$lib/stores/typewrite-cycle.svelte';
