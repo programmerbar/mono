@@ -11,11 +11,11 @@
 	type SortOption = (typeof SORT_OPTIONS)[number]['value'];
 
 	const QUERY_PARAM_KEYS = {
-		hideSoldOut: 'hideSoldOut',
+		hideSoldOut: 'sold-out',
 		sort: 'sort',
 		search: 'search',
-		selectedProductType: 'selectedProductType',
-		studentPrice: 'studentPrice'
+		selectedProductType: 'type',
+		studentPrice: 'student'
 	} as const;
 
 	const SORT_OPTIONS = [
@@ -144,7 +144,9 @@
 		if (!studentPrice) params.set(QUERY_PARAM_KEYS.studentPrice, encodeURIComponent(studentPrice));
 		if (studentPrice) params.delete(QUERY_PARAM_KEYS.studentPrice);
 
-		goto(`?${params.toString()}`, { keepFocus: true, noScroll: true });
+		console.log('Redirecting to: ', `${$page.url.pathname}?${params.toString()}`);
+
+		goto(`${$page.url.pathname}?${params.toString()}`, { keepFocus: true, noScroll: true });
 	});
 </script>
 
