@@ -1,13 +1,9 @@
 {
-    "$schema": "https://turbo.build/schema.json",
-    "pipeline": {
-        "build": {
-            "outputs": [
-                ".svelte-kit/**",
-                "dist/**"
-
-            ]
-        },
-        "dev": {}
-    }
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "outputs": [".svelte-kit/**", "dist/**"]
+    },
+    "dev": {}
+  }
 }
