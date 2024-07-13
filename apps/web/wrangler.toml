@@ -5,12 +5,6 @@ compatibility_flags = [ "nodejs_compat" ]
 
 pages_build_output_dir = "./build"
 
-[[d1_databases]]
-binding = "DB"
-database_name = "progbar-db"
-database_id = "86e72c19-bc76-4da4-ab95-25f9a0759cb2"
-migrations_dir = "./migrations"
-
 [[r2_buckets]]
 binding = "R2"
 bucket_name = "profile-pics"
