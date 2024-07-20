@@ -1,13 +1,9 @@
 name = "programmerbar-web"
-compatibility_date = "2023-12-01"
+compatibility_date = "2024-04-14"
 
 compatibility_flags = [ "nodejs_compat" ]
 
 pages_build_output_dir = "./build"
-
-[[r2_buckets]]
-binding = "R2"
-bucket_name = "profile-pics"
 
 [[kv_namespaces]]
 binding = "KV"
