@@ -3,6 +3,8 @@ import type { Actions } from './$types';
 // @ts-expect-error React component
 import ContactUs from '@programmerbar/email/contact-us';
 
+const PROGRAMMERBAR_EMAIL = "styret@programmerbar.no";
+
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
 		const formData = await request.formData();
@@ -26,7 +28,7 @@ export const actions: Actions = {
 			await locals.resend.emails.send({
 				from: 'ikkesvar@echo-webkom.no',
 				subject: 'Kontaktskjema på hjemmesiden',
-				to: ['hei@programmerbar.no'],
+				to: [PROGRAMMERBAR_EMAIL],
 				react: ContactUs({
 					name,
 					email,
