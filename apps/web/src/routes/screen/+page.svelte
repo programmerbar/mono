@@ -4,7 +4,9 @@
 
 	let { data } = $props();
 
-	const products = data.products.filter((product) => !product.isSoldOut);
+	const products = data.products
+		.filter((product) => !product.isSoldOut)
+		.filter((product) => !data.ignore.includes(product._id));
 	const MAX = data.count;
 	const TOTAL_PAGES = Math.ceil(products.length / MAX);
 
