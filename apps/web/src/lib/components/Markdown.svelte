@@ -12,11 +12,10 @@
 	const { source, class: className }: Props = $props();
 
 	const renderers = {
-		heading: Heading,
 		paragraph: Text
 	} satisfies Partial<Renderers>;
 </script>
 
-<article class={cn('max-w-screen-md w-full', className)}>
+<article class={cn('max-w-screen-md prose w-full', className)}>
 	<SvelteMarkdown {source} {renderers} />
 </article>
