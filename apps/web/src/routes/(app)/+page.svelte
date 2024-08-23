@@ -51,6 +51,17 @@
 			href="/booking">Book nå!</a
 		>
 	</div>
+
+	<div
+		class="rounded-xl bg-background max-w-[400px] mx-auto w-fit p-3 text-center text-sm text-gray-700 shadow-xl border-2"
+	>
+		<span
+			>👋🏻 Hei! Hvordan kan vi gjøre nettsiden bedre? Gjerne send en e-post til <a
+				class="underline text-blue-400 hover:no-underline"
+				href="mailto:omfj@echo.uib.no">omfj@echo.uib.no</a
+			> med forslag!</span
+		>
+	</div>
 </div>
 
 <div class="py-10 grid grid-cols-1 md:grid-cols-2 gap-4">
