@@ -15,7 +15,7 @@
 	<h1 class="text-4xl font-medium font-mono">Om oss</h1>
 
 	<div
-		class="h-72 w-96 flex gap-4 justify-center items-center border-2 rounded-xl bg-gray-100 float-right ml-4"
+		class="h-72 w-96 flex gap-4 justify-center items-center border-2 rounded-xl bg-gray-100 sm:float-right mx-auto sm:ml-4"
 	>
 		<Smile class="w-16 h-16 text-primary" />
 		<Beer class="w-16 h-16 text-primary" />
