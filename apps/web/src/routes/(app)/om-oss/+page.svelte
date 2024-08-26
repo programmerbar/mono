@@ -1,5 +1,10 @@
-<script>
+<script lang="ts">
+	import { echoUrlFor } from '$lib/data/sanity/image';
+	import { initials } from '$lib/initials';
 	import { Smile, Beer, Wine, Wifi } from 'lucide-svelte';
+
+	let { data } = $props();
+	let { programmerbar } = data;
 </script>
 
 <svelte:head>
@@ -45,4 +50,32 @@
 			leder@programmerbar.no
 		</a>.
 	</p>
+
+	<h2 class="text-2xl font-medium text-gray-900">Medlemmer</h2>
+
+	<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+		{#each programmerbar.members as { profile, role }}
+			<div class="bg-background rounded-xl shadow-xl border-2 p-4">
+				<div class="flex flex-col gap-2">
+					{#if profile.picture}
+						<img
+							src={echoUrlFor(profile.picture).height(800).width(800).url()}
+							alt={profile.name}
+							class="w-16 h-16 rounded-full border-2 border-border bg-gray-200 mx-auto"
+						/>
+					{:else}
+						<div
+							class="w-16 h-16 rounded-full border-2 border-border bg-gray-200 flex items-center justify-center font-mono text-xl mx-auto"
+						>
+							{initials(profile.name)}
+						</div>
+					{/if}
+					<div class="text-center">
+						<p class="text-xl font-medium">{profile.name}</p>
+						<p class="text-sm font-medium font-mono text-gray-700">{role}</p>
+					</div>
+				</div>
+			</div>
+		{/each}
+	</div>
 </div>
