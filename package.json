@@ -1,7 +1,8 @@
 {
-  "name": "site",
+  "name": "@programmerbar/www",
   "type": "module",
   "version": "0.0.1",
+  "packageManager": "pnpm@9.6.4",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
