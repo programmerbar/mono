@@ -17,7 +17,7 @@ jobs:
         run: pnpm run format:check
 
       - name: Build
-        run: pnpm run bulid
+        run: pnpm run build
 
       - uses: cloudflare/wrangler-action@v3
         with:
