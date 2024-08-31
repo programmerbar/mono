@@ -6,6 +6,6 @@ import { getProducts } from "../lib/data/sanity/products";
 const products = await getProducts();
 ---
 
-<BaseLayout>
+<BaseLayout title="Meny">
   <ProductList client:load data={products} />
 </BaseLayout>
