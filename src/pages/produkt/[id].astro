@@ -1,0 +1,92 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { urlFor } from "../../lib/data/sanity/image";
+import { getProductById } from "../../lib/data/sanity/products";
+
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect("/404");
+}
+
+const product = await getProductById(id);
+
+if (!product) {
+  return Astro.redirect("/404");
+}
+---
+
+<BaseLayout>
+  <div class="flex flex-col md:flex-row md:space-x-6">
+    <div class="h-fit space-y-6 rounded-xl border-2 bg-background p-6 shadow-xl md:w-2/3">
+      <h1 class="text-3xl font-semibold text-gray-900">{product.name}</h1>
+
+      {
+        (product?.description ?? "").split("\n").map((paragraph) => {
+          return <p class="text-lg text-gray-600">{paragraph}</p>;
+        })
+      }
+
+      <div>
+        <h2 class="mb-2 text-xl font-semibold">Detaljer</h2>
+        <ul>
+          {
+            product?.producer && (
+              <li>
+                <p class="text-lg">Produsent: {product.producer}</p>
+              </li>
+            )
+          }
+          <li>
+            <p class="text-lg">Ordinær pris: {product.priceList.ordinary} kr</p>
+          </li>
+          <li>
+            <p class="text-lg">Studentpris: {product.priceList.student} kr</p>
+          </li>
+          {
+            product.volume && (
+              <li>
+                <p class="text-lg">Volum: {product.volume} L</p>
+              </li>
+            )
+          }
+          {
+            product.productTypes && product.productTypes.length > 0 && (
+              <li>
+                <p class="text-lg">
+                  Type: {product.productTypes.map((type) => type.title).join(", ")}
+                </p>
+              </li>
+            )
+          }
+          {
+            product.variants && product.variants.length > 0 && (
+              <li>
+                <p class="text-lg">Varianter: {product.variants.join(", ")}</p>
+              </li>
+            )
+          }
+          {
+            product.alcoholContent !== null && (
+              <li>
+                <p class="text-lg">Alkoholinnhold: {product.alcoholContent}%</p>
+              </li>
+            )
+          }
+        </ul>
+      </div>
+    </div>
+
+    {
+      product.image && (
+        <div class="mt-6 h-fit rounded-xl border-2 bg-background shadow-xl md:mt-0 md:w-1/3">
+          <img
+            class="h-64 w-full rounded-xl bg-white object-contain md:h-auto"
+            src={urlFor(product.image).height(800).width(800).url()}
+            alt={product.name}
+          />
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>

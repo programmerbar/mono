@@ -1,0 +1,31 @@
+---
+import ProductsCycle from "../components/ProductsCycle.astro";
+import StatusLabel from "../components/StatusLabel.astro";
+import UpcomingEvents from "../components/UpcomingEvents.astro";
+import ContactUs from "../components/ContactUs.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout>
+  <div class="space-y-8 pb-24 pt-16">
+    <StatusLabel />
+
+    <h1 class="flex flex-col gap-6 text-center text-[min(70px,8vw)]">
+      <span class="mx-auto w-fit rounded-xl px-6 py-4 font-mono font-light">$ programmerbar</span>
+    </h1>
+
+    <div class="flex justify-center">
+      <a
+        class="rounded border-2 bg-secondary px-6 py-2 text-lg font-medium shadow-lg hover:bg-secondary-dark"
+        href="/booking">Book nå!</a
+      >
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-4 py-10 md:grid-cols-2">
+    <ProductsCycle />
+    <UpcomingEvents />
+  </div>
+
+  <ContactUs />
+</BaseLayout>

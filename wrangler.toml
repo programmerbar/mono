@@ -1,0 +1,6 @@
+name = "programmerbar-web"
+compatibility_date = "2024-04-14"
+
+compatibility_flags = [ "nodejs_compat" ]
+
+pages_build_output_dir = "./dist"

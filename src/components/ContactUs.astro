@@ -1,0 +1,13 @@
+---
+import Map from "./Map.astro";
+import { ContactUsForm } from "./ContactUsForm";
+---
+
+<div class="py-10">
+  <h2 class="pb-4 text-3xl font-medium">Kontakt oss</h2>
+
+  <div class="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-4">
+    <ContactUsForm client:load />
+    <Map />
+  </div>
+</div>

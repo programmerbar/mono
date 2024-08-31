@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { ProductList } from "../components/ProductList";
+import { getProducts } from "../lib/data/sanity/products";
+
+const products = await getProducts();
+---
+
+<BaseLayout>
+  <ProductList client:load data={products} />
+</BaseLayout>
