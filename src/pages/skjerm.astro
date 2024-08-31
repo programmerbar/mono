@@ -1,0 +1,11 @@
+---
+import ScreenLayout from "../layouts/ScreenLayout.astro";
+import { ProductScreen } from "../components/ProductScreen";
+import { getProducts } from "../lib/data/sanity/products";
+
+const products = await getProducts();
+---
+
+<ScreenLayout title="Skjerm">
+  <ProductScreen client:load products={products} />
+</ScreenLayout>

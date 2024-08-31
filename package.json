@@ -35,6 +35,7 @@
     "astro": "^4.15.1",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "framer-motion": "^11.3.31",
     "groq": "^3.56.0",
     "lucide-astro": "^0.437.0",
     "lucide-react": "^0.437.0",
