@@ -13,9 +13,9 @@ type ProductProps = {
 
 const Product = ({ product }: ProductProps) => {
   return (
-    <div className="flex items-center bg-background h-full border rounded-xl overflow-hidden">
+    <div className="flex h-full items-center overflow-hidden rounded-xl border bg-background">
       {product.image && (
-        <div className="border-r-2 border-border bg-white h-full flex items-center justify-center">
+        <div className="flex h-full items-center justify-center border-r-2 border-border bg-white">
           <img
             src={urlFor(product.image).height(300).width(300).url()}
             alt={product.name}
@@ -24,11 +24,9 @@ const Product = ({ product }: ProductProps) => {
         </div>
       )}
 
-      <div className="flex items-center justify-between w-full p-5">
-        <p className="text-4xl line-clamp-1 text-ellipsis">{product.name}</p>
-        <p className="text-5xl w-full max-w-max">
-          {product.priceList.student} kr
-        </p>
+      <div className="flex w-full items-center justify-between p-5">
+        <p className="line-clamp-1 text-ellipsis text-4xl">{product.name}</p>
+        <p className="w-full max-w-max text-5xl">{product.priceList.student} kr</p>
       </div>
     </div>
   );
@@ -76,10 +74,10 @@ export const ProductScreen = ({ products }: ProductScreenProps) => {
   };
 
   return (
-    <div className="flex bg-primary flex-col max-h-screen h-full overflow-hidden">
+    <div className="flex h-full max-h-screen flex-col overflow-hidden bg-primary">
       <div className="relative h-full w-full">
         <AnimatePresence custom={direction}>
-          <div className="absolute grid grid-cols-2 grid-rows-3 gap-4 h-full w-full p-4 flex-1">
+          <div className="absolute grid h-full w-full flex-1 grid-cols-2 grid-rows-3 gap-4 p-4">
             {productsOnPage.map((product) => (
               <motion.div
                 key={product._id}
