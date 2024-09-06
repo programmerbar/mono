@@ -9,119 +9,119 @@ importers:
   .:
     dependencies:
       '@astrojs/check':
-        specifier: ^0.9.3
+        specifier: 0.9.3
         version: 0.9.3(prettier-plugin-astro@0.14.1)(prettier@3.3.3)(typescript@5.5.4)
       '@astrojs/cloudflare':
-        specifier: ^11.0.4
+        specifier: 11.0.4
         version: 11.0.4(astro@4.15.1(@types/node@22.5.1)(rollup@4.21.2)(typescript@5.5.4))
       '@astrojs/react':
-        specifier: ^3.6.2
+        specifier: 3.6.2
         version: 3.6.2(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@4.5.3(@types/node@22.5.1))
       '@astrojs/tailwind':
-        specifier: ^5.1.0
+        specifier: 5.1.0
         version: 5.1.0(astro@4.15.1(@types/node@22.5.1)(rollup@4.21.2)(typescript@5.5.4))(tailwindcss@3.4.10)
       '@react-email/components':
-        specifier: ^0.0.24
+        specifier: 0.0.24
         version: 0.0.24(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-email/tailwind':
-        specifier: ^0.1.0
+        specifier: 0.1.0
         version: 0.1.0(react@18.3.1)
       '@sanity/astro':
-        specifier: ^3.1.6
+        specifier: 3.1.6
         version: 3.1.6(@sanity/client@6.21.3)(@sanity/visual-editing@2.1.9(@sanity/client@6.21.3)(next@14.2.3(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(astro@4.15.1(@types/node@22.5.1)(rollup@4.21.2)(typescript@5.5.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sanity@3.56.0(@types/node@22.5.1)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))
       '@sanity/client':
-        specifier: ^6.21.3
+        specifier: 6.21.3
         version: 6.21.3(debug@4.3.6)
       '@sanity/icons':
-        specifier: ^3.4.0
+        specifier: 3.4.0
         version: 3.4.0(react@18.3.1)
       '@sanity/image-url':
-        specifier: ^1.0.2
+        specifier: 1.0.2
         version: 1.0.2
       '@sanity/vision':
-        specifier: ^3.56.0
+        specifier: 3.56.0
         version: 3.56.0(@babel/runtime@7.25.6)(@codemirror/lint@6.8.1)(@codemirror/theme-one-dark@6.1.2)(@lezer/common@1.2.1)(codemirror@6.0.1(@lezer/common@1.2.1))(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/visual-editing':
-        specifier: ^2.1.9
+        specifier: 2.1.9
         version: 2.1.9(@sanity/client@6.21.3)(next@14.2.3(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react':
-        specifier: ^18.3.5
+        specifier: 18.3.5
         version: 18.3.5
       '@types/react-dom':
-        specifier: ^18.3.0
+        specifier: 18.3.0
         version: 18.3.0
       astro:
-        specifier: ^4.15.1
+        specifier: 4.15.1
         version: 4.15.1(@types/node@22.5.1)(rollup@4.21.2)(typescript@5.5.4)
       clsx:
-        specifier: ^2.1.1
+        specifier: 2.1.1
         version: 2.1.1
       date-fns:
-        specifier: ^3.6.0
+        specifier: 3.6.0
         version: 3.6.0
       framer-motion:
-        specifier: ^11.3.31
+        specifier: 11.3.31
         version: 11.3.31(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       groq:
-        specifier: ^3.56.0
+        specifier: 3.56.0
         version: 3.56.0
       lucide-astro:
-        specifier: ^0.437.0
+        specifier: 0.437.0
         version: 0.437.0(astro@4.15.1(@types/node@22.5.1)(rollup@4.21.2)(typescript@5.5.4))
       lucide-react:
-        specifier: ^0.437.0
+        specifier: 0.437.0
         version: 0.437.0(react@18.3.1)
       marked:
-        specifier: ^14.1.0
+        specifier: 14.1.0
         version: 14.1.0
       react:
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1
       react-dom:
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
       react-email:
-        specifier: ^3.0.1
+        specifier: 3.0.1
         version: 3.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       resend:
-        specifier: ^4.0.0
+        specifier: 4.0.0
         version: 4.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       sanity:
-        specifier: ^3.56.0
+        specifier: 3.56.0
         version: 3.56.0(@types/node@22.5.1)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       sanity-plugin-markdown:
-        specifier: ^4.1.2
+        specifier: 4.1.2
         version: 4.1.2(easymde@2.18.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(sanity@3.56.0(@types/node@22.5.1)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       sanity-plugin-media:
-        specifier: ^2.3.2
+        specifier: 2.3.2
         version: 2.3.2(@sanity/ui@2.8.9(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sanity@3.56.0(@types/node@22.5.1)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       tailwind-merge:
-        specifier: ^2.5.2
+        specifier: 2.5.2
         version: 2.5.2
       tailwindcss:
-        specifier: ^3.4.10
+        specifier: 3.4.10
         version: 3.4.10
       typescript:
-        specifier: ^5.5.4
+        specifier: 5.5.4
         version: 5.5.4
     devDependencies:
       '@tailwindcss/forms':
-        specifier: ^0.5.8
+        specifier: 0.5.8
         version: 0.5.8(tailwindcss@3.4.10)
       '@tailwindcss/typography':
-        specifier: ^0.5.15
+        specifier: 0.5.15
         version: 0.5.15(tailwindcss@3.4.10)
       prettier:
-        specifier: ^3.3.3
+        specifier: 3.3.3
         version: 3.3.3
       prettier-plugin-astro:
-        specifier: ^0.14.1
+        specifier: 0.14.1
         version: 0.14.1
       prettier-plugin-tailwindcss:
-        specifier: ^0.6.6
+        specifier: 0.6.6
         version: 0.6.6(prettier-plugin-astro@0.14.1)(prettier@3.3.3)
       wrangler:
-        specifier: ^3.73.0
+        specifier: 3.73.0
         version: 3.73.0(@cloudflare/workers-types@4.20240821.1)
 
 packages:
