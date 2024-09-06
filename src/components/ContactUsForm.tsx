@@ -55,7 +55,7 @@ export const ContactUsForm = () => {
           type="text"
           id="name"
           name="name"
-          className="w-full rounded-xl border-2 border-border"
+          className="w-full rounded-xl border border-border shadow-md"
           placeholder="Kari Nordmann"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -73,7 +73,7 @@ export const ContactUsForm = () => {
           type="email"
           id="email"
           name="email"
-          className="w-full rounded-xl border-2 border-border"
+          className="w-full rounded-xl border border-border shadow-md"
           placeholder="kari.nordmann@norge.no"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -91,7 +91,7 @@ export const ContactUsForm = () => {
           rows={5}
           id="message"
           name="message"
-          className="w-full rounded-xl border-2 border-border"
+          className="w-full rounded-xl border border-border shadow-md"
           placeholder="Din melding..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -104,7 +104,7 @@ export const ContactUsForm = () => {
       </div>
 
       <button
-        className="w-full rounded-xl border-2 border-border bg-primary-light px-4 py-2 transition-all hover:bg-primary md:w-fit"
+        className="w-full rounded-xl border border-border bg-primary-light px-4 py-2 shadow-md transition-all hover:bg-primary md:w-fit"
         type="submit"
       >
         Send inn

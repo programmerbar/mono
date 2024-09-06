@@ -102,9 +102,7 @@ export const ProductList = ({ data }: ProductListProps) => {
 
   return (
     <div className="flex flex-col gap-8 py-10 md:flex-row">
-      <div
-        className={`flex h-fit w-full flex-col divide-y rounded-xl border-2 bg-background p-4 shadow-xl md:sticky md:w-1/4`}
-      >
+      <div className="flex h-fit w-full flex-col divide-y rounded-xl border bg-background p-4 shadow-md md:sticky md:w-1/4">
         <div className="flex flex-col gap-2 py-2">
           <label htmlFor="search">Søk</label>
           <div>
@@ -182,7 +180,7 @@ export const ProductList = ({ data }: ProductListProps) => {
               ({ _id, name, image, priceList, producer, variants, isSoldOut, productTypes }) => (
                 <li
                   key={_id}
-                  className="relative overflow-hidden rounded-xl border-2 bg-background shadow-xl"
+                  className="relative flex flex-col overflow-hidden rounded-xl border bg-background shadow-md"
                 >
                   {isSoldOut && (
                     <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-30">
@@ -190,7 +188,7 @@ export const ProductList = ({ data }: ProductListProps) => {
                     </div>
                   )}
 
-                  <div className="border-b-2 border-border">
+                  <div className="border-b border-border">
                     {image ? (
                       <img
                         src={urlFor(image).height(600).width(600).url()}
@@ -204,7 +202,7 @@ export const ProductList = ({ data }: ProductListProps) => {
                     )}
                   </div>
 
-                  <div className="p-4">
+                  <div className="flex flex-1 flex-col p-4">
                     <a className="hover:underline" href={`/produkt/${_id}`}>
                       <h2 className="text-2xl font-medium">{name}</h2>
                     </a>
@@ -216,15 +214,17 @@ export const ProductList = ({ data }: ProductListProps) => {
                     </p>
                     <p className="font-mono text-sm font-medium text-gray-700">{producer}</p>
                     {productTypes && (
-                      <div className="mt-2 flex flex-wrap items-center gap-1">
-                        {productTypes.map((productType: ProductType) => (
-                          <span
-                            key={productType._id}
-                            className="rounded-xl bg-primary bg-opacity-10 px-2 py-1 text-xs font-medium text-white"
-                          >
-                            {productType.title}
-                          </span>
-                        ))}
+                      <div className="mt-auto">
+                        <div className="mt-2 flex flex-wrap items-center gap-1">
+                          {productTypes.map((productType: ProductType) => (
+                            <span
+                              key={productType._id}
+                              className="rounded-xl border border-border bg-primary bg-opacity-10 px-2 py-1 text-xs text-white"
+                            >
+                              {productType.title}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>

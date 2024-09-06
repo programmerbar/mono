@@ -5,9 +5,10 @@ import { formatDate } from "../lib/date";
 const events = await getUpcomingEvents();
 ---
 
-<div class="rounded-xl border-2 bg-background p-2">
+<div class="rounded-xl border bg-background p-2 shadow-md">
   <h2 class="py-6 text-center font-mono text-3xl font-medium md:text-4xl">Arrangementer</h2>
-  <ul class="divide-y-2 overflow-hidden">
+
+  <ul class="flex flex-col divide-y overflow-hidden">
     {
       events.length === 0 ? (
         <li>
@@ -15,9 +16,9 @@ const events = await getUpcomingEvents();
         </li>
       ) : (
         events.map(({ title, start, slug }) => (
-          <li>
-            <a href={`/arrangement/${slug}`} class="group text-xl">
-              <div class="flex h-16 flex-col justify-center px-2 hover:bg-primary-light">
+          <li class="py-1">
+            <a href={`/arrangement/${slug}`} class="group overflow-hidden text-xl">
+              <div class="flex h-16 flex-col justify-center rounded-xl px-4 py-2 transition-all hover:bg-primary-light">
                 <p class="group-hover:underline">{title}</p>
 
                 <p class="font-mono text-sm font-medium text-gray-700">{formatDate(start)}</p>
