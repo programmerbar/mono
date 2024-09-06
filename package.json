@@ -35,7 +35,6 @@
     "@types/react-dom": "18.3.0",
     "astro": "4.15.1",
     "clsx": "2.1.1",
-    "date-fns": "3.6.0",
     "framer-motion": "11.3.31",
     "groq": "3.56.0",
     "lucide-astro": "0.437.0",

@@ -1,7 +1,6 @@
 ---
 import { getUpcomingEvents } from "../lib/data/sanity/events";
-import { format } from "date-fns";
-import { nb } from "date-fns/locale/nb";
+import { formatDate } from "../lib/date";
 
 const events = await getUpcomingEvents();
 ---
@@ -21,9 +20,7 @@ const events = await getUpcomingEvents();
               <div class="flex h-16 flex-col justify-center px-2 hover:bg-primary-light">
                 <p class="group-hover:underline">{title}</p>
 
-                <p class="font-mono text-sm font-medium text-gray-700">
-                  {format(new Date(start), "EEEE d. MMMM", { locale: nb })}
-                </p>
+                <p class="font-mono text-sm font-medium text-gray-700">{formatDate(start)}</p>
               </div>
             </a>
           </li>

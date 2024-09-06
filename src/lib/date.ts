@@ -1,12 +1,18 @@
-import { format } from "date-fns";
-import { nb } from "date-fns/locale";
-
 export type Dateish = string | Date | number;
 
 export const formatDate = (date: Dateish) => {
-  return format(new Date(date), "EEEE. dd. MMMM", { locale: nb });
+  return Intl.DateTimeFormat("nb-NO", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    timeZone: "Europe/Oslo",
+  }).format(new Date(date));
 };
 
 export const time = (date: Dateish) => {
-  return format(new Date(date), "HH:mm", { locale: nb });
+  return Intl.DateTimeFormat("nb-NO", {
+    hour: "numeric",
+    minute: "numeric",
+    timeZone: "Europe/Oslo",
+  }).format(new Date(date));
 };
