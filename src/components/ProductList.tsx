@@ -1,28 +1,13 @@
 import React, { useState, useMemo } from "react";
 import { Martini } from "lucide-react"; // Assuming you're using lucide-react for icons
-import type { GetProductsQueryResult } from "../../sanity.types";
 import { urlFor } from "../lib/data/sanity/image";
-
-type ProductType = {
-  _id: string;
-  title: string;
-};
-
-type SortOption = (typeof SORT_OPTIONS)[number]["value"];
-
-const SORT_OPTIONS = [
-  { label: "Navn A-Å", value: "name-asc" },
-  { label: "Navn Å-A", value: "name-desc" },
-  { label: "Pris lav-høy", value: "price-asc" },
-  { label: "Pris høy-lav", value: "price-desc" },
-  { label: "Alkohol lav-høy", value: "alcohol-asc" },
-  { label: "Alkohol høy-lav", value: "alcohol-desc" },
-  { label: "Volum lav-høy", value: "volume-asc" },
-  { label: "Volum høy-lav", value: "volume-desc" },
-] as const;
-
-type Products = GetProductsQueryResult;
-type Product = Products[number];
+import {
+  SORT_OPTIONS,
+  extractProductTypes,
+  filterProducts,
+  type Products,
+  type SortOption,
+} from "../lib/meny";
 
 type ProductListProps = {
   data: Products;
@@ -36,73 +21,22 @@ export const ProductList = ({ data }: ProductListProps) => {
   const [studentPrice, setStudentPrice] = useState<boolean>(true);
 
   const productTypes = useMemo(() => {
-    return data
-      .map((product) => product.productTypes)
-      .flat()
-      .filter(Boolean)
-      .reduce((acc, productType) => {
-        if (!acc.find((type) => type._id === productType!._id)) {
-          acc.push(productType!);
-        }
-
-        return acc;
-      }, [] as Array<ProductType>);
+    return extractProductTypes(data);
   }, [data]);
 
   const filteredProducts = useMemo(() => {
-    return data
-      .filter((product: Product) => {
-        if (hideSoldOut && product.isSoldOut) {
-          return false;
-        }
-
-        if (!product.name.toLowerCase().includes(search.toLowerCase())) {
-          return false;
-        }
-
-        if (
-          selectedProductType &&
-          !product.productTypes?.map((type: ProductType) => type._id).includes(selectedProductType)
-        ) {
-          return false;
-        }
-
-        return true;
-      })
-      .sort((a: Product, b: Product) => {
-        const aAlcohol = a.alcoholContent ?? 0;
-        const bAlcohol = b.alcoholContent ?? 0;
-        const aVolume = a.volume ?? 0;
-        const bVolume = b.volume ?? 0;
-        const aPrice = studentPrice ? a.priceList.student : a.priceList.ordinary;
-        const bPrice = studentPrice ? b.priceList.student : b.priceList.ordinary;
-
-        switch (sort) {
-          case "name-asc":
-            return a.name.localeCompare(b.name);
-          case "name-desc":
-            return b.name.localeCompare(a.name);
-          case "alcohol-asc":
-            return aAlcohol - bAlcohol;
-          case "alcohol-desc":
-            return bAlcohol - aAlcohol;
-          case "volume-asc":
-            return aVolume - bVolume;
-          case "volume-desc":
-            return bVolume - aVolume;
-          case "price-asc":
-            return aPrice - bPrice;
-          case "price-desc":
-            return bPrice - aPrice;
-          default:
-            return 0;
-        }
-      });
+    return filterProducts(data, {
+      hideSoldOut,
+      sort,
+      search,
+      selectedProductType,
+      studentPrice,
+    });
   }, [data, hideSoldOut, search, selectedProductType, sort, studentPrice]);
 
   return (
     <div className="flex flex-col gap-8 py-10 md:flex-row">
-      <div className="flex h-fit w-full flex-col divide-y rounded-xl border bg-background p-4 shadow-md md:sticky md:w-1/4">
+      <div className="top-4 flex h-fit w-full flex-col divide-y rounded-xl border bg-background p-4 shadow-md md:sticky md:w-1/4">
         <div className="flex flex-col gap-2 py-2">
           <label htmlFor="search">Søk</label>
           <div>
@@ -214,9 +148,9 @@ export const ProductList = ({ data }: ProductListProps) => {
                     </p>
                     <p className="font-mono text-sm font-medium text-gray-700">{producer}</p>
                     {productTypes && (
-                      <div className="mt-auto">
+                      <div className="mt-aut">
                         <div className="mt-2 flex flex-wrap items-center gap-1">
-                          {productTypes.map((productType: ProductType) => (
+                          {productTypes.map((productType) => (
                             <span
                               key={productType._id}
                               className="rounded-xl border border-border bg-primary bg-opacity-10 px-2 py-1 text-xs text-white"
