@@ -23,33 +23,11 @@ const programmerbar = await getProgrammerbarGroup();
       <Wifi class="h-16 w-16 text-primary" />
     </div>
 
-    <p class="text-lg text-gray-800">
-      Programmerbar er en gjeng med studenter som jobber for å få bygget og drifte en bar for
-      studentene på Informatikk! Vi stiller med mange forskjellige arrangementer i løpet av
-      semesteret som fester, quizer, spillekvelder og bedriftspresentasjoner for å nevne noen. Vi
-      tar alltid imot søkere til å bli frivillig, da er du frivillig semester for semester. I tiden
-      fremover blir det mye fokus på å gjøre Programmerbar om til den soleklare plassen hvor alle
-      informatikkstudenter samles.
-    </p>
-
-    <p class="text-lg text-gray-800">
-      Neste byggeprosjekt er å vårt å få et eget lokale i det nye bygget på Nygårdshøyden sør.
-    </p>
-
-    <p class="text-lg text-gray-800">
-      Programmerbar har ikke et fastsatt medlemstall, men rekrutterer nye medlemmer ved behov.
-    </p>
-
-    <h2 class="text-2xl font-medium text-gray-900">Kontakt:</h2>
-
-    <p class="text-lg text-gray-800">
-      Du kan ta kontakt med oss på epost: <a
-        class="text-primary hover:underline"
-        href="mailto:leder@pogramerbar.no"
-      >
-        leder@programmerbar.no
-      </a>.
-    </p>
+    {
+      programmerbar.description.split("\n\n").map((p) => {
+        return <p class="prose-xl" set:html={p} />;
+      })
+    }
 
     <h2 class="text-2xl font-medium text-gray-900">Medlemmer</h2>
 
