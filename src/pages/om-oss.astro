@@ -4,10 +4,13 @@ import { getProgrammerbarGroup } from "../lib/data/sanity/programmerbar";
 import { initials } from "../lib/initials";
 import { echoUrlFor } from "../lib/data/sanity/image";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { marked } from "marked";
 
 export const prerender = true;
 
 const programmerbar = await getProgrammerbarGroup();
+
+const content = await marked.parse(programmerbar.description);
 ---
 
 <BaseLayout title="Om oss">
@@ -23,11 +26,10 @@ const programmerbar = await getProgrammerbarGroup();
       <Wifi class="h-16 w-16 text-primary" />
     </div>
 
-    {
-      programmerbar.description.split("\n\n").map((p) => {
-        return <p class="prose-xl" set:html={p} />;
-      })
-    }
+    <article
+      class="prose-xl font-sans prose-a:text-primary prose-a:hover:underline"
+      set:html={content}
+    />
 
     <h2 class="text-2xl font-medium text-gray-900">Medlemmer</h2>
 
