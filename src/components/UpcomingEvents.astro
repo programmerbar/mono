@@ -2,7 +2,7 @@
 import { getUpcomingEvents } from "../lib/data/sanity/events";
 import { formatDate } from "../lib/date";
 
-const events = await getUpcomingEvents();
+const events = await getUpcomingEvents().then((events) => events.slice(0, 6));
 ---
 
 <div class="rounded-xl border bg-background p-2 shadow-md">
