@@ -1,4 +1,4 @@
-name: Deploy
+name: 🚀 Deploy
 
 on:
   push:
@@ -7,19 +7,34 @@ on:
 
 jobs:
   deploy-web:
+    name: 🚀 Deploy
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/pnpm-install
+      - name: 🔍 Checkout
+        uses: actions/checkout@v4
 
-      - name: Check style
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐢 Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 💄 Check style
         run: pnpm run format:check
 
-      - name: Build
+      - name: 🏗️ Build
         run: pnpm run build
 
-      - uses: cloudflare/wrangler-action@v3
+      - name: 🌥️ Deploy to Cloduflare
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
