@@ -200,21 +200,6 @@ export type SanityImageMetadata = {
   isOpaque?: boolean;
 };
 
-export type Event = {
-  _id: string;
-  _type: "event";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  start: string;
-  end: string;
-  isPrivate?: boolean;
-  registrationLink?: string;
-  body: string;
-};
-
 export type MediaTag = {
   _id: string;
   _type: "media.tag";
@@ -247,7 +232,6 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | SanityAssetSourceData
   | SanityImageMetadata
-  | Event
   | MediaTag
   | Slug
   | Markdown;
@@ -255,40 +239,13 @@ export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/lib/data/sanity/events.ts
 // Variable: getEventsQuery
 // Query: *[_type == "event" && !(_id in path("drafts.**"))] | order(start desc) {	_id,	title,	"slug": slug.current,	start,	end,	isPrivate,	registrationLink,	body}
-export type GetEventsQueryResult = Array<{
-  _id: string;
-  title: string;
-  slug: string;
-  start: string;
-  end: string;
-  isPrivate: boolean | null;
-  registrationLink: string | null;
-  body: string;
-}>;
+export type GetEventsQueryResult = Array<never>;
 // Variable: getUpcomingEventsQuery
 // Query: *[_type == "event" && !(_id in path("drafts.**")) && start > now()] | order(start asc) {	_id,    title,	"slug": slug.current,    start,    end,	isPrivate,	registrationLink,    body}
-export type GetUpcomingEventsQueryResult = Array<{
-  _id: string;
-  title: string;
-  slug: string;
-  start: string;
-  end: string;
-  isPrivate: boolean | null;
-  registrationLink: string | null;
-  body: string;
-}>;
+export type GetUpcomingEventsQueryResult = Array<never>;
 // Variable: getEventBySlugQuery
 // Query: *[_type == "event" && !(_id in path("drafts.**")) && slug.current == $slug] {	_id,	title,	"slug": slug.current,	start,	end,	isPrivate,	registrationLink,	body}[0]
-export type GetEventBySlugQueryResult = {
-  _id: string;
-  title: string;
-  slug: string;
-  start: string;
-  end: string;
-  isPrivate: boolean | null;
-  registrationLink: string | null;
-  body: string;
-} | null;
+export type GetEventBySlugQueryResult = null;
 
 // Source: ./src/lib/data/sanity/products.ts
 // Variable: getProductsQuery
@@ -348,6 +305,11 @@ export type GetProductByIdQueryResult = {
   variants: Array<string> | null;
 } | null;
 
+// Source: ./src/lib/data/sanity/programmerbar.ts
+// Variable: query
+// Query: *[_type == "studentGroup"    && slug.current == $slug    && !(_id in path('drafts.**'))] {    _id,    _createdAt,    _updatedAt,    name,    groupType,    "slug": slug.current,    description,    image,    "members": members[] {      role,      "profile": profile->{        _id,        name,        picture,        socials,      },    },    "socials": socials {      facebook,      instagram,      linkedin,      email,    }  }[0]
+export type QueryResult = null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -357,5 +319,6 @@ declare module "@sanity/client" {
     '*[_type == "event" && !(_id in path("drafts.**")) && slug.current == $slug] {\n\t_id,\n\ttitle,\n\t"slug": slug.current,\n\tstart,\n\tend,\n\tisPrivate,\n\tregistrationLink,\n\tbody\n}[0]': GetEventBySlugQueryResult;
     '*[_type == "product" && !(_id in path("drafts.**"))] {\n    _id,\n    name,\n    description,\n    "productTypes": productType[]->{\n        _id,\n        title\n    },\n    isSoldOut,\n    priceList,\n    image,\n    "producer": producer->name,\n    volume,\n    alcoholContent,\n    variants,\n}': GetProductsQueryResult;
     '*[_type == "product" && _id == $id && !(_id in path("drafts.**"))] {\n    _id,\n    name,\n    description,\n    "productTypes": productType[]->{\n        _id,\n        title\n    },\n    isSoldOut,\n    priceList,\n    image,\n    "producer": producer->name,\n    volume,\n    alcoholContent,\n    variants,\n}[0]': GetProductByIdQueryResult;
+    '*[_type == "studentGroup"\n    && slug.current == $slug\n    && !(_id in path(\'drafts.**\'))] {\n    _id,\n    _createdAt,\n    _updatedAt,\n    name,\n    groupType,\n    "slug": slug.current,\n    description,\n    image,\n    "members": members[] {\n      role,\n      "profile": profile->{\n        _id,\n        name,\n        picture,\n        socials,\n      },\n    },\n    "socials": socials {\n      facebook,\n      instagram,\n      linkedin,\n      email,\n    }\n  }[0]': QueryResult;
   }
 }

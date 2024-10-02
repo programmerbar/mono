@@ -13,6 +13,7 @@
     "format:check": "prettier --check .",
     "extract": "sanity schema extract --enforce-required-fields",
     "typegen": "sanity typegen generate",
+    "typecheck": "tsc --noEmit",
     "email:build": "email build",
     "email:dev": "email dev",
     "email:export": "email export",

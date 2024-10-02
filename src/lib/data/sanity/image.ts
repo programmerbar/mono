@@ -1,5 +1,5 @@
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { echoSanity } from "./client";
+import { echoSanityClient } from "./client";
 import { sanityClient } from "sanity:client";
 import imageUrlBuilder from "@sanity/image-url";
 
@@ -11,7 +11,7 @@ export const urlFor = (source: Image) => {
   return builder.image(source);
 };
 
-const echoBuilder = imageUrlBuilder(echoSanity);
+const echoBuilder = imageUrlBuilder(echoSanityClient);
 
 export const echoUrlFor = (source: Image) => {
   return echoBuilder.image(source);

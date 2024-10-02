@@ -16,13 +16,18 @@ if (!event) {
   return Astro.redirect("/404");
 }
 
-const content = await marked.parse(event.body);
+const body = `# ${event.title}\n\n${event.body ?? "Mer informasjon kommer snart"}`;
+
+const content = await marked.parse(body);
 ---
 
 <BaseLayout title={event.title}>
   <main class="flex flex-col-reverse gap-8 md:flex-row">
     <div class="h-fit w-full rounded-xl border-2 bg-background p-6 shadow-xl">
-      <article class="prose font-sans md:prose-lg" set:html={content} />
+      <article
+        class="prose font-sans md:prose-lg prose-h1:text-3xl md:prose-h1:text-4xl"
+        set:html={content}
+      />
     </div>
 
     <EventSidebar event={event} />

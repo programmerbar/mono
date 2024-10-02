@@ -1,52 +1,64 @@
 import groq from "groq";
-import { sanityClient } from "sanity:client";
-import type {
-  GetEventBySlugQueryResult,
-  GetEventsQueryResult,
-  GetUpcomingEventsQueryResult,
-} from "../../../../sanity.types";
+import { echoSanityClient } from "./client";
 
-const getEventsQuery = groq`*[_type == "event" && !(_id in path("drafts.**"))] | order(start desc) {
+export type Happening = {
+  _id: string;
+  title: string;
+  slug: string;
+  date: string;
+  registrationStart: string | null;
+  body: string | null;
+};
+
+const getEventsQuery = groq`*[
+	_type == "happening" &&
+	!(_id in path("drafts.**")) &&
+	"programmerbar" in organizers[]->slug.current
+] | order(date desc) {
 	_id,
 	title,
 	"slug": slug.current,
-	start,
-	end,
-	isPrivate,
-	registrationLink,
+	date,
+	registrationStart,
 	body
 }`;
 
 export const getEvents = async () => {
-  return await sanityClient.fetch<GetEventsQueryResult>(getEventsQuery);
+  return await echoSanityClient.fetch<Array<Happening>>(getEventsQuery);
 };
 
-const getUpcomingEventsQuery = groq`*[_type == "event" && !(_id in path("drafts.**")) && start > now()] | order(start asc) {
+const getUpcomingEventsQuery = groq`*[
+	_type == "happening" &&
+	!(_id in path("drafts.**")) &&
+	"programmerbar" in organizers[]->slug.current &&
+	date > now()
+] | order(date asc) {
 	_id,
     title,
 	"slug": slug.current,
-    start,
-    end,
-	isPrivate,
-	registrationLink,
+	date,
+	registrationStart,
     body
 }`;
 
 export const getUpcomingEvents = async () => {
-  return await sanityClient.fetch<GetUpcomingEventsQueryResult>(getUpcomingEventsQuery);
+  return await echoSanityClient.fetch<Array<Happening>>(getUpcomingEventsQuery);
 };
 
-export const getEventBySlugQuery = groq`*[_type == "event" && !(_id in path("drafts.**")) && slug.current == $slug] {
+export const getEventBySlugQuery = groq`*[
+	_type == "happening" &&
+	!(_id in path("drafts.**")) &&
+	"programmerbar" in organizers[]->slug.current &&
+	slug.current == $slug
+] {
 	_id,
-	title,
+    title,
 	"slug": slug.current,
-	start,
-	end,
-	isPrivate,
-	registrationLink,
-	body
+	date,
+	registrationStart,
+    body
 }[0]`;
 
 export const getEventBySlug = async (slug: string) => {
-  return await sanityClient.fetch<GetEventBySlugQueryResult>(getEventBySlugQuery, { slug });
+  return await echoSanityClient.fetch<Happening | null>(getEventBySlugQuery, { slug });
 };

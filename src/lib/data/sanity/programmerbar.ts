@@ -1,4 +1,4 @@
-import { echoSanity } from "./client";
+import { echoSanityClient } from "./client";
 import groq from "groq";
 
 const query = groq`*[_type == "studentGroup"
@@ -55,5 +55,5 @@ type StudentGroup = {
 };
 
 export const getProgrammerbarGroup = async () => {
-  return await echoSanity.fetch<StudentGroup>(query, { slug: "programmerbar" });
+  return await echoSanityClient.fetch<StudentGroup>(query, { slug: "programmerbar" });
 };

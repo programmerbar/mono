@@ -15,13 +15,12 @@ const events = await getUpcomingEvents().then((events) => events.slice(0, 6));
           <p class="p-2 text-center text-lg font-medium">Ingen kommende arrangementer</p>
         </li>
       ) : (
-        events.map(({ title, start, slug }) => (
+        events.map(({ title, date, slug }) => (
           <li class="py-1">
             <a href={`/arrangement/${slug}`} class="group overflow-hidden text-xl">
               <div class="flex h-16 flex-col justify-center rounded-xl px-4 py-2 transition-all hover:bg-primary-light">
                 <p class="group-hover:underline">{title}</p>
-
-                <p class="font-mono text-sm font-medium text-gray-700">{formatDate(start)}</p>
+                <p class="font-mono text-sm font-medium text-gray-700">{formatDate(date)}</p>
               </div>
             </a>
           </li>

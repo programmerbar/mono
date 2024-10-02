@@ -1,9 +1,9 @@
 ---
-import type { GetEventBySlugQueryResult } from "../../sanity.types";
-import { time } from "../lib/date";
+import type { Happening } from "../lib/data/sanity/events";
+import { formatDate } from "../lib/date";
 
 type Props = {
-  event: Exclude<GetEventBySlugQueryResult, "null">;
+  event: Happening;
 };
 
 const { event } = Astro.props;
@@ -14,27 +14,19 @@ if (!event) {
 ---
 
 <aside class="w-full space-y-4 md:max-w-[350px]">
-  {
-    event?.isPrivate && (
-      <div class="rounded-xl border-2 bg-red-500 p-4 text-white shadow-xl">
-        <p class="text-center font-medium">Dette arrangementet er privat</p>
-      </div>
-    )
-  }
-
   <div class="-full h-fit rounded-xl border-2 bg-background p-6 shadow-xl">
     <ul class="space-y-8">
       <li>
-        <h3 class="font-mono text-lg font-medium">Tidspunkt:</h3>
-        <p>Fra {time(event.start)} til {time(event.end)}</p>
+        <h3 class="font-mono text-lg font-medium">Når?:</h3>
+        <p>{formatDate(event.date)}</p>
       </li>
 
       {
-        event.registrationLink && (
+        event.registrationStart && (
           <li>
             <a
               class="flex h-10 items-center justify-center rounded border-2 bg-primary px-4 py-2 font-medium transition-colors hover:bg-primary-light"
-              href={event.registrationLink}
+              href={`https://echo.uib.no/arrangementer/${event.slug}`}
             >
               Lenke til påmelding
             </a>
