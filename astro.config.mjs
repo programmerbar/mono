@@ -11,7 +11,11 @@ export default defineConfig({
     checkOrigin: true,
   },
 
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true,
+    },
+  }),
 
   experimental: {
     env: {
