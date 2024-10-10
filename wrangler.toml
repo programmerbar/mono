@@ -4,3 +4,8 @@ compatibility_date = "2024-04-14"
 compatibility_flags = [ "nodejs_compat" ]
 
 pages_build_output_dir = "./dist"
+
+
+[[kv_namespaces]]
+binding = "FEEDBACK_KV"
+id = "2ed8f6be32c24d2b9866c3066c143076"
