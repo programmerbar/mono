@@ -6,8 +6,6 @@ import { echoUrlFor } from "../lib/data/sanity/image";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { marked } from "marked";
 
-export const prerender = true;
-
 const programmerbar = await getProgrammerbarGroup();
 
 const content = await marked.parse(programmerbar.description);
