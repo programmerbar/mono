@@ -7,6 +7,13 @@
 	let html = marked.parse(data.event.body ?? '');
 </script>
 
+<svelte:head>
+	<title>{data.event.title}</title>
+	<meta property="og:title" content={data.event.title} />
+	<meta property="og:type" content="article" />
+	<meta property="og:locale" content="nb_NO" />
+</svelte:head>
+
 <main class="flex flex-col-reverse gap-8 md:flex-row">
 	<div class="h-fit w-full rounded-xl border-2 bg-background p-6 shadow-xl">
 		<article class="prose font-sans md:prose-lg prose-h1:text-3xl md:prose-h1:text-4xl">

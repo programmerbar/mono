@@ -12,6 +12,10 @@
 	let filteredProducts = $derived(filterProducts(data.products, filterState));
 </script>
 
+<svelte:head>
+	<title>Meny</title>
+</svelte:head>
+
 <div class="flex flex-col md:flex-row gap-8 w-full sm:max-w-screen-sm sm:mx-auto md:max-w-full">
 	<Sidebar {types} {filterState} />
 

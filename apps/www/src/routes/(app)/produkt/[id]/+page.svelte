@@ -21,6 +21,10 @@
 	];
 </script>
 
+<svelte:head>
+	<title>{data.product.name}</title>
+</svelte:head>
+
 <div class="flex flex-col-reverse md:flex-row md:space-x-6">
 	<div class="h-fit space-y-6 rounded-xl border-2 bg-background p-6 shadow-xl md:w-2/3">
 		<h1 class="text-3xl font-semibold text-gray-900">{data.product.name}</h1>
