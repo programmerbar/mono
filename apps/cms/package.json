@@ -1,0 +1,30 @@
+{
+  "name": "@programmerbar/cms",
+  "private": true,
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "deploy-graphql": "sanity graphql deploy",
+    "extract": "sanity schema extract --enforce-required-fields",
+    "typegen": "sanity typegen generate",
+    "clean": "rm -rf .sanity node_modules .turbo"
+  },
+  "dependencies": {
+    "@sanity/vision": "3.61.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "sanity": "3.61.0",
+    "sanity-plugin-markdown": "5.0.0",
+    "sanity-plugin-media": "2.3.2",
+    "styled-components": "6.1.8"
+  },
+  "devDependencies": {
+    "@sanity/eslint-config-studio": "4.0.0",
+    "@types/react": "18.0.25",
+    "eslint": "8.6.0",
+    "prettier": "3.0.2",
+    "typescript": "5.1.6"
+  }
+}
