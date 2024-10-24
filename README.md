@@ -1,3 +1,0 @@
-# Website
-
-The programmerbar website
