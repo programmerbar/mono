@@ -8,6 +8,10 @@
 	const html = marked.parse(data.programmerbar.description);
 </script>
 
+<svelte:head>
+	<title>Om oss</title>
+</svelte:head>
+
 <div class="max-w-screen-lg w-full mx-auto border-2 shadow-lg p-8 bg-background rounded-xl">
 	<h1 class="text-4xl font-semibold mb-4">Om oss</h1>
 
