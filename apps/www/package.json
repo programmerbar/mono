@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"preview": "vite preview",
+		"preview": "pnpm run build && wrangler pages dev .svelte-kit/cloudflare",
 		"test": "pnpm run test:integration && pnpm run test:unit",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -13,6 +13,8 @@
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
+		"deploy": "pnpm run build && wrangler pages deploy .svelte-kit/cloudflare",
+		"types": "wrangler types src/worker-configuration.d.ts",
 		"clean": "rm -rf node_modules .svelte-kit build .turbo"
 	},
 	"devDependencies": {

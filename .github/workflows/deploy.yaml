@@ -27,13 +27,13 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          packageManager: "pnpm"
-          workingDirectory: apps/www
-          command: pages deploy .svelte-kit/cloudflare --project-name=programmerbar-web
+      - name: 🚀 Build web
+        run: pnpm --filter=www run build
+
+      - uses: pnpm --filter=www run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
   deploy-sanity:
     name: 🚀 Deploy CMS to Sanity
