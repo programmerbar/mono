@@ -17,7 +17,8 @@
 		{ title: 'Pris (Ordinær)', value: data.product.priceList.ordinary },
 		{ title: 'Pris (Student)', value: data.product.priceList.student },
 		{ title: 'Størrelse', value: data.product.volume },
-		{ title: 'Alkoholinnhold', value: data.product.alcoholContent }
+		{ title: 'Alkoholinnhold', value: data.product.alcoholContent },
+		{ title: 'Lager', value: data.stock ?? 'Ukjent' }
 	];
 </script>
 
