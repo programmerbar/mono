@@ -29,5 +29,5 @@ export default {
 			}
 		}
 	},
-	plugins: [typography, forms],
+	plugins: [typography, forms]
 } satisfies Config;

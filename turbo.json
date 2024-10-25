@@ -8,7 +8,10 @@
     },
     "build": {
       "persistent": false,
-      "outputs": ["build/**", ".svelte-kit/**", "dist/**"]
-    }
+      "outputs": ["build/**", ".svelte-kit/**", "dist/**", ".react-email/**"]
+    },
+    "lint": {},
+    "check": {},
+    "format": {}
   }
 }

@@ -13,7 +13,7 @@
 	<h2 class="py-6 text-center font-mono text-3xl font-medium md:text-4xl">Arrangementer</h2>
 
 	<ul class="flex flex-col divide-y overflow-hidden">
-		{#each events as { _id, title, date, slug }}
+		{#each events as { title, date, slug }}
 			<li class="py-1">
 				<a href={`/arrangement/${slug}`} class="group overflow-hidden text-xl">
 					<div

@@ -9,6 +9,8 @@
     "deploy-graphql": "sanity graphql deploy",
     "extract": "sanity schema extract --enforce-required-fields",
     "typegen": "sanity typegen generate",
+    "lint": "prettier --check '**/*.{ts,tsx}' && eslint . --ext .ts,.tsx",
+    "format": "prettier --write '**/*.{ts,tsx}'",
     "clean": "rm -rf .sanity node_modules .turbo"
   },
   "dependencies": {
@@ -23,7 +25,7 @@
   "devDependencies": {
     "@sanity/eslint-config-studio": "4.0.0",
     "@types/react": "18.0.25",
-    "eslint": "8.6.0",
+    "eslint": "8.57.0",
     "prettier": "3.0.2",
     "typescript": "5.6.3"
   }

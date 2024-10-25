@@ -3,7 +3,10 @@
   "packageManager": "pnpm@8.7.0",
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "check": "turbo run check",
+    "format": "turbo run format"
   },
   "dependencies": {
     "turbo": "2.1.3"

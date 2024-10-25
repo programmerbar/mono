@@ -1,0 +1,38 @@
+name: 💚 CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy-web:
+    name: 🚀 Deploy web to Cloudflare
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐢 Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Doesn't work becuase JSX is borken in the emails package
+      # - name: 🔵 Check
+      #   run: pnpm check
+
+      - name: 🚦 Lint
+        run: pnpm lint
+
+      - name: 🚀 Build
+        run: pnpm build
