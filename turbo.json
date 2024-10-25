@@ -1,0 +1,17 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "ui": "tui",
+  "tasks": {
+    "dev": {
+      "persistent": true,
+      "cache": false
+    },
+    "build": {
+      "persistent": false,
+      "outputs": ["build/**", ".svelte-kit/**", "dist/**", ".react-email/**"]
+    },
+    "lint": {},
+    "check": {},
+    "format": {}
+  }
+}
