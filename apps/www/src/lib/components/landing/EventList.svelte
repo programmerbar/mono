@@ -19,8 +19,8 @@
 					<div
 						class="flex h-16 flex-col justify-center rounded-xl px-4 py-2 transition-all hover:bg-primary-light"
 					>
-						<p class="group-hover:underline">{title}</p>
-						<p class="font-mono text-sm font-medium text-gray-700">{formatDate(date)}</p>
+						<p class="text-lg md:text-xl group-hover:underline">{title}</p>
+						<p class="font-mono text-xs md:text-sm font-medium text-gray-700">{formatDate(date)}</p>
 					</div>
 				</a>
 			</li>
