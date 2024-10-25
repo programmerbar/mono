@@ -1,7 +1,7 @@
 import { getProductById } from '$lib/api/sanity/products';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import { dev } from '$app/environment';
+import { getStock } from '$lib/api/stock';
 
 export const load: PageLoad = async ({ params }) => {
 	const product = await getProductById(params.id);
@@ -10,12 +10,7 @@ export const load: PageLoad = async ({ params }) => {
 		throw error(404, 'Product not found');
 	}
 
-	const FRONTLINE_PROXY = dev ? 'http://localhost:8787' : 'https://frontline.programmer.bar';
-	const stock = product.sku
-		? await fetch(`${FRONTLINE_PROXY}/product/${product.sku}`)
-				.then((res) => res.json())
-				.then((data) => Number(data.stock))
-		: null;
+	const stock = await getStock(product.sku);
 
 	return {
 		product,
