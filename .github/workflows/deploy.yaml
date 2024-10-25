@@ -32,7 +32,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           packageManager: "pnpm"
-          workingDirectory: apps/web
+          workingDirectory: apps/www
           command: pages deploy .svelte-kit/cloudflare --project-name=programmerbar-web
 
   deploy-sanity:
