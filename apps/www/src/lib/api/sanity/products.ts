@@ -4,6 +4,7 @@ import type { GetProductByIdQueryResult, GetProductsQueryResult } from '../../..
 
 const getProductsQuery = groq`*[_type == "product" && !(_id in path("drafts.**"))] {
     _id,
+    sku,
     name,
     description,
     "productTypes": productType[]->{
@@ -25,6 +26,7 @@ export const getProducts = async () => {
 
 const getProductByIdQuery = groq`*[_type == "product" && _id == $id && !(_id in path("drafts.**"))] {
     _id,
+    sku,
     name,
     description,
     "productTypes": productType[]->{

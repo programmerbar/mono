@@ -8,6 +8,13 @@ export default defineType({
   icon: TrolleyIcon,
   fields: [
     defineField({
+      name: "sku",
+      title: "Frontline ID",
+      description:
+        "ID fra Frontline. Gjør at vi kan hente mer informasjon om produktet.",
+      type: "string",
+    }),
+    defineField({
       name: "name",
       title: "Navn",
       type: "string",

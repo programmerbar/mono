@@ -83,6 +83,7 @@ export type Product = {
 	_createdAt: string;
 	_updatedAt: string;
 	_rev: string;
+	sku?: string;
 	name: string;
 	description?: string;
 	productType?: Array<{
@@ -238,7 +239,7 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../www/src/lib/api/sanity/events.ts
 // Variable: getEventsQuery
-// Query: *[	_type == "happening" &&	!(_id in path("drafts.**")) &&	"programmerbar" in organizers[]->slug.current] | order(date desc) {	_id,	title,	"slug": slug.current,	date,	registrationStart,	body}
+// Query: *[	_type == "happening" &&	!(_id in path("drafts.**")) &&	"programmerbar" in organizers[]->slug.current &&	date >= now()] | order(date asc) {	_id,	title,	"slug": slug.current,	date,	registrationStart,	body}[0...6]
 export type GetEventsQueryResult = Array<never>;
 // Variable: getUpcomingEventsQuery
 // Query: *[	_type == "happening" &&	!(_id in path("drafts.**")) &&	"programmerbar" in organizers[]->slug.current &&	date > now()] | order(date asc) {	_id,    title,	"slug": slug.current,	date,	registrationStart,    body}
@@ -249,9 +250,10 @@ export type GetEventBySlugQueryResult = null;
 
 // Source: ../www/src/lib/api/sanity/products.ts
 // Variable: getProductsQuery
-// Query: *[_type == "product" && !(_id in path("drafts.**"))] {    _id,    name,    description,    "productTypes": productType[]->{        _id,        title    },    isSoldOut,    priceList,    image,    "producer": producer->name,    volume,    alcoholContent,    variants,}
+// Query: *[_type == "product" && !(_id in path("drafts.**"))] {    _id,    sku,    name,    description,    "productTypes": productType[]->{        _id,        title    },    isSoldOut,    priceList,    image,    "producer": producer->name,    volume,    alcoholContent,    variants,}
 export type GetProductsQueryResult = Array<{
 	_id: string;
+	sku: string | null;
 	name: string;
 	description: string | null;
 	productTypes: Array<{
@@ -277,9 +279,10 @@ export type GetProductsQueryResult = Array<{
 	variants: Array<string> | null;
 }>;
 // Variable: getProductByIdQuery
-// Query: *[_type == "product" && _id == $id && !(_id in path("drafts.**"))] {    _id,    name,    description,    "productTypes": productType[]->{        _id,        title    },    isSoldOut,    priceList,    image,    "producer": producer->name,    volume,    alcoholContent,    variants,}[0]
+// Query: *[_type == "product" && _id == $id && !(_id in path("drafts.**"))] {    _id,    sku,    name,    description,    "productTypes": productType[]->{        _id,        title    },    isSoldOut,    priceList,    image,    "producer": producer->name,    volume,    alcoholContent,    variants,}[0]
 export type GetProductByIdQueryResult = {
 	_id: string;
+	sku: string | null;
 	name: string;
 	description: string | null;
 	productTypes: Array<{
@@ -314,11 +317,11 @@ export type QueryResult = null;
 import '@sanity/client';
 declare module '@sanity/client' {
 	interface SanityQueries {
-		'*[\n\t_type == "happening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current\n] | order(date desc) {\n\t_id,\n\ttitle,\n\t"slug": slug.current,\n\tdate,\n\tregistrationStart,\n\tbody\n}': GetEventsQueryResult;
+		'*[\n\t_type == "happening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current &&\n\tdate >= now()\n] | order(date asc) {\n\t_id,\n\ttitle,\n\t"slug": slug.current,\n\tdate,\n\tregistrationStart,\n\tbody\n}[0...6]': GetEventsQueryResult;
 		'*[\n\t_type == "happening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current &&\n\tdate > now()\n] | order(date asc) {\n\t_id,\n    title,\n\t"slug": slug.current,\n\tdate,\n\tregistrationStart,\n    body\n}': GetUpcomingEventsQueryResult;
 		'*[\n\t_type == "happening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current &&\n\tslug.current == $slug\n] {\n\t_id,\n    title,\n\t"slug": slug.current,\n\tdate,\n\tregistrationStart,\n    body\n}[0]': GetEventBySlugQueryResult;
-		'*[_type == "product" && !(_id in path("drafts.**"))] {\n    _id,\n    name,\n    description,\n    "productTypes": productType[]->{\n        _id,\n        title\n    },\n    isSoldOut,\n    priceList,\n    image,\n    "producer": producer->name,\n    volume,\n    alcoholContent,\n    variants,\n}': GetProductsQueryResult;
-		'*[_type == "product" && _id == $id && !(_id in path("drafts.**"))] {\n    _id,\n    name,\n    description,\n    "productTypes": productType[]->{\n        _id,\n        title\n    },\n    isSoldOut,\n    priceList,\n    image,\n    "producer": producer->name,\n    volume,\n    alcoholContent,\n    variants,\n}[0]': GetProductByIdQueryResult;
+		'*[_type == "product" && !(_id in path("drafts.**"))] {\n    _id,\n    sku,\n    name,\n    description,\n    "productTypes": productType[]->{\n        _id,\n        title\n    },\n    isSoldOut,\n    priceList,\n    image,\n    "producer": producer->name,\n    volume,\n    alcoholContent,\n    variants,\n}': GetProductsQueryResult;
+		'*[_type == "product" && _id == $id && !(_id in path("drafts.**"))] {\n    _id,\n    sku,\n    name,\n    description,\n    "productTypes": productType[]->{\n        _id,\n        title\n    },\n    isSoldOut,\n    priceList,\n    image,\n    "producer": producer->name,\n    volume,\n    alcoholContent,\n    variants,\n}[0]': GetProductByIdQueryResult;
 		'*[_type == "studentGroup"\n    && slug.current == $slug\n    && !(_id in path(\'drafts.**\'))] {\n    _id,\n    _createdAt,\n    _updatedAt,\n    name,\n    groupType,\n    "slug": slug.current,\n    description,\n    image,\n    "members": members[] {\n      role,\n      "profile": profile->{\n        _id,\n        name,\n        picture,\n        socials,\n      },\n    },\n    "socials": socials {\n      facebook,\n      instagram,\n      linkedin,\n      email,\n    }\n  }[0]': QueryResult;
 	}
 }
