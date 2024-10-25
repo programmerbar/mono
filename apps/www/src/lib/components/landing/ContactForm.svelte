@@ -1,4 +1,8 @@
-<form action="post" class="space-y-4">
+<script lang="ts">
+	import { enhance } from '$app/forms';
+</script>
+
+<form method="post" action="/kontakt-oss" class="space-y-4" use:enhance>
 	<div class="flex flex-col gap-1">
 		<label for="name" class="label">Name</label>
 		<input
