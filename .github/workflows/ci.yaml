@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy-web:
+  ci:
     name: 🚀 Deploy web to Cloudflare
     runs-on: ubuntu-latest
 

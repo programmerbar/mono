@@ -30,7 +30,8 @@ jobs:
       - name: 🚀 Build web
         run: pnpm --filter=www run build
 
-      - uses: pnpm --filter=www run deploy
+      - name: 🚀 Deploy web
+        run: pnpm --filter=www run deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
