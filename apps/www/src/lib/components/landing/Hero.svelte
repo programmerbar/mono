@@ -12,7 +12,7 @@
 <div class="pb-56 pt-32 space-y-10">
 	<StatusLabel {status} {message} />
 
-	<h1 class="text-5xl md:text-6xl lg:text-7xl text-center font-mono text-gray-700">
+	<h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-center font-mono text-gray-700">
 		$ programmerbar
 	</h1>
 
