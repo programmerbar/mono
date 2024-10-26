@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { echoUrlFor } from '$lib/api/sanity/image.js';
+	import { echoUrlFor } from '$lib/api/sanity/image';
 	import { Smile, Beer, Wine, Wifi, UserCircle } from 'lucide-svelte';
 	import { marked } from 'marked';
 

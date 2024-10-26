@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { urlFor } from '$lib/api/sanity/image.js';
+	import { urlFor } from '$lib/api/sanity/image';
 	import { marked } from 'marked';
 
 	let { data } = $props();

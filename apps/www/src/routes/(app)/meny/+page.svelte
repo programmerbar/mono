@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ProductPreview from '$lib/components/meny/ProductPreview.svelte';
-	import Sidebar from '$lib/components/meny/Sidebar.svelte';
+	import ProductPreview from '$lib/components/app/meny/ProductPreview.svelte';
+	import Sidebar from '$lib/components/app/meny/Sidebar.svelte';
 	import { extractTypes } from '$lib/extract-types';
 	import { filterProducts } from '$lib/filter-products';
 	import { FilterState } from '$lib/states/filter-state.svelte';

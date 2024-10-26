@@ -1,6 +1,3 @@
-<script lang="ts">
-</script>
-
 <div class="rounded-xl border-2 bg-background max-w-[400px] mx-auto">
 	<div class="p-4">
 		<h1 class="text-2xl font-bold text-center mb-2">Logg inn</h1>

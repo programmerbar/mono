@@ -1,20 +1,27 @@
 {
-	"version": "7",
-	"dialect": "sqlite",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "6",
-			"when": 1729949890112,
-			"tag": "0000_stale_darkhawk",
-			"breakpoints": true
-		},
-		{
-			"idx": 1,
-			"version": "6",
-			"when": 1729952558788,
-			"tag": "0001_tiresome_plazm",
-			"breakpoints": true
-		}
-	]
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1729949890112,
+      "tag": "0000_stale_darkhawk",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1729952558788,
+      "tag": "0001_tiresome_plazm",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1729964943822,
+      "tag": "0002_misty_toro",
+      "breakpoints": true
+    }
+  ]
 }

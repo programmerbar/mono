@@ -57,6 +57,7 @@
 		"@sanity/client": "6.22.2",
 		"@sanity/image-url": "1.0.2",
 		"arctic": "^2.0.1",
+		"bits-ui": "^0.21.16",
 		"clsx": "2.1.1",
 		"date-fns": "4.1.0",
 		"drizzle-orm": "^0.35.3",

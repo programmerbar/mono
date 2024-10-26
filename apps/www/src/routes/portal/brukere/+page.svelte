@@ -1,6 +1,8 @@
 <script lang="ts">
+	import Heading from '$lib/components/ui/Heading.svelte';
 	import { mailto } from '$lib/prefix';
 	import { initials } from '$lib/initials';
+	import Input from '$lib/components/ui/Input.svelte';
 
 	let { data } = $props();
 
@@ -13,16 +15,9 @@
 	);
 </script>
 
-<h1 class="text-2xl font-medium mb-4">Brukere</h1>
+<Heading class="mb-4">Brukere</Heading>
 
-<div class="mb-4">
-	<input
-		type="search"
-		class="w-full border border-border rounded-lg h-8 px-4"
-		placeholder="Søk etter bruker"
-		bind:value={search}
-	/>
-</div>
+<Input type="search" class="mb-4 w-full" placeholder="Søk etter bruker" bind:value={search} />
 
 <ul class="grid grid-cols-1 md:grid-cols-3 gap-4">
 	{#each filteredUsers as user}

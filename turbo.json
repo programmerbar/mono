@@ -12,6 +12,13 @@
     },
     "lint": {},
     "check": {},
-    "format": {}
+    "format": {},
+    "types": {},
+    "db:generate": {
+      "cache": false
+    },
+    "db:migrate": {
+      "cache": false
+    }
   }
 }
