@@ -13,10 +13,14 @@
 
 <svelte:element
 	this={tag}
-	class={cn('text-lg font-medium', className, {
-		'text-2xl': level === 1,
-		'text-xl': level === 2
-	})}
+	class={cn(
+		'text-lg font-medium',
+		{
+			'text-2xl': level === 1,
+			'text-xl': level === 2
+		},
+		className
+	)}
 	{...props}
 >
 	{@render children?.()}

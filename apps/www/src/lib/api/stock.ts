@@ -5,12 +5,17 @@ const FRONTLINE_PROXY = dev ? 'http://localhost:8787' : 'https://frontline.progr
 export const getStock = async (sku: string | null) => {
 	if (!sku) return null;
 
-	const resp = await fetch(`${FRONTLINE_PROXY}/product/${sku}`);
+	try {
+		const resp = await fetch(`${FRONTLINE_PROXY}/product/${sku}`);
 
-	if (resp.status === 404) {
+		if (resp.status === 404) {
+			return null;
+		}
+
+		const data = (await resp.json()) as { stock: string };
+		return Number(data.stock);
+	} catch (e) {
+		console.error(e);
 		return null;
 	}
-
-	const data = await resp.json();
-	return Number(data.stock);
 };
