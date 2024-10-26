@@ -27,9 +27,6 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🚀 Build web
-        run: pnpm --filter=www run build
-
       - name: 🚀 Run migrations
         run: pnpm --filter=www run db:migrate
         env:
