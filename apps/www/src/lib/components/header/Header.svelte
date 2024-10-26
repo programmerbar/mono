@@ -1,12 +1,17 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { onNavigate } from '$app/navigation';
 	import logo from '$lib/assets/programmerbar-modern.svg';
 	import { cn } from '$lib/cn';
+	import { getAuthContext } from '$lib/context/user.context';
 	import HeaderItem from './HeaderItem.svelte';
+	import HeaderSignOut from './HeaderSignOut.svelte';
 	import MenuItem from './MenuItem.svelte';
 	import { Menu, X } from 'lucide-svelte';
+	import MenuSignOut from './MenuSignOut.svelte';
 
 	let isOpen = $state(false);
+	let auth = getAuthContext();
 
 	onNavigate(() => {
 		isOpen = false;
@@ -48,6 +53,9 @@
 			<HeaderItem to="/meny" name="/meny" />
 			<HeaderItem to="https://forms.gle/BLdygdoRJgjMbQZj6" name="/booking" />
 			<HeaderItem to="/om-oss" name="/om oss" />
+			{#if auth.user}
+				<HeaderSignOut />
+			{/if}
 		</ul>
 
 		<button onclick={toggleMenu} class="block md:hidden">
@@ -65,6 +73,11 @@
 			<MenuItem to="/meny" name="/meny" />
 			<MenuItem to="https://forms.gle/BLdygdoRJgjMbQZj6" name="/booking" />
 			<MenuItem to="/om-oss" name="/om oss" />
+			{#if auth.user}
+				<MenuSignOut />
+			{:else}
+				<MenuItem to="/logg-inn" name="/logg inn" />
+			{/if}
 		</ul>
 	{/if}
 </div>

@@ -10,3 +10,16 @@ mode = "smart"
 
 [observability]
 enabled = true
+
+
+[[kv_namespaces]]
+binding = "STATUS_KV"
+id = "ef92306a34d24af19a14d9c0cd3fc5ab"
+
+
+[[d1_databases]]
+database_id = "026a2ca4-3fdd-48ac-895f-fbe234e9a6a4"
+database_name = "progbar-db"
+binding = "DB"
+migrations_dir = "migrations"
+migrations_table = "__drizzle_migrations"

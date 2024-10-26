@@ -9,6 +9,18 @@
 	let { products, events, status } = data;
 </script>
 
+<svelte:head>
+	<title>Programmerbar</title>
+	<meta
+		name="description"
+		content="Programmerbar er en studentbar for teknologistudenter på Universitet i Bergen."
+	/>
+	<meta
+		name="keywords"
+		content="studentbar, programmerbar, universitet i bergen, teknologistudenter"
+	/>
+</svelte:head>
+
 <Hero {...status} />
 
 <div class="space-y-10">

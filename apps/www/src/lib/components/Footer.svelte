@@ -1,5 +1,8 @@
 <script lang="ts">
 	import lervigLogo from '$lib/assets/lervig-logo-black.png';
+	import { getAuthContext } from '$lib/context/user.context';
+
+	let auth = getAuthContext();
 </script>
 
 <div class="relative mt-24 border-t-2 border-primary-dark bg-primary-light">
@@ -9,6 +12,11 @@
 			>GitHub</a
 		>
 		<a class="hover:underline" href="/beer-pong">Beer Pong</a>
+		{#if auth.user}
+			<a class="hover:underline" href="/portal">Portal</a>
+		{:else}
+			<a class="hover:underline" href="/logg-inn">Logg inn</a>
+		{/if}
 	</div>
 
 	<footer
