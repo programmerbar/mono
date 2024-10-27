@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { onNavigate } from '$app/navigation';
 	import logo from '$lib/assets/programmerbar-modern.svg';
 	import { cn } from '$lib/cn';
@@ -7,6 +6,7 @@
 	import HeaderItem from './HeaderItem.svelte';
 	import HeaderSignOut from './HeaderSignOut.svelte';
 	import MenuItem from './MenuItem.svelte';
+	import ProgressBar from './ProgressBar.svelte';
 	import { Menu, X } from 'lucide-svelte';
 	import MenuSignOut from './MenuSignOut.svelte';
 
@@ -43,6 +43,8 @@
 		'h-screen fixed top-0 left-0 bg-white w-full z-50': isOpen
 	})}
 >
+	<ProgressBar />
+
 	<header class="flex justify-between w-full py-8 mx-auto max-w-screen-lg px-4">
 		<a href="/">
 			<img src={logo} class="h-20 w-20" alt="ProgrammerBar Logo" />
