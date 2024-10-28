@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Header from '$lib/components/portal/Header.svelte';
-	import Footer from '$lib/components/Footer.svelte';
+	import Footer from '$lib/components/footer/Footer.svelte';
 
 	let { children } = $props();
 </script>

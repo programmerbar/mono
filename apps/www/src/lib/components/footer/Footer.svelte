@@ -1,22 +1,18 @@
 <script lang="ts">
 	import lervigLogo from '$lib/assets/lervig-logo-black.png';
 	import { getAuthContext } from '$lib/context/user.context';
+	import CornerLink from './CornerLink.svelte';
 
 	let auth = getAuthContext();
 </script>
 
 <div class="relative mt-24 border-t-2 border-primary-dark bg-primary-light">
 	<div class="absolute bottom-0 left-0 flex items-center gap-2 px-2 py-1 text-xs text-gray-700">
-		<a class="hover:underline" href="https://programmerbar.sanity.studio">Sanity</a>
-		<a class="hover:underline" target="_blank" href="https://github.com/programmerbar/mono"
-			>GitHub</a
-		>
-		<a class="hover:underline" href="/beer-pong">Beer Pong</a>
-		{#if auth.user}
-			<a class="hover:underline" href="/portal">Portal</a>
-		{:else}
-			<a class="hover:underline" href="/logg-inn">Logg inn</a>
-		{/if}
+		<CornerLink href="https://programmerbar.sanity.studio" isExternal>Sanity</CornerLink>
+		<CornerLink href="https://github.com/programmerbar/mono" isExternal>GitHub</CornerLink>
+		<CornerLink href="/beer-pong">Beer Pong</CornerLink>
+		<CornerLink when={!!auth.user} href="/portal">Portal</CornerLink>
+		<CornerLink when={!auth.user} href="/logg-inn">Logg inn</CornerLink>
 	</div>
 
 	<footer
