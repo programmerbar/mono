@@ -4,13 +4,13 @@ import { zfd } from 'zod-form-data';
 export const CreateEventSchema = z.object({
 	name: z.string(),
 	date: z.coerce.date(),
-	shifts: z.array(
-		z.object({
+	shifts: z
+		.object({
 			start: z.coerce.date(),
 			end: z.coerce.date(),
 			users: z.array(z.string())
 		})
-	)
+		.array()
 });
 
 export const ContactUsSchema = zfd.formData({

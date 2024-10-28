@@ -7,4 +7,11 @@
 	let { class: className, value = $bindable(), ...props }: Props = $props();
 </script>
 
-<input bind:value class={cn('border border-border rounded-lg p-2 h-10', className)} {...props} />
+<input
+	bind:value
+	class={cn(
+		'border border-border focus:outline-primary focus:ring-0 focus:border-border rounded-lg p-2 h-10',
+		className
+	)}
+	{...props}
+/>

@@ -2,7 +2,7 @@
 	import logo from '$lib/assets/programmerbar-modern.svg';
 </script>
 
-<div class="p-4 border-b sticky top-0 z-10">
+<div class="p-4 border-b sticky top-0 z-10 bg-background">
 	<header class="flex items-center justify-between max-w-screen-md mx-auto">
 		<a href="/" class="mr-10">
 			<img src={logo} alt="Logo" class="h-12 w-12" />

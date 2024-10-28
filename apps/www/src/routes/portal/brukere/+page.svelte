@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
-	import { mailto } from '$lib/prefix';
-	import { initials } from '$lib/initials';
+	import { mailto, initials } from '$lib/utils';
 	import Input from '$lib/components/ui/Input.svelte';
 
 	let { data } = $props();
@@ -21,7 +20,7 @@
 
 <ul class="grid grid-cols-1 md:grid-cols-3 gap-4">
 	{#each filteredUsers as user}
-		<li class="block bg-gray-100 border rounded-lg p-4">
+		<li class="block bg-white border rounded-lg p-4">
 			<div class="flex justify-center mb-2">
 				<div class="w-16 h-16 bg-gray-200 flex items-center justify-center border rounded-full">
 					<span class="font-medium text-gray-600 text-lg">{initials(user.name)}</span>

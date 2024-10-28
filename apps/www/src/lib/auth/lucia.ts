@@ -8,7 +8,6 @@ export type Auth = ReturnType<typeof createAuth>;
 
 export const createAuth = (db: Database) => {
 	const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
-
 	return new Lucia(adapter, {
 		sessionCookie: {
 			attributes: {

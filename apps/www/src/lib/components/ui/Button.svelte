@@ -1,18 +1,12 @@
 <script lang="ts">
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import { cn } from '$lib/cn';
+	import { buttonVariant, type ButtonVariantProps } from '$lib/styles/button-variant';
 
-	type Props = HTMLButtonAttributes;
+	type Props = HTMLButtonAttributes & ButtonVariantProps;
 
-	let { class: className, children, ...props }: Props = $props();
+	let { class: className, intent = 'primary', children, ...props }: Props = $props();
 </script>
 
-<button
-	class={cn(
-		'flex items-center justify-center border border-border rounded-lg py-2 font-medium px-4 h-10 transition-all text-gray-700 hover:bg-gray-200 hover:border-gray-400',
-		className
-	)}
-	{...props}
->
+<button class={buttonVariant({ intent, className })} {...props}>
 	{@render children?.()}
 </button>

@@ -1,6 +1,6 @@
 import { CreateEventSchema } from '$lib/validators';
 import type { RequestHandler } from './$types';
-import { events, shifts, userShifts } from '$lib/db/schema';
+import { events, shifts, userShifts, type Shift } from '$lib/db/schema';
 
 export const POST: RequestHandler = async ({ request, locals }) => {
 	if (!locals.user) {
@@ -22,25 +22,28 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		return new Response(null, { status: 500 });
 	}
 
-	const createdShifts = await locals.db
-		.insert(shifts)
-		.values(
-			json.shifts.map((shift) => ({
-				eventId: event.id,
-				start: shift.start,
-				end: shift.end
-			}))
-		)
-		.returning();
+	let createdShifts: Array<Shift> = [];
 
-	await locals.db.insert(userShifts).values(
-		json.shifts.flatMap((shift, shiftIndex) => {
-			return shift.users.map((user) => ({
-				shiftId: createdShifts[shiftIndex].id,
+	const shiftsToInsert = json.shifts.map((shift) => ({
+		eventId: event.id,
+		start: shift.start,
+		end: shift.end
+	}));
+
+	if (shiftsToInsert.length > 0) {
+		createdShifts = await locals.db.insert(shifts).values(shiftsToInsert).returning();
+	}
+
+	if (createdShifts.length > 0) {
+		const userShiftsToInsert = createdShifts.flatMap((shift, shiftIndex) => {
+			return json.shifts[shiftIndex].users.map((user) => ({
+				shiftId: shift.id,
 				userId: user
 			}));
-		})
-	);
+		});
+
+		await locals.db.insert(userShifts).values(userShiftsToInsert);
+	}
 
 	return new Response(null, { status: 201 });
 };

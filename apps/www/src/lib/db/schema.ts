@@ -33,9 +33,7 @@ export type User = InferSelectModel<typeof users>;
 
 export const sessions = sqliteTable('session', {
 	id: text('id').primaryKey(),
-	userId: text('user_id')
-		.notNull()
-		.references(() => users.id),
+	userId: text('user_id').notNull(),
 	expiresAt: integer('expires').notNull()
 });
 
@@ -85,9 +83,7 @@ export type Event = InferSelectModel<typeof events>;
 
 export const shifts = sqliteTable('shift', {
 	id: text('id').notNull().primaryKey().$defaultFn(nanoid),
-	eventId: text('event_id')
-		.notNull()
-		.references(() => events.id),
+	eventId: text('event_id').notNull(),
 	start: integer('start', { mode: 'timestamp' }).notNull(),
 	end: integer('end', { mode: 'timestamp' }).notNull()
 });
@@ -97,7 +93,7 @@ export const shiftsRelations = relations(shifts, ({ one, many }) => ({
 		fields: [shifts.eventId],
 		references: [events.id]
 	}),
-	users: many(users)
+	members: many(userShifts)
 }));
 
 export type Shift = InferSelectModel<typeof shifts>;
@@ -107,12 +103,16 @@ export type Shift = InferSelectModel<typeof shifts>;
  */
 
 export const userShifts = sqliteTable('user_shift', {
-	userId: text('user_id')
+	userId: text('user_id').notNull(),
+	shiftId: text('shift_id').notNull(),
+	createdAt: integer('created_at', { mode: 'timestamp' })
 		.notNull()
-		.references(() => users.id),
-	shiftId: text('shift_id')
+		.$defaultFn(() => new Date()),
+	updatedAt: integer('updated_at', { mode: 'timestamp' }),
+	isBeerClaimed: integer('is_beer_claimed', { mode: 'boolean' }).notNull().default(false),
+	status: text('status', { enum: ['pending', 'accepted', 'denied'] })
 		.notNull()
-		.references(() => shifts.id)
+		.default('pending')
 });
 
 export const userShiftsRelations = relations(userShifts, ({ one }) => ({
