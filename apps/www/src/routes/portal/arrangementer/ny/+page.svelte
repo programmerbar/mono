@@ -87,6 +87,7 @@
 						name="user"
 						class="flex-1"
 						bind:value={createEventState.shifts[i].users[j].name}
+						disabledOptions={createEventState.shifts[i].users.map((user) => user.id)}
 						onchange={(option) => {
 							const id = option?.value;
 							if (id) {

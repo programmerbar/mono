@@ -12,6 +12,7 @@
 		name?: string;
 		class?: string;
 		onchange?: (value: Option | undefined) => void;
+		disabledOptions?: Array<string>;
 	};
 
 	let {
@@ -20,7 +21,8 @@
 		placeholder,
 		name,
 		onchange,
-		class: className
+		class: className,
+		disabledOptions
 	}: Props = $props();
 
 	let filteredOptions = $derived(
@@ -50,9 +52,10 @@
 	>
 		{#each filteredOptions as option (option.value)}
 			<Combobox.Item
-				class="flex h-10 w-full select-none items-center rounded-lg py-3 pl-5 pr-1.5 text-sm capitalize outline-none transition-all duration-75 data-[highlighted]:bg-muted"
+				class="flex h-10 w-full select-none items-center rounded-lg py-3 pl-5 pr-1.5 text-sm capitalize outline-none transition-all duration-75 data-[highlighted]:bg-muted data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed"
 				value={option.value}
 				label={option.label}
+				disabled={disabledOptions?.includes(option.value)}
 			>
 				{option.label}
 				<Combobox.ItemIndicator class="ml-auto" asChild={false}>

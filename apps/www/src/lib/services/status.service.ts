@@ -34,7 +34,3 @@ export class StatusService {
 		await this.#kv.put(STATUS_KEY, String(status));
 	}
 }
-
-export const createStatusService = (kv: KVNamespace) => {
-	return new StatusService(kv);
-};

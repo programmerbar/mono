@@ -5,13 +5,27 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
+			// Email client
 			resend: import('resend').Resend;
+
+			// DB client
 			db: import('$lib/db/drizzle').Database;
+
+			// Auth service
 			auth: import('$lib/auth/lucia').Auth;
-			statusService: import('$lib/services/status.service').StatusService;
-			feideProvider: import('$lib/auth/providers/feide').Feide;
+
+			// Auth
 			user: import('lucia').User | null;
 			session: import('lucia').Session | null;
+
+			// Auth providers
+			feideProvider: import('$lib/auth/providers/feide').Feide;
+
+			// Serivces
+			statusService: import('$lib/services/status.service').StatusService;
+			invitationService: import('$lib/services/invitation.service').InvitationService;
+			eventService: import('$lib/services/event.service').EventService;
+			userService: import('$lib/services/user.service').UserService;
 		}
 		// interface PageData {}
 		// interface PageState {}

@@ -1,23 +1,8 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { events } from '$lib/db/schema';
-import { eq } from 'drizzle-orm';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-	const event = await locals.db.query.events.findFirst({
-		where: (row, { eq }) => eq(row.id, params.id),
-		with: {
-			shifts: {
-				with: {
-					members: {
-						with: {
-							user: true
-						}
-					}
-				}
-			}
-		}
-	});
+	const event = await locals.eventService.findFullEventById(params.id);
 
 	if (!event) {
 		throw error(404, 'Event not found');
@@ -30,7 +15,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 
 export const actions: Actions = {
 	delete: async ({ params, locals }) => {
-		await locals.db.delete(events).where(eq(events.id, params.id));
+		await locals.eventService.delete(params.id);
 		throw redirect(303, '/portal/arrangementer');
 	}
 };

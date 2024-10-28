@@ -2,7 +2,10 @@ import { dev } from '$app/environment';
 import { createAuth } from '$lib/auth/lucia';
 import { createFeideProvider } from '$lib/auth/providers/feide';
 import { createDatabase } from '$lib/db/drizzle';
-import { createStatusService } from '$lib/services/status.service';
+import { EventService } from '$lib/services/event.service';
+import { InvitationService } from '$lib/services/invitation.service';
+import { StatusService } from '$lib/services/status.service';
+import { UserService } from '$lib/services/user.service';
 import type { Handle } from '@sveltejs/kit';
 import { Resend } from 'resend';
 
@@ -28,8 +31,17 @@ export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.feideProvider = feideProvider;
 
 	// Setup status service
-	const statusService = createStatusService(event.platform!.env.STATUS_KV);
+	const statusService = new StatusService(event.platform!.env.STATUS_KV);
 	event.locals.statusService = statusService;
+
+	const invitationService = new InvitationService(db);
+	event.locals.invitationService = invitationService;
+
+	const userService = new UserService(db);
+	event.locals.userService = userService;
+
+	const eventService = new EventService(db);
+	event.locals.eventService = eventService;
 
 	// Validate auth
 	const sessionId = event.cookies.get(auth.sessionCookieName);
