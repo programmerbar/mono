@@ -5,6 +5,10 @@
 	let { data } = $props();
 </script>
 
+<svelte:head>
+	<title>Arrangementer</title>
+</svelte:head>
+
 <Heading>Arrangementer</Heading>
 
 <p class="mt-4">

@@ -33,6 +33,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Nytt arrangement</title>
+</svelte:head>
+
 <Heading class="mb-4">Nytt arrangement</Heading>
 
 {#if error}

@@ -16,6 +16,10 @@
 	);
 </script>
 
+<svelte:head>
+	<title>Brukere</title>
+</svelte:head>
+
 <section class="space-y-6">
 	<Heading>Brukere</Heading>
 

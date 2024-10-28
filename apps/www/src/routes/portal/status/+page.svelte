@@ -14,6 +14,10 @@
 	];
 </script>
 
+<svelte:head>
+	<title>Endre status</title>
+</svelte:head>
+
 <div class="flex flex-col bg-background gap-2 max-w-[300px] mx-auto p-4 rounded-lg border">
 	{#each statusButtons as { status, Icon, label }}
 		{@const isSelected = data.status === status}

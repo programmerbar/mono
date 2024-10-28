@@ -5,6 +5,10 @@
 	let { data } = $props();
 </script>
 
+<svelte:head>
+	<title>Hjem — Programmerbar Portal</title>
+</svelte:head>
+
 <div class="space-y-10">
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 		<div class="rounded-lg border p-4 bg-white flex flex-col items-center justify-center">

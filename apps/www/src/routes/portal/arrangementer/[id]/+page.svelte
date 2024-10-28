@@ -7,6 +7,10 @@
 	let { data } = $props();
 </script>
 
+<svelte:head>
+	<title>{data.event.name}</title>
+</svelte:head>
+
 <Heading>{data.event.name}</Heading>
 
 <section class="mt-8">
