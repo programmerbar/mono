@@ -35,3 +35,11 @@ To be able to login you need to create an invitation for yourself. You can do th
 ```bash
 pnpm dlx tsx ./apps/www/scripts/add-invitation.tsx "<your-email>"
 ```
+
+## Technologies
+
+The architecture heavliy relies on Cloudflare Pages and associated services like D1 and KV. The website is built with SvelteKit, and uses Sanity as a headless CMS.
+
+### Deployment
+
+The website will be deployed to Cloudflare Pages automatically when a PR is merged to `main`. Any migrations will also be applied to the production database automatically.
