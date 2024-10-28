@@ -27,7 +27,7 @@
 		<ul class="mt-4 flex flex-col gap-4">
 			{#each data.upcomingShifts as shift}
 				<li>
-					<a class="hover:underline" href="/portal/arrangementer/{shift.event!.id}">
+					<a class="hover:underline" href="/portal/arrangementer/{shift.event?.id}">
 						<div class="p-2 rounded-lg border border-border bg-white">
 							<p>
 								{shift.event?.name}: {formatDate(shift.shift.start)} - {formatDate(shift.shift.end)}

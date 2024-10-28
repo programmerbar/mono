@@ -85,7 +85,11 @@ export type Event = InferSelectModel<typeof events>;
 
 export const shifts = sqliteTable('shift', {
 	id: text('id').notNull().primaryKey().$defaultFn(nanoid),
-	eventId: text('event_id').notNull(),
+	eventId: text('event_id')
+		.notNull()
+		.references(() => events.id, {
+			onDelete: 'cascade'
+		}),
 	start: integer('start', { mode: 'timestamp' }).notNull(),
 	end: integer('end', { mode: 'timestamp' }).notNull()
 });
@@ -105,8 +109,16 @@ export type Shift = InferSelectModel<typeof shifts>;
  */
 
 export const userShifts = sqliteTable('user_shift', {
-	userId: text('user_id').notNull(),
-	shiftId: text('shift_id').notNull(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => users.id, {
+			onDelete: 'cascade'
+		}),
+	shiftId: text('shift_id')
+		.notNull()
+		.references(() => shifts.id, {
+			onDelete: 'cascade'
+		}),
 	createdAt: integer('created_at', { mode: 'timestamp' })
 		.notNull()
 		.$defaultFn(() => new Date()),
