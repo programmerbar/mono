@@ -1,6 +1,6 @@
 import type { Database } from '$lib/db/drizzle';
-import { events, shifts, userShifts } from '$lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { events, shifts, userShifts, type UserShiftInsert } from '$lib/db/schema';
+import { and, eq } from 'drizzle-orm';
 
 export class EventService {
 	#db: Database;
@@ -30,12 +30,22 @@ export class EventService {
 		return await this.#db.insert(shifts).values(values).returning();
 	}
 
-	async createUserShifts(values: Array<{ shiftId: string; userId: string }>) {
+	async createUserShifts(values: Array<UserShiftInsert>) {
 		if (values.length === 0) {
 			return;
 		}
 
 		return await this.#db.insert(userShifts).values(values);
+	}
+
+	async createUserShift(values: UserShiftInsert) {
+		return await this.createUserShifts([values]);
+	}
+
+	async deleteUserShift(values: { shiftId: string; userId: string }) {
+		await this.#db
+			.delete(userShifts)
+			.where(and(eq(userShifts.shiftId, values.shiftId), eq(userShifts.userId, values.userId)));
 	}
 
 	async findFullEventById(id: string) {

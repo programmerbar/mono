@@ -24,12 +24,16 @@
 	<section>
 		<Heading level={2}>Kommende vakter</Heading>
 
-		<ul class="mt-4">
+		<ul class="mt-4 flex flex-col gap-4">
 			{#each data.upcomingShifts as shift}
 				<li>
-					<div class="p-2 rounded-lg border border-border bg-white">
-						{shift.event?.name}: {formatDate(shift.shift.start)} - {formatDate(shift.shift.end)}
-					</div>
+					<a class="hover:underline" href="/portal/arrangementer/{shift.event!.id}">
+						<div class="p-2 rounded-lg border border-border bg-white">
+							<p>
+								{shift.event?.name}: {formatDate(shift.shift.start)} - {formatDate(shift.shift.end)}
+							</p>
+						</div>
+					</a>
 				</li>
 			{:else}
 				<li>Ingen vakter</li>

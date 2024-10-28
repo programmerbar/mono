@@ -129,3 +129,4 @@ export const userShiftsRelations = relations(userShifts, ({ one }) => ({
 }));
 
 export type UserShift = InferSelectModel<typeof userShifts>;
+export type UserShiftInsert = InferInsertModel<typeof userShifts>;
