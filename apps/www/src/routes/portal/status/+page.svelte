@@ -8,14 +8,14 @@
 	let newStatus = $state(data.status);
 
 	const statusButtons = [
-		{ status: 1, Icon: Beer, label: 'Åpnet', color: 'green-500' },
-		{ status: 2, Icon: Users, label: 'Privat arrangement', color: 'orange-400' },
-		{ status: 0, Icon: Lock, label: 'Stengt', color: 'red-500' }
+		{ status: 1, Icon: Beer, label: 'Åpnet' },
+		{ status: 2, Icon: Users, label: 'Privat arrangement' },
+		{ status: 0, Icon: Lock, label: 'Stengt' }
 	];
 </script>
 
 <div class="flex flex-col bg-background gap-2 max-w-[300px] mx-auto p-4 rounded-lg border">
-	{#each statusButtons as { status, Icon, label, color }}
+	{#each statusButtons as { status, Icon, label }}
 		{@const isSelected = data.status === status}
 		<form
 			method="post"

@@ -4,7 +4,7 @@
 
 	let showProgressBar = $state(false);
 	let progress = tweened(0, { duration: 200 });
-	let interval: NodeJS.Timeout | undefined;
+	let interval: ReturnType<typeof setInterval> | undefined;
 
 	$effect(() => {
 		if ($navigating) {
