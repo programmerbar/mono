@@ -98,7 +98,7 @@
 					/>
 					<button
 						type="button"
-						class="rounded-lg flex items-center justify-center transition-colors hover:text-red-500 border-border border h-10 w-10"
+						class="rounded-lg flex items-center justify-center bg-white transition-colors hover:text-red-500 border-border border h-10 w-10"
 						onclick={() => createEventState.deleteUserFromShift(i, user.id)}
 					>
 						<X class="size-4" />
