@@ -12,8 +12,8 @@
 			<span class="text-2xl font-medium">{data.shiftsCompleted}</span>
 		</div>
 		<div class="rounded-lg border p-4 bg-white flex flex-col items-center justify-center">
-			<span class="text-gray-600">Vakter ferdig:</span>
-			<span class="text-2xl font-medium">{data.shiftsCompleted}</span>
+			<span class="text-gray-600">Gratis øl igjen:</span>
+			<span class="text-2xl font-medium">{data.unclaimedBeers}</span>
 		</div>
 	</div>
 

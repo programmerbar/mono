@@ -6,13 +6,15 @@ export const load: PageServerLoad = async ({ locals }) => {
 		throw redirect(307, '/login');
 	}
 
-	const [userShifts, upcomingShifts] = await Promise.all([
+	const [userShifts, unclaimedBeers, upcomingShifts] = await Promise.all([
 		locals.shiftService.findCompletedShiftsByUserId(locals.user.id),
+		locals.shiftService.findShiftsWithUnclaimedBeersByUserId(locals.user.id),
 		locals.shiftService.findUpcomingShiftsByUserId(locals.user.id)
 	]);
 
 	return {
 		shiftsCompleted: userShifts.length,
+		unclaimedBeers: unclaimedBeers.length,
 		upcomingShifts
 	};
 };

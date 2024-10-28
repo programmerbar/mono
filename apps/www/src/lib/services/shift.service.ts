@@ -41,4 +41,21 @@ export class ShiftService {
 
 		return upcomingShifts;
 	}
+
+	async findShiftsWithUnclaimedBeersByUserId(userId: string) {
+		const shiftsWithUnclaimedBeer = await this.#db
+			.select()
+			.from(shifts)
+			.leftJoin(userShifts, eq(shifts.id, userShifts.shiftId))
+			.where(
+				and(
+					eq(userShifts.userId, userId),
+					// eq(userShifts.status, 'accepted'), // Uncomment this line when we can accept shifts
+					eq(userShifts.isBeerClaimed, false),
+					lte(shifts.end, new Date())
+				)
+			);
+
+		return shiftsWithUnclaimedBeer;
+	}
 }
