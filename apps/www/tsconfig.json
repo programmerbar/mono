@@ -10,6 +10,7 @@
 		"sourceMap": true,
 		"strict": true,
 		"moduleResolution": "bundler",
+		"jsx": "react",
 		"types": ["@cloudflare/workers-types"]
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias

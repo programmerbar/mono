@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { GetProductsQueryResult } from '../../../../sanity.types';
+	import type { GetProductsQueryResult } from '../../../../../sanity.types';
 
 	type Props = {
 		products: GetProductsQueryResult;
