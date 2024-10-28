@@ -6,6 +6,7 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Combobox from '$lib/components/ui/Combobox.svelte';
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
+	import { differenceInHours } from 'date-fns';
 
 	let { data } = $props();
 
@@ -54,7 +55,8 @@
 	/>
 
 	{#each createEventState.shifts as shift, i}
-		<div class="relative space-y-2 rounded-lg border border-border p-4">
+		{@const shiftLength = differenceInHours(shift.end, shift.start)}
+		<div class="relative flex flex-col space-y-2 rounded-lg border border-border p-4">
 			<button
 				type="button"
 				class="absolute top-4 right-4 text-red-400 hover:text-red-600 transition-colors"
@@ -79,7 +81,11 @@
 				required
 			/>
 
-			<span class="text-sm font-medium">Ansvarlige</span>
+			{#if shiftLength >= 4}
+				<span class="text-orange-500 font-medium text-sm">NB: Vakten er lengre enn 4 timer!</span>
+			{/if}
+
+			<span class="text-sm font-medium mt-8">Ansvarlige</span>
 
 			{#each createEventState.shifts[i].users as user, j (user)}
 				<div class="flex items-center gap-2">
