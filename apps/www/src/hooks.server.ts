@@ -5,6 +5,7 @@ import { createDatabase } from '$lib/db/drizzle';
 import { EmailService } from '$lib/services/email.service';
 import { EventService } from '$lib/services/event.service';
 import { InvitationService } from '$lib/services/invitation.service';
+import { ShiftService } from '$lib/services/shift.service';
 import { StatusService } from '$lib/services/status.service';
 import { UserService } from '$lib/services/user.service';
 import type { Handle } from '@sveltejs/kit';
@@ -46,6 +47,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const emailService = new EmailService(resend);
 	event.locals.emailService = emailService;
+
+	const shiftService = new ShiftService(db);
+	event.locals.shiftService = shiftService;
 
 	// Validate auth
 	const sessionId = event.cookies.get(auth.sessionCookieName);
