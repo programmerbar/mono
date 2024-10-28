@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { ContactUsEmail } from '@programmerbar/emails';
+import { ContactUsEmail, InvitationEmail } from '@programmerbar/emails';
 import type { CreateEmailOptions, Resend } from 'resend';
 
 const PROGRAMMERBAR_EMAIL = 'styret@programmerbar.no';
@@ -9,6 +9,10 @@ export type ContactUsEmailProps = {
 	name: string;
 	email: string;
 	message: string;
+};
+
+export type InvitationEmailProps = {
+	email: string;
 };
 
 export class EmailService {
@@ -25,6 +29,18 @@ export class EmailService {
 				subject: 'Kontaktskjema på hjemmesiden',
 				to: [PROGRAMMERBAR_EMAIL],
 				react: ContactUsEmail(data)
+			},
+			JSON.stringify(data, null, 2)
+		);
+	}
+
+	async sendInvitaitonEmail(data: InvitationEmailProps) {
+		await this.sendEmail(
+			{
+				from: FROM_EMAIL,
+				subject: 'Invitasjon til Programmerbar',
+				to: [data.email],
+				react: InvitationEmail(data)
 			},
 			JSON.stringify(data, null, 2)
 		);

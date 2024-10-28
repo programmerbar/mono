@@ -14,5 +14,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		return new Response(null, { status: 500 });
 	}
 
+	await locals.emailService.sendInvitaitonEmail({ email });
+
 	return new Response(null, { status: 201 });
 };
