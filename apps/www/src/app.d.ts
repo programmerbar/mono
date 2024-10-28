@@ -22,6 +22,7 @@ declare global {
 			feideProvider: import('$lib/auth/providers/feide').Feide;
 
 			// Serivces
+			emailService: import('$lib/services/email.service').EmailService;
 			statusService: import('$lib/services/status.service').StatusService;
 			invitationService: import('$lib/services/invitation.service').InvitationService;
 			eventService: import('$lib/services/event.service').EventService;

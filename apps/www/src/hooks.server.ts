@@ -2,6 +2,7 @@ import { dev } from '$app/environment';
 import { createAuth } from '$lib/auth/lucia';
 import { createFeideProvider } from '$lib/auth/providers/feide';
 import { createDatabase } from '$lib/db/drizzle';
+import { EmailService } from '$lib/services/email.service';
 import { EventService } from '$lib/services/event.service';
 import { InvitationService } from '$lib/services/invitation.service';
 import { StatusService } from '$lib/services/status.service';
@@ -42,6 +43,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const eventService = new EventService(db);
 	event.locals.eventService = eventService;
+
+	const emailService = new EmailService(resend);
+	event.locals.emailService = emailService;
 
 	// Validate auth
 	const sessionId = event.cookies.get(auth.sessionCookieName);

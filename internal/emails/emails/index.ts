@@ -1,1 +1,4 @@
-export { default as ContactUsEmail } from "./contact-us";
+export {
+  default as ContactUsEmail,
+  type ContactUsEmailProps,
+} from "./contact-us";
