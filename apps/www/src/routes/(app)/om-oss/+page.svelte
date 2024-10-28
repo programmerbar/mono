@@ -18,7 +18,7 @@
 
 	<div class="mb-16">
 		<div
-			class="mx-auto flex h-72 w-96 items-center justify-center gap-4 rounded-xl border-2 bg-gray-100 sm:float-right sm:ml-4"
+			class="mx-auto flex w-full mb-4 h-72 md:w-96 items-center justify-center gap-4 rounded-xl border-2 bg-gray-100 sm:float-right sm:ml-4"
 		>
 			<Smile class="h-16 w-16 text-primary" />
 			<Beer class="h-16 w-16 text-primary" />
@@ -26,7 +26,7 @@
 			<Wifi class="h-16 w-16 text-primary" />
 		</div>
 
-		<article class="text-xl prose-xl prose">
+		<article class="text-xl prose-xl prose break-words">
 			{@html html}
 		</article>
 	</div>
