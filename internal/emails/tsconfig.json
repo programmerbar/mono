@@ -23,6 +23,6 @@
     "lib": ["es2022", "dom", "dom.iterable"],
     "jsx": "react-jsx"
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["emails"],
   "exclude": ["node_modules"]
 }
