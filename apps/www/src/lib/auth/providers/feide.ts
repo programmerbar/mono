@@ -72,6 +72,6 @@ export const getFeideUser = async (accessToken: string): Promise<ProviderUser> =
 	return {
 		id: feideUser.sub,
 		username: feideUser.name,
-		email: feideUser.email
+		email: feideUser.email.toLowerCase()
 	};
 };

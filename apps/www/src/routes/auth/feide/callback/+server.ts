@@ -2,7 +2,8 @@ import { dev } from '$app/environment';
 import { getFeideUser } from '$lib/auth/providers/feide';
 import { nanoid } from 'nanoid';
 import type { RequestHandler } from './$types';
-import { users } from '$lib/db/schema';
+import { invitations, users } from '$lib/db/schema';
+import { eq } from 'drizzle-orm';
 
 export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 	const state = url.searchParams.get('state');
@@ -39,6 +40,30 @@ export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 		});
 	}
 
+	const invitation = await locals.db.query.invitations.findFirst({
+		where: (row, { and, eq, gte }) =>
+			and(eq(row.email, feideUser.email), gte(row.expiresAt, new Date()))
+	});
+
+	if (!invitation) {
+		return new Response('No invitation found', {
+			status: 403
+		});
+	}
+
+	if (invitation.usedAt !== null) {
+		return new Response('Invitation already used', {
+			status: 403
+		});
+	}
+
+	await locals.db
+		.update(invitations)
+		.set({
+			usedAt: new Date()
+		})
+		.where(eq(invitations.id, invitation.id));
+
 	const userId = nanoid();
 	await locals.db.insert(users).values({
 		id: userId,
@@ -59,7 +84,7 @@ export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 	return new Response(null, {
 		status: 302,
 		headers: {
-			location: '/'
+			location: '/portal'
 		}
 	});
 };

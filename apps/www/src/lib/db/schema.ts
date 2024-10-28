@@ -53,6 +53,7 @@ export const invitations = sqliteTable(
 	{
 		id: text('id').notNull().primaryKey(),
 		email: text('email').notNull(),
+		usedAt: integer('claimed_at', { mode: 'timestamp' }),
 		createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
 		expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
 	},
