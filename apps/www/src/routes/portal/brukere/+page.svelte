@@ -1,19 +1,18 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
-	import { mailto, initials } from '$lib/utils';
 	import Input from '$lib/components/ui/Input.svelte';
 	import AddUserModal from '$lib/components/portal/AddUserModal.svelte';
+	import { mailto } from '$lib/utils';
 	import { formatDate } from '$lib/date';
+	import UserCard from '$lib/components/Usercards/usercard.svelte';
 
-	let { data } = $props();
+	export let data;
 
-	let search = $state('');
+	let search = '';
 
-	let filteredUsers = $derived.by(() =>
-		data.users.filter((user) => {
-			return user.name.toLowerCase().includes(search.toLowerCase());
-		})
-	);
+	$: filteredUsers = data.users.filter((user) => {
+		return user.name.toLowerCase().includes(search.toLowerCase());
+	});
 </script>
 
 <svelte:head>
@@ -30,20 +29,7 @@
 
 	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		{#each filteredUsers as user}
-			<li class="block rounded-lg border bg-white p-4">
-				<div class="mb-2 flex justify-center">
-					<div class="flex h-16 w-16 items-center justify-center rounded-full border bg-gray-200">
-						<span class="text-lg font-medium text-gray-600">{initials(user.name)}</span>
-					</div>
-				</div>
-
-				<div>
-					<p class="text-center font-medium">{user.name}</p>
-					<p class="text-center text-sm">
-						<a class="hover:underline" href={mailto(user.email)}>{user.email}</a>
-					</p>
-				</div>
-			</li>
+			<UserCard {user} />
 		{:else}
 			<li class="block col-span-3 text-center py-4">
 				<p>Fant ingen bruker</p>
@@ -67,7 +53,7 @@
 					{formatDate(invitation.createdAt)}
 				</p>
 				<p class="text-sm">
-					<span class="font-medium">Utgår:</span>
+					<span class="font-medium">Utg�r:</span>
 					{formatDate(invitation.expiresAt)}
 				</p>
 			</li>

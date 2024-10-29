@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1729949890112,
-      "tag": "0000_stale_darkhawk",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1729952558788,
-      "tag": "0001_tiresome_plazm",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1729964943822,
-      "tag": "0002_misty_toro",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1730078458856,
-      "tag": "0003_absent_epoch",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "6",
-      "when": 1730082483936,
-      "tag": "0004_wandering_pandemic",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "6",
-      "when": 1730150522538,
-      "tag": "0005_silky_cargill",
+      "when": 1730232905765,
+      "tag": "0000_many_ghost_rider",
       "breakpoints": true
     }
   ]

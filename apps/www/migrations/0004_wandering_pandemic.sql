@@ -1,1 +1,0 @@
-ALTER TABLE `invitation` ADD `claimed_at` integer;

@@ -72,7 +72,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 		});
 	}
 
-	// Protect /portal/* from unauthenticated users
+	if (event.url.pathname.startsWith('/portal/admin') && event.locals.user?.role !== 'board') {
+		return new Response(null, {
+			status: 307,
+			headers: {
+				location: '/logg-inn'
+			}
+		});
+	}
+
 	if (event.url.pathname.startsWith('/portal') && !event.locals.user) {
 		return new Response(null, {
 			status: 307,
@@ -82,5 +90,5 @@ export const handle: Handle = async ({ event, resolve }) => {
 		});
 	}
 
-	return await resolve(event);
+	return resolve(event);
 };
