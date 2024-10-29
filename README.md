@@ -7,6 +7,14 @@
 
 ## How to run locally
 
+1. Fill in env-variables
+
+   ```bash
+   cp apps/www/.dev.vars.example .dev.vars
+   ```
+
+1. Fill in the empty variables
+
 1. Install dependencies
 
    ```bash
