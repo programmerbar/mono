@@ -1,46 +1,37 @@
-
-// src/routes/portal/admin/+page.server.ts
-
-import { redirect, fail } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
 import { UserService } from '$lib/services/user.service';
+import { redirect } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ locals }) => {
-  if (locals.user.role !== 'board') {
-    throw redirect(307, '/portal');
-  }
+export async function load({ locals }) {
+	if (!locals.user || locals.user.role !== 'board') {
+		throw redirect(303, '/portal');
+	}
 
-  const users = await locals.userService.findAll();
+	const userService = new UserService(locals.db);
+	const users = await userService.findAll();
 
-  return {
-    users
-  };
+	return {
+		user: locals.user,
+		users
+	};
+}
+
+export const actions = {
+	updateRole: async ({ request, locals }) => {
+		const formData = await request.formData();
+		const userId = formData.get('userId');
+		const role = formData.get('role');
+
+		if (!locals.user || locals.user.role !== 'board') {
+			return { status: 401, body: { error: 'Unauthorized' } };
+		}
+
+		const userService = new UserService(locals.db);
+		const success = await userService.updateUserRole(userId as string, role as string);
+
+		if (success) {
+			return { status: 200 };
+		} else {
+			return { status: 500, body: { error: 'Failed to update user role' } };
+		}
+	}
 };
-
-export const actions: Actions = {
-  updateRole: async ({ request, locals }) => {
-    if (locals.user.role !== 'board') {
-      return fail(403, { message: 'Access denied' });
-    }
-
-    const formData = await request.formData();
-    const userId = formData.get('userId');
-    const newRole = formData.get('role');
-
-    if (typeof userId !== 'string' || typeof newRole !== 'string') {
-      return fail(400, { message: 'Invalid input data' });
-    }
-
-    console.log("Updating role for userId:", userId, "to newRole:", newRole);
-
-    const userService = new UserService(locals.db);
-    try {
-      await userService.updateUserRole(userId, newRole as 'board' | 'normal');
-    } catch (error) {
-      return fail(500, { message: 'Failed to update role' });
-    }
-
-    return { success: true };
-  }
-};
-

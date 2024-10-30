@@ -4,7 +4,7 @@
 	import AddUserModal from '$lib/components/portal/AddUserModal.svelte';
 	import { mailto } from '$lib/utils';
 	import { formatDate } from '$lib/date';
-	import UserCard from '$lib/components/Usercards/usercard.svelte';
+	import UserCard from '$lib/components/Usercards/UserCard.svelte';
 
 	export let data;
 
