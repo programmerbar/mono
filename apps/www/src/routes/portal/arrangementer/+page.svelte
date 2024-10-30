@@ -3,6 +3,8 @@
 	import Heading from '$lib/components/ui/Heading.svelte';
 
 	let { data } = $props();
+
+	let currentUserRole = data.user.role;
 </script>
 
 <svelte:head>
@@ -10,7 +12,6 @@
 </svelte:head>
 
 <Heading>Arrangementer</Heading>
-
 <p class="mt-4">
 	<a href="/portal/arrangementer/ny" class="text-blue-500 hover:underline">Nytt arrangement</a>
 </p>

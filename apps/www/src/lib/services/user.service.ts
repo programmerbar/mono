@@ -38,4 +38,14 @@ export class UserService {
       .then((rows) => rows[0]);
   }
 
+  async findById(userId: string) {
+    const user = await this.#db
+      .select()
+      .from(users)
+      .where(eq(users.id, userId))
+      .then((results) => results[0]);
+
+    return user;
+  }
+
 }

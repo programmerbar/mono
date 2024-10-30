@@ -32,7 +32,6 @@
 					>
 				</li>
 
-				<!-- Conditionally show the Admin link if user is 'board' -->
 				{#if user.role === 'board'}
 					<li>
 						<a class="px-1 text-gray-500 hover:text-gray-900 transition" href="/portal/admin"

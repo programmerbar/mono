@@ -1,31 +1,43 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { initials, mailto } from '$lib/utils'; // Added 'mailto'
+	import { initials, mailto } from '$lib/utils';
 
 	export let user;
-	export let currentUserRole = 'normal'; // Default role, can be overridden
+	export let currentUserRole = 'normal'; // Default role
 	export let showMenu = false; // Control whether to show the role editing menu
+
+	// New prop to control admin features
+	export let showAdminFeatures = false;
 
 	const dispatch = createEventDispatcher();
 
 	// State for the open menu
 	let menuOpen = false;
 
-	function toggleMenu() {
+	// Toggle the menu open/close state
+	function toggleMenu(event: MouseEvent) {
+		// Prevent the card's click event from triggering when clicking the menu
+		event.stopPropagation();
 		menuOpen = !menuOpen;
 	}
 
 	// Emit an event when the role is changed
-	function changeRole(newRole: string) {
+	function changeRole(newRole: 'board' | 'normal') {
 		dispatch('roleChange', { userId: user.id, newRole });
 		menuOpen = false;
 	}
+
+	// Emit an event when the card is clicked
+	function handleClick() {
+		dispatch('click', { user });
+	}
 </script>
 
-<li class="relative block bg-white border rounded-lg p-4">
-	{#if showMenu && currentUserRole === 'board'}
+<li class="relative block bg-white border rounded-lg p-4 cursor-pointer" on:click={handleClick}>
+	{#if showAdminFeatures && showMenu && currentUserRole === 'board'}
+		<!-- Admin menu code here -->
 		<div class="absolute top-2 right-2">
-			<button on:click={toggleMenu}>
+			<button on:click|stopPropagation={toggleMenu}>
 				<!-- Three dots icon -->
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -97,9 +109,6 @@
 
 	<div>
 		<p class="font-medium text-center">{user.name}</p>
-		<p class="text-center text-sm mt-1">
-			<a class="hover:underline" href={mailto(user.email)}>{user.email}</a>
-		</p>
 		<!-- Role badge -->
 		<p class="text-center text-sm mt-1">
 			{#if user.role === 'board'}
@@ -111,6 +120,9 @@
 					>Frivillig</span
 				>
 			{/if}
+		</p>
+		<p class="text-center text-sm mt-1">
+			<a class="hover:underline" href={mailto(user.email)}>{user.email}</a>
 		</p>
 	</div>
 </li>
