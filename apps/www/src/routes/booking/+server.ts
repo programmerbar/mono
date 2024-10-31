@@ -1,3 +1,8 @@
 export function GET() {
-	return Response.redirect('https://forms.gle/BLdygdoRJgjMbQZj6');
+	return new Response(null, {
+		status: 301,
+		headers: {
+			Location: 'https://forms.gle/BLdygdoRJgjMbQZj6'
+		}
+	});
 }
