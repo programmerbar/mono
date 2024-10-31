@@ -18,7 +18,7 @@
 
 	<div class="w-fit mx-auto pt-8">
 		<a
-			href="/booking"
+			href="https://forms.gle/BLdygdoRJgjMbQZj6"
 			class="rounded-lg border-2 font-medium text-lg text-gray-700 bg-gray-200 px-6 py-3 shadow transition-colors hover:bg-gray-300 hover:border-gray-400"
 			>Klikk her for å booke!</a
 		>
