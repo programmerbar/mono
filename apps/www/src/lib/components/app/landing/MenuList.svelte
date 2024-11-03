@@ -37,8 +37,8 @@
 						class="flex h-16 items-center justify-between rounded-xl px-4 py-2 transition-all hover:bg-primary-light"
 					>
 						<div class="flex flex-col">
-							<p class="text-lg md:text-xl group-hover:underline">{name}</p>
-							<p class="font-mono text-sm md:text-sm font-medium text-gray-700">{producer}</p>
+							<p class="text-lg group-hover:underline md:text-xl">{name}</p>
+							<p class="font-mono text-sm font-medium text-gray-700 md:text-sm">{producer}</p>
 						</div>
 
 						<div>

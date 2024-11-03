@@ -24,7 +24,7 @@
 	}
 
 	* {
-		@apply box-border border-border min-w-0;
+		@apply box-border min-w-0 border-border;
 	}
 
 	html,

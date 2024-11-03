@@ -13,12 +13,12 @@
 	<title>Om oss</title>
 </svelte:head>
 
-<div class="max-w-screen-lg w-full mx-auto border-2 shadow-lg p-8 bg-background rounded-xl">
-	<Heading class="text-4xl mb-4">Om oss</Heading>
+<div class="mx-auto w-full max-w-screen-lg rounded-xl border-2 bg-background p-8 shadow-lg">
+	<Heading class="mb-4 text-4xl">Om oss</Heading>
 
 	<div class="mb-16">
 		<div
-			class="mx-auto flex w-full mb-4 h-72 md:w-96 items-center justify-center gap-4 rounded-xl border-2 bg-gray-100 sm:float-right sm:ml-4"
+			class="mx-auto mb-4 flex h-72 w-full items-center justify-center gap-4 rounded-xl border-2 bg-gray-100 sm:float-right sm:ml-4 md:w-96"
 		>
 			<Smile class="h-16 w-16 text-primary" />
 			<Beer class="h-16 w-16 text-primary" />
@@ -26,7 +26,7 @@
 			<Wifi class="h-16 w-16 text-primary" />
 		</div>
 
-		<article class="text-xl prose-xl prose break-words">
+		<article class="prose prose-xl break-words text-xl">
 			{@html html}
 		</article>
 	</div>
@@ -34,19 +34,19 @@
 	<section>
 		<Heading class="text-3xl" level={2}>Styremedlemmer</Heading>
 
-		<ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-10 mt-4">
+		<ul class="mt-4 grid grid-cols-1 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
 			{#each data.programmerbar.members as member}
 				<li class="p-1 text-center">
-					<div class="flex justify-center items-center mb-3">
+					<div class="mb-3 flex items-center justify-center">
 						{#if member.profile.picture}
 							<img
 								src={echoUrlFor(member.profile.picture).width(200).height(200).url()}
 								alt={member.profile.name}
-								class="size-20 object-cover rounded-full border-2"
+								class="size-20 rounded-full border-2 object-cover"
 							/>
 						{:else}
 							<div
-								class="size-20 bg-gray-200 rounded-full flex items-center justify-center border-2"
+								class="flex size-20 items-center justify-center rounded-full border-2 bg-gray-200"
 							>
 								<UserCircle class="size-10 text-gray-400" />
 							</div>

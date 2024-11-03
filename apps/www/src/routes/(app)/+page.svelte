@@ -24,12 +24,12 @@
 <Hero {...status} />
 
 <div class="space-y-10">
-	<div class="w-full gap-10 grid grid-cols-1 md:grid-cols-2 mx-auto">
+	<div class="mx-auto grid w-full grid-cols-1 gap-10 md:grid-cols-2">
 		<MenuList {products} />
 		<EventList {events} />
 	</div>
 
-	<div class="w-full gap-10 grid grid-cols-1 md:grid-cols-2 mx-auto">
+	<div class="mx-auto grid w-full grid-cols-1 gap-10 md:grid-cols-2">
 		<ContactForm />
 		<Map />
 	</div>

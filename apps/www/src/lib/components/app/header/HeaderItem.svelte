@@ -8,5 +8,5 @@
 </script>
 
 <li class="font-mono">
-	<a class="hover:underline text-gray-700 text-xl font-semibold" href={to}>{name}</a>
+	<a class="text-xl font-semibold text-gray-700 hover:underline" href={to}>{name}</a>
 </li>

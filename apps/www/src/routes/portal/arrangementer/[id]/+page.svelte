@@ -20,10 +20,10 @@
 <section class="mt-8">
 	<Heading level={2}>Vakter</Heading>
 
-	<ul class="flex flex-col gap-4 mt-2">
+	<ul class="mt-2 flex flex-col gap-4">
 		{#each data.event.shifts as shift}
 			{@const isInShift = shift.members.some((member) => member.userId === auth.user?.id)}
-			<li class="block p-4 rounded-lg border bg-white">
+			<li class="block rounded-lg border bg-white p-4">
 				<p>{capitalize(formatDate(shift.start))}</p>
 				<p>{time(shift.start)} - {time(shift.end)}</p>
 				<p><b>Ansvarlige</b>: {shift.members.map((member) => member.user.name).join(', ')}</p>

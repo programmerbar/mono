@@ -18,7 +18,7 @@
 	<title>Endre status</title>
 </svelte:head>
 
-<div class="flex flex-col bg-background gap-2 max-w-[300px] mx-auto p-4 rounded-lg border">
+<div class="mx-auto flex max-w-[300px] flex-col gap-2 rounded-lg border bg-background p-4">
 	{#each statusButtons as { status, Icon, label }}
 		{@const isSelected = data.status === status}
 		<form
@@ -36,7 +36,7 @@
 			<input type="hidden" name="status" value={status} />
 			<button
 				class={cn(
-					'w-full rounded-lg border p-4 bg-white hover:bg-gray-200 flex transition-colors items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60',
+					'flex w-full items-center justify-center gap-2 rounded-lg border bg-white p-4 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-60',
 					{
 						'bg-green-500 hover:bg-green-600': isSelected && status === 1,
 						'bg-orange-400 hover:bg-orange-500': isSelected && status === 2,

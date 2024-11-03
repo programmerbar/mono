@@ -13,12 +13,12 @@
 
 <a class="group" href="/produkt/{product._id}">
 	<div
-		class="relative flex flex-col overflow-hidden h-full rounded-xl border-2 bg-background shadow-md"
+		class="relative flex h-full flex-col overflow-hidden rounded-xl border-2 bg-background shadow-md"
 	>
 		<div class="relative border-b-2">
 			{#if product.isSoldOut}
 				<div
-					class="absolute top-0 left-0 bg-red-500 text-white text-xs font-semibold py-1 px-2 rounded-br"
+					class="absolute left-0 top-0 rounded-br bg-red-500 px-2 py-1 text-xs font-semibold text-white"
 				>
 					Utsolgt
 				</div>
@@ -34,8 +34,8 @@
 				<div class="h-48 w-full bg-gray-200"></div>
 			{/if}
 		</div>
-		<div class="p-2 flex flex-col flex-1">
-			<h2 class="group-hover:underline text-lg font-semibold">{product.name}</h2>
+		<div class="flex flex-1 flex-col p-2">
+			<h2 class="text-lg font-semibold group-hover:underline">{product.name}</h2>
 
 			{#if product.producer}
 				<p class="text-sm text-gray-800">{product.producer}</p>
@@ -48,9 +48,9 @@
 			{/if}
 
 			{#if filterState.showStudentPrice}
-				<p class="text-lg font-semibold mt-auto">{product.priceList.student} kr</p>
+				<p class="mt-auto text-lg font-semibold">{product.priceList.student} kr</p>
 			{:else}
-				<p class="text-lg font-semibold mt-auto">{product.priceList.ordinary} kr</p>
+				<p class="mt-auto text-lg font-semibold">{product.priceList.ordinary} kr</p>
 			{/if}
 		</div>
 	</div>

@@ -40,17 +40,17 @@
 
 <div
 	class={cn({
-		'h-screen fixed top-0 left-0 bg-background w-full z-50': isOpen
+		'fixed left-0 top-0 z-50 h-screen w-full bg-background': isOpen
 	})}
 >
 	<ProgressBar />
 
-	<header class="flex justify-between w-full py-8 mx-auto max-w-screen-lg px-4">
+	<header class="mx-auto flex w-full max-w-screen-lg justify-between px-4 py-8">
 		<a href="/">
 			<img src={logo} class="h-20 w-20" alt="ProgrammerBar Logo" />
 		</a>
 
-		<ul class="hidden md:flex items-center gap-4">
+		<ul class="hidden items-center gap-4 md:flex">
 			<HeaderItem to="/" name="/hjem" />
 			<HeaderItem to="/meny" name="/meny" />
 			<HeaderItem to="https://forms.gle/BLdygdoRJgjMbQZj6" name="/booking" />

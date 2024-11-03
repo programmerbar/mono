@@ -63,10 +63,10 @@
 		<div class="relative flex flex-col space-y-2 rounded-lg border border-border p-4">
 			<button
 				type="button"
-				class="absolute top-4 right-4 text-red-400 hover:text-red-600 transition-colors"
+				class="absolute right-4 top-4 text-red-400 transition-colors hover:text-red-600"
 				onclick={() => createEventState.deleteShift(i)}
 			>
-				<X class="w-4 h-4" />
+				<X class="h-4 w-4" />
 			</button>
 
 			<h2 class="text-lg font-semibold">Vakt {i + 1}</h2>
@@ -86,10 +86,10 @@
 			/>
 
 			{#if shiftLength >= 4}
-				<span class="text-orange-500 font-medium text-sm">NB: Vakten er lengre enn 4 timer!</span>
+				<span class="text-sm font-medium text-orange-500">NB: Vakten er lengre enn 4 timer!</span>
 			{/if}
 
-			<span class="text-sm font-medium mt-8">Ansvarlige</span>
+			<span class="mt-8 text-sm font-medium">Ansvarlige</span>
 
 			{#each createEventState.shifts[i].users as user, j (user)}
 				<div class="flex items-center gap-2">
@@ -109,7 +109,7 @@
 					/>
 					<button
 						type="button"
-						class="rounded-lg flex items-center justify-center bg-white transition-colors hover:text-red-500 border-border border h-10 w-10"
+						class="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-white transition-colors hover:text-red-500"
 						onclick={() => createEventState.deleteUserFromShift(i, user.id)}
 					>
 						<X class="size-4" />

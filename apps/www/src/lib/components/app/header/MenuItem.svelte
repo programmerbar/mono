@@ -7,7 +7,7 @@
 	let { to, name }: Props = $props();
 </script>
 
-<li class="flex w-full font-mono text-left hover:bg-gray-100">
-	<a class="hover:underline w-full py-2 px-4 text-gray-700 text-3xl font-medium" href={to}>{name}</a
+<li class="flex w-full text-left font-mono hover:bg-gray-100">
+	<a class="w-full px-4 py-2 text-3xl font-medium text-gray-700 hover:underline" href={to}>{name}</a
 	>
 </li>

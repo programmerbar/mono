@@ -28,7 +28,7 @@
 </script>
 
 {#if showProgressBar}
-	<div class="fixed top-0 left-0 h-1 bg-primary animate-loader" style="width: {$progress}%"></div>
+	<div class="animate-loader fixed left-0 top-0 h-1 bg-primary" style="width: {$progress}%"></div>
 {/if}
 
 <style>

@@ -16,14 +16,14 @@
 	<title>Meny</title>
 </svelte:head>
 
-<div class="flex flex-col md:flex-row gap-8 w-full sm:max-w-screen-sm sm:mx-auto md:max-w-full">
+<div class="flex w-full flex-col gap-8 sm:mx-auto sm:max-w-screen-sm md:max-w-full md:flex-row">
 	<Sidebar {types} {filterState} />
 
 	<div class="flex-1">
 		{#if filteredProducts.length > 0}
-			<p class="text-sm mb-2 text-gray-800">Viser {filteredProducts.length} resultater</p>
+			<p class="mb-2 text-sm text-gray-800">Viser {filteredProducts.length} resultater</p>
 
-			<ul class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 w-full">
+			<ul class="grid w-full grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
 				{#each filteredProducts as product}
 					<li>
 						<ProductPreview {product} {filterState} />

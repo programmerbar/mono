@@ -10,7 +10,7 @@
 <input
 	bind:value
 	class={cn(
-		'border border-border placeholder:text-sm focus:outline-primary focus:ring-0 focus:border-border rounded-lg p-2 h-10',
+		'h-10 rounded-lg border border-border p-2 placeholder:text-sm focus:border-border focus:outline-primary focus:ring-0',
 		className
 	)}
 	{...props}

@@ -12,10 +12,10 @@
 <Heading>Arrangementer</Heading>
 
 <p class="mt-4">
-	<a href="/portal/arrangementer/ny" class="hover:underline text-blue-500">Nytt arrangement</a>
+	<a href="/portal/arrangementer/ny" class="text-blue-500 hover:underline">Nytt arrangement</a>
 </p>
 
-<ul class="flex flex-col gap-4 mt-4">
+<ul class="mt-4 flex flex-col gap-4">
 	{#each data.events as event}
 		<li>
 			<EventPreview {event} />

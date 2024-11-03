@@ -12,14 +12,14 @@
 </script>
 
 <a class="group" href="/portal/arrangementer/{event.id}">
-	<div class="p-4 flex items-center justify-between border rounded-lg bg-white">
+	<div class="flex items-center justify-between rounded-lg border bg-white p-4">
 		<div>
-			<h2 class="group-hover:underline text-2xl font-medium">{event.name}</h2>
-			<p class="text-gray-500 text-sm">{capitalize(formatDate(event.date))}</p>
+			<h2 class="text-2xl font-medium group-hover:underline">{event.name}</h2>
+			<p class="text-sm text-gray-500">{capitalize(formatDate(event.date))}</p>
 		</div>
 
 		<ArrowRight
-			class="transition-all size-0 group-hover:size-6 duration-300 ease-in-out transform -translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 text-gray-600"
+			class="size-0 -translate-x-8 transform text-gray-600 opacity-0 transition-all duration-300 ease-in-out group-hover:size-6 group-hover:translate-x-0 group-hover:opacity-100"
 		/>
 	</div>
 </a>

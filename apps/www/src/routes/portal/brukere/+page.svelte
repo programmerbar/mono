@@ -28,17 +28,17 @@
 		<AddUserModal />
 	</div>
 
-	<ul class="grid grid-cols-1 md:grid-cols-3 gap-4">
+	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		{#each filteredUsers as user}
-			<li class="block bg-white border rounded-lg p-4">
-				<div class="flex justify-center mb-2">
-					<div class="w-16 h-16 bg-gray-200 flex items-center justify-center border rounded-full">
-						<span class="font-medium text-gray-600 text-lg">{initials(user.name)}</span>
+			<li class="block rounded-lg border bg-white p-4">
+				<div class="mb-2 flex justify-center">
+					<div class="flex h-16 w-16 items-center justify-center rounded-full border bg-gray-200">
+						<span class="text-lg font-medium text-gray-600">{initials(user.name)}</span>
 					</div>
 				</div>
 
 				<div>
-					<p class="font-medium text-center">{user.name}</p>
+					<p class="text-center font-medium">{user.name}</p>
 					<p class="text-center text-sm">
 						<a class="hover:underline" href={mailto(user.email)}>{user.email}</a>
 					</p>
@@ -55,9 +55,9 @@
 <section class="mt-12 space-y-6">
 	<Heading>Invitasjoner</Heading>
 
-	<ul class="grid grid-cols-1 md:grid-cols-3 gap-4">
+	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		{#each data.invitations as invitation}
-			<li class="block bg-white border rounded-lg p-4">
+			<li class="block rounded-lg border bg-white p-4">
 				<p class="text-sm">
 					<span class="font-medium">E-post:</span>
 					<a class="hover:underline" href={mailto(invitation.email)}>{invitation.email}</a>

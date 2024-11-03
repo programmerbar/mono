@@ -11,7 +11,7 @@
 </script>
 
 <div
-	class="flex flex-col bg-background h-fit gap-2 md:max-w-[300px] p-4 rounded-lg md:top-5 md:sticky shadow-lg border-2 w-full"
+	class="flex h-fit w-full flex-col gap-2 rounded-lg border-2 bg-background p-4 shadow-lg md:sticky md:top-5 md:max-w-[300px]"
 >
 	<div class="flex flex-col gap-1">
 		<label for="search" class="text-sm font-semibold">Søk</label>
@@ -19,7 +19,7 @@
 			type="text"
 			id="search"
 			placeholder="Søk etter produkt"
-			class="rounded-lg border-border border-2 px-2 py-1"
+			class="rounded-lg border-2 border-border px-2 py-1"
 			bind:value={filterState.search}
 		/>
 	</div>
@@ -28,7 +28,7 @@
 		<label for="sort" class="text-sm font-semibold">Sorter etter</label>
 		<select
 			id="sort"
-			class="rounded-lg border-border border-2 px-2 py-1"
+			class="rounded-lg border-2 border-border px-2 py-1"
 			bind:value={filterState.sort}
 		>
 			{#each SORT_OPTIONS as option}
@@ -41,7 +41,7 @@
 		<label for="type" class="text-sm font-semibold">Type</label>
 		<select
 			id="type"
-			class="rounded-lg border-border border-2 px-2 py-1"
+			class="rounded-lg border-2 border-border px-2 py-1"
 			bind:value={filterState.type}
 		>
 			<option value="">Alle</option>
@@ -51,22 +51,22 @@
 		</select>
 	</div>
 
-	<div class="flex items-center py-2 justify-between">
+	<div class="flex items-center justify-between py-2">
 		<label for="hideSoldOut" class="text-sm font-semibold">Skjul utsolgt</label>
 		<input
 			type="checkbox"
 			id="hideSoldOut"
-			class="rounded border-2 h-4 w-4"
+			class="h-4 w-4 rounded border-2"
 			bind:checked={filterState.hideSoldOut}
 		/>
 	</div>
 
-	<div class="flex items-center py-2 justify-between">
+	<div class="flex items-center justify-between py-2">
 		<label for="showStudentPrice" class="text-sm font-semibold">Vis studentpris</label>
 		<input
 			type="checkbox"
 			id="showStudentPrice"
-			class="rounded border-2 h-4 w-4"
+			class="h-4 w-4 rounded border-2"
 			bind:checked={filterState.showStudentPrice}
 		/>
 	</div>

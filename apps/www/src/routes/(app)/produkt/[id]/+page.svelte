@@ -33,7 +33,7 @@
 
 		<div>
 			{#each metadata as { title, value }}
-				<div class="grid grid-cols-3 w-full border-b last:border-b-0">
+				<div class="grid w-full grid-cols-3 border-b last:border-b-0">
 					<p class="col-span-1 font-medium">{title}</p>
 					<p class="col-span-2">{value}</p>
 				</div>

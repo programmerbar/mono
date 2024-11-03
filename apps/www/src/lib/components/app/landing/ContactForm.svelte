@@ -10,7 +10,7 @@
 			id="name"
 			name="name"
 			placeholder="Kari Nordmann"
-			class="shadow-lg rounded-xl"
+			class="rounded-xl shadow-lg"
 		/>
 	</div>
 
@@ -21,7 +21,7 @@
 			id="email"
 			name="email"
 			placeholder="kari@norge.no"
-			class="shadow-lg rounded-xl"
+			class="rounded-xl shadow-lg"
 		/>
 	</div>
 
@@ -32,13 +32,13 @@
 			name="message"
 			rows={5}
 			placeholder="Din melding her..."
-			class="shadow-lg rounded-xl"
+			class="rounded-xl shadow-lg"
 		></textarea>
 	</div>
 
 	<button
 		type="submit"
-		class="flex items-center justify-center font-medium w-full h-10 px-3 py-2 text-gray-800 rounded-lg shadow-lg bg-primary-light border-2 border-primary-dark transition hover:bg-primary"
+		class="flex h-10 w-full items-center justify-center rounded-lg border-2 border-primary-dark bg-primary-light px-3 py-2 font-medium text-gray-800 shadow-lg transition hover:bg-primary"
 		>Send inn</button
 	>
 </form>
