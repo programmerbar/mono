@@ -1,10 +1,11 @@
 <script lang="ts">
 	import EventPreview from '$lib/components/portal/EventPreview.svelte';
 	import Heading from '$lib/components/ui/Heading.svelte';
+	import { getAuthContext } from '$lib/context/user.context.js';
 
 	let { data } = $props();
 
-	let currentUserRole = data.user.role;
+	let auth = getAuthContext();
 </script>
 
 <svelte:head>
@@ -12,7 +13,7 @@
 </svelte:head>
 
 <Heading>Arrangementer</Heading>
-{#if currentUserRole == 'board'}
+{#if auth.user?.role == 'board'}
 	<p class="mt-4">
 		<a href="/portal/arrangementer/ny" class="text-blue-500 hover:underline">Nytt arrangement</a>
 	</p>

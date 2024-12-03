@@ -1,5 +1,4 @@
-// src/routes/portal/admin/user/[id]/+server.ts
-import { json, error, fail } from '@sveltejs/kit';
+import { json, fail } from '@sveltejs/kit';
 
 export async function GET({ params, locals }) {
 	const userId = params.id;

@@ -1,11 +1,10 @@
-<!-- src/lib/components/portal/PortalHeader.svelte -->
 <script lang="ts">
 	import logo from '$lib/assets/programmerbar-modern.svg';
 	import { page } from '$app/stores';
 	$: user = $page.data.user;
 </script>
 
-<div class="sticky top-0 z-10 border-b bg-background p-4">
+<div class="bg-background sticky top-0 z-10 border-b p-4">
 	<header class="mx-auto flex max-w-screen-md items-center justify-between">
 		<a href="/" class="mr-10">
 			<img src={logo} alt="Logo" class="h-12 w-12" />

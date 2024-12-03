@@ -1,11 +1,17 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
-	import UserCard from '$lib/components/Usercards/UserCard.svelte';
-	import UserDetailModal from '$lib/components/Usercards/UserDetailModal.svelte';
+	import UserCard from '$lib/components/cards/UserCard.svelte';
+	import UserDetailModal from '$lib/components/cards/UserDetailModal.svelte';
+	import type { User } from '$lib/db/schema';
 
 	let { data } = $props();
 
 	let search = $state('');
+
+	type DetailedUser = User & {
+		timesVolunteered: number;
+		unclaimedBeers: number;
+	};
 
 	let currentUserRole = $state(data.user.role);
 
@@ -21,7 +27,7 @@
 		})
 	);
 
-	let selectedUser = $state(null);
+	let selectedUser = $state<DetailedUser | null>(null);
 	let isModalOpen = $state(false);
 
 	async function handleUserClick(event: CustomEvent) {
@@ -30,7 +36,7 @@
 		try {
 			const response = await fetch(`/portal/admin/user/${userId}`);
 			if (response.ok) {
-				const detailedUser = await response.json();
+				const detailedUser = (await response.json()) as DetailedUser;
 				selectedUser = detailedUser;
 				isModalOpen = true;
 			} else {
