@@ -89,7 +89,7 @@
 
 <section class="space-y-6">
 	<Heading>Styret</Heading>
-	<ul class="grid grid-cols-1 md:grid-cols-3 gap-4">
+	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		{#each boardMembers as user}
 			<UserCard {user} onclick={handleUserClick} />
 		{/each}
@@ -101,11 +101,11 @@
 	<div class="flex items-center gap-2">
 		<input
 			type="search"
-			class="w-full flex-1 p-2 border rounded"
+			class="w-full flex-1 rounded border p-2"
 			placeholder="Søk etter frivillige"
 		/>
 	</div>
-	<ul class="grid grid-cols-1 md:grid-cols-3 gap-4">
+	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		{#each normalMembers as user}
 			<UserCard
 				{user}

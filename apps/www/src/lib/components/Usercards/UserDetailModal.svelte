@@ -49,11 +49,11 @@
 	}
 </script>
 
-<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-	<div class="bg-white rounded-lg p-6 max-w-md w-full relative">
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+	<div class="relative w-full max-w-md rounded-lg bg-white p-6">
 		<!-- Admin menu -->
 		{#if currentUserRole === 'board'}
-			<div class="absolute top-2 right-2">
+			<div class="absolute right-2 top-2">
 				<button
 					onclick={toggleMenu}
 					aria-haspopup="true"
@@ -64,28 +64,28 @@
 				</button>
 				{#if menuOpen}
 					<!-- Menu -->
-					<div class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-10">
+					<div class="absolute right-0 z-10 mt-2 w-32 rounded-md bg-white shadow-lg">
 						<ul>
 							<li>
 								<button
-									class="flex items-center w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+									class="flex w-full items-center px-4 py-2 text-left text-sm hover:bg-gray-100"
 									onclick={() => changeRole('board')}
 								>
 									{#if selectedUser.role === 'board'}
-										<Check class="h-4 w-4 text-green-500 mr-2" />
+										<Check class="mr-2 h-4 w-4 text-green-500" />
 									{/if}
-									<span class="w-6 mr-2"></span> Styret
+									<span class="mr-2 w-6"></span> Styret
 								</button>
 							</li>
 							<li>
 								<button
-									class="flex items-center w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+									class="flex w-full items-center px-4 py-2 text-left text-sm hover:bg-gray-100"
 									onclick={() => changeRole('normal')}
 								>
 									{#if selectedUser.role === 'normal'}
-										<Check class="h-4 w-4 text-green-500 mr-2" />
+										<Check class="mr-2 h-4 w-4 text-green-500" />
 									{/if}
-									<span class="w-6 mr-2"></span> Frivillig
+									<span class="mr-2 w-6"></span> Frivillig
 								</button>
 							</li>
 						</ul>
@@ -93,25 +93,25 @@
 				{/if}
 			</div>
 		{/if}
-		<h2 class="text-xl font-bold mb-4">{selectedUser.name}'s Detaljer</h2>
+		<h2 class="mb-4 text-xl font-bold">{selectedUser.name}'s Detaljer</h2>
 		<p><strong>E-post:</strong> {selectedUser.email}</p>
 		<p><strong>Antall ganger stått:</strong> {selectedUser.timesVolunteered}</p>
 		<div class="mt-4">
-			<label class="block mb-2">
+			<label class="mb-2 block">
 				<strong>Antall uavhentede øl:</strong>
 				<input
 					type="number"
 					min="0"
 					bind:value={unclaimedBeers}
-					class="mt-1 p-2 border rounded w-full"
+					class="mt-1 w-full rounded border p-2"
 				/>
 			</label>
 		</div>
 		<div class="mt-6 flex justify-end space-x-2">
-			<button class="px-4 py-2 bg-green-600 text-white rounded" onclick={updateUnclaimedBeers}>
+			<button class="rounded bg-green-600 px-4 py-2 text-white" onclick={updateUnclaimedBeers}>
 				Oppdater
 			</button>
-			<button class="px-4 py-2 bg-gray-600 text-white rounded" onclick={handleClose}>Lukk</button>
+			<button class="rounded bg-gray-600 px-4 py-2 text-white" onclick={handleClose}>Lukk</button>
 		</div>
 	</div>
 </div>
