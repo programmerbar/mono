@@ -1,15 +1,19 @@
 <script lang="ts">
-	let message: string = '';
-	let error: string = '';
+	import { enhance } from '$app/forms';
 
-	async function claimBeer() {
+	let message = $state('');
+	let error = $state('');
+
+	async function claimBeer(e: Event) {
+		e.preventDefault();
+
 		try {
 			const response = await fetch('/portal/claim-beer', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' }
 			});
 
-			const result = await response.json();
+			const result = (await response.json()) as { message: string };
 
 			if (response.ok) {
 				message = '🎉 Beer successfully claimed! Cheers!';
@@ -28,7 +32,7 @@
 
 <section class="beer-claim">
 	<h1>🍺 Claim Your Beer</h1>
-	<form on:submit|preventDefault={claimBeer}>
+	<form onsubmit={claimBeer} use:enhance>
 		<button type="submit" class="claim-button">Claim Beer</button>
 	</form>
 
