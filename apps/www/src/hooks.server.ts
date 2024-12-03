@@ -2,6 +2,7 @@ import { dev } from '$app/environment';
 import { createAuth } from '$lib/auth/lucia';
 import { createFeideProvider } from '$lib/auth/providers/feide';
 import { createDatabase } from '$lib/db/drizzle';
+import { BeerService } from '$lib/services/beer.service';
 import { EmailService } from '$lib/services/email.service';
 import { EventService } from '$lib/services/event.service';
 import { InvitationService } from '$lib/services/invitation.service';
@@ -51,6 +52,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const shiftService = new ShiftService(db);
 	event.locals.shiftService = shiftService;
 
+	const beerService = new BeerService(db);
+	event.locals.beerService = beerService;
+
 	// Validate auth
 	const sessionId = event.cookies.get(auth.sessionCookieName);
 
@@ -72,7 +76,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		});
 	}
 
-	if (event.url.pathname.startsWith('/portal/admin') && event.locals.user?.role !== 'board') {
+	if (event.url.pathname.startsWith('portal/admin') && event.locals.user?.role !== 'board') {
 		return new Response(null, {
 			status: 307,
 			headers: {

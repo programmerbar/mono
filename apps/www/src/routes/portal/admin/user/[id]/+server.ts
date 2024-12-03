@@ -1,26 +1,53 @@
-import { UserService } from '$lib/services/user.service';
-import { json } from '@sveltejs/kit';
+// src/routes/portal/admin/user/[id]/+server.ts
+import { json, error, fail } from '@sveltejs/kit';
 
 export async function GET({ params, locals }) {
 	const userId = params.id;
 
 	if (!locals.user || locals.user.role !== 'board') {
-		return new Response(null, { status: 401 });
+		throw fail(401, { error: 'Unauthorized' });
 	}
 
-	const userService = new UserService(locals.db);
-	const user = await userService.findById(userId);
+	const user = await locals.userService.findById(userId);
 
-	if (user) {
-		const userShifts = await locals.shiftService.findCompletedShiftsByUserId(userId);
+	if (!user) {
+		throw fail(404, { eroor: 'User not found' });
+	}
 
-		const unclaimedBeers = await locals.shiftService.findShiftsWithUnclaimedBeersByUserId(userId);
+	const userShifts = await locals.shiftService.findCompletedShiftsByUserId(userId);
+	const unclaimedBeers = await locals.beerService.getTotalAvailableBeers(userId);
 
-		user.timesVolunteered = userShifts.length;
-		user.unclaimedBeers = unclaimedBeers.length;
+	return json({
+		...user,
+		timesVolunteered: userShifts.length,
+		unclaimedBeers: unclaimedBeers
+	});
+}
 
-		return json(user);
-	} else {
-		return new Response(null, { status: 404 });
+export async function POST({ params, request, locals }) {
+	const userId = params.id;
+
+	if (!locals.user || locals.user.role !== 'board') {
+		throw fail(401, { error: 'Unauthorized' });
+	}
+
+	try {
+		const data = await request.json();
+		const newBeerCount = Number(data.additionalBeers);
+
+		if (!Number.isInteger(newBeerCount) || newBeerCount < 0) {
+			throw fail(400, { error: 'Invalid additional beer count' });
+		}
+
+		const success = await locals.beerService.updateBeers(userId, newBeerCount);
+
+		if (success) {
+			return json({ success: true });
+		} else {
+			throw fail(500, { error: 'Failed to update additional beers' });
+		}
+	} catch (err) {
+		console.error('Error updating additional beers:', err);
+		throw fail(500, { error: 'Server error' });
 	}
 }

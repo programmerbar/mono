@@ -1,8 +1,8 @@
 {
 	"version": "6",
 	"dialect": "sqlite",
-	"id": "bb523c90-815f-4ab1-920b-723fcf46ec48",
-	"prevId": "00000000-0000-0000-0000-000000000000",
+	"id": "672ee35b-200a-4683-8933-aa9f47a09e67",
+	"prevId": "bb523c90-815f-4ab1-920b-723fcf46ec48",
 	"tables": {
 		"invitation": {
 			"name": "invitation",
@@ -113,13 +113,6 @@
 					"notNull": true,
 					"autoincrement": false
 				},
-				"github_id": {
-					"name": "github_id",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": false,
-					"autoincrement": false
-				},
 				"feide_id": {
 					"name": "feide_id",
 					"type": "text",
@@ -132,11 +125,6 @@
 				"email_idx": {
 					"name": "email_idx",
 					"columns": ["email"],
-					"isUnique": true
-				},
-				"github_id_idx": {
-					"name": "github_id_idx",
-					"columns": ["github_id"],
 					"isUnique": true
 				},
 				"feide_id_idx": {

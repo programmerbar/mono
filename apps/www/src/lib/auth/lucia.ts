@@ -7,20 +7,20 @@ import { dev } from '$app/environment';
 export type Auth = ReturnType<typeof createAuth>;
 
 export const createAuth = (db: Database) => {
-  const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
-  return new Lucia(adapter, {
-    sessionCookie: {
-      attributes: {
-        secure: !dev
-      }
-    },
-    getUserAttributes: (user) => user
-  });
+	const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
+	return new Lucia(adapter, {
+		sessionCookie: {
+			attributes: {
+				secure: !dev
+			}
+		},
+		getUserAttributes: (user) => user
+	});
 };
 
 declare module 'lucia' {
-  interface Register {
-    Lucia: Auth;
-    DatabaseUserAttributes: User;
-  }
+	interface Register {
+		Lucia: Auth;
+		DatabaseUserAttributes: User;
+	}
 }

@@ -1,0 +1,7 @@
+# -- Resend emails
+RESEND_API_KEY=re_something
+
+# -- Feide Auth
+FEIDE_CLIENT_ID=""
+FEIDE_CLIENT_SECRET=""
+FEIDE_REDIRECT_URI="http://localhost:5173/auth/feide/callback"

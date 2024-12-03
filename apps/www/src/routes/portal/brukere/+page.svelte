@@ -6,13 +6,15 @@
 	import { formatDate } from '$lib/date';
 	import UserCard from '$lib/components/Usercards/UserCard.svelte';
 
-	export let data;
+	let { data } = $props();
 
-	let search = '';
+	let search = $state('');
 
-	$: filteredUsers = data.users.filter((user) => {
-		return user.name.toLowerCase().includes(search.toLowerCase());
-	});
+	let filteredUsers = $derived.by(() =>
+		data.users.filter((user) => {
+			return user.name.toLowerCase().includes(search.toLowerCase());
+		})
+	);
 </script>
 
 <svelte:head>
@@ -53,7 +55,7 @@
 					{formatDate(invitation.createdAt)}
 				</p>
 				<p class="text-sm">
-					<span class="font-medium">Utg�r:</span>
+					<span class="font-medium">Utgår:</span>
 					{formatDate(invitation.expiresAt)}
 				</p>
 			</li>
