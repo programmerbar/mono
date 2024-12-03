@@ -28,6 +28,7 @@ declare global {
 			eventService: import('$lib/services/event.service').EventService;
 			userService: import('$lib/services/user.service').UserService;
 			shiftService: import('$lib/services/shift.service').ShiftService;
+			beerService: import('$lib/services/beer.service').BeerService;
 		}
 		// interface PageData {}
 		// interface PageState {}

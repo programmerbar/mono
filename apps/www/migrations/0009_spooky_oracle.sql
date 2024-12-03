@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD `additional_beers` integer DEFAULT 0 NOT NULL;
