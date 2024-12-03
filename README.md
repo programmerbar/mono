@@ -42,6 +42,8 @@ To be able to login you need to create an invitation for yourself. You can do th
 
 ```bash
 pnpm dlx tsx ./apps/www/scripts/add-invitation.ts "<your-email>"
+# Example
+# pnpm dlx tsx ./apps/www/scripts/add-invitation.ts "ola.nordmann@student.uib.no"
 ```
 
 ## Technologies
