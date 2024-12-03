@@ -81,7 +81,7 @@
 
 <section class="space-y-6">
 	<Heading>Styret</Heading>
-	<ul class="grid grid-cols-1 md:grid-cols-3 gap-4">
+	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		{#each boardMembers as user}
 			<UserCard
 				{user}
@@ -106,7 +106,7 @@
 		/>
 	</div>
 -->
-	<ul class="grid grid-cols-1 md:grid-cols-3 gap-4">
+	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		{#each normalMembers as user}
 			<UserCard
 				{user}

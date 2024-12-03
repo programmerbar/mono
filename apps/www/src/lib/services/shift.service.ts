@@ -3,60 +3,59 @@ import { events, shifts, userShifts } from '$lib/db/schema';
 import { eq, and, lte, gte } from 'drizzle-orm';
 
 export class ShiftService {
-  #db: Database;
+	#db: Database;
 
-  constructor(db: Database) {
-    this.#db = db;
-  }
+	constructor(db: Database) {
+		this.#db = db;
+	}
 
-  async findCompletedShiftsByUserId(userId: string) {
-    const completedShifts = await this.#db
-      .select()
-      .from(shifts)
-      .leftJoin(userShifts, eq(shifts.id, userShifts.shiftId))
-      .where(
-        and(
-          eq(userShifts.userId, userId),
-          eq(userShifts.status, 'accepted'),
-          lte(shifts.end, new Date())
-        )
-      );
+	async findCompletedShiftsByUserId(userId: string) {
+		const completedShifts = await this.#db
+			.select()
+			.from(shifts)
+			.leftJoin(userShifts, eq(shifts.id, userShifts.shiftId))
+			.where(
+				and(
+					eq(userShifts.userId, userId),
+					eq(userShifts.status, 'accepted'),
+					lte(shifts.end, new Date())
+				)
+			);
 
-    return completedShifts.map((shifts) => shifts.shift);
-  }
+		return completedShifts.map((shifts) => shifts.shift);
+	}
 
-  async findUpcomingShiftsByUserId(userId: string) {
-    const upcomingShifts = this.#db
-      .select()
-      .from(shifts)
-      .leftJoin(userShifts, eq(shifts.id, userShifts.shiftId))
-      .leftJoin(events, eq(shifts.eventId, events.id))
-      .where(
-        and(
-          eq(userShifts.userId, userId),
-          // eq(userShifts.status, 'accepted'), // Uncomment this line when we can accept shifts
-          gte(shifts.start, new Date())
-        )
-      );
+	async findUpcomingShiftsByUserId(userId: string) {
+		const upcomingShifts = this.#db
+			.select()
+			.from(shifts)
+			.leftJoin(userShifts, eq(shifts.id, userShifts.shiftId))
+			.leftJoin(events, eq(shifts.eventId, events.id))
+			.where(
+				and(
+					eq(userShifts.userId, userId),
+					// eq(userShifts.status, 'accepted'), // Uncomment this line when we can accept shifts
+					gte(shifts.start, new Date())
+				)
+			);
 
-    return upcomingShifts;
-  }
+		return upcomingShifts;
+	}
 
-  async findShiftsWithUnclaimedBeersByUserId(userId: string) {
-    const shiftsWithUnclaimedBeer = await this.#db
-      .select()
-      .from(shifts)
-      .leftJoin(userShifts, eq(shifts.id, userShifts.shiftId))
-      .where(
-        and(
-          eq(userShifts.userId, userId),
-          // eq(userShifts.status, 'accepted'), // Uncomment this line when we can accept shifts
-          eq(userShifts.isBeerClaimed, false),
-          lte(shifts.end, new Date())
-        )
-      );
+	async findShiftsWithUnclaimedBeersByUserId(userId: string) {
+		const shiftsWithUnclaimedBeer = await this.#db
+			.select()
+			.from(shifts)
+			.leftJoin(userShifts, eq(shifts.id, userShifts.shiftId))
+			.where(
+				and(
+					eq(userShifts.userId, userId),
+					// eq(userShifts.status, 'accepted'), // Uncomment this line when we can accept shifts
+					eq(userShifts.isBeerClaimed, false),
+					lte(shifts.end, new Date())
+				)
+			);
 
-    return shiftsWithUnclaimedBeer;
-  }
-
+		return shiftsWithUnclaimedBeer;
+	}
 }

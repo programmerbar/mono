@@ -3,8 +3,6 @@
 	import Heading from '$lib/components/ui/Heading.svelte';
 
 	let { data } = $props();
-
-	let currentUserRole = data.user.role;
 </script>
 
 <svelte:head>

@@ -34,7 +34,7 @@
 
 				{#if user.role === 'board'}
 					<li>
-						<a class="px-1 text-gray-500 hover:text-gray-900 transition" href="/portal/admin"
+						<a class="px-1 text-gray-500 transition hover:text-gray-900" href="/portal/admin"
 							>Admin</a
 						>
 					</li>

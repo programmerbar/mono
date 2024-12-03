@@ -10,15 +10,15 @@
 	}
 </script>
 
-<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-	<div class="bg-white rounded-lg p-6 max-w-md w-full">
-		<h2 class="text-xl font-bold mb-4">{selectedUser.name}'s Details</h2>
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+	<div class="w-full max-w-md rounded-lg bg-white p-6">
+		<h2 class="mb-4 text-xl font-bold">{selectedUser.name}'s Details</h2>
 		<p><strong>Email:</strong> {selectedUser.email}</p>
 		<p><strong>Antall ganger stått:</strong> {selectedUser.timesVolunteered}</p>
 		<p><strong>Antall øl igjen:</strong> {selectedUser.unclaimedBeers}</p>
 
 		<div class="mt-6 flex justify-end">
-			<button class="px-4 py-2 bg-blue-600 text-white rounded" on:click={closeModal}>Close</button>
+			<button class="rounded bg-blue-600 px-4 py-2 text-white" on:click={closeModal}>Close</button>
 		</div>
 	</div>
 </div>

@@ -1,4 +1,3 @@
-import { UserService } from '$lib/services/user.service';
 import { json } from '@sveltejs/kit';
 
 export async function GET({ params, locals }) {
@@ -8,19 +7,25 @@ export async function GET({ params, locals }) {
 		return new Response(null, { status: 401 });
 	}
 
-	const userService = new UserService(locals.db);
-	const user = await userService.findById(userId);
+	const user = await locals.userService.findById(userId);
 
-	if (user) {
-		const userShifts = await locals.shiftService.findCompletedShiftsByUserId(userId);
-
-		const unclaimedBeers = await locals.shiftService.findShiftsWithUnclaimedBeersByUserId(userId);
-
-		user.timesVolunteered = userShifts.length;
-		user.unclaimedBeers = unclaimedBeers.length;
-
-		return json(user);
-	} else {
+	if (!user) {
 		return new Response(null, { status: 404 });
 	}
+
+	const userShifts = await locals.shiftService.findCompletedShiftsByUserId(userId);
+	const unclaimedBeers = await locals.shiftService.findShiftsWithUnclaimedBeersByUserId(userId);
+
+	Object.defineProperties(user, {
+		timesVolunteered: {
+			value: userShifts.length,
+			enumerable: true
+		},
+		unclaimedBeers: {
+			value: unclaimedBeers.length,
+			enumerable: true
+		}
+	});
+
+	return json(user);
 }
