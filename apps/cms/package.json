@@ -14,7 +14,7 @@
     "clean": "rm -rf .sanity node_modules .turbo"
   },
   "dependencies": {
-    "@sanity/icons": "^3.4.0",
+    "@sanity/icons": "3.4.0",
     "@sanity/vision": "3.62.2",
     "react": "19.0.0",
     "react-dom": "19.0.0",
