@@ -12,7 +12,7 @@ export class InvitationService {
 	}
 
 	async invite(email: string) {
-		const invitation = await this.#db
+		return await this.#db
 			.insert(invitations)
 			.values({
 				id: nanoid(),
@@ -21,9 +21,7 @@ export class InvitationService {
 				expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
 			})
 			.returning()
-			.then((rows) => rows[0]);
-
-		return invitation;
+			.get();
 	}
 
 	async use(id: string) {
