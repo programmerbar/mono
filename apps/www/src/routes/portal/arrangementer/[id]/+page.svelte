@@ -4,11 +4,11 @@
 	import { formatDate, time } from '$lib/date';
 	import { capitalize } from '$lib/utils';
 	import { enhance } from '$app/forms';
-	import { getAuthContext } from '$lib/context/user.context.js';
+	import { getUser } from '$lib/context/user.context.js';
 
 	let { data } = $props();
 
-	const auth = getAuthContext();
+	let user = getUser();
 </script>
 
 <svelte:head>
@@ -22,7 +22,7 @@
 
 	<ul class="mt-2 flex flex-col gap-4">
 		{#each data.event.shifts as shift}
-			{@const isInShift = shift.members.some((member) => member.userId === auth.user?.id)}
+			{@const isInShift = shift.members.some((member) => member.userId === $user?.id)}
 			<li class="block rounded-lg border bg-white p-4">
 				<p>{capitalize(formatDate(shift.start))}</p>
 				<p>{time(shift.start)} - {time(shift.end)}</p>

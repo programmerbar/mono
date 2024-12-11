@@ -1,16 +1,25 @@
 import type { User } from 'lucia';
 import { getContext, setContext } from 'svelte';
+import { get, type Writable } from 'svelte/store';
 
-export const AUTH_KEY = 'user';
+export type UserContext = Writable<User | null>;
 
-export type AuthContext = {
-	user: User | null;
-};
+const AUTH_CONTEXT_KEY = '__auth';
 
-export const setAuthContext = (ctx: AuthContext) => {
-	setContext(AUTH_KEY, ctx);
-};
+export function setUserContext(value: UserContext) {
+	return setContext<UserContext>(AUTH_CONTEXT_KEY, value);
+}
 
-export const getAuthContext = () => {
-	return getContext<AuthContext>(AUTH_KEY);
-};
+export function getUser() {
+	return getContext<UserContext>(AUTH_CONTEXT_KEY);
+}
+
+export function getAuthenticatedUser() {
+	const userStore = getUser();
+
+	if (!get(userStore)) {
+		throw new Error('User context not found');
+	}
+
+	return userStore as Writable<User>;
+}

@@ -2,16 +2,16 @@
 	import { onNavigate } from '$app/navigation';
 	import logo from '$lib/assets/programmerbar-modern.svg';
 	import { cn } from '$lib/cn';
-	import { getAuthContext } from '$lib/context/user.context';
 	import HeaderItem from './HeaderItem.svelte';
 	import HeaderSignOut from './HeaderSignOut.svelte';
 	import MenuItem from './MenuItem.svelte';
 	import ProgressBar from './ProgressBar.svelte';
 	import { Menu, X } from 'lucide-svelte';
 	import MenuSignOut from './MenuSignOut.svelte';
+	import { getUser } from '$lib/context/user.context';
 
 	let isOpen = $state(false);
-	let auth = getAuthContext();
+	let user = getUser();
 
 	onNavigate(() => {
 		isOpen = false;
@@ -55,7 +55,7 @@
 			<HeaderItem to="/meny" name="/meny" />
 			<HeaderItem to="https://forms.gle/BLdygdoRJgjMbQZj6" name="/booking" />
 			<HeaderItem to="/om-oss" name="/om oss" />
-			{#if auth.user}
+			{#if !!$user}
 				<HeaderSignOut />
 			{/if}
 		</ul>
@@ -75,7 +75,7 @@
 			<MenuItem to="/meny" name="/meny" />
 			<MenuItem to="https://forms.gle/BLdygdoRJgjMbQZj6" name="/booking" />
 			<MenuItem to="/om-oss" name="/om oss" />
-			{#if auth.user}
+			{#if !!$user}
 				<MenuSignOut />
 			{:else}
 				<MenuItem to="/logg-inn" name="/logg inn" />
