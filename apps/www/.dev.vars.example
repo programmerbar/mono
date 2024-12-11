@@ -1,3 +1,4 @@
+# -- Resend emails
 RESEND_API_KEY=re_something
 
 # -- Feide Auth
