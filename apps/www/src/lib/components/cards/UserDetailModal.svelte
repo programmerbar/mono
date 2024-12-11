@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { error } from '@sveltejs/kit';
 	import type { User } from '$lib/db/schema';
 	import { fly } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
@@ -7,6 +6,7 @@
 	import Input from '../ui/Input.svelte';
 	import { cn } from '$lib/cn';
 	import { outsideClick } from '$lib/actions/outside-click';
+	import { invalidateAll } from '$app/navigation';
 
 	interface ExtendedUser extends User {
 		timesVolunteered: number;
@@ -17,35 +17,35 @@
 		selectedUser: ExtendedUser;
 		currentUserRole?: 'board' | 'normal';
 		onClose: () => void;
-		roleChange: (event: { userId: string; newRole: 'board' | 'normal' }) => void;
 	}
 
-	let { selectedUser, currentUserRole = 'normal', onClose, roleChange }: Props = $props();
+	let { selectedUser, onClose }: Props = $props();
 
 	let unclaimedBeers = $state(String(selectedUser.unclaimedBeers));
-	let menuOpen = $state(false);
 
-	function handleClose() {
-		onClose();
+	async function updateRole(newRole: 'board' | 'normal') {
+		const formData = new FormData();
+		formData.append('userId', selectedUser.id);
+		formData.append('role', newRole);
+		formData.append('/', 'updateRole');
+
+		try {
+			const response = await fetch('/portal/admin', {
+				method: 'POST',
+				body: formData
+			});
+
+			if (response.ok) {
+				invalidateAll();
+			} else {
+				console.error('Failed to update user role');
+			}
+		} catch (error) {
+			console.error('Error updating user role:', error);
+		}
 	}
-
-	function toggleMenu(event: MouseEvent) {
-		event.stopPropagation();
-		menuOpen = !menuOpen;
-	}
-
-	function changeRole(newRole: 'board' | 'normal') {
-		roleChange({ userId: selectedUser.id, newRole });
-		menuOpen = false;
-	}
-
 	async function updateUnclaimedBeers() {
 		const unclaimedBeersValue = parseInt(unclaimedBeers, 10);
-
-		if (isNaN(unclaimedBeersValue) || unclaimedBeersValue < 0) {
-			error(400, { message: 'NaN or Less than 0' });
-			return;
-		}
 
 		const requestBody = { additionalBeers: unclaimedBeersValue };
 
@@ -72,7 +72,7 @@
 	<div
 		in:fly={{ easing: cubicInOut, y: 20, duration: 300 }}
 		out:fly={{ easing: cubicInOut, y: 20, duration: 300 }}
-		use:outsideClick={() => handleClose()}
+		use:outsideClick={() => onClose()}
 		class="relative w-full max-w-md rounded-lg bg-white p-6"
 	>
 		<h2 class="mb-4 text-xl font-bold">{selectedUser.name}'s Detaljer</h2>
@@ -93,16 +93,16 @@
 
 				<div class="flex items-center gap-2">
 					<button
-						onclick={() => changeRole('normal')}
+						onclick={() => updateRole('normal')}
 						class={cn('flex items-center justify-center rounded-xl border px-2 py-px text-sm', {
-							'bg-primary border-transparent text-white': selectedUser.role === 'normal',
+							'border-transparent bg-primary text-white': selectedUser.role === 'normal',
 							'hover:bg-gray-200': selectedUser.role !== 'normal'
 						})}>Frivillig</button
 					>
 					<button
-						onclick={() => changeRole('board')}
+						onclick={() => updateRole('board')}
 						class={cn('flex items-center justify-center rounded-xl border px-2 py-px text-sm', {
-							'bg-primary border-transparent text-white': selectedUser.role === 'board',
+							'border-transparent bg-primary text-white': selectedUser.role === 'board',
 							'hover:bg-gray-200': selectedUser.role !== 'board'
 						})}>Styret</button
 					>
@@ -118,7 +118,7 @@
 		</div>
 		<div class="mt-6 flex justify-end space-x-2">
 			<Button onclick={updateUnclaimedBeers}>Oppdater</Button>
-			<Button intent="outline" onclick={handleClose}>Lukk</Button>
+			<Button intent="outline" onclick={onClose}>Lukk</Button>
 		</div>
 	</div>
 </div>

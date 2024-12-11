@@ -9,8 +9,6 @@
 
 	let search = $state('');
 
-	let currentUserRole = $state(data.user.role);
-
 	let boardMembers = $derived.by(() =>
 		data.users.filter((user: User) => {
 			return user.role === 'board' && user.name.toLowerCase().includes(search.toLowerCase());
@@ -57,33 +55,6 @@
 		selectedUser = null;
 		isModalOpen = false;
 	}
-
-	async function updateRole(userId: string, newRole: 'board' | 'normal') {
-		const formData = new FormData();
-		formData.append('userId', userId);
-		formData.append('role', newRole);
-		formData.append('/', 'updateRole');
-
-		try {
-			const response = await fetch('/portal/admin', {
-				method: 'POST',
-				body: formData
-			});
-
-			if (response.ok) {
-				data.users = data.users.map((user: User) => {
-					if (user.id === userId) {
-						return { ...user, role: newRole };
-					}
-					return user;
-				});
-			} else {
-				console.error('Failed to update user role');
-			}
-		} catch (error) {
-			console.error('Error updating user role:', error);
-		}
-	}
 </script>
 
 <svelte:head>
@@ -91,12 +62,7 @@
 </svelte:head>
 
 {#if isModalOpen && selectedUser}
-	<UserDetailModal
-		{selectedUser}
-		{currentUserRole}
-		onClose={closeModal}
-		roleChange={(event) => updateRole(event.userId, event.newRole)}
-	/>
+	<UserDetailModal {selectedUser} onClose={closeModal} />
 {/if}
 
 <section class="space-y-6">
@@ -110,7 +76,7 @@
 
 <section class="mt-12 space-y-6">
 	<Heading>Frivillige</Heading>
-	<Input type="search" placeholder="Søk etter frivillige" bind:value={search} />
+	<Input class="w-full" type="search" placeholder="Søk etter frivillige" bind:value={search} />
 	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		{#each normalMembers as user (user.id)}
 			<UserCard {user} onSelect={() => handleUserClick(user)} />
