@@ -52,7 +52,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const shiftService = new ShiftService(db);
 	event.locals.shiftService = shiftService;
 
-	const beerService = new BeerService(db);
+	const beerService = new BeerService(db, shiftService);
 	event.locals.beerService = beerService;
 
 	// Validate auth
@@ -76,7 +76,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		});
 	}
 
-	if (event.url.pathname.startsWith('portal/admin') && event.locals.user?.role !== 'board') {
+	if (event.url.pathname.startsWith('/portal/admin') && event.locals.user?.role !== 'board') {
 		return new Response(null, {
 			status: 307,
 			headers: {
@@ -94,5 +94,5 @@ export const handle: Handle = async ({ event, resolve }) => {
 		});
 	}
 
-	return resolve(event);
+	return await resolve(event);
 };

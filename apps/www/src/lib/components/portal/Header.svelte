@@ -1,7 +1,8 @@
 <script lang="ts">
 	import logo from '$lib/assets/programmerbar-modern.svg';
-	import { page } from '$app/stores';
-	$: user = $page.data.user;
+	import { getAuthContext } from '$lib/context/user.context';
+
+	let auth = getAuthContext();
 </script>
 
 <div class="sticky top-0 z-10 border-b bg-background p-4">
@@ -36,7 +37,7 @@
 					>
 				</li>
 
-				{#if user.role === 'board'}
+				{#if auth.user?.role === 'board'}
 					<li>
 						<a class="px-1 text-gray-500 transition hover:text-gray-900" href="/portal/admin"
 							>Admin</a

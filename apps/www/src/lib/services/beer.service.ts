@@ -7,9 +7,9 @@ export class BeerService {
 	#db: Database;
 	#shiftService: ShiftService;
 
-	constructor(db: Database) {
+	constructor(db: Database, shiftService: ShiftService) {
 		this.#db = db;
-		this.#shiftService = new ShiftService(db); // Dont know if this is allowed, but it works hahaha
+		this.#shiftService = shiftService;
 	}
 
 	async claimBeer(userId: string): Promise<boolean> {
