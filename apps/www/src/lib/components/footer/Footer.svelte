@@ -1,9 +1,9 @@
 <script lang="ts">
 	import lervigLogo from '$lib/assets/lervig-logo-black.png';
-	import { getAuthContext } from '$lib/context/user.context';
+	import { getUser } from '$lib/context/user.context';
 	import CornerLink from './CornerLink.svelte';
 
-	let auth = getAuthContext();
+	let user = getUser();
 </script>
 
 <div class="relative mt-24 border-t-2 border-primary-dark bg-primary-light">
@@ -11,8 +11,8 @@
 		<CornerLink href="https://programmerbar.sanity.studio" isExternal>Sanity</CornerLink>
 		<CornerLink href="https://github.com/programmerbar/mono" isExternal>GitHub</CornerLink>
 		<CornerLink href="/beer-pong">Beer Pong</CornerLink>
-		<CornerLink when={!!auth.user} href="/portal">Portal</CornerLink>
-		<CornerLink when={!auth.user} href="/logg-inn">Logg inn</CornerLink>
+		<CornerLink when={!!$user} href="/portal">Portal</CornerLink>
+		<CornerLink when={!$user} href="/logg-inn">Logg inn</CornerLink>
 	</div>
 
 	<footer

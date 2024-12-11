@@ -1,15 +1,16 @@
 <script lang="ts">
-	import { setAuthContext } from '$lib/context/user.context';
+	import { setUserContext } from '$lib/context/user.context';
 	import { Toaster } from 'svelte-sonner';
 	import '../tailwind.css';
+	import { writable } from 'svelte/store';
 
 	const { data, children } = $props();
 
-	setAuthContext({
-		get user() {
-			return data.user;
-		}
+	const user = writable(data.user);
+	$effect.pre(() => {
+		user.set(data.user);
 	});
+	setUserContext(user);
 </script>
 
 <Toaster />
