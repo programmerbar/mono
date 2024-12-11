@@ -3,6 +3,7 @@
 	import UserCard from '$lib/components/cards/UserCard.svelte';
 	import UserDetailModal from '$lib/components/cards/UserDetailModal.svelte';
 	import type { User } from '$lib/db/schema';
+	import Input from '$lib/components/ui/Input.svelte';
 
 	let { data } = $props();
 
@@ -10,13 +11,13 @@
 
 	let currentUserRole = $state(data.user.role);
 
-	let boardMembers: User[] = $derived.by(() =>
+	let boardMembers = $derived.by(() =>
 		data.users.filter((user: User) => {
 			return user.role === 'board' && user.name.toLowerCase().includes(search.toLowerCase());
 		})
 	);
 
-	let normalMembers: User[] = $derived.by(() =>
+	let normalMembers = $derived.by(() =>
 		data.users.filter((user: User) => {
 			return user.role === 'normal' && user.name.toLowerCase().includes(search.toLowerCase());
 		})
@@ -109,14 +110,7 @@
 
 <section class="mt-12 space-y-6">
 	<Heading>Frivillige</Heading>
-	<div class="flex items-center gap-2">
-		<input
-			type="search"
-			class="w-full flex-1 rounded border p-2"
-			placeholder="Søk etter frivillige"
-			bind:value={search}
-		/>
-	</div>
+	<Input type="search" placeholder="Søk etter frivillige" bind:value={search} />
 	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		{#each normalMembers as user (user.id)}
 			<UserCard {user} onSelect={() => handleUserClick(user)} />
