@@ -1,34 +1,39 @@
-import { redirect, fail } from '@sveltejs/kit';
+import { redirect, fail, type Actions } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
-export async function load({ locals }) {
-	if (!locals.user || locals.user.role !== 'board') {
-		throw redirect(303, '/portal');
-	}
+export const load: PageServerLoad = async ({ locals }) => {
+  if (!locals.user || locals.user.role !== 'board') {
+    throw redirect(303, '/portal');
+  }
 
-	const users = await locals.userService.findAll();
+  const users = await locals.userService.findAll();
 
-	return {
-		user: locals.user,
-		users
-	};
+  return {
+    user: locals.user,
+    users
+  };
 }
 
-export const actions = {
-	default: async ({ request, locals }) => {
-		const formData = await request.formData();
-		const userId = formData.get('userId') as string;
-		const role = formData.get('role') as string;
+export const actions: Actions = {
+  default: async ({ request, locals }) => {
+    const formData = await request.formData();
+    const userId = formData.get('userId') as string;
+    const role = formData.get('role');
 
-		if (!locals.user || locals.user.role !== 'board') {
-			return fail(401, { error: 'Unauthorized' });
-		}
+    if (typeof role !== 'string' || (role !== 'board' && role !== 'normal')) {
+      return fail(400, { error: 'Invalid role specified' });
+    }
 
-		const success = await locals.userService.updateUserRole(userId, role);
+    if (!locals.user || locals.user.role !== 'board') {
+      return fail(401, { error: 'Unauthorized' });
+    }
 
-		if (success) {
-			return { success: true };
-		} else {
-			return fail(500, { error: 'Failed to update user role' });
-		}
-	}
+    const success = await locals.userService.updateUserRole(userId, role);
+
+    if (success) {
+      return { success: true };
+    } else {
+      return fail(500, { error: 'Failed to update user role' });
+    }
+  }
 };

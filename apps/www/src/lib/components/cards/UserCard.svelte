@@ -1,11 +1,17 @@
 <script lang="ts">
 	import { initials, mailto } from '$lib/utils';
+	import type { User } from '$lib/db/schema';
 
-	const { user, onclick } = $props();
+	interface UserCardProps {
+		user: User;
+		onSelect?: (user: User) => void;
+	}
+
+	let { user, onSelect }: UserCardProps = $props();
 
 	function handleClick() {
-		if (onclick) {
-			onclick({ detail: { user } });
+		if (onSelect) {
+			onSelect(user);
 		}
 	}
 

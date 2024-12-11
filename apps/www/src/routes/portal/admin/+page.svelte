@@ -8,35 +8,40 @@
 
 	let search = $state('');
 
-	type DetailedUser = User & {
-		timesVolunteered: number;
-		unclaimedBeers: number;
-	};
-
 	let currentUserRole = $state(data.user.role);
 
-	let boardMembers = $derived.by(() =>
-		data.users.filter((user) => {
+	let boardMembers: User[] = $derived.by(() =>
+		data.users.filter((user: User) => {
 			return user.role === 'board' && user.name.toLowerCase().includes(search.toLowerCase());
 		})
 	);
 
-	let normalMembers = $derived.by(() =>
-		data.users.filter((user) => {
+	let normalMembers: User[] = $derived.by(() =>
+		data.users.filter((user: User) => {
 			return user.role === 'normal' && user.name.toLowerCase().includes(search.toLowerCase());
 		})
 	);
 
-	let selectedUser = $state<DetailedUser | null>(null);
+	let selectedUser = $state<
+		| (User & {
+				timesVolunteered: number;
+				unclaimedBeers: number;
+		  })
+		| null
+	>(null);
+
 	let isModalOpen = $state(false);
 
-	async function handleUserClick(event: CustomEvent) {
-		const userId = event.detail.user.id;
+	async function handleUserClick(user: User) {
+		const userId = user.id;
 
 		try {
 			const response = await fetch(`/portal/admin/user/${userId}`);
 			if (response.ok) {
-				const detailedUser = (await response.json()) as DetailedUser;
+				const detailedUser = (await response.json()) as User & {
+					timesVolunteered: number;
+					unclaimedBeers: number;
+				};
 				selectedUser = detailedUser;
 				isModalOpen = true;
 			} else {
@@ -65,7 +70,7 @@
 			});
 
 			if (response.ok) {
-				data.users = data.users.map((user) => {
+				data.users = data.users.map((user: User) => {
 					if (user.id === userId) {
 						return { ...user, role: newRole };
 					}
@@ -81,7 +86,7 @@
 </script>
 
 <svelte:head>
-	<title>Admin - User Manegment</title>
+	<title>Admin - User Management</title>
 </svelte:head>
 
 {#if isModalOpen && selectedUser}
@@ -96,8 +101,8 @@
 <section class="space-y-6">
 	<Heading>Styret</Heading>
 	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
-		{#each boardMembers as user}
-			<UserCard {user} onclick={handleUserClick} />
+		{#each boardMembers as user (user.id)}
+			<UserCard {user} onSelect={handleUserClick} />
 		{/each}
 	</ul>
 </section>
@@ -109,16 +114,12 @@
 			type="search"
 			class="w-full flex-1 rounded border p-2"
 			placeholder="Søk etter frivillige"
+			bind:value={search}
 		/>
 	</div>
 	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
-		{#each normalMembers as user}
-			<UserCard
-				{user}
-				{currentUserRole}
-				roleChange={(e) => updateRole(e.detail.userId, e.detail.newRole)}
-				onclick={handleUserClick}
-			/>
+		{#each normalMembers as user (user.id)}
+			<UserCard {user} onSelect={() => handleUserClick(user)} />
 		{/each}
 	</ul>
 </section>

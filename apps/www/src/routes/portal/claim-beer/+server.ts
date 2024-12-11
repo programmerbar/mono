@@ -1,10 +1,10 @@
-import { json, fail } from '@sveltejs/kit';
+import { json, error } from '@sveltejs/kit';
 
 export async function POST({ locals }) {
 	const userId = locals.user?.id;
 
 	if (!userId) {
-		return fail(401, { error: 'Unauthorized: Please log in to claim your beer.' });
+		throw error(401, 'Unauthorized: Please log in to claim your beer.');
 	}
 
 	try {
@@ -12,10 +12,10 @@ export async function POST({ locals }) {
 		if (success) {
 			return json({ success: true });
 		} else {
-			return json({ message: '' }, { status: 400 });
+			return json({ message: 'No more beers left to claim.' }, { status: 400 });
 		}
 	} catch (err) {
 		console.error('Error claiming beer:', err);
-		return json({ message: 'Server encountered an unexpected issue.' }, { status: 500 });
+		throw error(500, 'Server encountered an unexpected issue.');
 	}
 }

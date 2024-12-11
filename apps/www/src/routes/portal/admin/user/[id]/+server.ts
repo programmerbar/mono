@@ -1,52 +1,56 @@
-import { json, fail } from '@sveltejs/kit';
+import { json, error } from '@sveltejs/kit';
 
-export async function GET({ params, locals }) {
-	const userId = params.id;
-
-	if (!locals.user || locals.user.role !== 'board') {
-		throw fail(401, { error: 'Unauthorized' });
-	}
-
-	const user = await locals.userService.findById(userId);
-
-	if (!user) {
-		throw fail(404, { eroor: 'User not found' });
-	}
-
-	const userShifts = await locals.shiftService.findCompletedShiftsByUserId(userId);
-	const unclaimedBeers = await locals.beerService.getTotalAvailableBeers(userId);
-
-	return json({
-		...user,
-		timesVolunteered: userShifts.length,
-		unclaimedBeers: unclaimedBeers
-	});
+interface BeerUpdateData {
+  additionalBeers: number;
 }
 
-export async function POST({ params, request, locals }) {
-	const userId = params.id;
+export async function GET({ params, locals }: { params: { id: string }; locals: App.Locals }) {
+  const userId = params.id;
 
-	if (!locals.user || locals.user.role !== 'board') {
-		throw fail(401, { error: 'Unauthorized' });
-	}
+  if (!locals.user || locals.user.role !== 'board') {
+    throw error(401, 'Unauthorized');
+  }
 
-	try {
-		const data = await request.json();
-		const newBeerCount = Number(data.additionalBeers);
+  const user = await locals.userService.findById(userId);
 
-		if (!Number.isInteger(newBeerCount) || newBeerCount < 0) {
-			throw fail(400, { error: 'Invalid additional beer count' });
-		}
+  if (!user) {
+    throw error(404, 'User not found');
+  }
 
-		const success = await locals.beerService.updateBeers(userId, newBeerCount);
+  const userShifts = await locals.shiftService.findCompletedShiftsByUserId(userId);
+  const unclaimedBeers = await locals.beerService.getTotalAvailableBeers(userId);
 
-		if (success) {
-			return json({ success: true });
-		} else {
-			throw fail(500, { error: 'Failed to update additional beers' });
-		}
-	} catch (err) {
-		console.error('Error updating additional beers:', err);
-		throw fail(500, { error: 'Server error' });
-	}
+  return json({
+    ...user,
+    timesVolunteered: userShifts.length,
+    unclaimedBeers: unclaimedBeers
+  });
+}
+
+export async function POST({ params, request, locals }: { params: { id: string }; request: Request; locals: App.Locals }) {
+  const userId = params.id;
+
+  if (!locals.user || locals.user.role !== 'board') {
+    throw error(401, 'Unauthorized');
+  }
+
+  try {
+    const data = (await request.json()) as BeerUpdateData;
+    const newBeerCount = Number(data.additionalBeers);
+
+    if (!Number.isInteger(newBeerCount) || newBeerCount < 0) {
+      throw error(400, 'Invalid additional beer count');
+    }
+
+    const success = await locals.beerService.updateBeers(userId, newBeerCount);
+
+    if (success) {
+      return json({ success: true });
+    } else {
+      throw error(500, 'Failed to update additional beers');
+    }
+  } catch (err) {
+    console.error('Error updating additional beers:', err);
+    throw error(500, 'Server error');
+  }
 }

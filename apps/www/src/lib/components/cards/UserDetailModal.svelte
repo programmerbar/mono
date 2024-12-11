@@ -1,10 +1,23 @@
 <script lang="ts">
 	import { Ellipsis, Check } from 'lucide-svelte';
 	import { error } from '@sveltejs/kit';
+	import type { User } from '$lib/db/schema';
 
-	let { selectedUser, currentUserRole = 'normal', onClose, roleChange } = $props();
+	interface ExtendedUser extends User {
+		timesVolunteered: number;
+		unclaimedBeers: number;
+	}
 
-	let unclaimedBeers = $state(selectedUser.unclaimedBeers);
+	interface Props {
+		selectedUser: ExtendedUser;
+		currentUserRole?: 'board' | 'normal';
+		onClose: () => void;
+		roleChange: (event: { userId: string; newRole: 'board' | 'normal' }) => void;
+	}
+
+	let { selectedUser, currentUserRole = 'normal', onClose, roleChange }: Props = $props();
+
+	let unclaimedBeers = $state(String(selectedUser.unclaimedBeers));
 	let menuOpen = $state(false);
 
 	function handleClose() {
@@ -39,9 +52,10 @@
 			});
 
 			if (response.ok) {
-				unclaimedBeers = unclaimedBeersValue;
+				unclaimedBeers = String(unclaimedBeersValue);
 			} else {
 				const errorData = await response.json();
+				console.error('Error updating unclaimed beers:', errorData);
 			}
 		} catch (error) {
 			console.error('Error with updating the count in usercard:', error);
