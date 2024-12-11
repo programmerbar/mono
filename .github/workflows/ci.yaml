@@ -10,7 +10,7 @@ on:
 
 jobs:
   ci:
-    name: 🚀 Deploy web to Cloudflare
+    name: 💚 Run CI
     runs-on: ubuntu-latest
 
     steps:

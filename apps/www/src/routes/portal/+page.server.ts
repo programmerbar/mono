@@ -8,13 +8,15 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	const [userShifts, unclaimedBeers, upcomingShifts] = await Promise.all([
 		locals.shiftService.findCompletedShiftsByUserId(locals.user.id),
-		locals.shiftService.findShiftsWithUnclaimedBeersByUserId(locals.user.id),
+		locals.beerService.getTotalAvailableBeers(locals.user.id),
 		locals.shiftService.findUpcomingShiftsByUserId(locals.user.id)
 	]);
 
+	console.log(locals.beerService.getTotalAvailableBeers(locals.user.id));
+
 	return {
 		shiftsCompleted: userShifts.length,
-		unclaimedBeers: unclaimedBeers.length,
+		unclaimedBeers: unclaimedBeers,
 		upcomingShifts
 	};
 };

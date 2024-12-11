@@ -20,7 +20,8 @@ const main = async () => {
 	const fakeUsers = Array.from({ length: 100 }, () => ({
 		id: nanoid(),
 		email: faker.internet.email(),
-		name: faker.person.fullName()
+		name: faker.person.fullName(),
+		role: 'normal'
 	}));
 
 	for (const user of fakeUsers) {

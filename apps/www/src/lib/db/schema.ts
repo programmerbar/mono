@@ -5,14 +5,17 @@ import { nanoid } from 'nanoid';
 /**
  * Users
  */
-
 export const users = sqliteTable(
 	'user',
 	{
 		id: text('id').notNull().primaryKey(),
 		name: text('name').notNull(),
 		email: text('email').notNull(),
-		feideId: text('feide_id')
+		feideId: text('feide_id'),
+		role: text('role', { enum: ['board', 'normal'] })
+			.notNull()
+			.default('normal'),
+		additionalBeers: integer('additional_beers').default(0).notNull()
 	},
 	(t) => ({
 		emailIdx: uniqueIndex('email_idx').on(t.email),
@@ -31,7 +34,6 @@ export type UserInsert = InferInsertModel<typeof users>;
 /**
  * Sessions
  */
-
 export const sessions = sqliteTable('session', {
 	id: text('id').primaryKey(),
 	userId: text('user_id').notNull(),
@@ -48,7 +50,6 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 /**
  * Invitations
  */
-
 export const invitations = sqliteTable(
 	'invitation',
 	{
@@ -66,7 +67,6 @@ export const invitations = sqliteTable(
 /**
  * Events
  */
-
 export const events = sqliteTable('event', {
 	id: text('id').notNull().primaryKey().$defaultFn(nanoid),
 	name: text('name').notNull(),
@@ -82,7 +82,6 @@ export type Event = InferSelectModel<typeof events>;
 /**
  * Shifts
  */
-
 export const shifts = sqliteTable('shift', {
 	id: text('id').notNull().primaryKey().$defaultFn(nanoid),
 	eventId: text('event_id')
@@ -107,7 +106,6 @@ export type Shift = InferSelectModel<typeof shifts>;
 /**
  * Users to shifts
  */
-
 export const userShifts = sqliteTable('user_shift', {
 	userId: text('user_id')
 		.notNull()
