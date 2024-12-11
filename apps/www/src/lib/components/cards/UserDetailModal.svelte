@@ -127,7 +127,7 @@
 			</div>
 			<div class="mt-6 flex justify-end space-x-2">
 				<Button disabled={unclaimedBeersState !== 'success'}>Oppdater</Button>
-				<Button intent="outline" onclick={onClose}>Lukk</Button>
+				<Button type="button" intent="outline" onclick={onClose}>Lukk</Button>
 			</div>
 		</form>
 	</div>
