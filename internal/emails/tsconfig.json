@@ -21,6 +21,7 @@
     "moduleResolution": "node",
     "noEmit": true,
     "lib": ["es2022", "dom", "dom.iterable"],
+    "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx"
   },
   "include": ["emails"],

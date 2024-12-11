@@ -11,14 +11,14 @@
     "export": "email export"
   },
   "dependencies": {
-    "@react-email/components": "0.0.25",
-    "react": "19.0.0-rc-cae764ce-20241025",
-    "react-dom": "19.0.0-rc-cae764ce-20241025",
-    "react-email": "3.0.1"
+    "@react-email/components": "0.0.31",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-email": "3.0.4"
   },
   "devDependencies": {
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.2",
     "typescript": "5.6.3"
   }
 }
