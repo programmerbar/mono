@@ -12,8 +12,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 		locals.shiftService.findUpcomingShiftsByUserId(locals.user.id)
 	]);
 
-	console.log(locals.beerService.getTotalAvailableBeers(locals.user.id));
-
 	return {
 		shiftsCompleted: userShifts.length,
 		unclaimedBeers: unclaimedBeers,
