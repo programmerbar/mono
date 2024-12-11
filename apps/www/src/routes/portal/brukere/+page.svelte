@@ -31,7 +31,9 @@
 
 	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		{#each filteredUsers as user}
-			<UserCard {user} />
+			<li>
+				<UserCard {user} />
+			</li>
 		{:else}
 			<li class="block col-span-3 text-center py-4">
 				<p>Fant ingen bruker</p>

@@ -8,6 +8,8 @@
 	let { data } = $props();
 
 	let search = $state('');
+	let selectedUser = $state<User | null>(null);
+	let isModalOpen = $state(false);
 
 	let boardMembers = $derived.by(() =>
 		data.users.filter((user: User) => {
@@ -21,39 +23,9 @@
 		})
 	);
 
-	let selectedUser = $state<
-		| (User & {
-				timesVolunteered: number;
-				unclaimedBeers: number;
-		  })
-		| null
-	>(null);
-
-	let isModalOpen = $state(false);
-
-	async function handleUserClick(user: User) {
-		const userId = user.id;
-
-		try {
-			const response = await fetch(`/portal/admin/user/${userId}`);
-			if (response.ok) {
-				const detailedUser = (await response.json()) as User & {
-					timesVolunteered: number;
-					unclaimedBeers: number;
-				};
-				selectedUser = detailedUser;
-				isModalOpen = true;
-			} else {
-				console.error('Failed to fetch user details');
-			}
-		} catch (error) {
-			console.error('Error fetching user details:', error);
-		}
-	}
-
 	function closeModal() {
-		selectedUser = null;
 		isModalOpen = false;
+		selectedUser = null;
 	}
 </script>
 
@@ -69,7 +41,15 @@
 	<Heading>Styret</Heading>
 	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		{#each boardMembers as user (user.id)}
-			<UserCard {user} onSelect={handleUserClick} />
+			<li>
+				<UserCard
+					{user}
+					onSelect={() => {
+						selectedUser = user;
+						isModalOpen = true;
+					}}
+				/>
+			</li>
 		{/each}
 	</ul>
 </section>
@@ -79,7 +59,13 @@
 	<Input class="w-full" type="search" placeholder="Søk etter frivillige" bind:value={search} />
 	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		{#each normalMembers as user (user.id)}
-			<UserCard {user} onSelect={() => handleUserClick(user)} />
+			<UserCard
+				{user}
+				onSelect={() => {
+					selectedUser = user;
+					isModalOpen = true;
+				}}
+			/>
 		{/each}
 	</ul>
 </section>

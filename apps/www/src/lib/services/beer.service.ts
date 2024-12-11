@@ -76,18 +76,13 @@ export class BeerService {
 			return false;
 		}
 
-		try {
-			const unclaimedShifts = await this.#shiftService.findShiftsWithUnclaimedBeersByUserId(userId);
-			const unclaimedShiftBeers = unclaimedShifts.length;
+		const unclaimedShifts = await this.#shiftService.findShiftsWithUnclaimedBeersByUserId(userId);
+		const unclaimedShiftBeers = unclaimedShifts.length;
 
-			const reqBeers = Math.max(newBeerCount - unclaimedShiftBeers, 0);
+		const reqBeers = Math.max(newBeerCount - unclaimedShiftBeers, 0);
 
-			await this.#db.update(users).set({ additionalBeers: reqBeers }).where(eq(users.id, userId));
+		await this.#db.update(users).set({ additionalBeers: reqBeers }).where(eq(users.id, userId));
 
-			return true;
-		} catch (error) {
-			console.error('Error updating additional beers:', error);
-			return false;
-		}
+		return true;
 	}
 }

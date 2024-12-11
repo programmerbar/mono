@@ -4,68 +4,38 @@
 	import { cubicInOut } from 'svelte/easing';
 	import Button from '../ui/Button.svelte';
 	import Input from '../ui/Input.svelte';
-	import { cn } from '$lib/cn';
 	import { outsideClick } from '$lib/actions/outside-click';
-	import { invalidateAll } from '$app/navigation';
-
-	interface ExtendedUser extends User {
-		timesVolunteered: number;
-		unclaimedBeers: number;
-	}
+	import { enhance } from '$app/forms';
+	import { onMount } from 'svelte';
 
 	interface Props {
-		selectedUser: ExtendedUser;
+		selectedUser: User;
 		currentUserRole?: 'board' | 'normal';
 		onClose: () => void;
 	}
 
 	let { selectedUser, onClose }: Props = $props();
 
-	let unclaimedBeers = $state(String(selectedUser.unclaimedBeers));
+	let roleForm = $state<HTMLFormElement | null>(null);
+	let unclaimedBeers = $state<number | null>(null);
+	let unclaimedBeersState = $state<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-	async function updateRole(newRole: 'board' | 'normal') {
-		const formData = new FormData();
-		formData.append('userId', selectedUser.id);
-		formData.append('role', newRole);
-		formData.append('/', 'updateRole');
+	onMount(async () => {
+		const response = await fetch(`/portal/admin/user/${selectedUser.id}`);
+		unclaimedBeersState = 'loading';
 
-		try {
-			const response = await fetch('/portal/admin', {
-				method: 'POST',
-				body: formData
-			});
-
-			if (response.ok) {
-				invalidateAll();
-			} else {
-				console.error('Failed to update user role');
-			}
-		} catch (error) {
-			console.error('Error updating user role:', error);
+		if (response.ok) {
+			const detailedUser = (await response.json()) as User & {
+				timesVolunteered: number;
+				unclaimedBeers: number;
+			};
+			unclaimedBeers = detailedUser.unclaimedBeers;
+			unclaimedBeersState = 'success';
+		} else {
+			console.error('Failed to fetch user details');
+			unclaimedBeersState = 'error';
 		}
-	}
-	async function updateUnclaimedBeers() {
-		const unclaimedBeersValue = parseInt(unclaimedBeers, 10);
-
-		const requestBody = { additionalBeers: unclaimedBeersValue };
-
-		try {
-			const response = await fetch(`/portal/admin/user/${selectedUser.id}`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(requestBody)
-			});
-
-			if (response.ok) {
-				unclaimedBeers = String(unclaimedBeersValue);
-			} else {
-				const errorData = await response.json();
-				console.error('Error updating unclaimed beers:', errorData);
-			}
-		} catch (error) {
-			console.error('Error with updating the count in usercard:', error);
-		}
-	}
+	});
 </script>
 
 <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -91,34 +61,74 @@
 			<li class="flex items-center gap-4">
 				<strong>Rolle:</strong>
 
-				<div class="flex items-center gap-2">
-					<button
-						onclick={() => updateRole('normal')}
-						class={cn('flex items-center justify-center rounded-xl border px-2 py-px text-sm', {
-							'border-transparent bg-primary text-white': selectedUser.role === 'normal',
-							'hover:bg-gray-200': selectedUser.role !== 'normal'
-						})}>Frivillig</button
-					>
-					<button
-						onclick={() => updateRole('board')}
-						class={cn('flex items-center justify-center rounded-xl border px-2 py-px text-sm', {
-							'border-transparent bg-primary text-white': selectedUser.role === 'board',
-							'hover:bg-gray-200': selectedUser.role !== 'board'
-						})}>Styret</button
-					>
-				</div>
+				<form
+					bind:this={roleForm}
+					method="post"
+					action="/portal/admin"
+					class="flex items-center gap-2"
+					onchange={roleForm?.submit}
+					use:enhance
+				>
+					<input type="hidden" name="userId" value={selectedUser.id} />
+
+					<label class="relative cursor-pointer">
+						<input
+							type="radio"
+							name="role"
+							value="normal"
+							class="peer hidden"
+							bind:group={selectedUser.role}
+						/>
+						<span
+							class="peer-checked:bg-primary flex items-center justify-center rounded-xl border px-2 py-px
+							  text-sm hover:bg-gray-200 peer-checked:border-transparent
+							  peer-checked:text-white"
+						>
+							Frivillig
+						</span>
+					</label>
+
+					<label class="relative cursor-pointer">
+						<input
+							type="radio"
+							name="role"
+							value="board"
+							class="peer hidden"
+							bind:group={selectedUser.role}
+						/>
+						<span
+							class="peer-checked:bg-primary flex items-center justify-center rounded-xl border px-2 py-px
+							  text-sm hover:bg-gray-200 peer-checked:border-transparent
+							  peer-checked:text-white"
+						>
+							Styret
+						</span>
+					</label>
+				</form>
 			</li>
 		</ul>
 
-		<div class="mt-4">
-			<label class="flex flex-col gap-2">
-				<strong>Antall uavhentede øl:</strong>
-				<Input type="number" min="0" bind:value={unclaimedBeers} />
-			</label>
-		</div>
-		<div class="mt-6 flex justify-end space-x-2">
-			<Button onclick={updateUnclaimedBeers}>Oppdater</Button>
-			<Button intent="outline" onclick={onClose}>Lukk</Button>
-		</div>
+		<hr class="my-4" />
+
+		<form
+			method="post"
+			action="/portal/admin/user/{selectedUser.id}?/addBeers"
+			use:enhance={() => {
+				return () => {
+					onClose();
+				};
+			}}
+		>
+			<div>
+				<label class="flex flex-col gap-2">
+					<strong>Antall uavhentede øl:</strong>
+					<Input type="number" name="additionalBeers" min="0" bind:value={unclaimedBeers} />
+				</label>
+			</div>
+			<div class="mt-6 flex justify-end space-x-2">
+				<Button disabled={unclaimedBeersState !== 'success'}>Oppdater</Button>
+				<Button intent="outline" onclick={onClose}>Lukk</Button>
+			</div>
+		</form>
 	</div>
 </div>

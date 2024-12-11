@@ -1,18 +1,17 @@
 <script lang="ts">
 	import { initials, mailto } from '$lib/utils';
 	import type { User } from '$lib/db/schema';
+	import { cn } from '$lib/cn';
 
-	interface UserCardProps {
+	interface Props {
 		user: User;
 		onSelect?: (user: User) => void;
 	}
 
-	let { user, onSelect }: UserCardProps = $props();
+	let { user, onSelect }: Props = $props();
 
 	function handleClick() {
-		if (onSelect) {
-			onSelect(user);
-		}
+		onSelect?.(user);
 	}
 
 	function handleKeyDown(event: KeyboardEvent) {
@@ -23,7 +22,9 @@
 </script>
 
 <div
-	class="relative block cursor-pointer rounded-lg border bg-white p-4"
+	class={cn('relative block cursor-default rounded-lg border bg-white p-4 transition-colors', {
+		'cursor-pointer hover:bg-gray-100': onSelect !== undefined
+	})}
 	role="button"
 	tabindex="0"
 	onclick={handleClick}
