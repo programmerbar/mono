@@ -1,7 +1,12 @@
 <script lang="ts">
-	import { Ellipsis, Check } from 'lucide-svelte';
 	import { error } from '@sveltejs/kit';
 	import type { User } from '$lib/db/schema';
+	import { fly } from 'svelte/transition';
+	import { cubicInOut } from 'svelte/easing';
+	import Button from '../ui/Button.svelte';
+	import Input from '../ui/Input.svelte';
+	import { cn } from '$lib/cn';
+	import { outsideClick } from '$lib/actions/outside-click';
 
 	interface ExtendedUser extends User {
 		timesVolunteered: number;
@@ -64,68 +69,56 @@
 </script>
 
 <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-	<div class="relative w-full max-w-md rounded-lg bg-white p-6">
-		<!-- Admin menu -->
-		{#if currentUserRole === 'board'}
-			<div class="absolute right-2 top-2">
-				<button
-					onclick={toggleMenu}
-					aria-haspopup="true"
-					aria-expanded={menuOpen}
-					aria-label="Toggle admin menu"
-				>
-					<Ellipsis class="h-5 w-5 text-gray-500" />
-				</button>
-				{#if menuOpen}
-					<!-- Menu -->
-					<div class="absolute right-0 z-10 mt-2 w-32 rounded-md bg-white shadow-lg">
-						<ul>
-							<li>
-								<button
-									class="flex w-full items-center px-4 py-2 text-left text-sm hover:bg-gray-100"
-									onclick={() => changeRole('board')}
-								>
-									{#if selectedUser.role === 'board'}
-										<Check class="mr-2 h-4 w-4 text-green-500" />
-									{/if}
-									<span class="mr-2 w-6"></span> Styret
-								</button>
-							</li>
-							<li>
-								<button
-									class="flex w-full items-center px-4 py-2 text-left text-sm hover:bg-gray-100"
-									onclick={() => changeRole('normal')}
-								>
-									{#if selectedUser.role === 'normal'}
-										<Check class="mr-2 h-4 w-4 text-green-500" />
-									{/if}
-									<span class="mr-2 w-6"></span> Frivillig
-								</button>
-							</li>
-						</ul>
-					</div>
-				{/if}
-			</div>
-		{/if}
+	<div
+		in:fly={{ easing: cubicInOut, y: 20, duration: 300 }}
+		out:fly={{ easing: cubicInOut, y: 20, duration: 300 }}
+		use:outsideClick={() => handleClose()}
+		class="relative w-full max-w-md rounded-lg bg-white p-6"
+	>
 		<h2 class="mb-4 text-xl font-bold">{selectedUser.name}'s Detaljer</h2>
-		<p><strong>E-post:</strong> {selectedUser.email}</p>
-		<p><strong>Antall ganger stått:</strong> {selectedUser.timesVolunteered}</p>
+
+		<ul>
+			<li>
+				<strong>Navn:</strong>
+				{selectedUser.name}
+			</li>
+
+			<li>
+				<strong>E-post:</strong>
+				{selectedUser.email}
+			</li>
+
+			<li class="flex items-center gap-4">
+				<strong>Rolle:</strong>
+
+				<div class="flex items-center gap-2">
+					<button
+						onclick={() => changeRole('normal')}
+						class={cn('flex items-center justify-center rounded-xl border px-2 py-px text-sm', {
+							'bg-primary border-transparent text-white': selectedUser.role === 'normal',
+							'hover:bg-gray-200': selectedUser.role !== 'normal'
+						})}>Frivillig</button
+					>
+					<button
+						onclick={() => changeRole('board')}
+						class={cn('flex items-center justify-center rounded-xl border px-2 py-px text-sm', {
+							'bg-primary border-transparent text-white': selectedUser.role === 'board',
+							'hover:bg-gray-200': selectedUser.role !== 'board'
+						})}>Styret</button
+					>
+				</div>
+			</li>
+		</ul>
+
 		<div class="mt-4">
-			<label class="mb-2 block">
+			<label class="flex flex-col gap-2">
 				<strong>Antall uavhentede øl:</strong>
-				<input
-					type="number"
-					min="0"
-					bind:value={unclaimedBeers}
-					class="mt-1 w-full rounded border p-2"
-				/>
+				<Input type="number" min="0" bind:value={unclaimedBeers} />
 			</label>
 		</div>
 		<div class="mt-6 flex justify-end space-x-2">
-			<button class="rounded bg-green-600 px-4 py-2 text-white" onclick={updateUnclaimedBeers}>
-				Oppdater
-			</button>
-			<button class="rounded bg-gray-600 px-4 py-2 text-white" onclick={handleClose}>Lukk</button>
+			<Button onclick={updateUnclaimedBeers}>Oppdater</Button>
+			<Button intent="outline" onclick={handleClose}>Lukk</Button>
 		</div>
 	</div>
 </div>
