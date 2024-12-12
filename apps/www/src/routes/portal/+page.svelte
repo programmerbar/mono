@@ -30,7 +30,9 @@
 					<a class="hover:underline" href="/portal/arrangementer/{shift.event?.id}">
 						<div class="rounded-lg border border-border bg-white p-2">
 							<p>
-								{shift.event?.name}: {formatDate(shift.shift.start)} - {formatDate(shift.shift.end)}
+								{shift.event?.name}: {formatDate(shift.shift.startAt)} - {formatDate(
+									shift.shift.endAt
+								)}
 							</p>
 						</div>
 					</a>

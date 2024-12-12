@@ -59,7 +59,7 @@
 	/>
 
 	{#each createEventState.shifts as shift, i}
-		{@const shiftLength = differenceInHours(shift.end, shift.start)}
+		{@const shiftLength = differenceInHours(shift.endAt, shift.startAt)}
 		<div class="relative flex flex-col space-y-2 rounded-lg border border-border p-4">
 			<button
 				type="button"
@@ -73,14 +73,14 @@
 			<FormInput
 				label="Start"
 				description="Start tidspunkt for vakten"
-				bind:value={shift.start}
+				bind:value={shift.startAt}
 				type="datetime-local"
 				required
 			/>
 			<FormInput
 				label="Slutt"
 				description="Slutt tidspunkt for vakten"
-				bind:value={shift.end}
+				bind:value={shift.endAt}
 				type="datetime-local"
 				required
 			/>

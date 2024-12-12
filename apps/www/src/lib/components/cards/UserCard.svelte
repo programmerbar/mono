@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { initials, mailto } from '$lib/utils';
-	import type { User } from '$lib/db/schema';
+	import type { User } from '$lib/db/schemas';
 	import { cn } from '$lib/cn';
 
 	interface Props {

@@ -1,5 +1,5 @@
 import type { Database } from '$lib/db/drizzle';
-import { users, userShifts } from '$lib/db/schema';
+import { users, userShifts } from '$lib/db/schemas';
 import { eq, and } from 'drizzle-orm';
 import { ShiftService } from './shift.service';
 

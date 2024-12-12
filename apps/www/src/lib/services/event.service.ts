@@ -1,5 +1,5 @@
 import type { Database } from '$lib/db/drizzle';
-import { events, shifts, userShifts, type UserShiftInsert } from '$lib/db/schema';
+import { events, shifts, userShifts, type UserShiftInsert } from '$lib/db/schemas';
 import { and, eq } from 'drizzle-orm';
 
 export class EventService {
@@ -22,7 +22,7 @@ export class EventService {
 		return event;
 	}
 
-	async createShifts(values: Array<{ eventId: string; start: Date; end: Date }>) {
+	async createShifts(values: Array<{ eventId: string; startAt: Date; endAt: Date }>) {
 		if (values.length === 0) {
 			return;
 		}

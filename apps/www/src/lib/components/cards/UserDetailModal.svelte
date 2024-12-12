@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { User } from '$lib/db/schema';
+	import type { User } from '$lib/db/schemas';
 	import { fly } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
 	import Button from '../ui/Button.svelte';
@@ -80,8 +80,8 @@
 							bind:group={selectedUser.role}
 						/>
 						<span
-							class="peer-checked:bg-primary flex items-center justify-center rounded-xl border px-2 py-px
-							  text-sm hover:bg-gray-200 peer-checked:border-transparent
+							class="flex items-center justify-center rounded-xl border px-2 py-px text-sm
+							  hover:bg-gray-200 peer-checked:border-transparent peer-checked:bg-primary
 							  peer-checked:text-white"
 						>
 							Frivillig
@@ -97,8 +97,8 @@
 							bind:group={selectedUser.role}
 						/>
 						<span
-							class="peer-checked:bg-primary flex items-center justify-center rounded-xl border px-2 py-px
-							  text-sm hover:bg-gray-200 peer-checked:border-transparent
+							class="flex items-center justify-center rounded-xl border px-2 py-px text-sm
+							  hover:bg-gray-200 peer-checked:border-transparent peer-checked:bg-primary
 							  peer-checked:text-white"
 						>
 							Styret

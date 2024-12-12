@@ -16,8 +16,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	const shiftsToInsert = jshifts.map((shift) => ({
 		eventId: event.id,
-		start: shift.start,
-		end: shift.end
+		startAt: shift.startAt,
+		endAt: shift.endAt
 	}));
 
 	const createdShifts = await locals.eventService.createShifts(shiftsToInsert);

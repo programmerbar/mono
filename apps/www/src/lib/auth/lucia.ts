@@ -1,7 +1,7 @@
 import { DrizzleSQLiteAdapter } from '@lucia-auth/adapter-drizzle';
 import { Lucia } from 'lucia';
 import { type Database } from '../db/drizzle';
-import { type User, sessions, users } from '../db/schema';
+import { type User, sessions, users } from '../db/schemas';
 import { dev } from '$app/environment';
 
 export type Auth = ReturnType<typeof createAuth>;

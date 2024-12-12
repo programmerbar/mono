@@ -1,5 +1,5 @@
 import type { Database } from '$lib/db/drizzle';
-import { invitations } from '$lib/db/schema';
+import { invitations } from '$lib/db/schemas';
 import { eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { isPast } from 'date-fns';
@@ -24,11 +24,11 @@ export class InvitationService {
 			.get();
 	}
 
-	async use(id: string) {
+	async claim(id: string) {
 		await this.#db
 			.update(invitations)
 			.set({
-				usedAt: new Date()
+				claimedAt: new Date()
 			})
 			.where(eq(invitations.id, id));
 	}
@@ -46,7 +46,7 @@ export class InvitationService {
 			return [null, 'No invitation found'] as const;
 		}
 
-		if (invitation.usedAt !== null) {
+		if (invitation.claimedAt !== null) {
 			return [null, 'Invitation already used'] as const;
 		}
 
@@ -59,7 +59,7 @@ export class InvitationService {
 
 	async findAllUnused() {
 		return await this.#db.query.invitations.findMany({
-			where: (row, { isNull }) => isNull(row.usedAt)
+			where: (row, { isNull }) => isNull(row.claimedAt)
 		});
 	}
 }

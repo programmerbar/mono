@@ -6,8 +6,8 @@ type CreateEventShiftUser = {
 };
 
 type CreateEventShift = {
-	start: string;
-	end: string;
+	startAt: string;
+	endAt: string;
 	users: Array<CreateEventShiftUser>;
 };
 
@@ -18,8 +18,8 @@ export class CreateEventState {
 
 	addShift() {
 		this.shifts.push({
-			start: '',
-			end: '',
+			startAt: '',
+			endAt: '',
 			users: []
 		});
 	}
@@ -46,8 +46,8 @@ export class CreateEventState {
 			date: this.date,
 			shifts: this.shifts.map((shift) => {
 				return {
-					start: shift.start,
-					end: shift.end,
+					start: shift.startAt,
+					end: shift.endAt,
 					users: shift.users.map((user) => user.id).filter(Boolean)
 				};
 			})

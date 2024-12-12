@@ -41,7 +41,7 @@ export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 		});
 	}
 
-	await locals.invitationService.use(invitation.id);
+	await locals.invitationService.claim(invitation.id);
 
 	const userId = nanoid();
 	await locals.userService.create({

@@ -1,5 +1,5 @@
 import type { Database } from '$lib/db/drizzle';
-import { events, shifts, userShifts } from '$lib/db/schema';
+import { events, shifts, userShifts } from '$lib/db/schemas';
 import { eq, and, lte, gte } from 'drizzle-orm';
 
 export class ShiftService {
@@ -18,7 +18,7 @@ export class ShiftService {
 				and(
 					eq(userShifts.userId, userId),
 					eq(userShifts.status, 'accepted'),
-					lte(shifts.end, new Date())
+					lte(shifts.endAt, new Date())
 				)
 			);
 
@@ -35,7 +35,7 @@ export class ShiftService {
 				and(
 					eq(userShifts.userId, userId),
 					// eq(userShifts.status, 'accepted'), // Uncomment this line when we can accept shifts
-					gte(shifts.start, new Date())
+					gte(shifts.startAt, new Date())
 				)
 			);
 
@@ -52,7 +52,7 @@ export class ShiftService {
 					eq(userShifts.userId, userId),
 					// eq(userShifts.status, 'accepted'), // Uncomment this line when we can accept shifts
 					eq(userShifts.isBeerClaimed, false),
-					lte(shifts.end, new Date())
+					lte(shifts.endAt, new Date())
 				)
 			);
 

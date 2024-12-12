@@ -71,6 +71,13 @@
       "when": 1733148799391,
       "tag": "0009_spooky_oracle",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1734014728096,
+      "tag": "0010_unique_raider",
+      "breakpoints": true
     }
   ]
 }

@@ -2,7 +2,7 @@
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import UserCard from '$lib/components/cards/UserCard.svelte';
 	import UserDetailModal from '$lib/components/cards/UserDetailModal.svelte';
-	import type { User } from '$lib/db/schema';
+	import type { User } from '$lib/db/schemas';
 	import Input from '$lib/components/ui/Input.svelte';
 
 	let { data } = $props();

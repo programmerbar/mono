@@ -24,8 +24,8 @@
 		{#each data.event.shifts as shift}
 			{@const isInShift = shift.members.some((member) => member.userId === $user?.id)}
 			<li class="block rounded-lg border bg-white p-4">
-				<p>{capitalize(formatDate(shift.start))}</p>
-				<p>{time(shift.start)} - {time(shift.end)}</p>
+				<p>{capitalize(formatDate(shift.startAt))}</p>
+				<p>{time(shift.startAt)} - {time(shift.endAt)}</p>
 				<p><b>Ansvarlige</b>: {shift.members.map((member) => member.user.name).join(', ')}</p>
 
 				{#if !isInShift}

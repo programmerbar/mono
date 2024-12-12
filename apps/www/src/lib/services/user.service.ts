@@ -1,6 +1,6 @@
 import type { Database } from '$lib/db/drizzle';
 import { eq } from 'drizzle-orm';
-import { users, type UserInsert } from '$lib/db/schema';
+import { users, type UserInsert } from '$lib/db/schemas';
 
 export class UserService {
 	#db: Database;

@@ -6,8 +6,8 @@ export const CreateEventSchema = z.object({
 	date: z.coerce.date(),
 	shifts: z
 		.object({
-			start: z.coerce.date(),
-			end: z.coerce.date(),
+			startAt: z.coerce.date(),
+			endAt: z.coerce.date(),
 			users: z.array(z.string())
 		})
 		.array()
