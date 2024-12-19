@@ -2,6 +2,7 @@ import { dev } from '$app/environment';
 import { createAuth } from '$lib/auth/lucia';
 import { createFeideProvider } from '$lib/auth/providers/feide';
 import { createDatabase } from '$lib/db/drizzle';
+import { BanService } from '$lib/services/ban.service';
 import { BeerService } from '$lib/services/beer.service';
 import { EmailService } from '$lib/services/email.service';
 import { EventService } from '$lib/services/event.service';
@@ -13,6 +14,20 @@ import type { Handle } from '@sveltejs/kit';
 import { Resend } from 'resend';
 
 export const handle: Handle = async ({ event, resolve }) => {
+	const banService = new BanService(event.platform!.env.STATUS_KV);
+	event.locals.banService = banService;
+
+	const ip = event.getClientAddress();
+	const isIpBanned = await banService.isIpBanned(ip);
+	if (isIpBanned) {
+		return new Response(null, {
+			status: 429,
+			headers: {
+				'retry-after': '3600'
+			}
+		});
+	}
+
 	// Setup Resend
 	const resend = new Resend(event.platform?.env.RESEND_API_KEY);
 	event.locals.resend = resend;

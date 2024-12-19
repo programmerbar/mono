@@ -14,9 +14,9 @@ export const CreateEventSchema = z.object({
 });
 
 export const ContactUsSchema = zfd.formData({
-	name: zfd.text(z.string().min(2).max(50)),
-	email: zfd.text(z.string().email().min(3)),
-	message: zfd.text(z.string().min(5).max(1000))
+	namekjkj: zfd.text(z.string().min(2).max(50)),
+	emailkjkj: zfd.text(z.string().email().min(3)),
+	messagekjkj: zfd.text(z.string().min(5).max(1000))
 });
 
 export const CreateInvitationSchema = z.object({
