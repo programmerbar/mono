@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 export type Dateish = string | Date | number;
 
 export const formatDate = (date: Dateish) => {
@@ -15,4 +17,8 @@ export const time = (date: Dateish) => {
 		minute: 'numeric',
 		timeZone: 'Europe/Oslo'
 	}).format(new Date(date));
+};
+
+export const normalDate = (date: Dateish) => {
+	return format(date, 'yyyy-MM-dd');
 };

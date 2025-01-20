@@ -6,7 +6,7 @@
 	import MenuList from '$lib/components/app/landing/MenuList.svelte';
 
 	let { data } = $props();
-	let { products, events, status } = data;
+	let { products, events, status } = $derived(data);
 </script>
 
 <svelte:head>
