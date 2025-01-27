@@ -19,6 +19,9 @@
     },
     "db:migrate": {
       "cache": false
+    },
+    "db:migrate:local": {
+      "cache": false
     }
   }
 }

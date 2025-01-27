@@ -17,7 +17,8 @@
 		"types": "wrangler types src/worker-configuration.d.ts",
 		"clean": "rm -rf node_modules .svelte-kit build .turbo",
 		"db:generate": "drizzle-kit generate",
-		"db:migrate": "wrangler d1 migrations apply progbar-db"
+		"db:migrate": "wrangler d1 migrations apply progbar-db",
+		"db:migrate:local": "pnpm db:migrate -- --local"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "4.20241205.0",

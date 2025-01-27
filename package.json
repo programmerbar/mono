@@ -9,6 +9,7 @@
     "format": "turbo run format",
     "db:generate": "turbo run db:generate",
     "db:migrate": "turbo run db:migrate",
+    "db:migrate:local": "turbo run db:migrate:local",
     "types": "turbo run types"
   },
   "dependencies": {
