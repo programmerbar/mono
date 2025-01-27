@@ -62,4 +62,8 @@ export class InvitationService {
 			where: (row, { isNull }) => isNull(row.claimedAt)
 		});
 	}
+
+	async delete(id: string) {
+		return await this.#db.delete(invitations).where(eq(invitations.id, id));
+	}
 }

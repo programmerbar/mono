@@ -1,10 +1,12 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import { X } from 'lucide-svelte';
 	import AddUserModal from '$lib/components/portal/AddUserModal.svelte';
 	import { mailto } from '$lib/utils';
 	import { formatDate } from '$lib/date';
 	import UserCard from '$lib/components/cards/UserCard.svelte';
+	import { enhance } from '$app/forms';
 
 	let { data } = $props();
 
@@ -47,7 +49,14 @@
 
 	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		{#each data.invitations as invitation}
-			<li class="block rounded-lg border bg-white p-4">
+			<li class="relative block rounded-lg border bg-white p-4">
+				<form method="post" action="?/deleteInvitation" use:enhance>
+					<input name="invitationId" hidden value={invitation.id} />
+					<button class="absolute right-2 top-2 h-6 w-6 cursor-pointer text-gray-500">
+						<X class="h-6 w-6 text-gray-500" />
+					</button>
+				</form>
+
 				<p class="text-sm">
 					<span class="font-medium">E-post:</span>
 					<a class="hover:underline" href={mailto(invitation.email)}>{invitation.email}</a>
