@@ -32,7 +32,7 @@ export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 	}
 
 	const [invitation, error] = await locals.invitationService.findValidInvitationByEmail(
-		feideUser.email
+		feideUser.email.toLowerCase()
 	);
 
 	if (error !== null) {
