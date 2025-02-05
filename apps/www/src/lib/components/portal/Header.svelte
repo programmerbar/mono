@@ -62,7 +62,7 @@
 <svelte:window onresize={handleResize} />
 
 <div
-	class={cn('bg-background sticky top-0 z-10 border-b p-4', {
+	class={cn('sticky top-0 z-10 border-b bg-background p-4', {
 		'h-screen overflow-y-auto': isOpen
 	})}
 >
