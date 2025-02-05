@@ -1,50 +1,110 @@
 <script lang="ts">
 	import logo from '$lib/assets/programmerbar-modern.svg';
+	import { Menu, X } from 'lucide-svelte';
 	import { getUser } from '$lib/context/user.context';
+	import { cn } from '$lib/cn';
+	import { onNavigate } from '$app/navigation';
 
 	let user = getUser();
+	let isOpen = $state(false);
+
+	const routes = $derived([
+		{
+			name: 'Hjem',
+			href: '/portal'
+		},
+		{
+			name: 'Status',
+			href: '/portal/status'
+		},
+		{
+			name: 'Cash Out',
+			href: '/portal/claim-beer'
+		},
+		{
+			name: 'Arrangement',
+			href: '/portal/arrangementer'
+		},
+		{
+			name: 'Brukere',
+			href: '/portal/brukere'
+		},
+		{
+			name: 'Admin',
+			href: '/portal/admin',
+			visible: $user?.role === 'board'
+		}
+	]);
+
+	onNavigate(() => {
+		isOpen = false;
+		document.body.style.overflow = 'auto';
+	});
+
+	const toggleMenu = () => {
+		isOpen = !isOpen;
+
+		if (isOpen) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'auto';
+		}
+	};
+
+	const handleResize = () => {
+		if (window.innerWidth > 768) {
+			isOpen = false;
+			document.body.style.overflow = 'auto';
+		}
+	};
 </script>
 
-<div class="sticky top-0 z-10 border-b bg-background p-4">
+<svelte:window onresize={handleResize} />
+
+<div
+	class={cn('bg-background sticky top-0 z-10 border-b p-4', {
+		'h-screen overflow-y-auto': isOpen
+	})}
+>
 	<header class="mx-auto flex max-w-screen-md items-center justify-between">
 		<a href="/" class="mr-10">
 			<img src={logo} alt="Logo" class="h-12 w-12" />
 		</a>
 
 		<nav>
-			<ul class="mt-4 flex gap-2">
-				<li>
-					<a class="px-1 text-gray-500 transition hover:text-gray-900" href="/portal">Hjem</a>
-				</li>
-				<li>
-					<a class="px-1 text-gray-500 transition hover:text-gray-900" href="/portal/status"
-						>Status</a
-					>
-				</li>
-				<li>
-					<a class="px-1 text-gray-500 transition hover:text-gray-900" href="/portal/claim-beer"
-						>Cash Out</a
-					>
-				</li>
-				<li>
-					<a class="px-1 text-gray-500 transition hover:text-gray-900" href="/portal/arrangementer"
-						>Arrangement</a
-					>
-				</li>
-				<li>
-					<a class="px-1 text-gray-500 transition hover:text-gray-900" href="/portal/brukere"
-						>Brukere</a
-					>
-				</li>
+			<ul class="mt-4 hidden gap-2 md:flex">
+				{#each routes as route}
+					{#if route.visible !== false}
+						<li>
+							<a class="px-1 text-gray-500 transition hover:text-gray-900" href={route.href}
+								>{route.name}</a
+							>
+						</li>
+					{/if}
+				{/each}
+			</ul>
 
-				{#if $user?.role === 'board'}
+			<button onclick={toggleMenu} class="block md:hidden">
+				{#if isOpen}
+					<X class="h-6 w-6" />
+				{:else}
+					<Menu class="h-6 w-6" />
+				{/if}
+			</button>
+		</nav>
+	</header>
+
+	{#if isOpen}
+		<ul class="mt-4 flex flex-col gap-2">
+			{#each routes as route}
+				{#if route.visible !== false}
 					<li>
-						<a class="px-1 text-gray-500 transition hover:text-gray-900" href="/portal/admin"
-							>Admin</a
+						<a class="px-1 text-gray-500 transition hover:text-gray-900" href={route.href}
+							>{route.name}</a
 						>
 					</li>
 				{/if}
-			</ul>
-		</nav>
-	</header>
+			{/each}
+		</ul>
+	{/if}
 </div>

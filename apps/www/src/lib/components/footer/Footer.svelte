@@ -6,8 +6,10 @@
 	let user = getUser();
 </script>
 
-<div class="relative mt-24 border-t-2 border-primary-dark bg-primary-light">
-	<div class="absolute bottom-0 left-0 flex items-center gap-2 px-2 py-1 text-xs text-gray-700">
+<div class="border-primary-dark bg-primary-light relative mt-24 border-t-2">
+	<div
+		class="absolute bottom-0 left-0 flex items-center gap-2 px-2 py-6 text-xs text-gray-700 md:py-3"
+	>
 		<CornerLink href="https://programmerbar.sanity.studio" isExternal>Sanity</CornerLink>
 		<CornerLink href="https://github.com/programmerbar/mono" isExternal>GitHub</CornerLink>
 		<CornerLink href="/beer-pong">Beer Pong</CornerLink>
