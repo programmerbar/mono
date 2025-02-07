@@ -1,8 +1,20 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { toast } from 'svelte-sonner';
 </script>
 
-<form method="post" action="/kontakt-oss" class="space-y-4" use:enhance>
+<form
+	method="post"
+	action="/kontakt-oss"
+	class="space-y-4"
+	use:enhance={() => {
+		return ({ result }) => {
+			if (result.type === 'success') {
+				toast.success('Takk for din henvendelse!');
+			}
+		};
+	}}
+>
 	<div class="field">
 		<label for="name" class="label">Name</label>
 		<input type="text" name="name" placeholder="Kari Nordmann" class="rounded-xl shadow-lg" />
@@ -53,7 +65,7 @@
 
 	<button
 		type="submit"
-		class="flex h-10 w-full items-center justify-center rounded-lg border-2 border-primary-dark bg-primary-light px-3 py-2 font-medium text-gray-800 shadow-lg transition hover:bg-primary"
+		class="border-primary-dark bg-primary-light hover:bg-primary flex h-10 w-full items-center justify-center rounded-lg border-2 px-3 py-2 font-medium text-gray-800 shadow-lg transition"
 		>Send inn</button
 	>
 </form>

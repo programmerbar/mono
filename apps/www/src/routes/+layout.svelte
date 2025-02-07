@@ -13,5 +13,5 @@
 	setUserContext(user);
 </script>
 
-<Toaster />
+<Toaster richColors />
 {@render children()}
