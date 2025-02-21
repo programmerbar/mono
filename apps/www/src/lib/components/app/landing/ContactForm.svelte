@@ -65,7 +65,7 @@
 
 	<button
 		type="submit"
-		class="border-primary-dark bg-primary-light hover:bg-primary flex h-10 w-full items-center justify-center rounded-lg border-2 px-3 py-2 font-medium text-gray-800 shadow-lg transition"
+		class="flex h-10 w-full items-center justify-center rounded-lg border-2 border-primary-dark bg-primary-light px-3 py-2 font-medium text-gray-800 shadow-lg transition hover:bg-primary"
 		>Send inn</button
 	>
 </form>
