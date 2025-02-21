@@ -46,8 +46,8 @@ export class CreateEventState {
 			date: this.date,
 			shifts: this.shifts.map((shift) => {
 				return {
-					start: shift.startAt,
-					end: shift.endAt,
+					startAt: shift.startAt,
+					endAt: shift.endAt,
 					users: shift.users.map((user) => user.id).filter(Boolean)
 				};
 			})
@@ -55,7 +55,7 @@ export class CreateEventState {
 	}
 
 	isValid() {
-		const { success } = CreateEventSchema.safeParse(this.json);
+		const { success } = CreateEventSchema.safeParse(this.json());
 		return success;
 	}
 
