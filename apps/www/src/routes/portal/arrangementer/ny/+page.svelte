@@ -48,6 +48,7 @@
 	<FormInput
 		label="Navn"
 		description="Navnet på arrangementet"
+		placeholder="Fest med Foobar"
 		bind:value={createEventState.name}
 		required
 	/>
