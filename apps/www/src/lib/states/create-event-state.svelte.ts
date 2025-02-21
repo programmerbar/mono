@@ -40,7 +40,7 @@ export class CreateEventState {
 		this.shifts[shiftIndex].users = arr;
 	}
 
-	get json() {
+	json() {
 		return {
 			name: this.name,
 			date: this.date,
@@ -54,7 +54,7 @@ export class CreateEventState {
 		};
 	}
 
-	get isValid() {
+	isValid() {
 		const { success } = CreateEventSchema.safeParse(this.json);
 		return success;
 	}
