@@ -1,7 +1,7 @@
 import { createDatabase } from '../src/lib/db/drizzle';
 import { type D1Database } from '@cloudflare/workers-types';
 import { getPlatformProxy } from 'wrangler';
-import { invitations } from '../src/lib/db/schema';
+import { invitations } from '../src/lib/db/schemas';
 import { nanoid } from 'nanoid';
 
 type Env = {
