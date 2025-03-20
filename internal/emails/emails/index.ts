@@ -6,3 +6,8 @@ export {
   default as InvitationEmail,
   type InvitationEmailProps,
 } from "./invitation";
+export {
+  default as ShiftEmail,
+  type ShiftEmailProps,
+}
+  from "./shiftemail";
