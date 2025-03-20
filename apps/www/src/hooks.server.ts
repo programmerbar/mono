@@ -7,6 +7,7 @@ import { BeerService } from '$lib/services/beer.service';
 import { EmailService } from '$lib/services/email.service';
 import { EventService } from '$lib/services/event.service';
 import { InvitationService } from '$lib/services/invitation.service';
+//import { EmailShiftService } from '$lib/services/.service';
 import { ShiftService } from '$lib/services/shift.service';
 import { StatusService } from '$lib/services/status.service';
 import { UserService } from '$lib/services/user.service';
@@ -14,100 +15,103 @@ import type { Handle } from '@sveltejs/kit';
 import { Resend } from 'resend';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const banService = new BanService(event.platform!.env.STATUS_KV);
-	event.locals.banService = banService;
+  const banService = new BanService(event.platform!.env.STATUS_KV);
+  event.locals.banService = banService;
 
-	const ip = event.getClientAddress();
-	const isIpBanned = await banService.isIpBanned(ip);
-	if (isIpBanned) {
-		return new Response(null, {
-			status: 429,
-			headers: {
-				'retry-after': '3600'
-			}
-		});
-	}
+  const ip = event.getClientAddress();
+  const isIpBanned = await banService.isIpBanned(ip);
+  if (isIpBanned) {
+    return new Response(null, {
+      status: 429,
+      headers: {
+        'retry-after': '3600'
+      }
+    });
+  }
 
-	// Setup Resend
-	const resend = new Resend(event.platform?.env.RESEND_API_KEY);
-	event.locals.resend = resend;
+  // Setup Resend
+  const resend = new Resend(event.platform?.env.RESEND_API_KEY);
+  event.locals.resend = resend;
 
-	// Setup database
-	const db = createDatabase(event.platform!.env.DB);
-	event.locals.db = db;
+  // Setup database
+  const db = createDatabase(event.platform!.env.DB);
+  event.locals.db = db;
 
-	// Setup auth
-	const auth = createAuth(db);
-	event.locals.auth = auth;
+  // Setup auth
+  const auth = createAuth(db);
+  event.locals.auth = auth;
 
-	// Setup feide provider
-	const feideProvider = createFeideProvider(
-		event.platform!.env.FEIDE_CLIENT_ID,
-		event.platform!.env.FEIDE_CLIENT_SECRET,
-		event.platform!.env.FEIDE_REDIRECT_URI
-	);
-	event.locals.feideProvider = feideProvider;
+  // Setup feide provider
+  const feideProvider = createFeideProvider(
+    event.platform!.env.FEIDE_CLIENT_ID,
+    event.platform!.env.FEIDE_CLIENT_SECRET,
+    event.platform!.env.FEIDE_REDIRECT_URI
+  );
+  event.locals.feideProvider = feideProvider;
 
-	// Setup status service
-	const statusService = new StatusService(event.platform!.env.STATUS_KV);
-	event.locals.statusService = statusService;
+  // Setup status service
+  const statusService = new StatusService(event.platform!.env.STATUS_KV);
+  event.locals.statusService = statusService;
 
-	const invitationService = new InvitationService(db);
-	event.locals.invitationService = invitationService;
+  const invitationService = new InvitationService(db);
+  event.locals.invitationService = invitationService;
 
-	const userService = new UserService(db);
-	event.locals.userService = userService;
+  const emailShiftService = new EmailShiftService(db);
+  event.locals.emailShiftService = emailShiftService;
 
-	const eventService = new EventService(db);
-	event.locals.eventService = eventService;
+  const userService = new UserService(db);
+  event.locals.userService = userService;
 
-	const emailService = new EmailService(resend);
-	event.locals.emailService = emailService;
+  const eventService = new EventService(db);
+  event.locals.eventService = eventService;
 
-	const shiftService = new ShiftService(db);
-	event.locals.shiftService = shiftService;
+  const emailService = new EmailService(resend);
+  event.locals.emailService = emailService;
 
-	const beerService = new BeerService(db, shiftService);
-	event.locals.beerService = beerService;
+  const shiftService = new ShiftService(db);
+  event.locals.shiftService = shiftService;
 
-	// Validate auth
-	const sessionId = event.cookies.get(auth.sessionCookieName);
+  const beerService = new BeerService(db, shiftService);
+  event.locals.beerService = beerService;
 
-	if (sessionId) {
-		const { session, user } = await auth.validateSession(sessionId);
+  // Validate auth
+  const sessionId = event.cookies.get(auth.sessionCookieName);
 
-		event.locals.user = user;
-		event.locals.session = session;
-	} else {
-		event.locals.user = null;
-		event.locals.session = null;
-	}
+  if (sessionId) {
+    const { session, user } = await auth.validateSession(sessionId);
 
-	if (!event.locals.user) {
-		event.cookies.delete(auth.sessionCookieName, {
-			path: '/',
-			httpOnly: true,
-			secure: !dev
-		});
-	}
+    event.locals.user = user;
+    event.locals.session = session;
+  } else {
+    event.locals.user = null;
+    event.locals.session = null;
+  }
 
-	if (event.url.pathname.startsWith('/portal/admin') && event.locals.user?.role !== 'board') {
-		return new Response(null, {
-			status: 307,
-			headers: {
-				location: '/logg-inn'
-			}
-		});
-	}
+  if (!event.locals.user) {
+    event.cookies.delete(auth.sessionCookieName, {
+      path: '/',
+      httpOnly: true,
+      secure: !dev
+    });
+  }
 
-	if (event.url.pathname.startsWith('/portal') && !event.locals.user) {
-		return new Response(null, {
-			status: 307,
-			headers: {
-				location: '/logg-inn'
-			}
-		});
-	}
+  if (event.url.pathname.startsWith('/portal/admin') && event.locals.user?.role !== 'board') {
+    return new Response(null, {
+      status: 307,
+      headers: {
+        location: '/logg-inn'
+      }
+    });
+  }
 
-	return await resolve(event);
+  if (event.url.pathname.startsWith('/portal') && !event.locals.user) {
+    return new Response(null, {
+      status: 307,
+      headers: {
+        location: '/logg-inn'
+      }
+    });
+  }
+
+  return await resolve(event);
 };
