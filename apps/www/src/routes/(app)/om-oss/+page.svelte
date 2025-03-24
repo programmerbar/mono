@@ -7,6 +7,8 @@
 	let { data } = $props();
 
 	const html = marked.parse(data.programmerbar.description);
+
+	console.log(data.programmerbar);
 </script>
 
 <svelte:head>
@@ -20,10 +22,20 @@
 		<div
 			class="mx-auto mb-4 flex h-72 w-full items-center justify-center gap-4 rounded-xl border-2 bg-gray-100 sm:float-right sm:ml-4 md:w-96"
 		>
-			<Smile class="h-16 w-16 text-primary" />
-			<Beer class="h-16 w-16 text-primary" />
-			<Wine class="h-16 w-16 text-primary" />
-			<Wifi class="h-16 w-16 text-primary" />
+
+			{#if data.programmerbar.image}
+				<img
+						src={echoUrlFor(data.programmerbar.image).width(200).height(200).url()}
+						alt={"Programmerbar"}
+
+				/>
+			{:else}
+				<div
+						class="flex size-20 items-center justify-center rounded-full border-2 bg-gray-200"
+				>
+					<UserCircle class="size-10 text-gray-400" />
+				</div>
+			{/if}
 		</div>
 
 		<article class="prose prose-xl break-words text-xl">
