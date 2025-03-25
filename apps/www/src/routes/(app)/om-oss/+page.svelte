@@ -8,7 +8,6 @@
 
 	const html = marked.parse(data.programmerbar.description);
 
-	console.log(data.programmerbar);
 </script>
 
 <svelte:head>
