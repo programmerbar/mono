@@ -1,82 +1,39 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { toast } from 'svelte-sonner';
 
-	let message = $state('');
-	let error = $state('');
+	let { data } = $props();
+	let { unclaimedBeers } = $derived(data);
 
-	async function claimBeer(e: Event) {
-		e.preventDefault();
-
-		try {
-			const response = await fetch('/portal/claim-beer', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' }
-			});
-
-			const result = (await response.json()) as { message: string };
-
-			if (response.ok) {
-				message = '🎉 Beer successfully claimed! Cheers!';
-				error = '';
-			} else {
-				error = result.message || '⚠️ No more beers left to claim.';
-				message = '';
-			}
-		} catch (err) {
-			console.error('Error claiming beer:', err);
-			error = '⚠️ An error occurred while claiming beer.';
-			message = '';
-		}
-	}
+	let loading = $state(false);
 </script>
 
-<section class="beer-claim">
-	<h1>🍺 Claim Your Beer</h1>
-	<form onsubmit={claimBeer} use:enhance>
-		<button type="submit" class="claim-button">Claim Beer</button>
-	</form>
+<section>
+	{#if unclaimedBeers > 0}
+		<p class="mb-6 text-center text-6xl font-bold">{unclaimedBeers} øl igjen</p>
 
-	{#if message}
-		<p class="success">{message}</p>
-	{/if}
+		<form
+			class="mx-auto w-fit"
+			method="post"
+			use:enhance={() => {
+				loading = true;
 
-	{#if error}
-		<p class="error">{error}</p>
+				return async ({ update }) => {
+					await update();
+					loading = false;
+					toast.success('Øl claimet! 🍻');
+				};
+			}}
+		>
+			<button
+				type="submit"
+				disabled={loading}
+				class="mx-auto w-fit rounded-md bg-blue-500 px-5 py-2 text-center text-lg font-medium text-white transition-colors hover:bg-blue-400 disabled:cursor-not-allowed disabled:bg-blue-300 disabled:opacity-50"
+				>Claim Beer</button
+			>
+		</form>
+	{:else}
+		<p class="mb-6 text-center text-6xl font-bold">🍻</p>
+		<p class="mb-6 text-center text-lg">Du har ingen øl igjen :(</p>
 	{/if}
 </section>
-
-<style>
-	.beer-claim {
-		text-align: center;
-		padding: 2rem;
-		font-family: 'Arial', sans-serif;
-		color: #333;
-	}
-
-	.claim-button {
-		background-color: #28a745;
-		color: #fff;
-		font-size: 1.2rem;
-		border: none;
-		padding: 10px 20px;
-		border-radius: 8px;
-		cursor: pointer;
-		transition: background-color 0.3s ease;
-	}
-
-	.claim-button:hover {
-		background-color: #218838;
-	}
-
-	.success {
-		color: #28a745;
-		font-weight: bold;
-		margin-top: 1rem;
-	}
-
-	.error {
-		color: #dc3545;
-		font-weight: bold;
-		margin-top: 1rem;
-	}
-</style>

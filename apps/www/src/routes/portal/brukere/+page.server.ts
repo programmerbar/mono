@@ -7,9 +7,11 @@ export const load: PageServerLoad = async ({ locals }) => {
 		locals.invitationService.findAllUnused()
 	]);
 
+	const isBoardMember = locals.user?.role === 'board';
+
 	return {
 		users,
-		invitations
+		invitations: isBoardMember ? invitations : []
 	};
 };
 
