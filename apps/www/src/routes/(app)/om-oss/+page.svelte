@@ -25,16 +25,16 @@
 
 			{#if data.programmerbar.image}
 				<img
-						src={echoUrlFor(data.programmerbar.image).width(200).height(200).url()}
+						src={echoUrlFor(data.programmerbar.image).url()}
 						alt={"Programmerbar"}
+						class="h-full w-full object-cover rounded-xl"
 
 				/>
 			{:else}
-				<div
-						class="flex size-20 items-center justify-center rounded-full border-2 bg-gray-200"
-				>
-					<UserCircle class="size-10 text-gray-400" />
-				</div>
+				<Smile class="h-16 w-16 text-primary" />
+				<Beer class="h-16 w-16 text-primary" />
+				<Wine class="h-16 w-16 text-primary" />
+				<Wifi class="h-16 w-16 text-primary" />
 			{/if}
 		</div>
 
