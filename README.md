@@ -24,7 +24,7 @@
 1. Apply migrations
 
    ```bash
-   pnpm db:migrate -- --local
+   pnpm db:migrate:local
    ```
 
 1. Start the development server
