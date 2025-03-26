@@ -11,7 +11,7 @@ type Env = {
 // Example "tsx ./apps/www/scripts/add-invitation.ts "some@email.com""
 const main = async () => {
 	const { env } = await getPlatformProxy<Env>({
-		configPath: './apps/www/wrangler.json',
+		configPath: './apps/www/wrangler.jsonc',
 		persist: {
 			path: './apps/www/.wrangler/state/v3'
 		}
