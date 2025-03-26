@@ -7,7 +7,6 @@
 	let { data } = $props();
 
 	const html = marked.parse(data.programmerbar.description);
-
 </script>
 
 <svelte:head>
@@ -21,13 +20,11 @@
 		<div
 			class="mx-auto mb-4 flex h-72 w-full items-center justify-center gap-4 rounded-xl border-2 bg-gray-100 sm:float-right sm:ml-4 md:w-96"
 		>
-
 			{#if data.programmerbar.image}
 				<img
-						src={echoUrlFor(data.programmerbar.image).url()}
-						alt={"Programmerbar"}
-						class="h-full w-full object-cover rounded-xl"
-
+					src={echoUrlFor(data.programmerbar.image).url()}
+					alt={'Programmerbar'}
+					class="h-full w-full rounded-xl object-cover"
 				/>
 			{:else}
 				<Smile class="h-16 w-16 text-primary" />
