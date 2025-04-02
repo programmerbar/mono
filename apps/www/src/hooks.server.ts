@@ -56,8 +56,8 @@ export const handle: Handle = async ({ event, resolve }) => {
   const invitationService = new InvitationService(db);
   event.locals.invitationService = invitationService;
 
-  const emailShiftService = new EmailShiftService(db);
-  event.locals.emailShiftService = emailShiftService;
+  //const emailShiftService = new EmailShiftService(db);
+  //event.locals.emailShiftService = emailShiftService;
 
   const userService = new UserService(db);
   event.locals.userService = userService;
