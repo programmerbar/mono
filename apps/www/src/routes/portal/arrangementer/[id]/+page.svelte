@@ -45,9 +45,10 @@
 </section>
 
 <section class="mt-8">
-	<Heading level={2}>Farlig</Heading>
-
-	<form action="?/delete" method="post" use:enhance>
-		<Button intent="danger" class="mt-4">Slett arrangement</Button>
-	</form>
+	{#if data.user?.role === 'board'}
+		<Heading level={2}>Farlig</Heading>
+		<form action="?/delete" method="post" use:enhance>
+			<Button intent="danger" class="mt-4">Slett arrangement</Button>
+		</form>
+	{/if}
 </section>
