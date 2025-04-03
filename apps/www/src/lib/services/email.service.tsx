@@ -101,8 +101,16 @@ export class EmailService {
       console.log('#############################');
 
       console.log('########### EMAIL ############');
+      console.log(`Sending real email to: ${payload.to}`);
       console.log(payload.html);
       console.log('#############################');
+
+
+      if (payload.attachments) {
+        console.log('########### ATTACHMENTS ############');
+        console.log(payload.attachments);
+      }
+
 
       return;
     }
