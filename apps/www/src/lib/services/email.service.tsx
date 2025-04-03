@@ -78,6 +78,7 @@ export class EmailService {
 
   async sendShiftEmail(data: ShiftEmailProps) {
     const icsContent = generateICS(data.shift);
+
     await this.sendEmail({
       from: FROM_EMAIL,
       subject: 'Du har fått en vakt',
