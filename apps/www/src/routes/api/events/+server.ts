@@ -6,16 +6,20 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   if (!locals.user) {
     return new Response(null, { status: 401 });
   }
+
   const { name, date, shifts: jshifts } = await request.json().then(CreateEventSchema.parse);
   const event = await locals.eventService.create(name, date);
+
   if (!event) {
     return new Response(null, { status: 500 });
   }
+
   const shiftsToInsert = jshifts.map((shift) => ({
     eventId: event.id,
     startAt: shift.startAt,
     endAt: shift.endAt
   }));
+
   const createdShifts = await locals.eventService.createShifts(shiftsToInsert);
   const userShiftsToInsert = createdShifts?.flatMap((shift, shiftIndex) => {
     return jshifts[shiftIndex].users.map((user) => ({
@@ -25,7 +29,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   });
   await locals.eventService.createUserShifts(userShiftsToInsert ?? []);
 
-  // Send email notifications with ICS calendar attachments
   const emailPromises = [];
 
   if (createdShifts && createdShifts.length > 0) {
@@ -34,11 +37,9 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       const shiftData = jshifts[i];
 
       for (const userId of shiftData.users) {
-        // Get user details from database
         const user = await locals.userService.findById(userId);
 
         if (user && user.email) {
-          // Prepare email data
           const emailData: ShiftEmailProps = {
             user: {
               name: user.name || 'Frivillig',
@@ -48,21 +49,18 @@ export const POST: RequestHandler = async ({ request, locals }) => {
               startAt: new Date(shift.startAt).toISOString(),
               endAt: new Date(shift.endAt).toISOString(),
               summary: `Vakt: ${name}`,
-              description: `Du har fŒtt en vakt pŒ Programmerbar for arrangementet "${name}".`
+              description: `Du har fått en vakt! På "${name}".`
             }
           };
 
-          // Send the email
           emailPromises.push(locals.emailService.sendShiftEmail(emailData));
 
-          // Log email sending
           console.log(`Sending shift email to ${user.email} for shift ${shift.id}`);
         }
       }
     }
   }
 
-  // Wait for all emails to be sent (but don't fail if some emails fail)
   if (emailPromises.length > 0) {
     try {
       await Promise.allSettled(emailPromises);

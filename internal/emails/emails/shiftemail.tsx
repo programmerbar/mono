@@ -66,7 +66,7 @@ const ShiftEmail = ({ shift, user }: ShiftEmailProps) => {
 ShiftEmail.PreviewProps = {
   shift: {
     startAt: new Date().toISOString(),
-    endAt: new Date(Date.now() + 3600000).toISOString(), // 1 hour later
+    endAt: new Date(Date.now() + 3600000).toISOString(),
     summary: "Vakt for programmerbar fredagsåpent",
     description: "Programmerbar.",
   },

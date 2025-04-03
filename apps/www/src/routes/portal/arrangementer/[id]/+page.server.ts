@@ -16,7 +16,6 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 export const actions: Actions = {
   delete: async ({ params, locals }) => {
     if (locals.user?.role === 'board') {
-
       await locals.eventService.delete(params.id);
       throw redirect(303, '/portal/arrangementer');
     }
