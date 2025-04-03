@@ -12,6 +12,7 @@ export const load: PageServerLoad = async () => {
 		getRepeatingEvents()
 	]);
 
+	const p = products.filter((product) => !product.isSoldOut);
 	const allRepeatingEvents = flattenRepeatingEvents(repeatingEvents);
 	const allEvents = [...events, ...allRepeatingEvents]
 		.filter((event) => Date.now() <= new Date(event.date).getTime())
@@ -19,7 +20,7 @@ export const load: PageServerLoad = async () => {
 		.slice(0, 6);
 
 	return {
-		products,
+		products: p,
 		events: allEvents,
 		status
 	};
