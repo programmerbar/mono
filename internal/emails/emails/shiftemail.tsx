@@ -43,10 +43,6 @@ const ShiftEmail = ({ shift, user }: ShiftEmailProps) => {
               <strong>Til:</strong> {new Date(shift.endAt).toLocaleString()}
             </Text>
 
-            <Text className="mt-2">
-              <strong>Oppsummering:</strong> {shift.summary}
-            </Text>
-
             {shift.description && (
               <Text className="mt-2">
                 <strong>Beskrivelse:</strong> {shift.description}

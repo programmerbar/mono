@@ -86,7 +86,7 @@ export class EmailService {
 
 		await this.sendEmail({
 			from: FROM_EMAIL,
-			subject: 'Du har f�tt en vakt',
+			subject: 'Du har fått en vakt',
 			to: [data.user.email],
 			html: await render(ShiftEmail({ ...data })),
 			attachments: [

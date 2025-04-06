@@ -49,7 +49,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 							startAt: new Date(shift.startAt).toISOString(),
 							endAt: new Date(shift.endAt).toISOString(),
 							summary: `Vakt: ${name}`,
-							description: `Du har f�tt en vakt! P� "${name}".`
+							description: `Du har fått en vakt på "${name}".`
 						}
 					};
 
