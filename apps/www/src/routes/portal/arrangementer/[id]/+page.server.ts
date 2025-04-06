@@ -15,8 +15,14 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 
 export const actions: Actions = {
 	delete: async ({ params, locals }) => {
-		await locals.eventService.delete(params.id);
-		throw redirect(303, '/portal/arrangementer');
+		if (locals.user?.role === 'board') {
+			await locals.eventService.delete(params.id);
+			throw redirect(303, '/portal/arrangementer');
+		}
+
+		return fail(401, {
+			message: 'Unauthorized'
+		});
 	},
 	join: async ({ request, locals }) => {
 		if (!locals.user) {

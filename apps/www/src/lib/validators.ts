@@ -22,3 +22,16 @@ export const ContactUsSchema = zfd.formData({
 export const CreateInvitationSchema = z.object({
 	email: z.string().email()
 });
+
+export const CreateEmailShiftSchema = z.object({
+	user: z.object({
+		name: z.string().min(1),
+		email: z.string().email()
+	}),
+	shift: z.object({
+		startAt: z.coerce.date(),
+		endAt: z.coerce.date(),
+		summary: z.string().min(1),
+		description: z.string().optional()
+	})
+});

@@ -9,27 +9,43 @@
 	import { differenceInHours } from 'date-fns';
 
 	let { data } = $props();
-
 	let error = $state('');
-
+	let successMessage = $state('');
+	let isSubmitting = $state(false);
 	let createEventState = new CreateEventState();
 
 	const handleSubmit: EventHandler<SubmitEvent, HTMLFormElement> = async (e) => {
 		e.preventDefault();
-
 		if (!createEventState.isValid()) {
 			error = 'Vennligst fyll ut alle feltene';
 			console.log(createEventState.json());
 			return;
 		}
 
-		const response = await fetch('/api/events', {
-			method: 'POST',
-			body: JSON.stringify(createEventState.json())
-		});
+		isSubmitting = true;
+		error = '';
+		successMessage = '';
 
-		if (response.status === 201) {
-			createEventState.reset();
+		try {
+			const response = await fetch('/api/events', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(createEventState.json())
+			});
+
+			if (response.status === 201) {
+				successMessage = 'Arrangement opprettet! E-post er sendt.';
+				createEventState.reset();
+			} else {
+				error = 'Noe gikk galt ved oppretting av arrangement';
+			}
+		} catch (err) {
+			error = 'Server error';
+			console.error(err);
+		} finally {
+			isSubmitting = false;
 		}
 	};
 </script>
@@ -41,7 +57,15 @@
 <Heading class="mb-4">Nytt arrangement</Heading>
 
 {#if error}
-	<p class="text-red-500">{error}</p>
+	<div class="mb-4 rounded-md bg-red-50 p-4 text-red-700">
+		<p>{error}</p>
+	</div>
+{/if}
+
+{#if successMessage}
+	<div class="mb-4 rounded-md bg-green-50 p-4 text-green-700">
+		<p>{successMessage}</p>
+	</div>
 {/if}
 
 <form onsubmit={handleSubmit} class="space-y-2">
@@ -59,7 +83,6 @@
 		type="datetime-local"
 		required
 	/>
-
 	{#each createEventState.shifts as shift, i}
 		{@const shiftLength = differenceInHours(shift.endAt, shift.startAt)}
 		<div class="relative flex flex-col space-y-2 rounded-lg border border-border p-4">
@@ -70,7 +93,6 @@
 			>
 				<X class="h-4 w-4" />
 			</button>
-
 			<h2 class="text-lg font-semibold">Vakt {i + 1}</h2>
 			<FormInput
 				label="Start"
@@ -86,13 +108,13 @@
 				type="datetime-local"
 				required
 			/>
-
 			{#if shiftLength >= 4}
 				<span class="text-sm font-medium text-orange-500">NB: Vakten er lengre enn 4 timer!</span>
 			{/if}
-
 			<span class="mt-8 text-sm font-medium">Ansvarlige</span>
-
+			<div class="text-xs text-gray-500">
+				Alle ansvarlige vil få en e-post med kalenderinvitasjon når arrangementet opprettes.
+			</div>
 			{#each createEventState.shifts[i].users as user, j (user)}
 				<div class="flex items-center gap-2">
 					<Combobox
@@ -120,14 +142,13 @@
 			{:else}
 				<p class="text-sm text-gray-600">Ingen ansvarlige. Husk å legge til.</p>
 			{/each}
-
 			<Button type="button" onclick={() => createEventState.addUserToShift(i)}
 				>Legg til bruker</Button
 			>
 		</div>
 	{/each}
-
 	<Button type="button" onclick={() => createEventState.addShift()}>Legg til vakt</Button>
-
-	<Button type="submit">Lagre</Button>
+	<Button type="submit" disabled={isSubmitting}>
+		{isSubmitting ? 'Lagrer...' : 'Lagre'}
+	</Button>
 </form>
