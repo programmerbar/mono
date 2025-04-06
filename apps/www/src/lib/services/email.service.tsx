@@ -36,8 +36,17 @@ function generateICS(shift: {
 	description?: string;
 }): string {
 	const uid = `${Date.now()}@programmerbar.no`;
-	const formatDate = (dateStr: string) =>
-		new Date(dateStr).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+	const formatDate = (dateStr: string) => {
+		const date = new Date(dateStr);
+		// Convert to local time string in YYYYMMDDTHHMMSS format
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		const hours = String(date.getHours()).padStart(2, '0');
+		const minutes = String(date.getMinutes()).padStart(2, '0');
+		const seconds = String(date.getSeconds()).padStart(2, '0');
+		return `${year}${month}${day}T${hours}${minutes}${seconds}`;
+	};
 	const dtstamp = formatDate(new Date().toISOString());
 	const dtstart = formatDate(shift.startAt);
 	const dtend = formatDate(shift.endAt);
@@ -48,8 +57,8 @@ PRODID:-//Programmerbar//Shift Notification//EN
 BEGIN:VEVENT
 UID:${uid}
 DTSTAMP:${dtstamp}
-DTSTART:${dtstart}
-DTEND:${dtend}
+DTSTART;TZID=Europe/Oslo:${dtstart}
+DTEND;TZID=Europe/Oslo:${dtend}
 SUMMARY:${shift.summary}
 DESCRIPTION:${shift.description || ''}
 END:VEVENT

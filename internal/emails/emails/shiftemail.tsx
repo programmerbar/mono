@@ -63,7 +63,7 @@ ShiftEmail.PreviewProps = {
   shift: {
     startAt: new Date().toISOString(),
     endAt: new Date(Date.now() + 3600000).toISOString(),
-    summary: "Vakt for programmerbar fredagsåpent",
+    summary: "Vakt for programmerbar fredagsÃ¥pent",
     description: "Programmerbar.",
   },
   user: {
