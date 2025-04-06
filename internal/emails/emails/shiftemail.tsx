@@ -28,11 +28,11 @@ const ShiftEmail = ({ shift, user }: ShiftEmailProps) => {
         <Body className="bg-white my-auto mx-auto font-sans px-2">
           <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
             <Text className="text-center text-2xl font-medium">
-              Hei {user.name}, du har fått en ny vakt!
+              Hei {user.name}, du har fÃ¥tt en ny vakt!
             </Text>
 
             <Text className="mt-4">
-              Du har blitt tildelt en vakt med følgende detaljer:
+              Du har blitt tildelt en vakt med fÃ¸lgende detaljer:
             </Text>
 
             <Text className="mt-2">

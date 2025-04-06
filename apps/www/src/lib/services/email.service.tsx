@@ -35,7 +35,8 @@ function generateICS(shift: {
 	summary: string;
 	description?: string;
 }): string {
-	const uid = `${Date.now()}@programmerbar.no`;
+	// Create a consistent UID based on event details
+	const uid = `${shift.startAt}-${shift.endAt}-${shift.summary.replace(/\s+/g, '-')}@programmerbar.no`;
 	const formatDate = (dateStr: string) => {
 		const date = new Date(dateStr);
 		// Convert to local time string in YYYYMMDDTHHMMSS format
