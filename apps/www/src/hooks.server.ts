@@ -7,7 +7,6 @@ import { BeerService } from '$lib/services/beer.service';
 import { EmailService } from '$lib/services/email.service';
 import { EventService } from '$lib/services/event.service';
 import { InvitationService } from '$lib/services/invitation.service';
-//import { EmailShiftService } from '$lib/services/.service';
 import { ShiftService } from '$lib/services/shift.service';
 import { StatusService } from '$lib/services/status.service';
 import { UserService } from '$lib/services/user.service';
@@ -55,9 +54,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const invitationService = new InvitationService(db);
 	event.locals.invitationService = invitationService;
-
-	//const emailShiftService = new EmailShiftService(db);
-	//event.locals.emailShiftService = emailShiftService;
 
 	const userService = new UserService(db);
 	event.locals.userService = userService;
