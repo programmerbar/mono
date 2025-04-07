@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import { subHours } from 'date-fns';
 	import { formatDate, time } from '$lib/date';
 	import { capitalize } from '$lib/utils';
 	import { enhance } from '$app/forms';
@@ -25,7 +26,7 @@
 			{@const isInShift = shift.members.some((member) => member.userId === $user?.id)}
 			<li class="block rounded-lg border bg-white p-4">
 				<p>{capitalize(formatDate(shift.startAt))}</p>
-				<p>{time(shift.startAt)} - {time(shift.endAt)}</p>
+				<p>{time(subHours(shift.startAt, 2))} - {time(subHours(shift.endAt, 2))}</p>
 				<p><b>Ansvarlige</b>: {shift.members.map((member) => member.user.name).join(', ')}</p>
 
 				{#if !isInShift}
