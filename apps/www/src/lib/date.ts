@@ -10,7 +10,7 @@ export const formatDate = (date: Dateish) => {
 		weekday: 'long',
 		day: 'numeric',
 		month: 'long',
-		timeZone: 'Europe/Helsinki'
+		timeZone: 'Europe/Oslo'
 	}).format(new Date(date));
 };
 
@@ -18,7 +18,7 @@ export const time = (date: Dateish) => {
 	return Intl.DateTimeFormat('nb-NO', {
 		hour: 'numeric',
 		minute: 'numeric',
-		timeZone: 'Europe/Helsinki'
+		timeZone: 'Europe/Oslo'
 	}).format(new Date(date));
 };
 
@@ -27,6 +27,6 @@ export const normalDate = (date: Dateish) => {
 		year: 'numeric',
 		month: '2-digit',
 		day: '2-digit',
-		timeZone: 'Europe/Helsinki'
+		timeZone: 'Europe/Oslo'
 	}).format(new Date(date));
 };

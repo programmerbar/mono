@@ -5,7 +5,7 @@
 	let user = getUser();
 </script>
 
-<div class="relative mt-24 border-t-2 border-primary-dark bg-primary-light">
+<div class="border-primary-dark bg-primary-light relative mt-24 border-t-2">
 	<footer class="mx-auto flex max-w-5xl flex-col gap-10 px-4 py-16">
 		<div class="mx-auto flex w-full flex-col items-center justify-between gap-10 md:flex-row">
 			<div class="text-center md:text-left">
@@ -78,7 +78,7 @@
 				{/if}
 				{#if !$user}
 					<li>
-						<a class="hover:underline" href="/logg-inn">logg inn</a>
+						<a class="hover:underline" href="/logg-inn">Logg inn</a>
 					</li>
 				{/if}
 			</ul>
