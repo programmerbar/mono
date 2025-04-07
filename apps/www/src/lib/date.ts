@@ -22,6 +22,6 @@ export const normalDate = (date: Dateish) => {
 		year: 'numeric',
 		month: '2-digit',
 		day: '2-digit',
-		timeZone: 'Europe/Oslo'
+		timeZone: 'Europe/London'
 	}).format(new Date(date));
 };
