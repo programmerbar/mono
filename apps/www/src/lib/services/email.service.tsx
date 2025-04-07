@@ -18,6 +18,7 @@ export type InvitationEmailProps = {
 
 export type ShiftEmailProps = {
 	shift: {
+		id: string;
 		startAt: string;
 		endAt: string;
 		summary: string;
@@ -30,13 +31,14 @@ export type ShiftEmailProps = {
 };
 
 function generateICS(shift: {
+	id: string;
 	startAt: string;
 	endAt: string;
 	summary: string;
 	description?: string;
 }): string {
 	// Create a consistent UID based on event details
-	const uid = `${shift.startAt}-${shift.endAt}-${shift.summary.replace(/\s+/g, '-')}@programmerbar.no`;
+	const uid = shift.id;
 	const formatDate = (dateStr: string) => {
 		const date = new Date(dateStr);
 		// Convert to local time string in YYYYMMDDTHHMMSS format

@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 export type Dateish = string | Date | number;
 
 /**
@@ -6,27 +8,13 @@ export type Dateish = string | Date | number;
  */
 
 export const formatDate = (date: Dateish) => {
-	return Intl.DateTimeFormat('nb-NO', {
-		weekday: 'long',
-		day: 'numeric',
-		month: 'long',
-		timeZone: 'Europe/Oslo'
-	}).format(new Date(date));
+	return format(new Date(date), 'dd.MM.yyyy');
 };
 
 export const time = (date: Dateish) => {
-	return Intl.DateTimeFormat('nb-NO', {
-		hour: 'numeric',
-		minute: 'numeric',
-		timeZone: 'Europe/Oslo'
-	}).format(new Date(date));
+	return format(new Date(date), 'HH:mm');
 };
 
 export const normalDate = (date: Dateish) => {
-	return Intl.DateTimeFormat('nb-NO', {
-		year: 'numeric',
-		month: '2-digit',
-		day: '2-digit',
-		timeZone: 'Europe/Oslo'
-	}).format(new Date(date));
+	return format(new Date(date), 'dd.MM.yyyy HH:mm');
 };
