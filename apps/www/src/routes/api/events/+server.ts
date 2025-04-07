@@ -1,5 +1,4 @@
 import { CreateEventSchema } from '$lib/validators';
-import { subHours } from 'date-fns';
 import type { RequestHandler } from './$types';
 import type { ShiftEmailProps } from '$lib/services/email.service';
 
@@ -17,8 +16,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	const shiftsToInsert = jshifts.map((shift) => ({
 		eventId: event.id,
-		startAt: subHours(shift.startAt, 1),
-		endAt: subHours(shift.endAt, 1)
+		startAt: shift.startAt,
+		endAt: shift.endAt
 	}));
 
 	const createdShifts = await locals.eventService.createShifts(shiftsToInsert);
@@ -48,12 +47,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 						},
 						shift: {
 							id: shift.id,
-							startAt: new Date(shift.startAt).toLocaleDateString('no-NO', {
-								timeZone: 'Europe/Oslo'
-							}),
-							endAt: new Date(shift.endAt).toLocaleDateString('no-NO', {
-								timeZone: 'Europe/Oslo'
-							}),
+							startAt: new Date(shift.startAt).toISOString(),
+							endAt: new Date(shift.endAt).toISOString(),
 							summary: `Vakt: ${name}`,
 							description: `Du har fått en vakt på "${name}".`
 						}
