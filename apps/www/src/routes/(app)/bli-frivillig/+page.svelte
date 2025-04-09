@@ -1,22 +1,14 @@
 <script lang="ts">
-	import { getUser } from '$lib/context/user.context';
-	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
 
-	let user = getUser();
 	let name = $state('');
 	let email = $state('');
 	let isSubmitting = $state(false);
 	let error = $state('');
 
-	onMount(() => {
-		if ($user) {
-			goto('/portal');
-		}
-	});
+	async function handleSubmit(event: SubmitEvent) {
+		event.preventDefault();
 
-	async function handleSubmit() {
 		if (!name || !email) {
 			error = 'Vennligst fyll ut både navn og e-post';
 			return;
@@ -39,14 +31,14 @@
 				body: JSON.stringify({ name, email })
 			});
 
-			const data = await response.json();
+			const responseData = await response.json();
 
 			if (response.ok) {
 				toast.success('Din søknad er mottatt!');
 				name = '';
 				email = '';
 			} else {
-				error = data.error || 'Noe gikk galt. Vennligst prøv igjen senere.';
+				error = responseData.error || 'Noe gikk galt. Vennligst prøv igjen senere.';
 			}
 		} catch (err) {
 			console.error('Error submitting volunteer request:', err);
@@ -61,13 +53,12 @@
 	<div class="space-y-4">
 		<h1 class="text-center text-3xl font-bold">Bli frivillig i Programmerbar</h1>
 		<p class="text-center text-gray-600">
-			Som frivillig hos Programmerbar får du mulighet til å være med på å skape en fantastisk
+			Som frivillig i Programmerbar får du mulighet til å være med på å skape en fantastisk
 			studentpub-miljø for informatikkstudenter.
 		</p>
 	</div>
-
 	<div class="space-y-4">
-		<h2 class="text-xl font-semibold">Hva får du som frivillig?</h2>
+		<h2 class="text-xl font-semibold">Hva f�r du som frivillig?</h2>
 		<ul class="list-inside list-disc space-y-2 text-gray-600">
 			<li>En bong for hver vakt du jobber</li>
 			<li>Mulighet til å møte andre informatikkstudenter</li>
@@ -75,23 +66,20 @@
 			<li>Innblikk i hvordan en studentorganisasjon fungerer</li>
 		</ul>
 	</div>
-
 	<div class="space-y-4">
 		<h2 class="text-xl font-semibold">Hva forventes av deg?</h2>
 		<ul class="list-inside list-disc space-y-2 text-gray-600">
-			<li>Jobbe minst én vakt i måneden</li>
-			<li>Være ansvarlig og pålitelig</li>
+			<li>Jobbe minst en vakt i måneden</li>
+			<li>Være ansvarlig og p�litelig</li>
 			<li>Ha god tid til å møte opp på vakter du har meldt deg på</li>
 		</ul>
 	</div>
-
 	{#if error}
 		<div class="rounded-md bg-red-50 p-4 text-red-700">
 			<p>{error}</p>
 		</div>
 	{/if}
-
-	<form on:submit|preventDefault={handleSubmit} class="space-y-4">
+	<form onsubmit={handleSubmit} class="space-y-4">
 		<div class="space-y-2">
 			<label for="name" class="block text-sm font-medium">Navn</label>
 			<input
@@ -103,7 +91,6 @@
 				required
 			/>
 		</div>
-
 		<div class="space-y-2">
 			<label for="email" class="block text-sm font-medium">Student-e-post</label>
 			<input
@@ -116,7 +103,6 @@
 			/>
 			<p class="text-xs text-gray-500">Du må bruke din student-e-post fra UiB</p>
 		</div>
-
 		<button
 			type="submit"
 			disabled={isSubmitting}
