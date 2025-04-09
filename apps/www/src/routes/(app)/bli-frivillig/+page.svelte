@@ -52,7 +52,6 @@
 	}
 </script>
 
-
 <div class="mx-auto max-w-[600px] space-y-8 rounded-xl border-2 bg-background p-8">
 	<div class="space-y-4">
 		<h1 class="text-center text-3xl font-bold">Bli frivillig i Programmerbar</h1>

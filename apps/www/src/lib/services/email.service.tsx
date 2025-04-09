@@ -42,7 +42,6 @@ function generateICS(shift: {
 	summary: string;
 	description?: string;
 }): string {
-  
 	const uid = `${shift.startAt}-${shift.endAt}-${shift.summary.replace(/\s+/g, '-')}@programmerbar.no`;
 
 	const formatDate = (dateStr: string) => {
