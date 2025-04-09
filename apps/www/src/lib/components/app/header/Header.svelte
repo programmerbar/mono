@@ -54,9 +54,11 @@
 			<HeaderItem to="/" name="/hjem" />
 			<HeaderItem to="/meny" name="/meny" />
 			<HeaderItem to="https://forms.gle/BLdygdoRJgjMbQZj6" name="/booking" />
-			<HeaderItem to="/om-oss" name="/om oss" />
+			<HeaderItem to="/om-oss" name="/om_oss" />
 			{#if !!$user}
 				<HeaderSignOut />
+			{:else}
+				<HeaderItem to="/bli-frivillig" name="/bli_frivillig" />
 			{/if}
 		</ul>
 
@@ -74,11 +76,11 @@
 			<MenuItem to="/" name="/hjem" />
 			<MenuItem to="/meny" name="/meny" />
 			<MenuItem to="https://forms.gle/BLdygdoRJgjMbQZj6" name="/booking" />
-			<MenuItem to="/om-oss" name="/om oss" />
+			<MenuItem to="/om-oss" name="/om_oss" />
 			{#if !!$user}
 				<MenuSignOut />
 			{:else}
-				<MenuItem to="/logg-inn" name="/logg inn" />
+				<MenuItem to="/bli-frivillig" name="/bli_frivillig" />
 			{/if}
 		</ul>
 	{/if}

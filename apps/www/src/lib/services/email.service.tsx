@@ -16,6 +16,11 @@ export type InvitationEmailProps = {
 	email: string;
 };
 
+export type VolunteerRequestEmailProps = {
+	name: string;
+	email: string;
+};
+
 export type ShiftEmailProps = {
 	shift: {
 		id: string;
@@ -37,11 +42,10 @@ function generateICS(shift: {
 	summary: string;
 	description?: string;
 }): string {
-	// Create a consistent UID based on event details
-	const uid = shift.id;
+	const uid = `${shift.startAt}-${shift.endAt}-${shift.summary.replace(/\s+/g, '-')}@programmerbar.no`;
+
 	const formatDate = (dateStr: string) => {
 		const date = new Date(dateStr);
-		// Convert to local time string in YYYYMMDDTHHMMSS format
 		const year = date.getFullYear();
 		const month = String(date.getMonth() + 1).padStart(2, '0');
 		const day = String(date.getDate()).padStart(2, '0');
@@ -90,6 +94,23 @@ export class EmailService {
 			subject: 'Invitasjon til Programmerbar',
 			to: [data.email],
 			html: await render(InvitationEmail({ ...data }))
+		});
+	}
+
+	async sendVolunteerRequestEmail(data: VolunteerRequestEmailProps) {
+		await this.sendEmail({
+			from: FROM_EMAIL,
+			subject: 'Ny frivillig-søknad',
+			to: ['frivilligansvarlig@programmerbar.no'],
+			html: `
+        <h1>Ny frivillig-søknad</h1>
+        <p>En ny person har søkt om å bli frivillig hos Programmerbar:</p>
+        <ul>
+          <li><strong>Navn:</strong> ${data.name}</li>
+          <li><strong>E-post:</strong> ${data.email}</li>
+        </ul>
+        <p>Brukeren har blitt lagt til i databasen og kan nå logge inn med Feide.</p>
+      `
 		});
 	}
 
