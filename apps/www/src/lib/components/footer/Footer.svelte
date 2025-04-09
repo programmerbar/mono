@@ -78,7 +78,7 @@
 				{/if}
 				{#if !$user}
 					<li>
-						<a class="hover:underline" href="/logg-inn">logg inn</a>
+						<a class="hover:underline" href="/logg-inn">Logg inn</a>
 					</li>
 				{/if}
 			</ul>

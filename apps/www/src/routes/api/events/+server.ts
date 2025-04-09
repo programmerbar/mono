@@ -46,6 +46,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 							email: user.email
 						},
 						shift: {
+							id: shift.id,
 							startAt: new Date(shift.startAt).toISOString(),
 							endAt: new Date(shift.endAt).toISOString(),
 							summary: `Vakt: ${name}`,

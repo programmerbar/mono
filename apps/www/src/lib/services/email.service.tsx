@@ -23,6 +23,7 @@ export type VolunteerRequestEmailProps = {
 
 export type ShiftEmailProps = {
 	shift: {
+		id: string;
 		startAt: string;
 		endAt: string;
 		summary: string;
@@ -35,12 +36,15 @@ export type ShiftEmailProps = {
 };
 
 function generateICS(shift: {
+	id: string;
 	startAt: string;
 	endAt: string;
 	summary: string;
 	description?: string;
 }): string {
+  
 	const uid = `${shift.startAt}-${shift.endAt}-${shift.summary.replace(/\s+/g, '-')}@programmerbar.no`;
+
 	const formatDate = (dateStr: string) => {
 		const date = new Date(dateStr);
 		const year = date.getFullYear();
