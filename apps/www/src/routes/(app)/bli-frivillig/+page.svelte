@@ -58,7 +58,7 @@
 		</p>
 	</div>
 	<div class="space-y-4">
-		<h2 class="text-xl font-semibold">Hva f�r du som frivillig?</h2>
+		<h2 class="text-xl font-semibold">Hva får du som frivillig?</h2>
 		<ul class="list-inside list-disc space-y-2 text-gray-600">
 			<li>En bong for hver vakt du jobber</li>
 			<li>Mulighet til å møte andre informatikkstudenter</li>
