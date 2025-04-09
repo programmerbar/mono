@@ -57,6 +57,8 @@
 			<HeaderItem to="/om-oss" name="/om oss" />
 			{#if !!$user}
 				<HeaderSignOut />
+			{:else}
+				<HeaderItem to="/bli-frivillig" name="/bli frivillig" />
 			{/if}
 		</ul>
 
@@ -78,7 +80,7 @@
 			{#if !!$user}
 				<MenuSignOut />
 			{:else}
-				<MenuItem to="/logg-inn" name="/logg inn" />
+				<MenuItem to="/bli-frivillig" name="/bli frivillig" />
 			{/if}
 		</ul>
 	{/if}
