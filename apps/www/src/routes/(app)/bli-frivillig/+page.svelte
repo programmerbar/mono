@@ -1,55 +1,11 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import { enhance } from '$app/forms';
 	import { toast } from 'svelte-sonner';
 
-	const props = $props<{ data: PageData }>();
+	let { form } = $props();
 
-	let name = $state('');
-	let email = $state('');
+	let error = $derived(form?.error);
 	let isSubmitting = $state(false);
-	let error = $state('');
-
-	async function handleSubmit(event: SubmitEvent) {
-		event.preventDefault();
-
-		if (!name || !email) {
-			error = 'Vennligst fyll ut b√•de navn og e-post';
-			return;
-		}
-
-		if (!email.endsWith('@student.uib.no')) {
-			error = 'E-post m√• v√¶re en student-e-post (@student.uib.no)';
-			return;
-		}
-
-		isSubmitting = true;
-		error = '';
-
-		try {
-			const response = await fetch('/api/volunteer-request', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ name, email })
-			});
-
-			if (!response.ok) {
-				const data = (await response.json()) as { error?: string };
-				error = data.error || 'Noe gikk galt. Vennligst pr√∏v igjen senere.';
-				return;
-			}
-
-			toast.success('Din s√∏knad er mottatt!');
-			name = '';
-			email = '';
-		} catch (err) {
-			console.error('Error submitting volunteer request:', err);
-			error = 'Noe gikk galt. Vennligst pr√∏v igjen senere.';
-		} finally {
-			isSubmitting = false;
-		}
-	}
 </script>
 
 <div class="mx-auto max-w-[600px] space-y-8 rounded-xl border-2 bg-background p-8">
@@ -82,13 +38,30 @@
 			<p>{error}</p>
 		</div>
 	{/if}
-	<form onsubmit={handleSubmit} class="space-y-4">
+	<form
+		method="post"
+		class="space-y-4"
+		use:enhance={() => {
+			isSubmitting = true;
+
+			return async ({ update, result }) => {
+				await update();
+				isSubmitting = false;
+
+				if (result.type === 'error') {
+					toast.error('Noe gikk galt. Vennligst prøv igjen senere.');
+				} else {
+					toast.success('Din søknad er mottatt!');
+				}
+			};
+		}}
+	>
 		<div class="space-y-2">
 			<label for="name" class="block text-sm font-medium">Navn</label>
 			<input
 				type="text"
 				id="name"
-				bind:value={name}
+				name="name"
 				class="w-full rounded-lg border border-gray-300 p-2"
 				placeholder="Ditt fulle navn"
 				required
@@ -99,7 +72,7 @@
 			<input
 				type="email"
 				id="email"
-				bind:value={email}
+				name="email"
 				class="w-full rounded-lg border border-gray-300 p-2"
 				placeholder="fornavn.etternavn@student.uib.no"
 				required

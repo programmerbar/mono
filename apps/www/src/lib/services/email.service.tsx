@@ -1,5 +1,10 @@
 import { dev } from '$app/environment';
-import { ContactUsEmail, InvitationEmail, ShiftEmail } from '@programmerbar/emails';
+import {
+	ContactUsEmail,
+	InvitationEmail,
+	ShiftEmail,
+	VoulenteerEmail
+} from '@programmerbar/emails';
 import type { CreateEmailOptions, Resend } from 'resend';
 import { render } from '@react-email/render';
 
@@ -42,7 +47,7 @@ function generateICS(shift: {
 	summary: string;
 	description?: string;
 }): string {
-	const uid = `${shift.startAt}-${shift.endAt}-${shift.summary.replace(/\s+/g, '-')}@programmerbar.no`;
+	const uid = shift.id;
 
 	const formatDate = (dateStr: string) => {
 		const date = new Date(dateStr);
@@ -102,15 +107,7 @@ export class EmailService {
 			from: FROM_EMAIL,
 			subject: 'Ny frivillig-søknad',
 			to: ['frivilligansvarlig@programmerbar.no'],
-			html: `
-        <h1>Ny frivillig-søknad</h1>
-        <p>En ny person har søkt om å bli frivillig hos Programmerbar:</p>
-        <ul>
-          <li><strong>Navn:</strong> ${data.name}</li>
-          <li><strong>E-post:</strong> ${data.email}</li>
-        </ul>
-        <p>Brukeren har blitt lagt til i databasen og kan nå logge inn med Feide.</p>
-      `
+			html: await render(VoulenteerEmail({ name: data.name, email: data.email }))
 		});
 	}
 
