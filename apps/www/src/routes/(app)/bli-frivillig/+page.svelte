@@ -70,7 +70,7 @@
 		<h2 class="text-xl font-semibold">Hva forventes av deg?</h2>
 		<ul class="list-inside list-disc space-y-2 text-gray-600">
 			<li>Jobbe minst en vakt i måneden</li>
-			<li>Være ansvarlig og p�litelig</li>
+			<li>Være ansvarlig og pålitelig</li>
 			<li>Ha god tid til å møte opp på vakter du har meldt deg på</li>
 		</ul>
 	</div>
