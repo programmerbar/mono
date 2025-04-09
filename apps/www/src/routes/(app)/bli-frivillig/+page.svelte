@@ -111,4 +111,12 @@
 			{isSubmitting ? 'Sender...' : 'Send søknad'}
 		</button>
 	</form>
+	<div class="text-center">
+		<p class="mb-2">Har du allerede ein konto?</p>
+		<a
+			href="/auth/feide"
+			class="inline-block rounded-md bg-primary px-4 py-2 text-white transition-colors hover:bg-primary-dark"
+			>Logg inn</a
+		>
+	</div>
 </div>
