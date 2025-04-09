@@ -1,5 +1,8 @@
 <script lang="ts">
+	import type { PageData } from './$types';
 	import { toast } from 'svelte-sonner';
+
+	const props = $props<{ data: PageData }>();
 
 	let name = $state('');
 	let email = $state('');
@@ -10,12 +13,12 @@
 		event.preventDefault();
 
 		if (!name || !email) {
-			error = 'Vennligst fyll ut både navn og e-post';
+			error = 'Vennligst fyll ut b√•de navn og e-post';
 			return;
 		}
 
 		if (!email.endsWith('@student.uib.no')) {
-			error = 'E-post må være en student-e-post (@student.uib.no)';
+			error = 'E-post m√• v√¶re en student-e-post (@student.uib.no)';
 			return;
 		}
 
@@ -31,23 +34,24 @@
 				body: JSON.stringify({ name, email })
 			});
 
-			const responseData = await response.json();
-
-			if (response.ok) {
-				toast.success('Din søknad er mottatt!');
-				name = '';
-				email = '';
-			} else {
-				error = responseData.error || 'Noe gikk galt. Vennligst prøv igjen senere.';
+			if (!response.ok) {
+				const data = (await response.json()) as { error?: string };
+				error = data.error || 'Noe gikk galt. Vennligst pr√∏v igjen senere.';
+				return;
 			}
+
+			toast.success('Din s√∏knad er mottatt!');
+			name = '';
+			email = '';
 		} catch (err) {
 			console.error('Error submitting volunteer request:', err);
-			error = 'Noe gikk galt. Vennligst prøv igjen senere.';
+			error = 'Noe gikk galt. Vennligst pr√∏v igjen senere.';
 		} finally {
 			isSubmitting = false;
 		}
 	}
 </script>
+
 
 <div class="mx-auto max-w-[600px] space-y-8 rounded-xl border-2 bg-background p-8">
 	<div class="space-y-4">

@@ -76,11 +76,11 @@
 			<MenuItem to="/" name="/hjem" />
 			<MenuItem to="/meny" name="/meny" />
 			<MenuItem to="https://forms.gle/BLdygdoRJgjMbQZj6" name="/booking" />
-			<MenuItem to="/om-oss" name="/om oss" />
+			<MenuItem to="/om-oss" name="/om_oss" />
 			{#if !!$user}
 				<MenuSignOut />
 			{:else}
-				<MenuItem to="/bli-frivillig" name="/bli frivillig" />
+				<MenuItem to="/bli-frivillig" name="/bli_frivillig" />
 			{/if}
 		</ul>
 	{/if}
