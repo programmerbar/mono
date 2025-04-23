@@ -26,7 +26,7 @@ export default defineType({
       name: "Credits",
       type: "number",
       title: "Credits",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.min(1).max(5),
     }),
   ],
 });

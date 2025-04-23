@@ -5,9 +5,10 @@
 	type Props = {
 		filterState: FilterState;
 		types: ReturnType<typeof extractTypes>;
+		alwaysFilteredByCredits?: boolean;
 	};
 
-	let { filterState = $bindable(), types }: Props = $props();
+	let { filterState = $bindable(), types, alwaysFilteredByCredits = false }: Props = $props();
 </script>
 
 <div
@@ -61,13 +62,15 @@
 		/>
 	</div>
 
-	<div class="flex items-center justify-between py-2">
-		<label for="showStudentPrice" class="text-sm font-semibold">Vis studentpris</label>
-		<input
-			type="checkbox"
-			id="showStudentPrice"
-			class="h-4 w-4 rounded border-2"
-			bind:checked={filterState.showStudentPrice}
-		/>
-	</div>
+	{#if alwaysFilteredByCredits}{:else}
+		<div class="flex items-center justify-between py-2">
+			<label for="showStudentPrice" class="text-sm font-semibold">Vis studentpris</label>
+			<input
+				type="checkbox"
+				id="showStudentPrice"
+				class="h-4 w-4 rounded border-2"
+				bind:checked={filterState.showStudentPrice}
+			/>
+		</div>
+	{/if}
 </div>

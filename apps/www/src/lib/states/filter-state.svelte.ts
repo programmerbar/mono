@@ -6,7 +6,9 @@ export const SORT_OPTIONS = [
 	{ value: 'alcohol-asc', label: 'Alkohol (Lav-Høy)' },
 	{ value: 'alcohol-desc', label: 'Alkohol (Høy-Lav)' },
 	{ value: 'volume-asc', label: 'Volum (Lav-Høy)' },
-	{ value: 'volume-desc', label: 'Volum (Høy-Lav)' }
+	{ value: 'volume-desc', label: 'Volum (Høy-Lav)' },
+	{ value: 'credit-asc', label: 'Kreditt (Lav-Høy)' },
+	{ value: 'credit-desc', label: 'Kreditt (Høy-Lav)' }
 ];
 
 export type Sort = (typeof SORT_OPTIONS)[number]['value'];
@@ -17,6 +19,7 @@ export class FilterState {
 	#type = $state<string | null>('');
 	#hideSoldOut = $state(true);
 	#showStudentPrice = $state(true);
+	#showCreditPrice = $state(false);
 
 	get search() {
 		return this.#search;
@@ -38,6 +41,10 @@ export class FilterState {
 		return this.#showStudentPrice;
 	}
 
+	get showCreditPrice() {
+		return this.#showCreditPrice;
+	}
+
 	set search(value: string) {
 		this.#search = value;
 	}
@@ -56,5 +63,8 @@ export class FilterState {
 
 	set showStudentPrice(value: boolean) {
 		this.#showStudentPrice = value;
+	}
+	set showCreditPrice(value: boolean) {
+		this.#showCreditPrice = value;
 	}
 }

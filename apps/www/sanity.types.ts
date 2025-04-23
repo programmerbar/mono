@@ -122,6 +122,7 @@ export type Price = {
 	ordinary: number;
 	student: number;
 	internal: number;
+	Credits?: number;
 };
 
 export type Producer = {
@@ -242,11 +243,17 @@ export declare const internalGroqTypeReferenceTo: unique symbol;
 // Query: *[	_type == "happening" &&	!(_id in path("drafts.**")) &&	"programmerbar" in organizers[]->slug.current &&	date >= now()] | order(date asc) {	_id,	title,	"slug": slug.current,	date,	registrationStart,	body}[0...6]
 export type GetEventsQueryResult = Array<never>;
 // Variable: getUpcomingEventsQuery
-// Query: *[	_type == "happening" &&	!(_id in path("drafts.**")) &&	"programmerbar" in organizers[]->slug.current &&	date > now()] | order(date asc) {	_id,    title,	"slug": slug.current,	date,	registrationStart,    body}
+// Query: *[	_type == "happening" &&	!(_id in path("drafts.**")) &&	"programmerbar" in organizers[]->slug.current &&	date > now()] | order(date asc) {	_id,	title,	"slug": slug.current,	date,	registrationStart,	body}
 export type GetUpcomingEventsQueryResult = Array<never>;
 // Variable: getEventBySlugQuery
-// Query: *[	_type == "happening" &&	!(_id in path("drafts.**")) &&	"programmerbar" in organizers[]->slug.current &&	slug.current == $slug] {	_id,    title,	"slug": slug.current,	date,	registrationStart,    body}[0]
+// Query: *[	_type == "happening" &&	!(_id in path("drafts.**")) &&	"programmerbar" in organizers[]->slug.current &&	slug.current == $slug] {	_id,	title,	"slug": slug.current,	date,	registrationStart,	body}[0]
 export type GetEventBySlugQueryResult = null;
+// Variable: getRepeatingEventsQuery
+// Query: *[	_type == "repeatingHappening" &&	!(_id in path("drafts.**")) &&	"programmerbar" in organizers[]->slug.current] | order(date asc) {	_id,	title,	dayOfWeek,	startTime,	endTime,	startDate,	ignoredDates,	endDate,	interval,	"slug": slug.current,	body}
+export type GetRepeatingEventsQueryResult = Array<never>;
+// Variable: getRepeatingEventBySlugQuery
+// Query: *[	_type == "repeatingHappening" &&	!(_id in path("drafts.**")) &&	"programmerbar" in organizers[]->slug.current &&	slug.current == $slug] {	_id,	title,	dayOfWeek,	startTime,	endTime,	startDate,	ignoredDates,	endDate,	interval,	"slug": slug.current,	body}[0]
+export type GetRepeatingEventBySlugQueryResult = null;
 
 // Source: ../www/src/lib/api/sanity/products.ts
 // Variable: getProductsQuery
@@ -318,8 +325,10 @@ import '@sanity/client';
 declare module '@sanity/client' {
 	interface SanityQueries {
 		'*[\n\t_type == "happening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current &&\n\tdate >= now()\n] | order(date asc) {\n\t_id,\n\ttitle,\n\t"slug": slug.current,\n\tdate,\n\tregistrationStart,\n\tbody\n}[0...6]': GetEventsQueryResult;
-		'*[\n\t_type == "happening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current &&\n\tdate > now()\n] | order(date asc) {\n\t_id,\n    title,\n\t"slug": slug.current,\n\tdate,\n\tregistrationStart,\n    body\n}': GetUpcomingEventsQueryResult;
-		'*[\n\t_type == "happening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current &&\n\tslug.current == $slug\n] {\n\t_id,\n    title,\n\t"slug": slug.current,\n\tdate,\n\tregistrationStart,\n    body\n}[0]': GetEventBySlugQueryResult;
+		'*[\n\t_type == "happening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current &&\n\tdate > now()\n] | order(date asc) {\n\t_id,\n\ttitle,\n\t"slug": slug.current,\n\tdate,\n\tregistrationStart,\n\tbody\n}': GetUpcomingEventsQueryResult;
+		'*[\n\t_type == "happening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current &&\n\tslug.current == $slug\n] {\n\t_id,\n\ttitle,\n\t"slug": slug.current,\n\tdate,\n\tregistrationStart,\n\tbody\n}[0]': GetEventBySlugQueryResult;
+		'*[\n\t_type == "repeatingHappening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current\n] | order(date asc) {\n\t_id,\n\ttitle,\n\tdayOfWeek,\n\tstartTime,\n\tendTime,\n\tstartDate,\n\tignoredDates,\n\tendDate,\n\tinterval,\n\t"slug": slug.current,\n\tbody\n}': GetRepeatingEventsQueryResult;
+		'*[\n\t_type == "repeatingHappening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current &&\n\tslug.current == $slug\n] {\n\t_id,\n\ttitle,\n\tdayOfWeek,\n\tstartTime,\n\tendTime,\n\tstartDate,\n\tignoredDates,\n\tendDate,\n\tinterval,\n\t"slug": slug.current,\n\tbody\n}[0]': GetRepeatingEventBySlugQueryResult;
 		'*[_type == "product" && !(_id in path("drafts.**"))] {\n    _id,\n    sku,\n    name,\n    description,\n    "productTypes": productType[]->{\n        _id,\n        title\n    },\n    isSoldOut,\n    priceList,\n    image,\n    "producer": producer->name,\n    volume,\n    alcoholContent,\n    variants,\n}': GetProductsQueryResult;
 		'*[_type == "product" && _id == $id && !(_id in path("drafts.**"))] {\n    _id,\n    sku,\n    name,\n    description,\n    "productTypes": productType[]->{\n        _id,\n        title\n    },\n    isSoldOut,\n    priceList,\n    image,\n    "producer": producer->name,\n    volume,\n    alcoholContent,\n    variants,\n}[0]': GetProductByIdQueryResult;
 		'*[_type == "studentGroup"\n    && slug.current == $slug\n    && !(_id in path(\'drafts.**\'))] {\n    _id,\n    _createdAt,\n    _updatedAt,\n    name,\n    groupType,\n    "slug": slug.current,\n    description,\n    image,\n    "members": members[] {\n      role,\n      "profile": profile->{\n        _id,\n        name,\n        picture,\n        socials,\n      },\n    },\n    "socials": socials {\n      facebook,\n      instagram,\n      linkedin,\n      email,\n    }\n  }[0]': QueryResult;

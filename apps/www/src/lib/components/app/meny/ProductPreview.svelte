@@ -8,20 +8,29 @@
 	type Props = {
 		product: ReturnType<typeof filterProducts>[number];
 		filterState: FilterState;
+		alwaysShowCreditPrice?: boolean;
+		disableLink?: boolean;
 	};
 
-	let { product = $bindable(), filterState = $bindable() }: Props = $props();
-	let wishlist = new WishlistState();
+	let {
+		product = $bindable(),
+		filterState = $bindable(),
+		alwaysShowCreditPrice = false,
+		disableLink = false
+	}: Props = $props();
 
+	let wishlist = new WishlistState();
 	let isWishlisted = $derived.by(() => wishlist.products.includes(product._id));
 
-	const handleHeartClick = () => {
+	function handleHeartClick(event) {
+		event.stopPropagation();
+
 		if (isWishlisted) {
 			wishlist.remove(product._id);
 		} else {
 			wishlist.add(product._id);
 		}
-	};
+	}
 </script>
 
 <div
@@ -29,7 +38,10 @@
 >
 	<div class="relative border-b-2">
 		<div class="absolute right-0 top-0 z-10 rounded-bl bg-white px-2 py-1 text-xs font-semibold">
-			<button onclick={handleHeartClick}>
+			<button
+				onclick={handleHeartClick}
+				aria-label={isWishlisted ? 'Remove from favorites' : 'Add to favorites'}
+			>
 				{#if isWishlisted}
 					<Heart class="fill-red-500 stroke-red-200" />
 				{:else}
@@ -37,7 +49,6 @@
 				{/if}
 			</button>
 		</div>
-
 		{#if product.isSoldOut}
 			<div
 				class="absolute left-0 top-0 rounded-br bg-red-500 px-2 py-1 text-xs font-semibold text-white"
@@ -45,7 +56,6 @@
 				Utsolgt
 			</div>
 		{/if}
-
 		{#if product.image}
 			<img
 				src={urlFor(product.image).width(500).height(500).url()}
@@ -53,28 +63,51 @@
 				class="h-48 w-full bg-white object-contain"
 			/>
 		{:else}
-			<div class="h-48 w-full bg-gray-200"></div>
+			<div class="h-48 w-full bg-gray-200" aria-label="No image available"></div>
 		{/if}
 	</div>
-	<a class="group" href="/produkt/{product._id}">
-		<div class="flex flex-1 flex-col p-2">
-			<h2 class="text-lg font-semibold group-hover:underline">{product.name}</h2>
 
+	{#if disableLink}
+		<!-- Just the content without a link - for the credit claiming page -->
+		<div class="flex flex-1 flex-col p-2">
+			<h2 class="text-lg font-semibold">{product.name}</h2>
 			{#if product.producer}
 				<p class="text-sm text-gray-800">{product.producer}</p>
 			{/if}
-
 			{#if product.productTypes}
 				<p class="text-sm text-gray-800">
 					{product.productTypes.map((type) => type.title).join(', ')}
 				</p>
 			{/if}
-
-			{#if filterState.showStudentPrice}
+			{#if alwaysShowCreditPrice || filterState.showCreditPrice}
+				<p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bong</p>
+			{:else if filterState.showStudentPrice}
 				<p class="mt-auto text-lg font-semibold">{product.priceList.student} kr</p>
 			{:else}
 				<p class="mt-auto text-lg font-semibold">{product.priceList.ordinary} kr</p>
 			{/if}
 		</div>
-	</a>
+	{:else}
+		<!-- Original link behavior for normal menu -->
+		<a class="group" href="/produkt/{product._id}">
+			<div class="flex flex-1 flex-col p-2">
+				<h2 class="text-lg font-semibold group-hover:underline">{product.name}</h2>
+				{#if product.producer}
+					<p class="text-sm text-gray-800">{product.producer}</p>
+				{/if}
+				{#if product.productTypes}
+					<p class="text-sm text-gray-800">
+						{product.productTypes.map((type) => type.title).join(', ')}
+					</p>
+				{/if}
+				{#if alwaysShowCreditPrice || filterState.showCreditPrice}
+					<p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bong</p>
+				{:else if filterState.showStudentPrice}
+					<p class="mt-auto text-lg font-semibold">{product.priceList.student} kr</p>
+				{:else}
+					<p class="mt-auto text-lg font-semibold">{product.priceList.ordinary} kr</p>
+				{/if}
+			</div>
+		</a>
+	{/if}
 </div>
