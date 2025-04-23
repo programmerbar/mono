@@ -8,7 +8,7 @@
 	let newStatus = $state(data.status);
 
 	const statusButtons = [
-		{ status: 1, Icon: Beer, label: 'Åpnet' },
+		{ status: 1, Icon: Beer, label: 'Ã…pnet' },
 		{ status: 2, Icon: Users, label: 'Privat arrangement' },
 		{ status: 0, Icon: Lock, label: 'Stengt' }
 	];
