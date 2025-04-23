@@ -68,7 +68,6 @@
 	</div>
 
 	{#if disableLink}
-		<!-- Just the content without a link - for the credit claiming page -->
 		<div class="flex flex-1 flex-col p-2">
 			<h2 class="text-lg font-semibold">{product.name}</h2>
 			{#if product.producer}
@@ -80,7 +79,11 @@
 				</p>
 			{/if}
 			{#if alwaysShowCreditPrice || filterState.showCreditPrice}
-				<p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bong</p>
+          {#if Number(product.priceList.Credits) === 1}
+            <p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bong</p>
+          {:else}
+            <p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bonger</p>
+          {/if}
 			{:else if filterState.showStudentPrice}
 				<p class="mt-auto text-lg font-semibold">{product.priceList.student} kr</p>
 			{:else}
@@ -88,7 +91,7 @@
 			{/if}
 		</div>
 	{:else}
-		<!-- Original link behavior for normal menu -->
+
 		<a class="group" href="/produkt/{product._id}">
 			<div class="flex flex-1 flex-col p-2">
 				<h2 class="text-lg font-semibold group-hover:underline">{product.name}</h2>
@@ -101,7 +104,11 @@
 					</p>
 				{/if}
 				{#if alwaysShowCreditPrice || filterState.showCreditPrice}
-					<p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bong</p>
+          {#if Number(product.priceList.Credits) === 1}
+            <p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bong</p>
+          {:else}
+            <p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bonger</p>
+          {/if}
 				{:else if filterState.showStudentPrice}
 					<p class="mt-auto text-lg font-semibold">{product.priceList.student} kr</p>
 				{:else}

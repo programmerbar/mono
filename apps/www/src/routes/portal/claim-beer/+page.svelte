@@ -124,7 +124,11 @@
 		<div class="mx-auto max-w-md rounded-lg border p-4 shadow-md">
 			<h3 class="mb-2 text-xl font-bold">{selectedProduct.name}</h3>
 			<p class="mb-4">
-				Pris: <span class="font-semibold">{selectedProduct.priceList.Credits} bonger</span>
+        {#if selectedProduct.priceList.Credits === 1}
+          Pris: <span class="font-semibold">{selectedProduct.priceList.Credits} bong</span>
+        {:else}
+          Pris: <span class="font-semibold">{selectedProduct.priceList.Credits} bonger</span>
+        {/if}
 			</p>
 
 			{#if canClaimProduct(selectedProduct)}
