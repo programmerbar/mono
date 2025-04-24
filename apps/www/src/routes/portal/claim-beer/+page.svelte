@@ -4,9 +4,11 @@
 	import ProductPreview from '$lib/components/app/meny/ProductPreview.svelte';
 	import Sidebar from '$lib/components/app/meny/Sidebar.svelte';
 	import ClaimModal from '$lib/components/cards/ClaimModal.svelte';
+	import ClaimedCredit from '$lib/components/downloads/ClaimedCredits.svelte';
 	import { extractTypes } from '$lib/extract-types';
 	import { filterProducts } from '$lib/filter-products';
 	import { FilterState } from '$lib/states/filter-state.svelte';
+	import { urlFor } from '$lib/api/sanity/image';
 
 	let loading = $state(false);
 	let selectedProduct = $state<null | Product>(null);
@@ -17,6 +19,9 @@
 	let { unclaimedBeers } = $derived(data);
 	let types = extractTypes(data.products);
 	let filterState = new FilterState();
+
+	// Access the user role from the data
+	let userRole = $derived(data.user?.role);
 
 	$effect(() => {
 		filterState.showCreditPrice = true;
@@ -76,6 +81,16 @@
 		}
 		claimedProduct = null;
 	}
+
+	function formatDate(date: Date) {
+		return new Date(date).toLocaleString('no-NO', {
+			day: '2-digit',
+			month: '2-digit',
+			year: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit'
+		});
+	}
 </script>
 
 <svelte:head>
@@ -84,8 +99,126 @@
 
 <ClaimModal {claimedProduct} {timerSeconds} onClose={closeClaimPopup} />
 
+<!-- Product selection modal -->
+{#if selectedProduct}
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+		<div class="w-[400px] rounded-lg bg-white p-6 shadow-lg">
+			<h2 class="mb-4 text-center text-2xl font-bold">Claim Product</h2>
+
+			<div class="mb-6 flex items-center justify-center">
+				{#if selectedProduct.image}
+					<img
+						src={urlFor(selectedProduct.image).width(200).height(200).url()}
+						alt={selectedProduct.name}
+						class="h-40 w-40 object-contain"
+					/>
+				{:else}
+					<div class="flex h-40 w-40 items-center justify-center rounded-lg bg-gray-100">
+						<span class="text-gray-400">No image</span>
+					</div>
+				{/if}
+			</div>
+
+			<div class="mb-6 text-center">
+				<p class="text-xl font-semibold">{selectedProduct.name}</p>
+				<p class="text-gray-600">
+					Pris: {selectedProduct.priceList.Credits}
+					{selectedProduct.priceList.Credits === 1 ? 'bong' : 'bonger'}
+				</p>
+			</div>
+
+			{#if canClaimProduct(selectedProduct)}
+				<form
+					method="post"
+					action="?/claimProduct"
+					use:enhance={() => {
+						loading = true;
+						return async ({ result, update }) => {
+							await update();
+							loading = false;
+
+							if (result.type === 'success' && result.data) {
+								toast.success(`${selectedProduct?.name} claimed!`);
+								if (typeof result.data.updatedBeerCount === 'number') {
+									unclaimedBeers = result.data.updatedBeerCount;
+								} else if (selectedProduct && selectedProduct.priceList.Credits) {
+									unclaimedBeers -= selectedProduct.priceList.Credits;
+								}
+
+								if (selectedProduct) {
+									startClaimTimer(selectedProduct);
+								}
+
+								selectedProduct = null;
+							} else {
+								const errorMessage =
+									result.type === 'failure' && result.data?.message
+										? String(result.data?.message)
+										: 'Det oppstod ein feil';
+
+								toast.error(errorMessage);
+							}
+						};
+					}}
+				>
+					<input type="hidden" name="productId" value={selectedProduct._id} />
+					<input type="hidden" name="productName" value={selectedProduct.name} />
+					<input
+						type="hidden"
+						name="productType"
+						value={selectedProduct.productTypes?.[0]?.title || ''}
+					/>
+					<input type="hidden" name="creditCost" value={selectedProduct.priceList.Credits} />
+
+					<div class="flex gap-4">
+						<button
+							type="submit"
+							disabled={loading}
+							class="flex-1 rounded-md bg-blue-500 px-5 py-2 text-center text-lg font-medium text-white transition-colors hover:bg-blue-600 disabled:opacity-50"
+						>
+							{loading ? 'Processing...' : 'Claim'}
+						</button>
+						<button
+							type="button"
+							class="flex-1 rounded-md border border-gray-300 px-5 py-2 text-center text-lg font-medium transition-colors hover:bg-gray-100"
+							onclick={() => (selectedProduct = null)}
+						>
+							Cancel
+						</button>
+					</div>
+				</form>
+			{:else}
+				<p class="mb-4 text-center text-red-500">
+					Du har ikkje nokk bonger. Du trenger {selectedProduct.priceList.Credits}, og du har: {unclaimedBeers}.
+				</p>
+				<button
+					class="w-full rounded-md border border-gray-300 px-5 py-2 text-center text-lg font-medium transition-colors hover:bg-gray-100"
+					onclick={() => (selectedProduct = null)}
+				>
+					Close
+				</button>
+			{/if}
+		</div>
+	</div>
+{/if}
+
 <div class="flex w-full flex-col gap-8 sm:mx-auto sm:max-w-screen-sm md:max-w-full md:flex-row">
-	<Sidebar {types} {filterState} alwaysFilteredByCredits={true} />
+	<div>
+		<div class="mb-4 rounded-xl border-2 bg-white p-4 shadow-md">
+			<div class="mb-1 text-sm text-gray-600">Available credits</div>
+			<div class="text-2xl font-bold text-gray-900">
+				{unclaimedBeers}
+				{unclaimedBeers === 1 ? 'bong' : 'bonger'}
+			</div>
+		</div>
+
+		<Sidebar {types} {filterState} alwaysFilteredByCredits={true} />
+
+		{#if userRole === 'board'}
+			<ClaimedCredit />
+		{/if}
+	</div>
+
 	<div class="flex-1">
 		{#if filteredProducts.length > 0}
 			<p class="mb-2 text-sm text-gray-800">Viser {filteredProducts.length} resultater</p>
@@ -93,7 +226,7 @@
 				{#each filteredProducts as product}
 					<li>
 						<button
-							class="w-full h-full text-left block"
+							class="block h-full w-full text-left"
 							onclick={() => handleProductSelect(product)}
 							onkeydown={(e) => handleKeyDown(e, product)}
 						>
@@ -113,89 +246,8 @@
 	</div>
 </div>
 
-<section class="mt-8">
-	{#if unclaimedBeers === 1}
-		<p class="mb-6 text-center text-6xl font-bold">{unclaimedBeers} bong igjen</p>
-	{:else if unclaimedBeers > 1}
-		<p class="mb-6 text-center text-6xl font-bold">{unclaimedBeers} bonger igjen</p>
-	{/if}
-
-	{#if selectedProduct}
-		<div class="mx-auto max-w-md rounded-lg border p-4 shadow-md">
-			<h3 class="mb-2 text-xl font-bold">{selectedProduct.name}</h3>
-			<p class="mb-4">
-        {#if selectedProduct.priceList.Credits === 1}
-          Pris: <span class="font-semibold">{selectedProduct.priceList.Credits} bong</span>
-        {:else}
-          Pris: <span class="font-semibold">{selectedProduct.priceList.Credits} bonger</span>
-        {/if}
-			</p>
-
-			{#if canClaimProduct(selectedProduct)}
-				<form
-					class="mx-auto w-fit"
-					method="post"
-					action="?/claimProduct"
-					use:enhance={() => {
-						loading = true;
-						return async ({ result, update }) => {
-							await update();
-							loading = false;
-
-							if (result.type === 'success' && result.data) {
-								toast.success(`${selectedProduct?.name} claimed!`);
-								if (typeof result.data.updatedBeerCount === 'number') {
-									unclaimedBeers = result.data.updatedBeerCount;
-								} else if (selectedProduct && selectedProduct.priceList.Credits) {
-									unclaimedBeers -= selectedProduct.priceList.Credits;
-								}
-								if (selectedProduct) {
-									startClaimTimer(selectedProduct);
-								}
-
-								selectedProduct = null;
-							} else {
-								const errorMessage =
-									result.type === 'failure' && result.data?.message
-										? String(result.data?.message)
-										: 'Det oppstod ein feil';
-
-								toast.error(errorMessage);
-							}
-						};
-					}}
-				>
-					<input type="hidden" name="productId" value={selectedProduct._id} />
-					<input type="hidden" name="creditCost" value={selectedProduct.priceList.Credits} />
-					<button
-						type="submit"
-						disabled={loading}
-						class="mx-auto w-full rounded-md bg-blue-500 px-5 py-2 text-center text-lg font-medium text-white transition-colors hover:bg-blue-400 disabled:cursor-not-allowed disabled:bg-blue-300 disabled:opacity-50"
-					>
-						{#if selectedProduct?.priceList.Credits === 1}
-							Claim {selectedProduct.name} ({selectedProduct.priceList.Credits} bong)
-						{:else}
-							Claim {selectedProduct.name} ({selectedProduct.priceList.Credits} bonger)
-						{/if}
-					</button>
-				</form>
-			{:else}
-				<p class="text-center text-red-500">
-					Du har ikke nok bonger til dette produktet. Du trenger {selectedProduct.priceList.Credits}
-					bonger, men har bare {unclaimedBeers}.
-				</p>
-			{/if}
-
-			<button
-				class="mt-4 w-full rounded-md border border-gray-300 px-5 py-2 text-center text-lg font-medium transition-colors hover:bg-gray-100"
-				onclick={() => (selectedProduct = null)}
-			>
-				Avbryt
-			</button>
-		</div>
-	{:else if unclaimedBeers > 0 && !claimedProduct}
-		<p class="text-center text-lg">Velg et produkt med bongene dine</p>
-	{:else if !claimedProduct}
-		<p class="mb-6 text-center text-lg">Du har ingen bonger igjen</p>
-	{/if}
-</section>
+{#if data.lastClaimed}
+	<p class="mt-8 text-center text-lg text-gray-600">
+		Last claimed: {data.lastClaimed.productName} - {formatDate(data.lastClaimed.claimedAt)}
+	</p>
+{/if}

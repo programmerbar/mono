@@ -8,14 +8,14 @@
 		onClose: () => void;
 	};
 	let { claimedProduct, timerSeconds, onClose }: Props = $props();
-	
+
 	let progress = $derived((30 - timerSeconds) / 30);
 </script>
 
 {#if claimedProduct}
 	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 		<div class="w-[400px] rounded-lg bg-white p-6 shadow-lg">
-			<h2 class="mb-4 text-2xl font-bold text-center">Produkt Claimet!</h2>
+			<h2 class="mb-4 text-center text-2xl font-bold">Produkt Claimet!</h2>
 			<div class="mb-6 flex items-center justify-center">
 				{#if claimedProduct.image}
 					<img
@@ -24,7 +24,7 @@
 						class="h-40 w-40 object-contain"
 					/>
 				{:else}
-					<div class="h-40 w-40 flex items-center justify-center bg-gray-100 rounded-lg">
+					<div class="flex h-40 w-40 items-center justify-center rounded-lg bg-gray-100">
 						<span class="text-gray-400">No image</span>
 					</div>
 				{/if}
@@ -39,14 +39,7 @@
 						<p class="text-4xl font-bold">{Math.ceil(timerSeconds)}</p>
 					</div>
 					<svg class="h-full w-full -rotate-90 transform" viewBox="0 0 100 100">
-						<circle 
-							cx="50" 
-							cy="50" 
-							r="45" 
-							fill="none" 
-							stroke="#e2e8f0" 
-							stroke-width="10"
-						/>
+						<circle cx="50" cy="50" r="45" fill="none" stroke="#e2e8f0" stroke-width="10" />
 						<circle
 							cx="50"
 							cy="50"

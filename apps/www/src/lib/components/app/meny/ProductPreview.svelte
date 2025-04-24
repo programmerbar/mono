@@ -22,15 +22,13 @@
 	let wishlist = new WishlistState();
 	let isWishlisted = $derived.by(() => wishlist.products.includes(product._id));
 
-	function handleHeartClick(event) {
-		event.stopPropagation();
-
+	const handleHeartClick = () => {
 		if (isWishlisted) {
 			wishlist.remove(product._id);
 		} else {
 			wishlist.add(product._id);
 		}
-	}
+	};
 </script>
 
 <div
@@ -79,11 +77,11 @@
 				</p>
 			{/if}
 			{#if alwaysShowCreditPrice || filterState.showCreditPrice}
-          {#if Number(product.priceList.Credits) === 1}
-            <p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bong</p>
-          {:else}
-            <p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bonger</p>
-          {/if}
+				{#if Number(product.priceList.Credits) === 1}
+					<p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bong</p>
+				{:else}
+					<p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bonger</p>
+				{/if}
 			{:else if filterState.showStudentPrice}
 				<p class="mt-auto text-lg font-semibold">{product.priceList.student} kr</p>
 			{:else}
@@ -91,7 +89,6 @@
 			{/if}
 		</div>
 	{:else}
-
 		<a class="group" href="/produkt/{product._id}">
 			<div class="flex flex-1 flex-col p-2">
 				<h2 class="text-lg font-semibold group-hover:underline">{product.name}</h2>
@@ -104,11 +101,11 @@
 					</p>
 				{/if}
 				{#if alwaysShowCreditPrice || filterState.showCreditPrice}
-          {#if Number(product.priceList.Credits) === 1}
-            <p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bong</p>
-          {:else}
-            <p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bonger</p>
-          {/if}
+					{#if Number(product.priceList.Credits) === 1}
+						<p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bong</p>
+					{:else}
+						<p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bonger</p>
+					{/if}
 				{:else if filterState.showStudentPrice}
 					<p class="mt-auto text-lg font-semibold">{product.priceList.student} kr</p>
 				{:else}

@@ -2,6 +2,8 @@ import type { Database } from '$lib/db/drizzle';
 import { users, userShifts } from '$lib/db/schemas';
 import { eq, and } from 'drizzle-orm';
 import { ShiftService } from './shift.service';
+import { claimedCredits, type ClaimedCreditInsert } from '$lib/db/schemas';
+import { nanoid } from 'nanoid';
 
 export class BeerService {
 	#db: Database;
@@ -70,7 +72,6 @@ export class BeerService {
 		}
 	}
 
-	// Gives back the difference between newBeercount and shiftBeer, so that we can type in an amount we want and not have the shift beer added afterwards
 	async updateBeers(userId: string, newBeerCount: number): Promise<boolean> {
 		if (!Number.isInteger(newBeerCount) || newBeerCount < 0) {
 			console.error('Invalid additional beer count:', newBeerCount);
@@ -87,45 +88,41 @@ export class BeerService {
 		return true;
 	}
 
-	async claimProductCredits(userId: string, creditCost: number): Promise<boolean> {
+	async claimProductCredits(
+		userId: string,
+		creditCost: number,
+		productDetails?: {
+			productId: string;
+			productName: string;
+			productType?: string;
+		}
+	): Promise<boolean> {
 		try {
-			console.log('Starting claimProductCredits with', { userId, creditCost });
-
 			const unclaimedShifts = await this.#shiftService.findShiftsWithUnclaimedBeersByUserId(userId);
 			const shiftBeersCount = unclaimedShifts.length;
 			console.log('Shift beers info:', { shiftBeersCount });
 
 			const userResult = await this.#db
-				.select({ additionalBeers: users.additionalBeers })
+				.select({ additionalBeers: users.additionalBeers, name: users.name })
 				.from(users)
 				.where(eq(users.id, userId))
 				.limit(1);
 
 			const additionalBeersCount = Number(userResult[0]?.additionalBeers ?? 0);
+			const userName = userResult[0]?.name || 'Unknown User';
 			const totalAvailable = shiftBeersCount + additionalBeersCount;
 
-			console.log('Credit calculation:', {
-				additionalBeersCount,
-				totalAvailable,
-				creditCost,
-				hasEnoughCredits: totalAvailable >= creditCost
-			});
-
 			if (totalAvailable < creditCost) {
-				console.log('Not enough credits available');
 				return false;
 			}
 
 			let remainingCost = creditCost;
 
 			const shiftsToUse = Math.min(shiftBeersCount, remainingCost);
-			console.log('Shifts to use:', shiftsToUse);
 
 			if (shiftsToUse > 0) {
-				console.log('Using shifts for credits');
 				for (let i = 0; i < shiftsToUse; i++) {
 					const shiftToUpdate = unclaimedShifts[i].shift;
-					console.log('Updating shift:', shiftToUpdate.id);
 
 					await this.#db
 						.update(userShifts)
@@ -133,25 +130,34 @@ export class BeerService {
 						.where(and(eq(userShifts.shiftId, shiftToUpdate.id), eq(userShifts.userId, userId)));
 				}
 				remainingCost -= shiftsToUse;
-				console.log('Remaining cost after using shifts:', remainingCost);
 			}
 
 			if (remainingCost > 0) {
-				console.log('Using additional beers for remaining cost', remainingCost);
 				if (additionalBeersCount < remainingCost) {
-					console.log('Not enough additional beers');
 					return false;
 				}
-
-				console.log('Updating user additional beers', {
-					from: additionalBeersCount,
-					to: additionalBeersCount - remainingCost
-				});
 
 				await this.#db
 					.update(users)
 					.set({ additionalBeers: additionalBeersCount - remainingCost })
 					.where(eq(users.id, userId));
+			}
+
+			if (productDetails) {
+				const claimRecord: ClaimedCreditInsert = {
+					id: nanoid(),
+					userId,
+					userName,
+					productId: productDetails.productId,
+					productName: productDetails.productName,
+					productType: productDetails.productType || null,
+					creditCost,
+					claimedAt: new Date(),
+					createdAt: new Date()
+				};
+
+				await this.#db.insert(claimedCredits).values(claimRecord);
+				console.log('Claim logged successfully:', claimRecord);
 			}
 
 			console.log('Credits claimed successfully');
