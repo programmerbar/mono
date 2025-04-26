@@ -38,7 +38,7 @@
 
 	let standardFiltered = $derived(filterProducts(data.products, filterState));
 	let filteredProducts = $derived(
-		standardFiltered.filter((product) => product.priceList.Credits && product.priceList.Credits > 0)
+		standardFiltered.filter((product) => product.priceList.credits && product.priceList.credits > 0)
 	);
 
 	function handleProductSelect(product: Product) {
@@ -46,8 +46,8 @@
 	}
 
 	function canClaimProduct(product: Product | null) {
-		if (!product || !product.priceList.Credits) return false;
-		return unclaimedBeers >= product.priceList.Credits;
+		if (!product || !product.priceList.credits) return false;
+		return unclaimedBeers >= product.priceList.credits;
 	}
 
 	function handleKeyDown(event: KeyboardEvent, product: Product) {
@@ -132,8 +132,8 @@
 				<div class="mb-6 text-center">
 					<p class="text-xl font-semibold">{selectedProduct.name}</p>
 					<p class="text-gray-600">
-						Pris: {selectedProduct.priceList.Credits}
-						{selectedProduct.priceList.Credits === 1 ? 'bong' : 'bonger'}
+						Pris: {selectedProduct.priceList.credits}
+						{selectedProduct.priceList.credits === 1 ? 'bong' : 'bonger'}
 					</p>
 				</div>
 
@@ -151,8 +151,8 @@
 									toast.success(`${selectedProduct?.name} claimed!`);
 									if (typeof result.data.updatedBeerCount === 'number') {
 										unclaimedBeers = result.data.updatedBeerCount;
-									} else if (selectedProduct && selectedProduct.priceList.Credits) {
-										unclaimedBeers -= selectedProduct.priceList.Credits;
+									} else if (selectedProduct && selectedProduct.priceList.credits) {
+										unclaimedBeers -= selectedProduct.priceList.credits;
 									}
 
 									if (selectedProduct) {
@@ -178,7 +178,7 @@
 							name="productType"
 							value={selectedProduct.productTypes?.[0]?.title || ''}
 						/>
-						<input type="hidden" name="creditCost" value={selectedProduct.priceList.Credits} />
+						<input type="hidden" name="creditCost" value={selectedProduct.priceList.credits} />
 
 						<div class="flex gap-4">
 							<button
@@ -199,7 +199,7 @@
 					</form>
 				{:else}
 					<p class="mb-4 text-center text-red-500">
-						Du har ikkje nokk bonger. Du trenger {selectedProduct.priceList.Credits}, og du har: {unclaimedBeers}.
+						Du har ikkje nokk bonger. Du trenger {selectedProduct.priceList.credits}, og du har: {unclaimedBeers}.
 					</p>
 					<button
 						class="w-full rounded-md border border-gray-300 px-5 py-2 text-center text-lg font-medium transition-colors hover:bg-gray-100"

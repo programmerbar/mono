@@ -31,7 +31,7 @@
 			</div>
 			<div class="mb-6 text-center">
 				<p class="text-xl font-semibold">{claimedProduct.name}</p>
-				<p class="text-gray-600">Pris: {claimedProduct.priceList.Credits} bonger</p>
+				<p class="text-gray-600">Pris: {claimedProduct.priceList.credits} bonger</p>
 			</div>
 			<div class="mb-6 flex items-center justify-center">
 				<div class="relative h-40 w-40">

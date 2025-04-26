@@ -636,7 +636,7 @@
           },
           "optional": false
         },
-        "Credits": {
+        "credits": {
           "type": "objectAttribute",
           "value": {
             "type": "number"

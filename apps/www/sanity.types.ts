@@ -122,7 +122,7 @@ export type Price = {
 	ordinary: number;
 	student: number;
 	internal: number;
-	Credits?: number;
+	credits?: number;
 };
 
 export type Producer = {

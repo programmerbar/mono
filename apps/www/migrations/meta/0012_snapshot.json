@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "0a820cc9-b5ad-4212-8a3c-0f14c7d58885",
+  "id": "8d5b2e2a-5eb7-4816-be98-c3b696a6ed71",
   "prevId": "6b5ce7d8-e32e-4c4c-9046-1e52bbd2786f",
   "tables": {
     "event": {
@@ -338,13 +338,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "user_name": {
-          "name": "user_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "product_id": {
           "name": "product_id",
           "type": "text",
@@ -352,29 +345,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "product_name": {
-          "name": "product_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "product_type": {
-          "name": "product_type",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "credit_cost": {
           "name": "credit_cost",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "claimed_at": {
-          "name": "claimed_at",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -385,8 +357,7 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "CURRENT_TIMESTAMP"
+          "autoincrement": false
         }
       },
       "indexes": {},

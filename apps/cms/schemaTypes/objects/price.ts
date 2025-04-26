@@ -23,7 +23,7 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "Credits",
+      name: "credits",
       type: "number",
       title: "Credits",
       validation: (Rule) => Rule.min(1).max(5),

@@ -77,11 +77,8 @@
 				</p>
 			{/if}
 			{#if alwaysShowCreditPrice || filterState.showCreditPrice}
-				{#if Number(product.priceList.Credits) === 1}
-					<p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bong</p>
-				{:else}
-					<p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bonger</p>
-				{/if}
+				{@const unit = product.priceList.credits === 1 ? 'bong' : 'bonger'}
+				<p class="mt-auto text-lg font-semibold">{product.priceList.credits || 0} {unit}</p>
 			{:else if filterState.showStudentPrice}
 				<p class="mt-auto text-lg font-semibold">{product.priceList.student} kr</p>
 			{:else}
@@ -101,11 +98,8 @@
 					</p>
 				{/if}
 				{#if alwaysShowCreditPrice || filterState.showCreditPrice}
-					{#if Number(product.priceList.Credits) === 1}
-						<p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bong</p>
-					{:else}
-						<p class="mt-auto text-lg font-semibold">{product.priceList.Credits || 0} bonger</p>
-					{/if}
+					{@const unit = product.priceList.credits === 1 ? 'bong' : 'bonger'}
+					<p class="mt-auto text-lg font-semibold">{product.priceList.credits || 0} {unit}</p>
 				{:else if filterState.showStudentPrice}
 					<p class="mt-auto text-lg font-semibold">{product.priceList.student} kr</p>
 				{:else}

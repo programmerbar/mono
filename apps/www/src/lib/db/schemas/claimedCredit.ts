@@ -1,5 +1,4 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { sql } from 'drizzle-orm';
 import { users } from './users';
 import type { InferSelectModel, InferInsertModel } from 'drizzle-orm';
 
@@ -12,7 +11,7 @@ export const claimedCredits = sqliteTable('claimed_credits', {
 	creditCost: integer('credit_cost').notNull(),
 	createdAt: integer('created_at', { mode: 'timestamp' })
 		.notNull()
-		.default(sql`CURRENT_TIMESTAMP`)
+		.$defaultFn(() => new Date())
 });
 
 export type ClaimedCredit = InferSelectModel<typeof claimedCredits>;
