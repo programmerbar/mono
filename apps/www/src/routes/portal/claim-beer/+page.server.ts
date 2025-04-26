@@ -2,8 +2,8 @@ import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 import { getProducts } from '$lib/api/sanity/products';
-import { claimedCredits } from '$lib/db/schemas';
-import { gte, eq, desc, lte } from 'drizzle-orm';
+import { claimedCredits, users } from '$lib/db/schemas';
+import { gte, eq, desc, lte, and } from 'drizzle-orm';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const userId = await locals.user?.id;
@@ -13,18 +13,30 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const unclaimedBeers = await locals.beerService.getTotalAvailableBeers(userId);
 	const products = await getProducts();
 
-	const lastClaimed = await locals.db
+	const lastClaimedCredit = await locals.db
 		.select()
 		.from(claimedCredits)
 		.where(eq(claimedCredits.userId, userId))
-		.orderBy(desc(claimedCredits.claimedAt))
+		.orderBy(desc(claimedCredits.createdAt))
 		.limit(1);
+
+	let lastClaimed = null;
+
+	if (lastClaimedCredit[0]) {
+		const product = products.find((p) => p._id === lastClaimedCredit[0].productId);
+		if (product) {
+			lastClaimed = {
+				productName: product.name,
+				claimedAt: lastClaimedCredit[0].createdAt
+			};
+		}
+	}
 
 	return {
 		unclaimedBeers,
 		products,
 		user: locals.user,
-		lastClaimed: lastClaimed[0] || null
+		lastClaimed
 	};
 };
 
@@ -64,11 +76,9 @@ export const actions: Actions = {
 
 		const data = await request.formData();
 		const productId = data.get('productId')?.toString();
-		const productName = data.get('productName')?.toString();
-		const productType = data.get('productType')?.toString();
 		const creditCostStr = data.get('creditCost')?.toString();
 
-		if (!productId || !creditCostStr || !productName) {
+		if (!productId || !creditCostStr) {
 			return fail(400, {
 				success: false,
 				message: 'Missing product information'
@@ -86,9 +96,7 @@ export const actions: Actions = {
 
 		try {
 			const success = await locals.beerService.claimProductCredits(userId, creditCost, {
-				productId,
-				productName,
-				productType: productType || undefined
+				productId
 			});
 
 			if (success) {
@@ -128,19 +136,47 @@ export const actions: Actions = {
 			const startDateStr = formData.get('startDate')?.toString();
 			const endDateStr = formData.get('endDate')?.toString();
 
-			let query = locals.db.select().from(claimedCredits).$dynamic();
+			const products = await getProducts();
+
+			const whereConditions = [];
 
 			if (startDateStr) {
 				const startDate = new Date(startDateStr);
-				query = query.where(gte(claimedCredits.claimedAt, startDate));
+				whereConditions.push(gte(claimedCredits.createdAt, startDate));
 			}
 
 			if (endDateStr) {
 				const endDate = new Date(endDateStr);
-				query = query.where(lte(claimedCredits.claimedAt, endDate));
+				whereConditions.push(lte(claimedCredits.createdAt, endDate));
 			}
 
-			const credits = await query.orderBy(claimedCredits.claimedAt);
+			const creditsQuery = locals.db.select().from(claimedCredits);
+
+			const creditRecords = await (whereConditions.length > 0
+				? creditsQuery.where(and(...whereConditions))
+				: creditsQuery);
+
+			const creditsWithDetails = await Promise.all(
+				creditRecords.map(async (credit) => {
+					const userResult = await locals.db
+						.select({ name: users.name })
+						.from(users)
+						.where(eq(users.id, credit.userId))
+						.limit(1);
+
+					const product = products.find((p) => p._id === credit.productId);
+
+					return {
+						...credit,
+						userName: userResult[0]?.name || 'Unknown User',
+						productName: product?.name || 'Unknown Product'
+					};
+				})
+			);
+
+			creditsWithDetails.sort(
+				(a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+			);
 
 			const escapeCSV = (field: string | number | null): string => {
 				if (field === null || field === undefined) return '""';
@@ -165,29 +201,15 @@ export const actions: Actions = {
 					.replace(/,/g, '');
 			};
 
-			const headers = [
-				'User ID',
-				'User Name',
-				'Product ID',
-				'Product Name',
-				'Product Type',
-				'Credit Cost',
-				'Claimed At',
-				'Created At'
-			];
-
+			const headers = ['Product', 'Name', 'Cost', 'Created At'];
 			const csvRows = [headers.join(',')];
 
-			for (const credit of credits) {
+			for (const credit of creditsWithDetails) {
 				const row = [
-					escapeCSV(credit.userId),
-					escapeCSV(credit.userName),
-					escapeCSV(credit.productId),
 					escapeCSV(credit.productName),
-					escapeCSV(credit.productType || ''),
-					credit.creditCost,
-					escapeCSV(formatDate(new Date(credit.claimedAt))),
-					escapeCSV(formatDate(new Date(credit.createdAt)))
+					escapeCSV(credit.userName),
+					credit.creditCost || 0,
+					credit.createdAt ? escapeCSV(formatDate(new Date(credit.createdAt))) : '""'
 				];
 				csvRows.push(row.join(','));
 			}

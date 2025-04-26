@@ -93,8 +93,6 @@ export class BeerService {
 		creditCost: number,
 		productDetails?: {
 			productId: string;
-			productName: string;
-			productType?: string;
 		}
 	): Promise<boolean> {
 		try {
@@ -147,12 +145,8 @@ export class BeerService {
 				const claimRecord: ClaimedCreditInsert = {
 					id: nanoid(),
 					userId,
-					userName,
 					productId: productDetails.productId,
-					productName: productDetails.productName,
-					productType: productDetails.productType || null,
 					creditCost,
-					claimedAt: new Date(),
 					createdAt: new Date()
 				};
 

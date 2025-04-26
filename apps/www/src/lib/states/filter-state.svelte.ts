@@ -6,9 +6,7 @@ export const SORT_OPTIONS = [
 	{ value: 'alcohol-asc', label: 'Alkohol (Lav-Høy)' },
 	{ value: 'alcohol-desc', label: 'Alkohol (Høy-Lav)' },
 	{ value: 'volume-asc', label: 'Volum (Lav-Høy)' },
-	{ value: 'volume-desc', label: 'Volum (Høy-Lav)' },
-	{ value: 'credit-asc', label: 'Kreditt (Lav-Høy)' },
-	{ value: 'credit-desc', label: 'Kreditt (Høy-Lav)' }
+	{ value: 'volume-desc', label: 'Volum (Høy-Lav)' }
 ];
 
 export type Sort = (typeof SORT_OPTIONS)[number]['value'];

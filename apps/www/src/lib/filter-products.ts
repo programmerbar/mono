@@ -35,16 +35,6 @@ export const filterProducts = (products: GetProductsQueryResult, filter: FilterS
 			return b.priceList.student - a.priceList.student;
 		}
 
-		if (filter.sort === 'credit-asc') {
-			if (a.priceList.Credits === null) {
-				return -1;
-			}
-
-			if (b.priceList.Credits === null) {
-				return 1;
-			}
-		}
-
 		if (filter.sort === 'alcohol-asc') {
 			if (a.alcoholContent === null) {
 				return -1;

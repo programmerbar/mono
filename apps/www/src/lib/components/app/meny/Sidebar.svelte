@@ -52,17 +52,17 @@
 		</select>
 	</div>
 
-	<div class="flex items-center justify-between py-2">
-		<label for="hideSoldOut" class="text-sm font-semibold">Skjul utsolgt</label>
-		<input
-			type="checkbox"
-			id="hideSoldOut"
-			class="h-4 w-4 rounded border-2"
-			bind:checked={filterState.hideSoldOut}
-		/>
-	</div>
-
 	{#if alwaysFilteredByCredits}{:else}
+		<div class="flex items-center justify-between py-2">
+			<label for="hideSoldOut" class="text-sm font-semibold">Skjul utsolgt</label>
+			<input
+				type="checkbox"
+				id="hideSoldOut"
+				class="h-4 w-4 rounded border-2"
+				bind:checked={filterState.hideSoldOut}
+			/>
+		</div>
+
 		<div class="flex items-center justify-between py-2">
 			<label for="showStudentPrice" class="text-sm font-semibold">Vis studentpris</label>
 			<input
