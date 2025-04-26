@@ -107,7 +107,6 @@ export class BeerService {
 				.limit(1);
 
 			const additionalBeersCount = Number(userResult[0]?.additionalBeers ?? 0);
-			const userName = userResult[0]?.name || 'Unknown User';
 			const totalAvailable = shiftBeersCount + additionalBeersCount;
 
 			if (totalAvailable < creditCost) {
