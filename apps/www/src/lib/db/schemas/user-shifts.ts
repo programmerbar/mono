@@ -19,9 +19,9 @@ export const userShifts = sqliteTable('user_shift', {
 		.$defaultFn(() => new Date()),
 	updatedAt: integer({ mode: 'timestamp' }),
 	isBeerClaimed: integer({ mode: 'boolean' }).notNull().default(false),
-	status: text({ enum: ['pending', 'accepted', 'denied'] })
+	status: text({ enum: ['accepted', 'denied'] })
 		.notNull()
-		.default('pending')
+		.default('accepted')
 });
 
 export const userShiftsRelations = relations(userShifts, ({ one }) => ({
