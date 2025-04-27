@@ -635,6 +635,13 @@
             "type": "number"
           },
           "optional": false
+        },
+        "credits": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
         }
       }
     }

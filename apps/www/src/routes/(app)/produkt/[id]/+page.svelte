@@ -13,7 +13,8 @@
 		{ title: 'Alkoholinnhold', value: data.product.alcoholContent ?? 'Ukjent' },
 		{ title: 'Volum', value: data.product.volume ?? 'Ukjent' },
 		{ title: 'Pris (Ordinær)', value: data.product.priceList.ordinary },
-		{ title: 'Pris (Student)', value: data.product.priceList.student }
+		{ title: 'Pris (Student)', value: data.product.priceList.student },
+		{ title: 'Bong pris', value: data.product.priceList.credits }
 	];
 </script>
 

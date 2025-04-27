@@ -22,5 +22,11 @@ export default defineType({
       title: "Internpris",
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "credits",
+      type: "number",
+      title: "Credits",
+      validation: (Rule) => Rule.min(1).max(5),
+    }),
   ],
 });
