@@ -35,7 +35,7 @@
 
 <div class="mt-8">
   <button 
-    class="flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-left focus:outline-none"
+    class="flex items-center py-6 bg-gray-100 hover:bg-gray-200 rounded-md text-left focus:outline-none"
     onclick={toggleOutdatedEvents}
     aria-expanded={showOutdatedEvents}
   >
