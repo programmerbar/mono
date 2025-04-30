@@ -5,6 +5,5 @@ export default defineCliConfig({
     projectId: "elfb3wn1",
     dataset: "production",
   },
-  autoUpdates: true,
   studioHost: "programmerbar",
 });
