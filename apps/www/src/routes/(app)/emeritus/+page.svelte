@@ -33,7 +33,7 @@
 		'Ole Straumland',
 		'Tony Lam',
 		'Eirik Rekve Thorsheim',
-		'Ole Magnus Fon Johnsen',
+		'Ole Magnus Fon Johnsen (første CTO)',
 		'August Ebne Røeggen',
 		'Simen Hauge Østbø'
 	];
