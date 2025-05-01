@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Download } from '@lucide/svelte';
+	import Input from '../ui/Input.svelte';
+	import Button from '../ui/Button.svelte';
 
 	let startDate = $state('');
 	let loading = $state(false);
@@ -16,7 +18,7 @@
 </script>
 
 <div class="flex max-w-xs flex-col gap-4">
-	<div class="mt-6 rounded-lg border bg-white p-4 shadow-md">
+	<div class="bg-background mt-6 rounded-lg border-2 p-4 shadow-lg">
 		<h3 class="mb-4 text-lg font-semibold">Last ned CSV fil</h3>
 
 		<form
@@ -43,35 +45,21 @@
 			}}
 		>
 			<div class="flex items-end gap-4">
-				<div class="flex-1">
-					<label for="startDate" class="mb-1 block text-sm font-medium text-gray-700">
-						From Date
+				<div class="flex flex-1 flex-col gap-2">
+					<label for="startDate" class="flex flex-col gap-1">
+						<span class="text-sm font-semibold">From date</span>
+						<Input type="datetime-local" id="startDate" name="startDate" bind:value={startDate} />
 					</label>
-					<input
-						type="datetime-local"
-						id="startDate"
-						name="startDate"
-						bind:value={startDate}
-						class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-					/>
-					<label for="startDate" class="mb-1 block text-sm font-medium text-gray-700">
-						To Date
+
+					<label for="endDate" class="flex flex-col gap-1">
+						<span class="text-sm font-semibold">To date</span>
+						<Input type="datetime-local" id="endDate" name="endDate" bind:value={endDate} />
 					</label>
-					<input
-						type="datetime-local"
-						id="startDate"
-						name="startDate"
-						bind:value={endDate}
-						class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-					/>
-					<button
-						type="submit"
-						disabled={loading}
-						class="mt-2 flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 disabled:opacity-50"
-					>
-						<Download class="h-4 w-4" />
+
+					<Button type="submit" disabled={loading}>
+						<Download class="size-4" />
 						{loading ? 'Downloading...' : 'Download CSV'}
-					</button>
+					</Button>
 				</div>
 			</div>
 		</form>
