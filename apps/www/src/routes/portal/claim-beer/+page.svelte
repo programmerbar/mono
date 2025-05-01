@@ -9,6 +9,7 @@
 	import { filterProducts } from '$lib/filter-products';
 	import { FilterState } from '$lib/states/filter-state.svelte';
 	import { urlFor } from '$lib/api/sanity/image';
+	import Button from '$lib/components/ui/Button.svelte';
 
 	let loading = $state(false);
 	let selectedProduct = $state<null | Product>(null);
@@ -113,7 +114,7 @@
 	{#if selectedProduct}
 		<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 			<div class="w-[400px] rounded-lg bg-white p-6 shadow-lg">
-				<h2 class="mb-4 text-center text-2xl font-bold">Claim Product</h2>
+				<h2 class="mb-4 text-center text-2xl font-bold">Claim produkt</h2>
 
 				<div class="mb-6 flex items-center justify-center">
 					{#if selectedProduct.image}
@@ -124,7 +125,7 @@
 						/>
 					{:else}
 						<div class="flex h-40 w-40 items-center justify-center rounded-lg bg-gray-100">
-							<span class="text-gray-400">No image</span>
+							<span class="text-gray-400">Ingen bilde</span>
 						</div>
 					{/if}
 				</div>
@@ -181,20 +182,15 @@
 						<input type="hidden" name="creditCost" value={selectedProduct.priceList.credits} />
 
 						<div class="flex gap-4">
-							<button
-								type="submit"
-								disabled={loading}
-								class="flex-1 rounded-md bg-blue-500 px-5 py-2 text-center text-lg font-medium text-white transition-colors hover:bg-blue-600 disabled:opacity-50"
-							>
-								{loading ? 'Processing...' : 'Claim'}
-							</button>
-							<button
+							<Button type="submit" class="w-full" disabled={loading}>
+								{loading ? 'Laster...' : 'Claim'}
+							</Button>
+							<Button
 								type="button"
-								class="flex-1 rounded-md border border-gray-300 px-5 py-2 text-center text-lg font-medium transition-colors hover:bg-gray-100"
-								onclick={() => (selectedProduct = null)}
+								class="w-full"
+								intent="danger"
+								onclick={() => (selectedProduct = null)}>Avbryt</Button
 							>
-								Cancel
-							</button>
 						</div>
 					</form>
 				{:else}
@@ -205,7 +201,7 @@
 						class="w-full rounded-md border border-gray-300 px-5 py-2 text-center text-lg font-medium transition-colors hover:bg-gray-100"
 						onclick={() => (selectedProduct = null)}
 					>
-						Close
+						Lukk
 					</button>
 				{/if}
 			</div>
@@ -214,7 +210,7 @@
 
 	<div class="flex w-full flex-col gap-8 sm:mx-auto sm:max-w-screen-sm md:max-w-full md:flex-row">
 		<div>
-			<div class="mb-4 items-center justify-center rounded-xl border-2 bg-background p-4 shadow-md">
+			<div class="bg-background mb-4 items-center justify-center rounded-xl border-2 p-4 shadow-md">
 				<div class="bg-backg text-2xl font-bold text-gray-900">
 					{unclaimedBeers}
 					{unclaimedBeers === 1 ? 'bong' : 'bonger'}
@@ -242,8 +238,9 @@
 								<ProductPreview
 									{product}
 									{filterState}
-									alwaysShowCreditPrice={true}
-									disableLink={true}
+									alwaysShowCreditPrice
+									disableLink
+									disableWishlist
 								/>
 							</button>
 						</li>

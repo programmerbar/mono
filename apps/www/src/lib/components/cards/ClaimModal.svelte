@@ -15,7 +15,7 @@
 {#if claimedProduct}
 	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 		<div class="w-[400px] rounded-lg bg-white p-6 shadow-lg">
-			<h2 class="mb-4 text-center text-2xl font-bold">Produkt Claimet!</h2>
+			<h2 class="mb-4 text-center text-2xl font-bold">Produkt claimet!</h2>
 			<div class="mb-6 flex items-center justify-center">
 				{#if claimedProduct.image}
 					<img
@@ -25,7 +25,7 @@
 					/>
 				{:else}
 					<div class="flex h-40 w-40 items-center justify-center rounded-lg bg-gray-100">
-						<span class="text-gray-400">No image</span>
+						<span class="text-gray-400">Ingen bilde</span>
 					</div>
 				{/if}
 			</div>
