@@ -41,30 +41,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-	claimBeer: async ({ locals }) => {
-		const userId = locals.user?.id;
-		if (!userId) {
-			return fail(401, {
-				success: false,
-				message: 'Please log in to claim your beer.'
-			});
-		}
-		try {
-			const success = await locals.beerService.claimBeer(userId);
-			if (success) {
-				return { success: true, message: 'Beer claimed.' };
-			} else {
-				return { success: false, message: 'No more beers left to claim.' };
-			}
-		} catch (err) {
-			console.error('Error claiming beer:', err);
-			return fail(500, {
-				success: false,
-				message: 'Internal error'
-			});
-		}
-	},
-
 	claimProduct: async ({ request, locals }) => {
 		const userId = locals.user?.id;
 		if (!userId) {
@@ -98,6 +74,19 @@ export const actions: Actions = {
 			const success = await locals.beerService.claimProductCredits(userId, creditCost, {
 				productId
 			});
+
+			if (success) {
+				const users = await locals.groupsService.getUsersById('board');
+				await Promise.all(
+					users.map((user) => {
+						return locals.notificationService.create(
+							user.userId,
+							'Produkt claimet',
+							`${user.user.name} har claimed productet ${productId} for ${creditCost} credits.`
+						);
+					})
+				);
+			}
 
 			if (success) {
 				const updatedBeerCount = await locals.beerService.getTotalAvailableBeers(userId);

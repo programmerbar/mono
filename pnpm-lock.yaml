@@ -60,6 +60,9 @@ importers:
       '@lucia-auth/adapter-drizzle':
         specifier: 1.1.0
         version: 1.1.0(drizzle-orm@0.38.1)(lucia@3.2.2)
+      '@lucide/svelte':
+        specifier: ^0.503.0
+        version: 0.503.0(svelte@5.25.3)
       '@oslojs/crypto':
         specifier: 1.0.1
         version: 1.0.1
@@ -102,9 +105,6 @@ importers:
       lucia:
         specifier: 3.2.2
         version: 3.2.2
-      lucide-svelte:
-        specifier: 0.468.0
-        version: 0.468.0(svelte@5.25.3)
       marked:
         specifier: 15.0.3
         version: 15.0.3
@@ -3440,6 +3440,14 @@ packages:
     dependencies:
       drizzle-orm: 0.38.1(@cloudflare/workers-types@4.20250321.0)(@types/react@19.0.1)(react@19.0.0)
       lucia: 3.2.2
+    dev: false
+
+  /@lucide/svelte@0.503.0(svelte@5.25.3):
+    resolution: {integrity: sha512-Y7Q8pHnX2YG8Ef4a/VnYFN9tTAJS33MiS78vQtPiyp5iiWuBlTMoViMiRUxQb7U9Ro46RdJ0kpCADvvha3Z2rA==}
+    peerDependencies:
+      svelte: ^5
+    dependencies:
+      svelte: 5.25.3
     dev: false
 
   /@marijn/find-cluster-break@1.0.2:
@@ -8919,14 +8927,6 @@ packages:
     dependencies:
       '@oslojs/crypto': 1.0.1
       '@oslojs/encoding': 1.1.0
-    dev: false
-
-  /lucide-svelte@0.468.0(svelte@5.25.3):
-    resolution: {integrity: sha512-n0ecAFtCY5LEeL+PJ1Xj4n3c2gzj8tMpak0KMGnvoSJEjCsCnRB0mekBtJZAo7beyynW9Qj5Um1KfMBAeTNplw==}
-    peerDependencies:
-      svelte: ^3 || ^4 || ^5.0.0-next.42
-    dependencies:
-      svelte: 5.25.3
     dev: false
 
   /magic-string@0.30.17:

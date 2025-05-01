@@ -53,6 +53,7 @@
 	},
 	"dependencies": {
 		"@lucia-auth/adapter-drizzle": "1.1.0",
+		"@lucide/svelte": "^0.503.0",
 		"@oslojs/crypto": "1.0.1",
 		"@oslojs/encoding": "1.1.0",
 		"@programmerbar/emails": "workspace:*",
@@ -67,7 +68,6 @@
 		"drizzle-orm": "0.38.1",
 		"groq": "3.67.1",
 		"lucia": "3.2.2",
-		"lucide-svelte": "0.468.0",
 		"marked": "15.0.3",
 		"nanoid": "5.0.9",
 		"react": "19.0.0",

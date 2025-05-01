@@ -2,7 +2,7 @@
 	import { formatDate } from '$lib/date';
 	import { capitalize } from '$lib/utils';
 	import type { Event } from '$lib/db/schemas';
-	import { ArrowRight } from 'lucide-svelte';
+	import { ArrowRight } from '@lucide/svelte';
 
 	type Props = {
 		event: Event;

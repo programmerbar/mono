@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { echoUrlFor } from '$lib/api/sanity/image';
-	import { Smile, Beer, Wine, Wifi, UserCircle } from 'lucide-svelte';
+	import { Smile, Beer, Wine, Wifi, UserCircle } from '@lucide/svelte';
 	import { marked } from 'marked';
 	import Heading from '$lib/components/ui/Heading.svelte';
 
@@ -13,7 +13,7 @@
 	<title>Om oss</title>
 </svelte:head>
 
-<div class="mx-auto w-full max-w-screen-lg rounded-xl border-2 bg-background p-8 shadow-lg">
+<div class="bg-background mx-auto w-full max-w-screen-lg rounded-xl border-2 p-8 shadow-lg">
 	<Heading class="mb-4 text-4xl">Om oss</Heading>
 
 	<div class="mb-16">
@@ -27,10 +27,10 @@
 					class="h-full w-full rounded-xl object-cover"
 				/>
 			{:else}
-				<Smile class="h-16 w-16 text-primary" />
-				<Beer class="h-16 w-16 text-primary" />
-				<Wine class="h-16 w-16 text-primary" />
-				<Wifi class="h-16 w-16 text-primary" />
+				<Smile class="text-primary h-16 w-16" />
+				<Beer class="text-primary h-16 w-16" />
+				<Wine class="text-primary h-16 w-16" />
+				<Wifi class="text-primary h-16 w-16" />
 			{/if}
 		</div>
 

@@ -30,6 +30,8 @@ declare global {
 			shiftService: import('$lib/services/shift.service').ShiftService;
 			beerService: import('$lib/services/beer.service').BeerService;
 			banService: import('$lib/services/ban.service').BanService;
+			notificationService: import('$lib/services/notification.service').NotificationService;
+			groupsService: import('$lib/services/groups.service').GroupsService;
 		}
 		// interface PageData {}
 		// interface PageState {}

@@ -6,7 +6,7 @@
 	import HeaderSignOut from './HeaderSignOut.svelte';
 	import MenuItem from './MenuItem.svelte';
 	import ProgressBar from './ProgressBar.svelte';
-	import { Menu, X } from 'lucide-svelte';
+	import { Menu, X } from '@lucide/svelte';
 	import MenuSignOut from './MenuSignOut.svelte';
 	import { getUser } from '$lib/context/user.context';
 
@@ -40,7 +40,7 @@
 
 <div
 	class={cn({
-		'fixed left-0 top-0 z-50 h-screen w-full bg-background': isOpen
+		'bg-background fixed left-0 top-0 z-50 h-screen w-full': isOpen
 	})}
 >
 	<ProgressBar />

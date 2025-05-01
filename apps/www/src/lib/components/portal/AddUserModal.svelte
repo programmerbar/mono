@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Dialog, Label, Separator } from 'bits-ui';
-	import { X } from 'lucide-svelte';
+	import { X } from '@lucide/svelte';
 	import { fade } from 'svelte/transition';
 	import Button from '../ui/Button.svelte';
 	import Input from '../ui/Input.svelte';
@@ -35,12 +35,12 @@
 			class="fixed inset-0 z-50 bg-black/60"
 		/>
 		<Dialog.Content
-			class="fixed left-[50%] top-[50%] z-50 w-full max-w-[94%] translate-x-[-50%] translate-y-[-50%] rounded-lg border bg-background p-5 outline-none sm:max-w-[490px] md:w-full"
+			class="bg-background fixed left-[50%] top-[50%] z-50 w-full max-w-[94%] translate-x-[-50%] translate-y-[-50%] rounded-lg border p-5 outline-none sm:max-w-[490px] md:w-full"
 		>
 			<Dialog.Title class="flex w-full items-center justify-center text-lg font-medium"
 				>Send invitasjon</Dialog.Title
 			>
-			<Separator.Root class="-mx-5 mb-6 mt-5 block h-px bg-muted" />
+			<Separator.Root class="bg-muted -mx-5 mb-6 mt-5 block h-px" />
 			<Dialog.Description class="text-sm">
 				Send en invitasjon til brukeren for å gi tilgang til portalen. Du kan bare invitere brukere
 				med feide-konto. E-posten skal være i formatet: {'<navn>'}@student.uib.no. Du kan se det på
@@ -65,10 +65,10 @@
 				</Dialog.Close>
 			</div>
 			<Dialog.Close
-				class="active:scale-98 absolute right-5 top-5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+				class="active:scale-98 focus-visible:ring-foreground focus-visible:ring-offset-background absolute right-5 top-5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
 			>
 				<div>
-					<X class="size-5 text-foreground" />
+					<X class="text-foreground size-5" />
 					<span class="sr-only">Close</span>
 				</div>
 			</Dialog.Close>

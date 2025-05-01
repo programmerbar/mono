@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Download } from 'lucide-svelte';
+	import { Download } from '@lucide/svelte';
 
 	let startDate = $state('');
 	let loading = $state(false);

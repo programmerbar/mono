@@ -92,6 +92,20 @@
       "when": 1745709540351,
       "tag": "0012_lethal_giant_man",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "6",
+      "when": 1746102871514,
+      "tag": "0013_pink_firestar",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "6",
+      "when": 1746103110959,
+      "tag": "0014_wandering_vulture",
+      "breakpoints": true
     }
   ]
 }

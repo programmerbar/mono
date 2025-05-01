@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
-	import { X } from 'lucide-svelte';
+	import { X } from '@lucide/svelte';
 	import AddUserModal from '$lib/components/portal/AddUserModal.svelte';
 	import { mailto } from '$lib/utils';
 	import { formatDate } from '$lib/date';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { urlFor } from '$lib/api/sanity/image';
-	import { Heart } from 'lucide-svelte';
+	import { Heart } from '@lucide/svelte';
 	import type { filterProducts } from '$lib/filter-products';
 	import type { FilterState } from '$lib/states/filter-state.svelte';
 	import { WishlistState } from '$lib/states/wishlist-state.svelte';
@@ -32,7 +32,7 @@
 </script>
 
 <div
-	class="relative flex h-full flex-col overflow-hidden rounded-xl border-2 bg-background shadow-md"
+	class="bg-background relative flex h-full flex-col overflow-hidden rounded-xl border-2 shadow-md"
 >
 	<div class="relative border-b-2">
 		<div class="absolute right-0 top-0 z-10 rounded-bl bg-white px-2 py-1 text-xs font-semibold">

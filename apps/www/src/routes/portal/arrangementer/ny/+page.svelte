@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { EventHandler } from 'svelte/elements';
-	import { X } from 'lucide-svelte';
+	import { X } from '@lucide/svelte';
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import FormInput from '$lib/components/ui/form/FormInput.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
@@ -85,7 +85,7 @@
 	/>
 	{#each createEventState.shifts as shift, i}
 		{@const shiftLength = differenceInHours(shift.endAt, shift.startAt)}
-		<div class="relative flex flex-col space-y-2 rounded-lg border border-border p-4">
+		<div class="border-border relative flex flex-col space-y-2 rounded-lg border p-4">
 			<button
 				type="button"
 				class="absolute right-4 top-4 text-red-400 transition-colors hover:text-red-600"
@@ -133,7 +133,7 @@
 					/>
 					<button
 						type="button"
-						class="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-white transition-colors hover:text-red-500"
+						class="border-border flex h-10 w-10 items-center justify-center rounded-lg border bg-white transition-colors hover:text-red-500"
 						onclick={() => createEventState.deleteUserFromShift(i, user.id)}
 					>
 						<X class="size-4" />
