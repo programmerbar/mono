@@ -82,7 +82,7 @@ export const actions: Actions = {
 						return locals.notificationService.create(
 							user.userId,
 							'Produkt claimet',
-							`${user.user.name} har claimed productet ${productId} for ${creditCost} credits.`
+							`${locals.user.name} har claimed productet ${productId} for ${creditCost} credits.`
 						);
 					})
 				);
