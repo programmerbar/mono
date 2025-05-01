@@ -40,7 +40,7 @@
 
 <div
 	class={cn({
-		'bg-background fixed left-0 top-0 z-50 h-screen w-full': isOpen
+		'fixed left-0 top-0 z-50 h-screen w-full bg-background': isOpen
 	})}
 >
 	<ProgressBar />
