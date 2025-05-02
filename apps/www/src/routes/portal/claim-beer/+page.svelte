@@ -210,7 +210,7 @@
 
 	<div class="flex w-full flex-col gap-8 sm:mx-auto sm:max-w-screen-sm md:max-w-full md:flex-row">
 		<div>
-			<div class="bg-background mb-4 items-center justify-center rounded-xl border-2 p-4 shadow-md">
+			<div class="mb-4 items-center justify-center rounded-xl border-2 bg-background p-4 shadow-md">
 				<div class="bg-backg text-2xl font-bold text-gray-900">
 					{unclaimedBeers}
 					{unclaimedBeers === 1 ? 'bong' : 'bonger'}

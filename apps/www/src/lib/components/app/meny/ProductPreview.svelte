@@ -36,7 +36,7 @@
 </script>
 
 <div
-	class="bg-background relative flex h-full flex-col overflow-hidden rounded-xl border-2 shadow-md"
+	class="relative flex h-full flex-col overflow-hidden rounded-xl border-2 bg-background shadow-md"
 >
 	<div class="relative border-b-2">
 		{#if !disableWishlist}
