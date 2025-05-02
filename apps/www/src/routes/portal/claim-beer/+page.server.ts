@@ -52,7 +52,7 @@ export const actions: Actions = {
 
 		const data = await request.formData();
 		const productId = data.get('productId')?.toString();
-    const productName = data.get('productName')?.toString();
+		const productName = data.get('productName')?.toString();
 		const creditCostStr = data.get('creditCost')?.toString();
 
 		if (!productId || !creditCostStr) {
