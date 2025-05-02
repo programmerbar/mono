@@ -67,7 +67,7 @@
 
 <svelte:window onresize={handleResize} />
 
-<div class="bg-background sticky top-0 z-10">
+<div class="sticky top-0 z-10 bg-background">
 	<header class="flex items-center justify-between">
 		<a href="/" class="mr-10">
 			<img src={logo} alt="Logo" class="h-12 w-12" />

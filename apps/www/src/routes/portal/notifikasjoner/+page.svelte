@@ -19,7 +19,7 @@
 				<form action="?/archive" method="post" use:enhance>
 					<input type="hidden" name="notificationId" value={notification.id} />
 					<button>
-						<Check class="hover:bg-background size-9 rounded-lg p-2 text-green-600" />
+						<Check class="size-9 rounded-lg p-2 text-green-600 hover:bg-background" />
 					</button>
 				</form>
 			</div>
