@@ -3,7 +3,7 @@ import { type D1Database } from '@cloudflare/workers-types';
 import { getPlatformProxy } from 'wrangler';
 import { faker } from '@faker-js/faker';
 import { nanoid } from 'nanoid';
-import { users } from '../src/lib/db/schema';
+import { users } from '../src/lib/db/schemas';
 
 type Env = {
 	DB: D1Database;
@@ -11,7 +11,7 @@ type Env = {
 
 const main = async () => {
 	const { env } = await getPlatformProxy<Env>({
-		configPath: './apps/www/wrangler.toml',
+		configPath: './apps/www/wrangler.jsonc',
 		persist: {
 			path: './apps/www/.wrangler/state/v3'
 		}
