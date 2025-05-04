@@ -67,6 +67,46 @@ export class EventService {
 		return event;
 	}
 
+	async findUpcomingEvents() {
+		const event = await this.#db.query.events.findMany({
+			orderBy: (row, { asc }) => [asc(row.date)],
+			with: {
+				shifts: {
+					with: {
+						members: {
+							with: {
+								user: true
+							}
+						}
+					}
+				}
+			},
+			where: (events, { gte }) => gte(events.date, new Date())
+		});
+
+		return event;
+	}
+
+	async findPastEvents() {
+		const event = await this.#db.query.events.findMany({
+			orderBy: (row, { desc }) => [desc(row.date)],
+			with: {
+				shifts: {
+					with: {
+						members: {
+							with: {
+								user: true
+							}
+						}
+					}
+				}
+			},
+			where: (events, { lt }) => lt(events.date, new Date())
+		});
+
+		return event;
+	}
+
 	async delete(id: string) {
 		await this.#db.delete(events).where(eq(events.id, id));
 	}

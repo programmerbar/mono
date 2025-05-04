@@ -62,6 +62,11 @@ export const actions: Actions = {
 			});
 		}
 
+		await locals.eventService.deleteUserShift({
+			shiftId,
+			userId: locals.user.id
+		});
+
 		return { success: true };
 	}
 };

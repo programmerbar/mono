@@ -34,6 +34,7 @@ export class CreateEventState {
 			name: ''
 		});
 	}
+  
 
 	deleteUserFromShift(shiftIndex: number, userId: string) {
 		const arr = this.shifts[shiftIndex].users.filter((user) => user.id !== userId);
