@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { SquarePen } from '@lucide/svelte';
 	import { getUser } from '$lib/context/user.context';
+  import Button from '../ui/Button.svelte';
 
 	type Event = {
 		id: string;
@@ -107,6 +108,13 @@
 			class="search-input"
 		/>
 
+    {#if $user?.role === 'board'}
+    <div class="button-wrapper">
+    <Button onclick={() => goto(`arrangementer/ny`)}>Nytt arrangement</Button>
+    </div>
+    {/if}
+
+  </div> 
 		{#if filteredEvents.length === 0}
 			<div class="empty-state">
 				Ingen {activeTab === 'upcoming' ? 'kommende' : 'tidligere'} arrangementer å vise.
@@ -133,15 +141,15 @@
 								<td class={getStatusClass(status)}>{status}</td>
 								<td class="action-column">
 									<!-- Dette kommer når eg har edit side -->
-									<!--         {#if $user?.role === 'board'} -->
-									<!-- <a -->
-									<!-- 	href="arrangementer/{event.id}/edit" -->
-									<!-- 	class="edit-icon" -->
-									<!-- 	aria-label="Rediger arrangement" -->
-									<!-- > -->
-									<!-- 	<SquarePen size={18} /> -->
-									<!-- </a> -->
-									<!-- {/if} -->
+                  {#if $user?.role === 'board'}
+                  <a
+										href="arrangementer/{event.id}/edit"
+										class="edit-icon"
+										aria-label="Rediger arrangement"
+									>
+										<SquarePen size={18} />
+									</a>
+									{/if}
 								</td>
 							</tr>
 						{/each}
@@ -149,7 +157,6 @@
 				</table>
 			</div>
 		{/if}
-	</div>
 </div>
 
 <style>
@@ -179,7 +186,7 @@
 		transition: all 0.2s ease;
 		color: #6b7280;
 		flex: 1; /* Flexible width */
-		min-width: 150px;
+		min-width: 150px
 	}
 
 	.tabs button:hover {
@@ -281,27 +288,30 @@
 		}
 	}
 	.search-container {
-		padding: 1rem;
-		background-color: background-color;
-		border-bottom: 1px solid #f0f0f0;
+    position: relative;
+    width: 100%;
+  
 	}
 
 	.search-input {
-		width: 100%;
-		padding: 0.75rem 1rem;
-		border-radius: 8px;
-		border: 1px solid #e5e7eb;
-		background-color: #f9fafb;
-		font-size: 1rem;
-		transition: all 0.2s ease;
-	}
-
+    width: 100%;
+    padding: 0.75rem 8rem 0.75rem 1rem; 
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
 	.search-input:focus {
 		outline: none;
 		border-color: #3b82f6;
 		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
 		background-color: background-color;
 	}
+  .button-wrapper {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+  }
 
 	.search-input::placeholder {
 		color: #9ca3af;
