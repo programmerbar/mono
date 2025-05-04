@@ -140,15 +140,16 @@
 							<td>{countShifts(event)}</td>
 							<td class={getStatusClass(status)}>{status}</td>
 							<td class="action-column">
-                {#if $user?.role === 'board'}
-								<a
-									href="arrangementer/{event.id}/edit"
-									class="edit-icon"
-									aria-label="Rediger arrangement"
-								>
-									<SquarePen size={18} />
-								</a>
-              {/if}
+              <!-- Dette kommer når eg har edit side -->
+								<!--         {#if $user?.role === 'board'} -->
+								<!-- <a -->
+								<!-- 	href="arrangementer/{event.id}/edit" -->
+								<!-- 	class="edit-icon" -->
+								<!-- 	aria-label="Rediger arrangement" -->
+								<!-- > -->
+								<!-- 	<SquarePen size={18} /> -->
+								<!-- </a> -->
+              <!-- {/if} -->
 							</td>
 						</tr>
 					{/each}

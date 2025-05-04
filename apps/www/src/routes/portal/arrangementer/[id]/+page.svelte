@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
 	import { subHours } from 'date-fns';
 	import { formatDate, time } from '$lib/date';
 	import { capitalize } from '$lib/utils';
@@ -44,3 +45,11 @@
 	</ul>
 </section>
 
+<section class="mt-8">
+	{#if data.user?.role === 'board'}
+		<Heading level={2}>Farlig</Heading>
+		<form action="?/delete" method="post" use:enhance>
+			<Button intent="danger" class="mt-4">Slett arrangement</Button>
+		</form>
+	{/if}
+</section>
