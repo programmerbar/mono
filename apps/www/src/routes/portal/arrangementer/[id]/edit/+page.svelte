@@ -13,7 +13,6 @@
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
 	import { differenceInHours } from 'date-fns';
 
-
 	let user = getUser();
 	let { data } = $props();
 	let error = $state('');
@@ -98,7 +97,6 @@
 		</form>
 	{/if}
 </section>
-
 
 <Heading class="mb-4">Nytt arrangement</Heading>
 
