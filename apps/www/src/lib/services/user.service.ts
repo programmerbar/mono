@@ -45,4 +45,11 @@ export class UserService {
 
 		return user;
 	}
+	async deleteUser(userId: string) {
+		return await this.#db
+			.delete(users)
+			.where(eq(users.id, userId))
+			.returning()
+			.then((rows) => rows[0]);
+	}
 }
