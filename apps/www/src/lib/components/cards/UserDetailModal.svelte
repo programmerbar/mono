@@ -138,7 +138,7 @@
 			</button>
 
 			{#if showDeleteSection}
-				<div class="bg-white p-4">
+				<div class="bg-white">
 					<form
 						method="post"
 						action="/portal/admin/user/{selectedUser.id}?/deleteUser"
@@ -150,12 +150,18 @@
 							};
 						}}
 					>
-						<div>
-							<p class="mb-1 text-sm">Skriv <strong>{selectedUser.name}</strong> for å bekrefte</p>
+						<div class="space-y-2">
+							<p class="mb-1 text-sm">
+								Skriv <strong>{selectedUser.name}</strong> for å bekrefte
+							</p>
 							<div class="flex space-x-3">
-								<div class="flex-1">
-									<Input type="text" name="confirmDelete" bind:value={deleteText} required />
-								</div>
+								<input
+									class="min-w-0 flex-1 rounded-xl"
+									type="text"
+									name="confirmDelete"
+									bind:value={deleteText}
+									required
+								/>
 								<Button type="submit" intent="danger" disabled={deleteText !== selectedUser.name}>
 									Bekreft sletting
 								</Button>
