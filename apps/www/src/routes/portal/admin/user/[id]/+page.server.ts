@@ -43,12 +43,14 @@ export const actions: Actions = {
 			});
 		}
 		const success = await locals.userService.deleteUser(userId);
-		const invID = await locals.invitationService.findByEmail(user?.email);
-		console.log(invID);
-		const invsuccess = await locals.invitationService.delete(invID?.id);
-		console.log(invsuccess);
 
-		if (!success || !invsuccess) {
+		const invId = await locals.invitationService.findByEmail(user.email);
+
+		if (invId) {
+			await locals.invitationService.delete(invID.id);
+		}
+
+		if (!success) {
 			return fail(400, {
 				success: false,
 				message: 'Failed to delete user'
