@@ -47,7 +47,7 @@ export const actions: Actions = {
 		const invId = await locals.invitationService.findByEmail(user.email);
 
 		if (invId) {
-			await locals.invitationService.delete(invID.id);
+			await locals.invitationService.delete(invId.id);
 		}
 
 		if (!success) {
