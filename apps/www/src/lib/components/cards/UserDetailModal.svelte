@@ -19,6 +19,8 @@
 	let roleForm = $state<HTMLFormElement | null>(null);
 	let unclaimedBeers = $state<number | null>(null);
 	let unclaimedBeersState = $state<'idle' | 'loading' | 'success' | 'error'>('idle');
+	let showDeleteSection = $state(false);
+	let deleteText = $state('');
 
 	onMount(async () => {
 		const response = await fetch(`/portal/admin/user/${selectedUser.id}`);
@@ -130,5 +132,38 @@
 				<Button type="button" intent="outline" onclick={onClose}>Lukk</Button>
 			</div>
 		</form>
+		<div class="">
+			<button type="button" onclick={() => (showDeleteSection = !showDeleteSection)}>
+				<p class="font-medium text-red-600">Slett bruker</p>
+			</button>
+
+			{#if showDeleteSection}
+				<div class="bg-white p-4">
+					<form
+						method="post"
+						action="/portal/admin/user/{selectedUser.id}?/deleteUser"
+						use:enhance={() => {
+							return ({ result }) => {
+								if (result.type === 'success') {
+									onClose();
+								}
+							};
+						}}
+					>
+						<div>
+							<p class="mb-1 text-sm">Skriv <strong>{selectedUser.name}</strong> for å bekrefte</p>
+							<div class="flex space-x-3">
+								<div class="flex-1">
+									<Input type="text" name="confirmDelete" bind:value={deleteText} required />
+								</div>
+								<Button type="submit" intent="danger" disabled={deleteText !== selectedUser.name}>
+									Bekreft sletting
+								</Button>
+							</div>
+						</div>
+					</form>
+				</div>
+			{/if}
+		</div>
 	</div>
 </div>
