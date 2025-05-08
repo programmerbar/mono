@@ -66,14 +66,13 @@
 </script>
 
 <svelte:window onresize={handleResize} />
-
 <div class="sticky top-0 z-10 bg-background px-4">
 	<header class="flex items-center justify-between">
 		<a href="/" class="mr-10">
 			<img src={logo} alt="Logo" class="h-12 w-12" />
 		</a>
-		<nav>
-			<ul class="mt-4 hidden items-center gap-2 md:flex">
+		<nav class="flex items-center">
+			<ul class="hidden items-center gap-2 md:flex">
 				{#each routes as route}
 					{#if route.visible !== false}
 						<li>
@@ -83,7 +82,6 @@
 						</li>
 					{/if}
 				{/each}
-
 				<li>
 					<a
 						class="relative px-1 text-gray-500 transition hover:text-gray-900"
@@ -100,6 +98,19 @@
 					</a>
 				</li>
 			</ul>
+			<a
+				class="relative mr-4 block px-1 text-gray-500 transition hover:text-gray-900 md:hidden"
+				href="/portal/notifikasjoner"
+			>
+				<Bell class="size-5" />
+				{#if notifications.length > 0}
+					<span
+						class="absolute left-4 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white"
+					>
+						{notifications.length}
+					</span>
+				{/if}
+			</a>
 			<button onclick={toggleMenu} class="block md:hidden">
 				{#if isOpen}
 					<X class="h-6 w-6" />
