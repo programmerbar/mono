@@ -50,7 +50,11 @@
 	const upcomingEvents = $derived([
 		...events,
 		...outdated.filter((event: Event) => hasActiveOrUpcoming(event))
-	]);
+	].sort((a, b) => {
+    if(hasActiveShifts(a)) return -1;
+    if(hasActiveShifts(b)) return 1;
+    return 0;
+  }));
 
 	const pastEvnts = $derived(outdated.filter((event: Event) => !hasActiveOrUpcoming(event)));
 
