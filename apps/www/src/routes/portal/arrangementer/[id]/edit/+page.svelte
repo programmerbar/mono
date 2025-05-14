@@ -1,198 +1,237 @@
 <script lang="ts">
+	import { X, Plus, Save, ArrowLeft, Trash2 } from '@lucide/svelte'; // Add Trash2 icon
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
-	import { subHours } from 'date-fns';
-	import { formatDate, time } from '$lib/date';
-	import { capitalize } from '$lib/utils';
-	import { enhance } from '$app/forms';
-	import { getUser } from '$lib/context/user.context.js';
-	import type { EventHandler } from 'svelte/elements';
-	import { X } from '@lucide/svelte';
 	import FormInput from '$lib/components/ui/form/FormInput.svelte';
 	import Combobox from '$lib/components/ui/Combobox.svelte';
-	import { CreateEventState } from '$lib/states/create-event-state.svelte';
-	import { differenceInHours } from 'date-fns';
+	import { enhance } from '$app/forms';
 
-	let user = getUser();
-	let { data } = $props();
-	let error = $state('');
-	let successMessage = $state('');
-	let isSubmitting = $state(false);
-	let createEventState = new CreateEventState();
+	let { data, form } = $props();
 
-	const handleSubmit: EventHandler<SubmitEvent, HTMLFormElement> = async (e) => {
-		e.preventDefault();
-		if (!createEventState.isValid()) {
-			error = 'Vennligst fyll ut alle feltene';
-			console.log(createEventState.json());
-			return;
-		}
+	let eventName = $state(data.event.name);
+	let eventDate = $state(
+		data.event.date ? new Date(data.event.date).toISOString().slice(0, 16) : ''
+	);
+	let shifts = $state(
+		data.event.shifts.map((shift) => ({
+			id: shift.id,
+			startAt: new Date(shift.startAt).toISOString().slice(0, 16),
+			endAt: new Date(shift.endAt).toISOString().slice(0, 16),
+			users: shift.members.map((member) => ({
+				id: member.user.id,
+				name: member.user.name
+			}))
+		}))
+	);
+	let deletedShiftIds = $state([]);
+	let removedUserShifts = $state([]);
 
-		isSubmitting = true;
-		error = '';
-		successMessage = '';
-
-		try {
-			const response = await fetch('/api/events', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(createEventState.json())
-			});
-
-			if (response.status === 201) {
-				successMessage = 'Arrangement opprettet! E-post er sendt.';
-				createEventState.reset();
-			} else {
-				error = 'Noe gikk galt ved oppretting av arrangement';
-			}
-		} catch (err) {
-			error = 'Server error';
-			console.error(err);
-		} finally {
-			isSubmitting = false;
-		}
-	};
+	// Add state to track if delete confirmation dialog is open
+	let showDeleteConfirm = $state(false);
 </script>
 
 <svelte:head>
-	<title>{`Endre: ${data.event.name}`}</title>
+	<title>Rediger arrangement: {eventName}</title>
 </svelte:head>
 
-<Heading>{`${data.event.name}`}</Heading>
+<div class="mb-6">
+	<a
+		href={`/portal/arrangementer/${data.event.id}`}
+		class="flex items-center text-blue-500 hover:underline"
+	>
+		<ArrowLeft class="mr-1 h-4 w-4" />
+		Tilbake
+	</a>
+</div>
 
-<section class="mt-8">
-	<Heading level={2}>Vakt {data.event.shifts.length}</Heading>
+<div class="mb-4 flex items-center justify-between">
+	<Heading>Rediger arrangement</Heading>
 
-	<ul class="mt-2 flex flex-col gap-4">
-		{#each data.event.shifts as shift}
-			{@const isInShift = shift.members.some((member) => member.userId === $user?.id)}
-			<li class="block rounded-lg border bg-white p-4">
-				<p>{capitalize(formatDate(shift.startAt))}</p>
-				<p>{time(subHours(shift.startAt, 2))} - {time(subHours(shift.endAt, 2))}</p>
-				<p><b>Ansvarlige</b>: {shift.members.map((member) => member.user.name).join(', ')}</p>
+	<!-- Delete button in the header -->
+	<form method="POST" action="?/delete" use:enhance>
+		<Button
+			type="submit"
+			intent="danger"
+			onclick={(e) => {
+				if (!showDeleteConfirm) {
+					e.preventDefault();
+					showDeleteConfirm = true;
+				}
+			}}
+		>
+			<Trash2 class="mr-1 h-4 w-4" />
+			{showDeleteConfirm ? 'Er du sikker?' : 'Slett arrangement'}
+		</Button>
+	</form>
+</div>
 
-				{#if !isInShift}
-					<form class="mt-4" action="?/join" method="post" use:enhance>
-						<input type="hidden" name="shiftId" value={shift.id} />
-						<button class="text-blue-500 hover:underline">Bli med på vakten &rarr;</button>
-					</form>
-				{:else}
-					<form class="mt-4" action="?/leave" method="post" use:enhance>
-						<input type="hidden" name="shiftId" value={shift.id} />
-						<button class="text-red-500 hover:underline">Forlat vakten &rarr;</button>
-					</form>
-				{/if}
-			</li>
-		{/each}
-	</ul>
-</section>
-
-<section class="mt-8">
-	{#if data.user?.role === 'board'}
-		<Heading level={2}>Farlig</Heading>
-		<form action="?/delete" method="post" use:enhance>
-			<Button intent="danger" class="mt-4">Slett arrangement</Button>
-		</form>
-	{/if}
-</section>
-
-<Heading class="mb-4">Nytt arrangement</Heading>
-
-{#if error}
-	<div class="mb-4 rounded-md bg-red-50 p-4 text-red-700">
-		<p>{error}</p>
+<div class="rounded-xl border bg-white shadow-sm">
+	<div class="border-b bg-gray-50 px-6 py-4">
+		<h2 class="text-lg font-medium">Arrangement detaljer</h2>
 	</div>
-{/if}
 
-{#if successMessage}
-	<div class="mb-4 rounded-md bg-green-50 p-4 text-green-700">
-		<p>{successMessage}</p>
-	</div>
-{/if}
-
-<form onsubmit={handleSubmit} class="space-y-2">
-	<FormInput
-		label="Navn"
-		description="Navnet på arrangementet"
-		placeholder="Fest med Foobar"
-		bind:value={createEventState.name}
-		required
-	/>
-	<FormInput
-		label="Dato"
-		description="Start datoen på arrangementet"
-		bind:value={createEventState.date}
-		type="datetime-local"
-		required
-	/>
-	{#each createEventState.shifts as shift, i}
-		{@const shiftLength = differenceInHours(shift.endAt, shift.startAt)}
-		<div class="relative flex flex-col space-y-2 rounded-lg border border-border p-4">
-			<button
-				type="button"
-				class="absolute right-4 top-4 text-red-400 transition-colors hover:text-red-600"
-				onclick={() => createEventState.deleteShift(i)}
+	<div class="p-6">
+		{#if form?.message}
+			<div
+				class="mb-4 rounded-md p-4 {form.success
+					? 'bg-green-50 text-green-700'
+					: 'bg-red-50 text-red-700'}"
 			>
-				<X class="h-4 w-4" />
-			</button>
-			<h2 class="text-lg font-semibold">Vakt {i + 1}</h2>
-			<FormInput
-				label="Start"
-				description="Start tidspunkt for vakten"
-				bind:value={shift.startAt}
-				type="datetime-local"
-				required
-			/>
-			<FormInput
-				label="Slutt"
-				description="Slutt tidspunkt for vakten"
-				bind:value={shift.endAt}
-				type="datetime-local"
-				required
-			/>
-			{#if shiftLength >= 4}
-				<span class="text-sm font-medium text-orange-500">NB: Vakten er lengre enn 4 timer!</span>
-			{/if}
-			<span class="mt-8 text-sm font-medium">Ansvarlige</span>
-			<div class="text-xs text-gray-500">
-				Alle ansvarlige vil få en e-post med kalenderinvitasjon når arrangementet opprettes.
+				<p>{form.message}</p>
 			</div>
-			{#each createEventState.shifts[i].users as user, j (user)}
-				<div class="flex items-center gap-2">
-					<Combobox
-						name="user"
-						class="flex-1"
-						bind:value={createEventState.shifts[i].users[j].name}
-						disabledOptions={createEventState.shifts[i].users.map((user) => user.id)}
-						onchange={(option) => {
-							const id = option?.value;
-							if (id) {
-								createEventState.shifts[i].users[j].id = id;
-							}
-						}}
-						options={data.users}
-						placeholder="Velg en bruker"
-					/>
-					<button
-						type="button"
-						class="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-white transition-colors hover:text-red-500"
-						onclick={() => createEventState.deleteUserFromShift(i, user.id)}
-					>
-						<X class="size-4" />
-					</button>
-				</div>
-			{:else}
-				<p class="text-sm text-gray-600">Ingen ansvarlige. Husk å legge til.</p>
+		{/if}
+
+		<form method="POST" action="?/save" use:enhance>
+			<!-- Hidden fields for tracking state -->
+			<input type="hidden" name="shiftsCount" value={shifts.length} />
+			{#each deletedShiftIds as id}
+				<input type="hidden" name="deletedShiftIds" value={id} />
 			{/each}
-			<Button type="button" onclick={() => createEventState.addUserToShift(i)}
-				>Legg til bruker</Button
-			>
-		</div>
-	{/each}
-	<Button type="button" onclick={() => createEventState.addShift()}>Legg til vakt</Button>
-	<Button type="submit" disabled={isSubmitting}>
-		{isSubmitting ? 'Lagrer...' : 'Lagre'}
-	</Button>
-</form>
+			{#each removedUserShifts as keyValue}
+				<input type="hidden" name="removedUserShifts" value={keyValue} />
+			{/each}
+
+			<!-- Event details -->
+			<div class="mb-6 rounded-lg border bg-gray-50 p-4">
+				<div class="space-y-4">
+					<FormInput label="Navn" name="name" bind:value={eventName} required />
+					<FormInput
+						label="Dato"
+						name="date"
+						bind:value={eventDate}
+						type="datetime-local"
+						required
+					/>
+				</div>
+			</div>
+
+			<!-- Shifts -->
+			<div class="mb-6">
+				<div class="mb-4 flex items-center justify-between">
+					<h2 class="text-lg font-medium">Vakter</h2>
+					<Button
+						type="button"
+						intent="primary"
+						class="text-sm"
+						onclick={() =>
+							(shifts = [
+								...shifts,
+								{
+									id: crypto.randomUUID(),
+									startAt: '',
+									endAt: '',
+									users: []
+								}
+							])}
+					>
+						<Plus class="mr-1 h-4 w-4" />
+						Legg til vakt
+					</Button>
+				</div>
+
+				{#each shifts as shift, i}
+					<div class="mb-4 rounded-lg border bg-white p-4">
+						<div class="flex items-center justify-between">
+							<h3 class="font-medium">Vakt {i + 1}</h3>
+							<button
+								type="button"
+								class="rounded-full p-1 text-red-400 hover:text-red-600"
+								onclick={() => {
+									if (shift.id) deletedShiftIds = [...deletedShiftIds, shift.id];
+									shifts = shifts.filter((s) => s !== shift);
+								}}
+							>
+								<X class="h-4 w-4" />
+							</button>
+						</div>
+
+						<input type="hidden" name={`shift[${i}].id`} value={shift.id} />
+
+						<div class="mt-4 grid gap-4 md:grid-cols-2">
+							<FormInput
+								label="Start"
+								name={`shift[${i}].startAt`}
+								bind:value={shift.startAt}
+								type="datetime-local"
+								required
+							/>
+							<FormInput
+								label="Slutt"
+								name={`shift[${i}].endAt`}
+								bind:value={shift.endAt}
+								type="datetime-local"
+								required
+							/>
+						</div>
+
+						<div class="mt-4 border-t pt-4">
+							<div class="mb-2 flex items-center justify-between">
+								<h4 class="font-medium">Ansvarlige</h4>
+								<Button
+									type="button"
+									class="text-sm"
+									onclick={() => (shift.users = [...shift.users, { id: '', name: '' }])}
+								>
+									<Plus class="mr-1 h-4 w-4" />
+									Legg til
+								</Button>
+							</div>
+
+							<input type="hidden" name={`shift[${i}].userCount`} value={shift.users.length} />
+
+							{#if shift.users.length === 0}
+								<p class="py-2 text-sm italic text-gray-500">Ingen ansvarlige</p>
+							{:else}
+								<div class="space-y-2">
+									{#each shift.users as user, j}
+										<div class="flex items-center gap-2">
+											<Combobox
+												name={`shift[${i}].user[${j}].name`}
+												class="flex-1"
+												bind:value={user.name}
+												options={data.users}
+												onchange={(option) => {
+													if (option?.value) {
+														user.id = option.value;
+														user.name = option.label;
+													}
+												}}
+												placeholder="Velg en bruker"
+											/>
+											<input type="hidden" name={`shift[${i}].user[${j}].id`} value={user.id} />
+											<button
+												type="button"
+												class="flex h-10 w-10 items-center justify-center rounded-lg border hover:text-red-500"
+												onclick={() => {
+													if (user.id && shift.id) {
+														removedUserShifts = [...removedUserShifts, `${shift.id}|${user.id}`];
+													}
+													shift.users = shift.users.filter((u) => u !== user);
+												}}
+											>
+												<X class="h-4 w-4" />
+											</button>
+										</div>
+									{/each}
+								</div>
+							{/if}
+						</div>
+					</div>
+				{/each}
+			</div>
+
+			<div class="flex justify-between gap-4 border-t pt-6">
+				<div></div>
+				<div class="flex gap-2">
+					<a href={`/portal/arrangementer/${data.event.id}`}>
+						<Button type="button" intent="outline">Avbryt</Button>
+					</a>
+					<Button type="submit" intent="primary">
+						<Save class="mr-1 h-4 w-4" />
+						Lagre endringer
+					</Button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

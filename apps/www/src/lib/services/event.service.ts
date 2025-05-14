@@ -67,6 +67,42 @@ export class EventService {
 		return event;
 	}
 
+	async updateEvent(id: string, eventData: Partial<{ name: string; date: Date }>) {
+		const event = await this.#db
+			.insert(events)
+			.values({
+				id,
+				...eventData
+			})
+			.onConflictDoUpdate({
+				target: events.id,
+				set: eventData
+			})
+			.returning()
+			.then((rows) => rows[0]);
+
+		return event;
+	}
+
+	async updateShift(
+		id: string,
+		shiftData: Partial<{ eventId: string; startAt: Date; endAt: Date }>
+	) {
+		const shift = await this.#db
+			.insert(shifts)
+			.values({
+				id,
+				...shiftData
+			})
+			.onConflictDoUpdate({
+				target: shifts.id,
+				set: shiftData
+			})
+			.returning()
+			.then((rows) => rows[0]);
+		return shift;
+	}
+
 	async findUpcomingEvents() {
 		const event = await this.#db.query.events.findMany({
 			orderBy: (row, { asc }) => [asc(row.date)],
@@ -109,5 +145,11 @@ export class EventService {
 
 	async delete(id: string) {
 		await this.#db.delete(events).where(eq(events.id, id));
+	}
+
+	// This deletes the shift and its user_shifts
+	async deleteShift(id: string) {
+		await this.#db.delete(userShifts).where(eq(userShifts.shiftId, id));
+		await this.#db.delete(shifts).where(eq(shifts.id, id));
 	}
 }

@@ -47,14 +47,13 @@
 		return hasActiveShifts(event) || hasUpcomingShifts(event);
 	}
 
-	const upcomingEvents = $derived([
-		...events,
-		...outdated.filter((event: Event) => hasActiveOrUpcoming(event))
-	].sort((a, b) => {
-    if(hasActiveShifts(a)) return -1;
-    if(hasActiveShifts(b)) return 1;
-    return 0;
-  }));
+	const upcomingEvents = $derived(
+		[...events, ...outdated.filter((event: Event) => hasActiveOrUpcoming(event))].sort((a, b) => {
+			if (hasActiveShifts(a)) return -1;
+			if (hasActiveShifts(b)) return 1;
+			return 0;
+		})
+	);
 
 	const pastEvnts = $derived(outdated.filter((event: Event) => !hasActiveOrUpcoming(event)));
 
@@ -92,16 +91,16 @@
 	}
 </script>
 
-<div class="rounded-2xl overflow-hidden shadow-lg bg-white border border-gray-100">
-	<div class="flex bg-white p-2 gap-2 flex-wrap">
+<div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg">
+	<div class="flex flex-wrap gap-2 bg-white p-2">
 		<button
-			class={`py-3 px-6 font-medium rounded-lg cursor-pointer transition-all duration-200 ease-in-out text-gray-500 flex-1 min-w-[150px] ${activeTab === 'upcoming' ? 'bg-blue-100 text-blue-600 font-semibold' : 'hover:bg-gray-100 hover:text-blue-500'}`}
+			class={`min-w-[150px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out ${activeTab === 'upcoming' ? 'bg-blue-100 font-semibold text-blue-600' : 'hover:bg-gray-100 hover:text-blue-500'}`}
 			onclick={() => (activeTab = 'upcoming')}
 		>
 			Arrangementer
 		</button>
-		<button 
-			class={`py-3 px-6 font-medium rounded-lg cursor-pointer transition-all duration-200 ease-in-out text-gray-500 flex-1 min-w-[150px] ${activeTab === 'past' ? 'bg-blue-100 text-blue-600 font-semibold' : 'hover:bg-gray-100 hover:text-blue-500'}`}
+		<button
+			class={`min-w-[150px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out ${activeTab === 'past' ? 'bg-blue-100 font-semibold text-blue-600' : 'hover:bg-gray-100 hover:text-blue-500'}`}
 			onclick={() => (activeTab = 'past')}
 		>
 			Tidligere arrangementer
@@ -112,19 +111,18 @@
 			type="text"
 			placeholder="Søk etter arrangementer..."
 			bind:value={search}
-			class="w-full py-3 pr-32 pl-4 border border-gray-300 rounded-lg text-base focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-
+			class="w-full rounded-lg border border-gray-300 py-3 pl-4 pr-32 text-base focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50"
 		/>
 
 		{#if $user?.role === 'board'}
-		<div class="absolute top-1/2 right-3 transform -translate-y-1/2">
-			<Button onclick={() => goto(`arrangementer/ny`)}>Nytt arrangement</Button>
-		</div>
+			<div class="absolute right-3 top-1/2 -translate-y-1/2 transform">
+				<Button onclick={() => goto(`arrangementer/ny`)}>Nytt arrangement</Button>
+			</div>
 		{/if}
-	</div> 
-	
+	</div>
+
 	{#if filteredEvents.length === 0}
-		<div class="py-12 px-8 text-center text-gray-500 font-medium mx-4 my-4">
+		<div class="mx-4 my-4 px-8 py-12 text-center font-medium text-gray-500">
 			Ingen {activeTab === 'upcoming' ? 'kommende' : 'tidligere'} arrangementer å vise.
 		</div>
 	{:else}
@@ -132,38 +130,49 @@
 			<table class="w-full min-w-[600px]">
 				<thead>
 					<tr>
-						<th class="p-4 text-left border-b-2 border-gray-200">Arrangement</th>
-						<th class="p-4 text-left border-b-2 border-gray-200">Dato</th>
-						<th class="p-4 text-left border-b-2 border-gray-200">Antall vakter</th>
-						<th class="p-4 text-left border-b-2 border-gray-200">Status</th>
-						<th class="p-4 text-left border-b-2 border-gray-200" aria-label="Handlinger"></th>
+						<th class="border-b-2 border-gray-200 p-4 text-left">Arrangement</th>
+						<th class="border-b-2 border-gray-200 p-4 text-left">Dato</th>
+						<th class="border-b-2 border-gray-200 p-4 text-left">Antall vakter</th>
+						<th class="border-b-2 border-gray-200 p-4 text-left">Status</th>
+						<th class="border-b-2 border-gray-200 p-4 text-left" aria-label="Handlinger"></th>
 					</tr>
 				</thead>
 				<tbody>
 					{#each filteredEvents as event (event.id)}
 						{@const status = getEventStatus(event)}
-						<tr class="cursor-pointer hover:bg-gray-50" onclick={() => goto(`arrangementer/${event.id}`)}>
-							<td class="p-4 border-b border-gray-100 break-words whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[200px]">
+						<tr
+							class="cursor-pointer hover:bg-gray-50"
+							onclick={() => goto(`arrangementer/${event.id}`)}
+						>
+							<td
+								class="max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4"
+							>
 								{event.name}
 							</td>
-							<td class="p-4 border-b border-gray-100 break-words whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[200px]">
+							<td
+								class="max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4"
+							>
 								{formatDate(event.date)}
 							</td>
-							<td class="p-4 border-b border-gray-100 break-words whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[200px]">
+							<td
+								class="max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4"
+							>
 								{countShifts(event)}
 							</td>
-							<td class={`p-4 border-b border-gray-100 break-words whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[200px] ${getStatusClass(status)}`}>
+							<td
+								class={`max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4 ${getStatusClass(status)}`}
+							>
 								{status}
 							</td>
-							<td class="p-4 border-b border-gray-100">
+							<td class="border-b border-gray-100 p-4">
 								{#if $user?.role === 'board'}
-								<a
-									href="arrangementer/{event.id}/edit"
-									class="inline-flex opacity-70 transition-all duration-200 ease-in-out text-gray-400 hover:text-blue-500 hover:opacity-100"
-									aria-label="Rediger arrangement"
-								>
-									<SquarePen size={18} />
-								</a>
+									<a
+										href="arrangementer/{event.id}/edit"
+										class="inline-flex text-gray-400 opacity-70 transition-all duration-200 ease-in-out hover:text-blue-500 hover:opacity-100"
+										aria-label="Rediger arrangement"
+									>
+										<SquarePen size={18} />
+									</a>
 								{/if}
 							</td>
 						</tr>
