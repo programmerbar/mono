@@ -7,6 +7,7 @@
 	import Combobox from '$lib/components/ui/Combobox.svelte';
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
 	import { differenceInHours } from 'date-fns';
+  import { goto } from '$app/navigation';
 
 	let { data } = $props();
 	let error = $state('');
@@ -201,7 +202,7 @@
 			</div>
 
 			<div class="flex justify-end gap-4 border-t border-gray-100 pt-6">
-				<!-- <Button type="button" intent="warning" onclick= () => {`${goto(/arrangementer)}`}>Avbryt</Button> -->
+				<Button type="button" intent="warning" onclick={() => goto(`/portal/arrangementer`)}>Avbryt</Button>
 				<Button
 					type="submit"
 					intent="primary"
