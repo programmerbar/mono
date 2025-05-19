@@ -67,7 +67,7 @@ export class EventService {
 		return event;
 	}
 
-	async updateEvent(id: string, eventData: Partial<{ name: string; date: Date }>) {
+	async updateEvent(id: string, eventData: { name: string; date: Date }) {
 		const event = await this.#db
 			.insert(events)
 			.values({
@@ -84,10 +84,7 @@ export class EventService {
 		return event;
 	}
 
-	async updateShift(
-		id: string,
-		shiftData: Partial<{ eventId: string; startAt: Date; endAt: Date }>
-	) {
+	async updateShift(id: string, shiftData: { eventId: string; startAt: Date; endAt: Date }) {
 		const shift = await this.#db
 			.insert(shifts)
 			.values({
@@ -147,7 +144,6 @@ export class EventService {
 		await this.#db.delete(events).where(eq(events.id, id));
 	}
 
-	// This deletes the shift and its user_shifts
 	async deleteShift(id: string) {
 		await this.#db.delete(userShifts).where(eq(userShifts.shiftId, id));
 		await this.#db.delete(shifts).where(eq(shifts.id, id));

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { X, Plus, Save, ArrowLeft, Trash2 } from '@lucide/svelte'; // Add Trash2 icon
+	import { X, Plus, Save, ArrowLeft, Trash2 } from '@lucide/svelte';
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import FormInput from '$lib/components/ui/form/FormInput.svelte';
@@ -23,10 +23,9 @@
 			}))
 		}))
 	);
-	let deletedShiftIds = $state([]);
-	let removedUserShifts = $state([]);
+	let deletedShiftIds = $state([] as string[]);
+	let removedUserShifts = $state([] as string[]);
 
-	// Add state to track if delete confirmation dialog is open
 	let showDeleteConfirm = $state(false);
 </script>
 
@@ -47,7 +46,6 @@
 <div class="mb-4 flex items-center justify-between">
 	<Heading>Rediger arrangement</Heading>
 
-	<!-- Delete button in the header -->
 	<form method="POST" action="?/delete" use:enhance>
 		<Button
 			type="submit"
@@ -193,7 +191,7 @@
 												onchange={(option) => {
 													if (option?.value) {
 														user.id = option.value;
-														user.name = option.label;
+														user.name = option.label || '';
 													}
 												}}
 												placeholder="Velg en bruker"

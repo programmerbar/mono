@@ -37,31 +37,44 @@ export const actions: Actions = {
 		}
 
 		const formData = await request.formData();
+		const eventId = params.id;
 
-		await locals.eventService.updateEvent(params.id, {
-			name: formData.get('name') as string,
-			date: new Date(formData.get('date') as string)
+		const updatedEvent = await locals.eventService.updateEvent(eventId, {
+			name: String(formData.get('name') || ''),
+			date: new Date(String(formData.get('date') || ''))
 		});
 
-		for (const id of formData.getAll('deletedShiftIds')) {
-			await locals.eventService.deleteShift(id.toString());
+		if (!updatedEvent) {
+			return fail(500, { message: 'Kunne ikkje oppdatere arrangementet' });
 		}
 
-		const existingEvent = await locals.eventService.findFullEventById(params.id);
+		const deletedShiftIds = formData.getAll('deletedShiftIds').map((id) => String(id));
+		for (const shiftId of deletedShiftIds) {
+			await locals.eventService.deleteShift(shiftId);
+		}
 
-		const shiftsCount = parseInt(formData.get('shiftsCount')?.toString() || '0', 10);
+		const existingEvent = await locals.eventService.findFullEventById(eventId);
+		if (!existingEvent) {
+			return fail(404, { message: 'Kunne ikkje finne arrangementet' });
+		}
+
+		const shiftsCount = parseInt(String(formData.get('shiftsCount') || '0'), 10);
 
 		for (let i = 0; i < shiftsCount; i++) {
 			const shiftId = formData.get(`shift[${i}].id`)?.toString();
 			if (!shiftId) continue;
 
-			await locals.eventService.updateShift(shiftId, {
-				eventId: params.id,
-				startAt: new Date(formData.get(`shift[${i}].startAt`) as string),
-				endAt: new Date(formData.get(`shift[${i}].endAt`) as string)
+			const updatedShift = await locals.eventService.updateShift(shiftId, {
+				eventId,
+				startAt: new Date(String(formData.get(`shift[${i}].startAt`))),
+				endAt: new Date(String(formData.get(`shift[${i}].endAt`)))
 			});
 
-			const userCount = parseInt(formData.get(`shift[${i}].userCount`)?.toString() || '0', 10);
+			if (!updatedShift) {
+				return fail(500, { message: `Kunne ikkje oppdatere vakten: ${shiftId}` });
+			}
+
+			const userCount = parseInt(String(formData.get(`shift[${i}].userCount`) || '0'), 10);
 			const currentUserIds = [];
 
 			for (let j = 0; j < userCount; j++) {
@@ -74,19 +87,25 @@ export const actions: Actions = {
 
 			for (const userId of currentUserIds) {
 				if (!existingUserIds.includes(userId)) {
-					await locals.eventService.createUserShift({
+					const result = await locals.eventService.createUserShift({
 						shiftId,
 						userId,
 						status: 'accepted'
 					});
+
+					if (!result) {
+						return fail(500, {
+							message: `Kunne ikkje legge til bruker ${userId} til vakten ${shiftId}`
+						});
+					}
 				}
 			}
 
-			for (const existingId of existingUserIds) {
-				if (!currentUserIds.includes(existingId)) {
-					await locals.eventService.deleteUserShift({
+			for (const userId of existingUserIds) {
+				if (!currentUserIds.includes(userId)) {
+					const result = await locals.eventService.deleteUserShift({
 						shiftId,
-						userId: existingId
+						userId
 					});
 				}
 			}
