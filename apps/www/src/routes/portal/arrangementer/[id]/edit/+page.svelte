@@ -13,12 +13,12 @@
 	const eventState = new CreateEventState();
 
 	eventState.name = data.event.name;
-	eventState.date = data.event.date ? new Date(data.event.date).toISOString().slice(0, 16) : '';
+	eventState.date = data.event.date.toISOString().slice(0, 16); 
 
 	data.event.shifts.forEach((shift) => {
 		eventState.shifts.push({
-			startAt: new Date(shift.startAt).toISOString().slice(0, 16),
-			endAt: new Date(shift.endAt).toISOString().slice(0, 16),
+			startAt: shift.startAt.toISOString().slice(0, 16),
+			endAt: shift.endAt.toISOString().slice(0, 16),
 			users: shift.members.map((member) => ({
 				id: member.user.id,
 				name: member.user.name
@@ -58,16 +58,15 @@
 	</div>
 
 	<div class="p-6">
-		{#if form?.message}
-			<div
-				class="mb-4 rounded-md p-4 {form.success
-					? 'bg-green-50 text-green-700'
-					: 'bg-red-50 text-red-700'}"
-			>
-				<p>{form.message}</p>
-			</div>
-		{/if}
-
+    {#if form?.message}
+      <div
+        class="mb-4 rounded-md p-4 {form.success
+        ? 'bg-green-50 text-green-700'
+        : 'bg-red-50 text-red-700'}"
+      >
+        <p>{form.message}</p>
+      </div>
+    {/if}
 		<form method="POST" action="?/save" use:enhance>
 			<input type="hidden" name="shiftsCount" value={eventState.shifts.length} />
 			{#each deletedShiftIds as id}
