@@ -7,7 +7,7 @@
 	import Combobox from '$lib/components/ui/Combobox.svelte';
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
 	import { differenceInHours } from 'date-fns';
-  import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
 
 	let { data } = $props();
 	let error = $state('');
@@ -55,12 +55,11 @@
 	<title>Nytt arrangement</title>
 </svelte:head>
 
-<Heading class="mb-4">Nytt arrangement</Heading>
 
-<div class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm">
-	<div
-		class="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-6 py-4"
-	></div>
+<div class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+	<div class="border-b border-gray-300 bg-gray-50 px-6 py-4">
+		<h2 class="text-lg font-medium">Nytt arrangement</h2>
+</div>
 	<div class="p-6">
 		{#if error}
 			<div class="mb-4 rounded-md bg-red-50 p-4 text-red-700">
@@ -101,7 +100,7 @@
 					{@const endDate = shift.endAt ? new Date(shift.endAt) : new Date()}
 					{@const shiftLength = differenceInHours(endDate, startDate)}
 					<div
-						class="relative mb-4 flex flex-col space-y-4 rounded-lg border border-gray-200 bg-white p-4"
+						class="relative mb-4 flex flex-col space-y-4 rounded-lg border border-gray-200 bg-gray-50 p-4"
 					>
 						<div class="flex items-center justify-between">
 							<h3 class="text-base font-medium">Vakt {i + 1}</h3>
@@ -202,7 +201,9 @@
 			</div>
 
 			<div class="flex justify-end gap-4 border-t border-gray-100 pt-6">
-				<Button type="button" intent="warning" onclick={() => goto(`/portal/arrangementer`)}>Avbryt</Button>
+				<Button type="button" intent="warning" onclick={() => goto(`/portal/arrangementer`)}
+					>Avbryt</Button
+				>
 				<Button
 					type="submit"
 					intent="primary"

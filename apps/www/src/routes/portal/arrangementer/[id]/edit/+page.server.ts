@@ -45,7 +45,9 @@ export const actions: Actions = {
 		});
 
 		if (!updatedEvent) {
-			return fail(500, { message: 'Kunne ikkje oppdatere arrangementet' });
+			return fail(500, { 
+        message: 'Failed to update event' 
+      });
 		}
 
 		const deletedShiftIds = formData.getAll('deletedShiftIds').map((id) => String(id));
@@ -54,9 +56,12 @@ export const actions: Actions = {
 		}
 
 		const existingEvent = await locals.eventService.findFullEventById(eventId);
-		if (!existingEvent) {
-			return fail(404, { message: 'Kunne ikkje finne arrangementet' });
-		}
+    if(!existingEvent) {
+      return fail(404, {
+        message: "Event not found"
+      })
+    }
+
 
 		const shiftsCount = parseInt(String(formData.get('shiftsCount') || '0'), 10);
 
@@ -64,15 +69,12 @@ export const actions: Actions = {
 			const shiftId = formData.get(`shift[${i}].id`)?.toString();
 			if (!shiftId) continue;
 
-			const updatedShift = await locals.eventService.updateShift(shiftId, {
-				eventId,
+			await locals.eventService.updateShift(shiftId, {
+				eventId: params.id,
 				startAt: new Date(String(formData.get(`shift[${i}].startAt`))),
 				endAt: new Date(String(formData.get(`shift[${i}].endAt`)))
 			});
 
-			if (!updatedShift) {
-				return fail(500, { message: `Kunne ikkje oppdatere vakten: ${shiftId}` });
-			}
 
 			const userCount = parseInt(String(formData.get(`shift[${i}].userCount`) || '0'), 10);
 			const currentUserIds = [];
@@ -95,7 +97,7 @@ export const actions: Actions = {
 
 					if (!result) {
 						return fail(500, {
-							message: `Kunne ikkje legge til bruker ${userId} til vakten ${shiftId}`
+							message: `Failed to add user to event`
 						});
 					}
 				}
@@ -111,6 +113,6 @@ export const actions: Actions = {
 			}
 		}
 
-		return { success: true, message: 'Arrangementet ble oppdatert' };
+		return { success: true, message: 'Event has been updated' };
 	}
 };
