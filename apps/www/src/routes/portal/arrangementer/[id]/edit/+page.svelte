@@ -5,6 +5,7 @@
 	import Combobox from '$lib/components/ui/Combobox.svelte';
 	import { enhance } from '$app/forms';
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
+	import { ISOStandard } from '$lib/date';
 
 	let { data, form } = $props();
 
@@ -13,12 +14,12 @@
 	const eventState = new CreateEventState();
 
 	eventState.name = data.event.name;
-	eventState.date = data.event.date.toISOString().slice(0, 16); 
+	eventState.date = ISOStandard(data.event.date);
 
 	data.event.shifts.forEach((shift) => {
 		eventState.shifts.push({
-			startAt: shift.startAt.toISOString().slice(0, 16),
-			endAt: shift.endAt.toISOString().slice(0, 16),
+			startAt: ISOStandard(shift.startAt),
+			endAt: ISOStandard(shift.endAt),
 			users: shift.members.map((member) => ({
 				id: member.user.id,
 				name: member.user.name
@@ -29,44 +30,42 @@
 	let originalShifts = $state(data.event.shifts.map((shift) => ({ id: shift.id })));
 	let deletedShiftIds = $state([] as string[]);
 	let removedUserShifts = $state([] as string[]);
-
 </script>
 
 <svelte:head>
 	<title>Rediger arrangement: {eventState.name}</title>
 </svelte:head>
 
-
 <div class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-	<div class="border-b border-gray-300 bg-gray-50 px-6 py-4 flex items-centter justify-between">
+	<div class="items-centter flex justify-between border-b border-gray-300 bg-gray-50 px-6 py-4">
 		<h2 class="text-lg font-medium">Arrangement detaljer</h2>
-    <form method="POST" action="?/delete" use:enhance>
-      <Button
-        type="submit"
-        intent="danger"
-        onclick={(e) => {
-        if (!showDeleteConfirm) {
-        e.preventDefault();
-        showDeleteConfirm = true;
-        }
-        }}
-      >
-        <Trash2 class="mr-1 h-4 w-4" />
-        {showDeleteConfirm ? 'Er du sikker?' : 'Slett arrangement'}
-      </Button>
-    </form>
+		<form method="POST" action="?/delete" use:enhance>
+			<Button
+				type="submit"
+				intent="danger"
+				onclick={(e) => {
+					if (!showDeleteConfirm) {
+						e.preventDefault();
+						showDeleteConfirm = true;
+					}
+				}}
+			>
+				<Trash2 class="mr-1 h-4 w-4" />
+				{showDeleteConfirm ? 'Er du sikker?' : 'Slett arrangement'}
+			</Button>
+		</form>
 	</div>
 
 	<div class="p-6">
-    {#if form?.message}
-      <div
-        class="mb-4 rounded-md p-4 {form.success
-        ? 'bg-green-50 text-green-700'
-        : 'bg-red-50 text-red-700'}"
-      >
-        <p>{form.message}</p>
-      </div>
-    {/if}
+		{#if form?.message}
+			<div
+				class="mb-4 rounded-md p-4 {form.success
+					? 'bg-green-50 text-green-700'
+					: 'bg-red-50 text-red-700'}"
+			>
+				<p>{form.message}</p>
+			</div>
+		{/if}
 		<form method="POST" action="?/save" use:enhance>
 			<input type="hidden" name="shiftsCount" value={eventState.shifts.length} />
 			{#each deletedShiftIds as id}
@@ -78,12 +77,7 @@
 
 			<div class="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
 				<div class="space-y-4">
-					<FormInput 
-            label="Navn"
-            name="name"
-            bind:value={eventState.name} 
-            required
-          />
+					<FormInput label="Navn" name="name" bind:value={eventState.name} required />
 					<FormInput
 						label="Dato"
 						name="date"

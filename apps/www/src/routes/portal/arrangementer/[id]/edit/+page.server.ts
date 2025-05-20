@@ -45,9 +45,9 @@ export const actions: Actions = {
 		});
 
 		if (!updatedEvent) {
-			return fail(500, { 
-        message: 'Failed to update event' 
-      });
+			return fail(500, {
+				message: 'Failed to update event'
+			});
 		}
 
 		const deletedShiftIds = formData.getAll('deletedShiftIds').map((id) => String(id));
@@ -56,12 +56,11 @@ export const actions: Actions = {
 		}
 
 		const existingEvent = await locals.eventService.findFullEventById(eventId);
-    if(!existingEvent) {
-      return fail(404, {
-        message: "Event not found"
-      })
-    }
-
+		if (!existingEvent) {
+			return fail(404, {
+				message: 'Event not found'
+			});
+		}
 
 		const shiftsCount = parseInt(String(formData.get('shiftsCount') || '0'), 10);
 
@@ -74,7 +73,6 @@ export const actions: Actions = {
 				startAt: new Date(String(formData.get(`shift[${i}].startAt`))),
 				endAt: new Date(String(formData.get(`shift[${i}].endAt`)))
 			});
-
 
 			const userCount = parseInt(String(formData.get(`shift[${i}].userCount`) || '0'), 10);
 			const currentUserIds = [];

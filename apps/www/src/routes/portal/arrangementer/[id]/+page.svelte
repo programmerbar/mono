@@ -16,7 +16,9 @@
 </svelte:head>
 
 <section class="mt-8">
-	<div class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+	<div
+		class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"
+	>
 		<div class="border-b border-gray-300 bg-gray-50 px-6 py-4">
 			<div>
 				<h1 class="text-xl font-semibold text-gray-800">{data.event.name}</h1>

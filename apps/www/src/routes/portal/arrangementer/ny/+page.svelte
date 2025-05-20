@@ -55,11 +55,10 @@
 	<title>Nytt arrangement</title>
 </svelte:head>
 
-
 <div class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
 	<div class="border-b border-gray-300 bg-gray-50 px-6 py-4">
 		<h2 class="text-lg font-medium">Nytt arrangement</h2>
-</div>
+	</div>
 	<div class="p-6">
 		{#if error}
 			<div class="mb-4 rounded-md bg-red-50 p-4 text-red-700">
