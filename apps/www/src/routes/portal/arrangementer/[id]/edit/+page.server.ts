@@ -103,7 +103,7 @@ export const actions: Actions = {
       const existingShift = existingEvent.shifts.find(s => s.id === shiftId);
       const existingUserIds = existingShift?.members.map(m => m.user.id) || [];
 
-      const newUserIds = [];
+      const newUserIds: string[] = [];
       for (let j = 0; j < userCount; j++) {
         const userId = formData.get(`shift[${index}].user[${j}].id`)?.toString();
         if (userId?.trim()) {
@@ -112,7 +112,6 @@ export const actions: Actions = {
       }
 
       const usersToAdd = newUserIds.filter(userId => !existingUserIds.includes(userId));
-
       const usersToRemove = existingUserIds.filter(userId => !newUserIds.includes(userId));
 
       if (usersToAdd.length > 0) {

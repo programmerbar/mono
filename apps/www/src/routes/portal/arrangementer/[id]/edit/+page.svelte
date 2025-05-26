@@ -32,6 +32,7 @@
 	let originalShifts = $state(data.event.shifts.map((shift) => ({ id: shift.id })));
 	let deletedShiftIds = $state([] as string[]);
 	let removedUserShifts = $state([] as string[]);
+  
 
 	beforeNavigate(({ cancel }) => {
 		if (deletedShiftIds.length > 0 || removedUserShifts.length > 0) {
