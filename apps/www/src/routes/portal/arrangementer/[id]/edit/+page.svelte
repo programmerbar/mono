@@ -6,10 +6,12 @@
 	import { enhance } from '$app/forms';
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
 	import { ISOStandard } from '$lib/date';
+	import { beforeNavigate } from '$app/navigation';
 
 	let { data, form } = $props();
 
 	let showDeleteConfirm = $state(false);
+  let deletedShifts = $state([''])
 
 	const eventState = new CreateEventState();
 
@@ -30,6 +32,14 @@
 	let originalShifts = $state(data.event.shifts.map((shift) => ({ id: shift.id })));
 	let deletedShiftIds = $state([] as string[]);
 	let removedUserShifts = $state([] as string[]);
+
+	beforeNavigate(({ cancel }) => {
+		if (deletedShiftIds.length > 0 || removedUserShifts.length > 0) {
+			if (!confirm('Du har ulagrede endringer. Er du sikker på at du vil forlate siden?')) {
+				cancel();
+			}
+		}
+	});
 </script>
 
 <svelte:head>
@@ -66,7 +76,32 @@
 				<p>{form.message}</p>
 			</div>
 		{/if}
-		<form method="POST" action="?/save" use:enhance>
+
+		{#if deletedShiftIds.length > 0 || removedUserShifts.length > 0}
+			<div class="mb-4 rounded-md bg-yellow-50 p-4 text-yellow-700">
+				<p class="font-medium">Ulagrede endringer:</p>
+				<ul class="mt-1 text-sm">
+					{#if deletedShiftIds.length > 0}
+						<li>• {deletedShiftIds.length} vakt{deletedShiftIds.length > 1 ? 'er' : ''} vil bli slettet</li>
+					{/if}
+					{#if removedUserShifts.length > 0}
+						<li>• {removedUserShifts.length} bruker{removedUserShifts.length > 1 ? 'e' : ''} vil bli fjernet</li>
+					{/if}
+				</ul>
+			</div>
+		{/if}
+
+
+
+		<form method="POST" action="?/save" use:enhance={() => {
+			return async ({ result, update }) => {
+				if (result.type === 'success') {
+					deletedShiftIds = [];
+					removedUserShifts = [];
+				}
+				await update();
+			};
+		}}>
 			<input type="hidden" name="shiftsCount" value={eventState.shifts.length} />
 			{#each deletedShiftIds as id}
 				<input type="hidden" name="deletedShiftIds" value={id} />
@@ -103,16 +138,22 @@
 				</div>
 
 				{#each eventState.shifts as shift, i}
-					<div class="mb-4 rounded-lg border border-gray-200 bg-gray-50 p-4">
+					<div class="mb-4 rounded-lg border border-gray-200 bg-gray-50 p-4 transition-opacity">
 						<div class="flex items-center justify-between">
 							<h3 class="font-medium">Vakt {i + 1}</h3>
 							<button
 								type="button"
 								class="rounded-full p-1 text-red-400 hover:text-red-600"
 								onclick={() => {
+                  
 									if (i < originalShifts.length) {
-										deletedShiftIds = [...deletedShiftIds, originalShifts[i].id];
+										deletedShiftIds = [...deletedShiftIds, `${originalShifts[i].id}`];
 									}
+                  
+                  deletedShifts.push();
+                  {console.log(deletedShifts)}
+
+                  
 									eventState.deleteShift(i);
 								}}
 							>
@@ -144,7 +185,11 @@
 						<div class="mt-4 border-t border-gray-300 pt-4">
 							<div class="mb-2 flex items-center justify-between">
 								<h4 class="font-medium">Ansvarlige</h4>
-								<Button type="button" class="text-sm" onclick={() => eventState.addUserToShift(i)}>
+								<Button 
+									type="button" 
+									class="text-sm" 
+									onclick={() => eventState.addUserToShift(i)}
+								>
 									<Plus class="mr-1 h-4 w-4" />
 									Legg til
 								</Button>
@@ -200,7 +245,13 @@
 			</div>
 
 			<div class="flex justify-between gap-4 border-t border-gray-100 pt-6">
-				<div></div>
+				<div class="text-sm text-gray-500">
+					{#if deletedShiftIds.length > 0 || removedUserShifts.length > 0}
+						<span class="text-yellow-600 font-medium">
+							{deletedShiftIds.length + removedUserShifts.length} ulagrede endringer
+						</span>
+					{/if}
+				</div>
 				<div class="flex gap-2">
 					<a href={`/portal/arrangementer/${data.event.id}`}>
 						<Button type="button" intent="outline">Avbryt</Button>
