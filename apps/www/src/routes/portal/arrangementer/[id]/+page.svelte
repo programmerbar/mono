@@ -9,6 +9,14 @@
 	let { data } = $props();
 	let user = getUser();
 	let activeTab = $state('details');
+  let isPastEvent = $state(false)
+  $effect(() => {
+    const today = formatDate(new Date());
+    const eventDate = formatDate(data.event.date);
+    isPastEvent = eventDate < today;
+  });
+
+
 </script>
 
 <svelte:head>
@@ -25,7 +33,6 @@
 				<p class="text-sm text-gray-500">{formatDate(data.event.date)}</p>
 			</div>
 		</div>
-
 		<div class="border-b border-gray-100 px-6 pt-4">
 			<div class="flex gap-2">
 				<button
@@ -108,7 +115,6 @@
 										</p>
 									</div>
 								</div>
-
 								<div>
 									<p class="text-sm text-gray-500">Ansvarlige</p>
 									<p class="font-medium">
@@ -116,27 +122,28 @@
 											'Ingen ansvarlige'}
 									</p>
 								</div>
-
-								{#if !isInShift}
-									<form action="?/join" method="post" use:enhance>
-										<input type="hidden" name="shiftId" value={shift.id} />
-										<button
-											class="inline-flex items-center text-sm font-medium text-blue-500 hover:text-blue-700"
-										>
-											<Plus size={16} />
-											Bli med på vakten
-										</button>
-									</form>
-								{:else}
-									<form action="?/leave" method="post" use:enhance>
-										<input type="hidden" name="shiftId" value={shift.id} />
-										<button
-											class="inline-flex items-center text-sm font-medium text-red-500 hover:text-red-700"
-										>
-											<X size={16} />
-											Forlat vakten
-										</button>
-									</form>
+                {#if !isPastEvent}
+                  {#if !isInShift}
+                    <form action="?/join" method="post" use:enhance>
+                      <input type="hidden" name="shiftId" value={shift.id} />
+                      <button
+                        class="inline-flex items-center text-sm font-medium text-blue-500 hover:text-blue-700"
+                      >
+                        <Plus size={16} />
+                        Bli med på vakten
+                      </button>
+                    </form>
+                  {:else}
+                    <form action="?/leave" method="post" use:enhance>
+                      <input type="hidden" name="shiftId" value={shift.id} />
+                      <button
+                        class="inline-flex items-center text-sm font-medium text-red-500 hover:text-red-700"
+                      >
+                        <X size={16} />
+                        Forlat vakten
+                      </button>
+                    </form>
+                  {/if}
 								{/if}
 							</div>
 						</div>
