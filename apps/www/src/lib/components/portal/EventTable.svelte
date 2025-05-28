@@ -89,32 +89,69 @@
 				return '';
 		}
 	}
+
+
+let isMobile = $state(false);
+
+$effect(() => {
+  const updateLayout = () => {
+    isMobile = window.innerWidth < 768; 
+  };
+  
+  updateLayout(); 
+  window.addEventListener('resize', updateLayout);
+  
+  return () => {
+    window.removeEventListener('resize', updateLayout);
+  };
+});
 </script>
 
 <div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg">
-	<div class="flex flex-wrap gap-2 bg-white p-2">
+	<div class="flex bg-white p-2 flex-wrap gap-2">
 		<button
-			class={`min-w-[150px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out ${activeTab === 'upcoming' ? 'bg-blue-100 font-semibold text-blue-600' : 'hover:bg-gray-100 hover:text-blue-500'}`}
+			class={`min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out ${
+				activeTab === 'upcoming' 
+					? 'bg-blue-100 font-semibold text-blue-600' 
+					: 'hover:bg-gray-100 hover:text-blue-500'
+			}`}
 			onclick={() => (activeTab = 'upcoming')}
 		>
 			Arrangementer
 		</button>
+		
 		<button
-			class={`min-w-[150px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out ${activeTab === 'past' ? 'bg-blue-100 font-semibold text-blue-600' : 'hover:bg-gray-100 hover:text-blue-500'}`}
+			class={`min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out ${
+				activeTab === 'past' 
+					? 'bg-blue-100 font-semibold text-blue-600' 
+					: 'hover:bg-gray-100 hover:text-blue-500'
+			}`}
 			onclick={() => (activeTab = 'past')}
 		>
 			Tidligere arrangementer
 		</button>
+		
+		{#if isMobile && $user?.role === 'board'}
+			<button
+				class="w-full cursor-pointer rounded-lg px-6 py-3 font-medium bg-blue-50 font-semibold text-blue-600 transition-all duration-200 ease-in-out hover:bg-blue-100"
+				onclick={() => goto(`arrangementer/ny`)}
+			>
+				Nytt Arrangement
+			</button>
+		{/if}
 	</div>
+
 	<div class="relative w-full px-2">
 		<input
 			type="text"
 			placeholder="Søk etter arrangementer..."
 			bind:value={search}
-			class="w-full rounded-lg border border-gray-300 py-3 pl-4 pr-32 text-base focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+			class={`w-full rounded-lg border border-gray-300 py-3 pl-4 text-base focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 ${
+				isMobile || !($user?.role === 'board') ? 'pr-4' : 'pr-32'
+			}`}
 		/>
-
-		{#if $user?.role === 'board'}
+		
+		{#if !isMobile && $user?.role === 'board'}
 			<div class="absolute right-3 top-1/2 -translate-y-1/2 transform">
 				<Button onclick={() => goto(`arrangementer/ny`)}>Nytt arrangement</Button>
 			</div>
