@@ -32,7 +32,6 @@
 	let deletedShiftIds = $state([] as string[]);
 	let removedUserShifts = $state([] as string[]);
 
-
 	beforeNavigate(({ cancel }) => {
 		if (deletedShiftIds.length > 0 || removedUserShifts.length > 0) {
 			if (!confirm('Du har ulagrede endringer. Er du sikker på at du vil forlate siden?')) {
@@ -40,7 +39,6 @@
 			}
 		}
 	});
-
 </script>
 
 <svelte:head>
@@ -83,16 +81,18 @@
 				<p class="font-medium">Ulagrede endringer:</p>
 				<ul class="mt-1 text-sm">
 					{#if deletedShiftIds.length > 0}
-						<li>• {deletedShiftIds.length} vakt{deletedShiftIds.length > 1 ? 'er' : ''} vil bli slettet</li>
+						<li>
+							• {deletedShiftIds.length} vakt{deletedShiftIds.length > 1 ? 'er' : ''} vil bli slettet
+						</li>
 					{/if}
 					{#if removedUserShifts.length > 0}
-						<li>• {removedUserShifts.length} bruker{removedUserShifts.length > 1 ? 'e' : ''} vil bli fjernet</li>
+						<li>
+							• {removedUserShifts.length} bruker{removedUserShifts.length > 1 ? 'e' : ''} vil bli fjernet
+						</li>
 					{/if}
 				</ul>
 			</div>
 		{/if}
-
-
 
 		<form method="POST" action="?/save" use:enhance>
 			<input type="hidden" name="shiftsCount" value={eventState.shifts.length} />
@@ -138,16 +138,16 @@
 								type="button"
 								class="rounded-full p-1 text-red-400 hover:text-red-600"
 								onclick={() => {
-                  if (i < originalShifts.length) {
-                    deletedShiftIds.push(originalShifts[i].id);
-                  } 
-                  eventState.deleteShift(i);
+									if (i < originalShifts.length) {
+										deletedShiftIds.push(originalShifts[i].id);
+									}
+									eventState.deleteShift(i);
 
-                  if (i < originalShifts.length) {
-                    originalShifts.splice(i, 1);
-                }
-                }}
-              >
+									if (i < originalShifts.length) {
+										originalShifts.splice(i, 1);
+									}
+								}}
+							>
 								<X class="h-4 w-4" />
 							</button>
 						</div>
@@ -176,11 +176,7 @@
 						<div class="mt-4 border-t border-gray-300 pt-4">
 							<div class="mb-2 flex items-center justify-between">
 								<h4 class="font-medium">Ansvarlige</h4>
-								<Button 
-									type="button" 
-									class="text-sm" 
-									onclick={() => eventState.addUserToShift(i)}
-								>
+								<Button type="button" class="text-sm" onclick={() => eventState.addUserToShift(i)}>
 									<Plus class="mr-1 h-4 w-4" />
 									Legg til
 								</Button>

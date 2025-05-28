@@ -5,7 +5,7 @@
 	import { getUser } from '$lib/context/user.context';
 	import Button from '../ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
-  
+
 	type Event = {
 		id: string;
 		name: string;
@@ -91,50 +91,47 @@
 		}
 	}
 
+	let isMobile = $state(false);
 
-let isMobile = $state(false);
+	$effect(() => {
+		const updateLayout = () => {
+			isMobile = window.innerWidth < 546;
+		};
 
-$effect(() => {
-  const updateLayout = () => {
-    isMobile = window.innerWidth < 546; 
-  };
-  
-  updateLayout(); 
-  window.addEventListener('resize', updateLayout);
-  
-  return () => {
-    window.removeEventListener('resize', updateLayout);
-  };
-});
+		updateLayout();
+		window.addEventListener('resize', updateLayout);
+
+		return () => {
+			window.removeEventListener('resize', updateLayout);
+		};
+	});
 </script>
 
 <div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg">
-	<div class="flex bg-white p-2 flex-wrap gap-2">
+	<div class="flex flex-wrap gap-2 bg-white p-2">
 		<button
-			class="min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out {
-				activeTab === 'upcoming' 
-					? 'bg-blue-100 font-semibold text-blue-600' 
-					: 'hover:bg-gray-100 hover:text-blue-500'
-			}}"
+			class="min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out {activeTab ===
+			'upcoming'
+				? 'bg-blue-100 font-semibold text-blue-600'
+				: 'hover:bg-gray-100 hover:text-blue-500'}}"
 			onclick={() => (activeTab = 'upcoming')}
 		>
 			Arrangementer
 		</button>
-		
+
 		<button
-			class="min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out {
-				activeTab === 'past' 
-					? 'bg-blue-100 font-semibold text-blue-600' 
-					: 'hover:bg-gray-100 hover:text-blue-500'
-			}"
+			class="min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out {activeTab ===
+			'past'
+				? 'bg-blue-100 font-semibold text-blue-600'
+				: 'hover:bg-gray-100 hover:text-blue-500'}"
 			onclick={() => (activeTab = 'past')}
 		>
 			Tidligere arrangementer
 		</button>
-		
+
 		{#if isMobile && $user?.role === 'board'}
 			<button
-				class="w-full cursor-pointer rounded-lg px-6 py-3 font-medium bg-blue-50 font-semibold text-blue-600 transition-all duration-200 ease-in-out hover:bg-blue-100"
+				class="w-full cursor-pointer rounded-lg bg-blue-50 px-6 py-3 font-medium font-semibold text-blue-600 transition-all duration-200 ease-in-out hover:bg-blue-100"
 				onclick={() => goto(`arrangementer/ny`)}
 			>
 				Nytt Arrangement
@@ -147,12 +144,10 @@ $effect(() => {
 			type="search"
 			placeholder="Søk etter arrangementer..."
 			bind:value={search}
-			class="w-full flex-1 {
-				isMobile || !($user?.role === 'board') ? 'pr-4' : 'pr-32'
-			}"
+			class="w-full flex-1 {isMobile || !($user?.role === 'board') ? 'pr-4' : 'pr-32'}"
 		/>
 		{#if !isMobile && $user?.role === 'board'}
-				<Button onclick={() => goto(`arrangementer/ny`)}>Nytt arrangement</Button>
+			<Button onclick={() => goto(`arrangementer/ny`)}>Nytt arrangement</Button>
 		{/if}
 	</div>
 
@@ -195,7 +190,9 @@ $effect(() => {
 								{countShifts(event)}
 							</td>
 							<td
-								class="max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4 {getStatusClass(status)}"
+								class="max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4 {getStatusClass(
+									status
+								)}"
 							>
 								{status}
 							</td>
