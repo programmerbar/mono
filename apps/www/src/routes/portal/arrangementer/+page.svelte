@@ -8,15 +8,6 @@
 	<title>Arrangementer</title>
 </svelte:head>
 
-<div class="container">
+<div class="mx-auto max-w-4xl mx-auto p-4">
 	<EventsTable events={data.events} outdated={data.outdatedEvents} />
 </div>
-
-<style>
-	.container {
-		width: 100%;
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 1rem;
-	}
-</style>
