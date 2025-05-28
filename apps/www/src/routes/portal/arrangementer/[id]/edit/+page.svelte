@@ -94,15 +94,7 @@
 
 
 
-		<form method="POST" action="?/save" use:enhance={() => {
-			return async ({ result, update }) => {
-				if (result.type === 'success') {
-					deletedShiftIds = [];
-					removedUserShifts = [];
-				}
-				await update();
-			};
-		}}>
+		<form method="POST" action="?/save" use:enhance>
 			<input type="hidden" name="shiftsCount" value={eventState.shifts.length} />
 			{#each deletedShiftIds as id}
 				<input type="hidden" name="deletedShiftIds" value={id} />
@@ -245,7 +237,7 @@
 
 			<div class="flex justify-between gap-4 border-t border-gray-100 pt-6">
 				<div class="flex gap-2">
-					<a href={`/portal/arrangementer/${data.event.id}`}>
+					<a href={`/portal/arrangementer/`}>
 						<Button type="button" intent="outline">Avbryt</Button>
 					</a>
 					<Button type="submit" intent="primary" disabled={!eventState.isValid()}>
