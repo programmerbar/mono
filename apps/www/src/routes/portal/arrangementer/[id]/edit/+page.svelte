@@ -11,7 +11,6 @@
 	let { data, form } = $props();
 
 	let showDeleteConfirm = $state(false);
-  let deletedShifts = $state([''])
 
 	const eventState = new CreateEventState();
 
@@ -32,7 +31,7 @@
 	let originalShifts = $state(data.event.shifts.map((shift) => ({ id: shift.id })));
 	let deletedShiftIds = $state([] as string[]);
 	let removedUserShifts = $state([] as string[]);
-  
+
 
 	beforeNavigate(({ cancel }) => {
 		if (deletedShiftIds.length > 0 || removedUserShifts.length > 0) {
@@ -41,6 +40,7 @@
 			}
 		}
 	});
+
 </script>
 
 <svelte:head>
@@ -146,18 +146,16 @@
 								type="button"
 								class="rounded-full p-1 text-red-400 hover:text-red-600"
 								onclick={() => {
-                  
-									if (i < originalShifts.length) {
-										deletedShiftIds = [...deletedShiftIds, `${originalShifts[i].id}`];
-									}
-                  
-                  deletedShifts.push();
-                  {console.log(deletedShifts)}
+                  if (i < originalShifts.length) {
+                    deletedShiftIds.push(originalShifts[i].id);
+                  } 
+                  eventState.deleteShift(i);
 
-                  
-									eventState.deleteShift(i);
-								}}
-							>
+                  if (i < originalShifts.length) {
+                    originalShifts.splice(i, 1);
+                }
+                }}
+              >
 								<X class="h-4 w-4" />
 							</button>
 						</div>
@@ -246,13 +244,6 @@
 			</div>
 
 			<div class="flex justify-between gap-4 border-t border-gray-100 pt-6">
-				<div class="text-sm text-gray-500">
-					{#if deletedShiftIds.length > 0 || removedUserShifts.length > 0}
-						<span class="text-yellow-600 font-medium">
-							{deletedShiftIds.length + removedUserShifts.length} ulagrede endringer
-						</span>
-					{/if}
-				</div>
 				<div class="flex gap-2">
 					<a href={`/portal/arrangementer/${data.event.id}`}>
 						<Button type="button" intent="outline">Avbryt</Button>
