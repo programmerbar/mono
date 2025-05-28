@@ -4,7 +4,8 @@
 	import { SquarePen } from '@lucide/svelte';
 	import { getUser } from '$lib/context/user.context';
 	import Button from '../ui/Button.svelte';
-
+	import Input from '$lib/components/ui/Input.svelte';
+  
 	type Event = {
 		id: string;
 		name: string;
@@ -95,7 +96,7 @@ let isMobile = $state(false);
 
 $effect(() => {
   const updateLayout = () => {
-    isMobile = window.innerWidth < 768; 
+    isMobile = window.innerWidth < 546; 
   };
   
   updateLayout(); 
@@ -110,22 +111,22 @@ $effect(() => {
 <div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg">
 	<div class="flex bg-white p-2 flex-wrap gap-2">
 		<button
-			class={`min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out ${
+			class="min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out {
 				activeTab === 'upcoming' 
 					? 'bg-blue-100 font-semibold text-blue-600' 
 					: 'hover:bg-gray-100 hover:text-blue-500'
-			}`}
+			}}"
 			onclick={() => (activeTab = 'upcoming')}
 		>
 			Arrangementer
 		</button>
 		
 		<button
-			class={`min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out ${
+			class="min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out {
 				activeTab === 'past' 
 					? 'bg-blue-100 font-semibold text-blue-600' 
 					: 'hover:bg-gray-100 hover:text-blue-500'
-			}`}
+			}"
 			onclick={() => (activeTab = 'past')}
 		>
 			Tidligere arrangementer
@@ -141,20 +142,17 @@ $effect(() => {
 		{/if}
 	</div>
 
-	<div class="relative w-full px-2">
-		<input
-			type="text"
+	<div class="flex items-center gap-2 px-2">
+		<Input
+			type="search"
 			placeholder="Søk etter arrangementer..."
 			bind:value={search}
-			class={`w-full rounded-lg border border-gray-300 py-3 pl-4 text-base focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 ${
+			class="w-full flex-1 {
 				isMobile || !($user?.role === 'board') ? 'pr-4' : 'pr-32'
-			}`}
+			}"
 		/>
-		
 		{#if !isMobile && $user?.role === 'board'}
-			<div class="absolute right-3 top-1/2 -translate-y-1/2 transform">
 				<Button onclick={() => goto(`arrangementer/ny`)}>Nytt arrangement</Button>
-			</div>
 		{/if}
 	</div>
 
@@ -197,7 +195,7 @@ $effect(() => {
 								{countShifts(event)}
 							</td>
 							<td
-								class={`max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4 ${getStatusClass(status)}`}
+								class="max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4 {getStatusClass(status)}"
 							>
 								{status}
 							</td>
