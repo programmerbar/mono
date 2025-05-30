@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { EventHandler } from 'svelte/elements';
 	import { X, Plus, Save, Clock } from '@lucide/svelte';
-	import Heading from '$lib/components/ui/Heading.svelte';
 	import FormInput from '$lib/components/ui/form/FormInput.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Combobox from '$lib/components/ui/Combobox.svelte';
