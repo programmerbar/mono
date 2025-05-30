@@ -157,14 +157,19 @@
 		</div>
 	{:else}
 		<div class="overflow-x-auto p-2">
-			<table class="w-full min-w-[600px]">
+			<table class="w-full table-fixed">
+				<colgroup>
+					<col class="w-[35%]" />
+					<col class="w-[20%]" />
+					<col class="w-[20%]" />
+					<col class="w-[15%]" />
+				</colgroup>
 				<thead>
-					<tr>
-						<th class="border-b-2 border-gray-200 p-4 text-left">Arrangement</th>
-						<th class="border-b-2 border-gray-200 p-4 text-left">Dato</th>
-						<th class="border-b-2 border-gray-200 p-4 text-left">Antall vakter</th>
-						<th class="border-b-2 border-gray-200 p-4 text-left">Status</th>
-						<th class="border-b-2 border-gray-200 p-4 text-left" aria-label="Handlinger"></th>
+					<tr class="border-b-2 border-gray-200">
+						<th class="p-4 text-left">Arrangement</th>
+						<th class="p-4 text-left">Dato</th>
+						<th class="p-4 text-left">Antall vakter</th>
+						<th class="p-4 text-left">Status</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -175,22 +180,22 @@
 							onclick={() => goto(`arrangementer/${event.id}`)}
 						>
 							<td
-								class="max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4"
+								class="overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4"
 							>
 								{event.name}
 							</td>
 							<td
-								class="max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4"
+								class="overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4"
 							>
 								{formatDate(event.date)}
 							</td>
 							<td
-								class="max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4"
+								class="verflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4"
 							>
 								{countShifts(event)}
 							</td>
 							<td
-								class="max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4 {getStatusClass(
+								class="overflow-hidden overflow-ellipsis whitespace-nowrap break-words border-b border-gray-100 p-4 {getStatusClass(
 									status
 								)}"
 							>
