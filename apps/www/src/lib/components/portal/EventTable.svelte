@@ -158,21 +158,21 @@
 	{:else}
 		<div class="overflow-x-auto p-2">
 			<table class="w-full table-fixed">
-        {#if isMobile}
-          <colgroup>
-            <col class="w-[60%]" />
-            <col class="w-[40%]" />
-          </colgroup>
-        {:else}  
-          <colgroup>
-            <col class="w-[35%]" />
-            <col class="w-[20%]" />
-            <col class="w-[20%]" />
-            <col class="w-[15%]" />
-          </colgroup>
-        {/if}
+				{#if isMobile}
+					<colgroup>
+						<col class="w-[60%]" />
+						<col class="w-[40%]" />
+					</colgroup>
+				{:else}
+					<colgroup>
+						<col class="w-[35%]" />
+						<col class="w-[20%]" />
+						<col class="w-[20%]" />
+						<col class="w-[15%]" />
+					</colgroup>
+				{/if}
 				<thead>
-          <tr class="border-b-2 border-gray-200">
+					<tr class="border-b-2 border-gray-200">
 						<th class="p-4 text-left">Arrangement</th>
 						{#if isMobile}
 							<th class="p-4 text-left">Status</th>
@@ -184,58 +184,43 @@
 						{/if}
 					</tr>
 				</thead>
-				<tbody class="border-b border-gray-100 whitespace-nowrap break-words">
+				<tbody class="whitespace-nowrap break-words border-b border-gray-100">
 					{#each filteredEvents as event (event.id)}
 						{@const status = getEventStatus(event)}
 						<tr
 							class="cursor-pointer hover:bg-gray-50"
 							onclick={() => goto(`arrangementer/${event.id}`)}
 						>
-							<td
-								class="overflow-hidden overflow-ellipsis p-4"
-							>
+							<td class="overflow-hidden overflow-ellipsis p-4">
 								{event.name}
 							</td>
-              {#if isMobile}
-                <td
-                  class="overflow-hidden overflow-ellipsis p-4 {getStatusClass(
-                    status
-                  )}"
-                >
-                  {status}
-                </td>
-              {:else}
-                <td
-                  class="overflow-hidden overflow-ellipsis p-4"
-                >
-                  {formatDate(event.date)}
-                </td>
-                <td
-                  class="overflow-hidden overflow-ellipsis p-4"
-                >
-                  {countShifts(event)}
-                </td>
-                <td
-                  class="overflow-hidden overflow-ellipsis p-4 {getStatusClass(
-                    status
-                  )}"
-                >
-                  {status}
-                </td>
-                {#if !isMobile}
-                <td 
-                  class="p-4">
-                  {#if $user?.role === 'board'}
-                    <a
-                      href="arrangementer/{event.id}/edit"
-                      class="inline-flex text-gray-400 opacity-70 transition-all duration-200 ease-in-out hover:text-blue-500 hover:opacity-100"
-                      aria-label="Rediger arrangement"
-                    >
-                      <SquarePen size={18} />
-                    </a>
-                  {/if}
-							</td>
-							{/if}
+							{#if isMobile}
+								<td class="overflow-hidden overflow-ellipsis p-4 {getStatusClass(status)}">
+									{status}
+								</td>
+							{:else}
+								<td class="overflow-hidden overflow-ellipsis p-4">
+									{formatDate(event.date)}
+								</td>
+								<td class="overflow-hidden overflow-ellipsis p-4">
+									{countShifts(event)}
+								</td>
+								<td class="overflow-hidden overflow-ellipsis p-4 {getStatusClass(status)}">
+									{status}
+								</td>
+								{#if !isMobile}
+									<td class="p-4">
+										{#if $user?.role === 'board'}
+											<a
+												href="arrangementer/{event.id}/edit"
+												class="inline-flex text-gray-400 opacity-70 transition-all duration-200 ease-in-out hover:text-blue-500 hover:opacity-100"
+												aria-label="Rediger arrangement"
+											>
+												<SquarePen size={18} />
+											</a>
+										{/if}
+									</td>
+								{/if}
 							{/if}
 						</tr>
 					{/each}

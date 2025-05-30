@@ -27,7 +27,7 @@
 	>
 		<div class="border-b border-gray-300 bg-gray-50 px-6 py-4">
 			<div>
-				<h1 class="text-xl font-semibold text-gray-800 break-words">{data.event.name}</h1>
+				<h1 class="break-words text-xl font-semibold text-gray-800">{data.event.name}</h1>
 			</div>
 		</div>
 		<div class="border-b border-gray-100 px-6 pt-4">
