@@ -233,7 +233,7 @@
 
 			<div class="flex justify-between gap-4 border-t border-gray-100 pt-6">
 				<div class="flex gap-2">
-					<a href={`/portal/arrangementer/`}>
+					<a href="/portal/arrangementer/">
 						<Button type="button" intent="outline">Avbryt</Button>
 					</a>
 					<Button type="submit" intent="primary" disabled={!eventState.isValid()}>

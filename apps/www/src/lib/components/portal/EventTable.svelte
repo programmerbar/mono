@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { formatDate } from '$lib/date';
-	import { goto } from '$app/navigation';
 	import { SquarePen } from '@lucide/svelte';
 	import { getUser } from '$lib/context/user.context';
 	import Button from '../ui/Button.svelte';
@@ -19,7 +18,6 @@
 	};
 
 	const { events, outdated } = $props();
-
 	let search = $state('');
 	let activeTab = $state('upcoming');
 	let user = getUser();
@@ -37,7 +35,6 @@
 		const now = new Date();
 		const hasActive = hasActiveShifts(event);
 		if (hasActive) return false;
-
 		return event.shifts.some((shift) => {
 			const startTime = new Date(shift.startAt);
 			return now < startTime;
@@ -57,7 +54,6 @@
 	);
 
 	const pastEvnts = $derived(outdated.filter((event: Event) => !hasActiveOrUpcoming(event)));
-
 	const activeEvnts = $derived(activeTab === 'upcoming' ? upcomingEvents : pastEvnts);
 
 	let filteredEvents = $derived(
@@ -97,10 +93,8 @@
 		const updateLayout = () => {
 			isMobile = window.innerWidth < 546;
 		};
-
 		updateLayout();
 		window.addEventListener('resize', updateLayout);
-
 		return () => {
 			window.removeEventListener('resize', updateLayout);
 		};
@@ -118,7 +112,6 @@
 		>
 			Arrangementer
 		</button>
-
 		<button
 			class="min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out {activeTab ===
 			'past'
@@ -128,17 +121,15 @@
 		>
 			Tidligere arrangementer
 		</button>
-
 		{#if isMobile && $user?.role === 'board'}
-			<button
-				class="w-full cursor-pointer rounded-lg bg-blue-50 px-6 py-3 font-medium font-semibold text-blue-600 transition-all duration-200 ease-in-out hover:bg-blue-100"
-				onclick={() => goto(`arrangementer/ny`)}
+			<a
+				href="arrangementer/ny"
+				class="w-full cursor-pointer rounded-lg bg-blue-50 px-6 py-3 text-center font-medium font-semibold text-blue-600 transition-all duration-200 ease-in-out hover:bg-blue-100"
 			>
 				Nytt Arrangement
-			</button>
+			</a>
 		{/if}
 	</div>
-
 	<div class="flex items-center gap-2 px-2">
 		<Input
 			type="search"
@@ -147,10 +138,9 @@
 			class="w-full flex-1 {isMobile || !($user?.role === 'board') ? 'pr-4' : 'pr-32'}"
 		/>
 		{#if !isMobile && $user?.role === 'board'}
-			<Button onclick={() => goto(`arrangementer/ny`)}>Nytt arrangement</Button>
+			<Button href="arrangementer/ny">Nytt arrangement</Button>
 		{/if}
 	</div>
-
 	{#if filteredEvents.length === 0}
 		<div class="mx-4 my-4 px-8 py-12 text-center font-medium text-gray-500">
 			Ingen {activeTab === 'upcoming' ? 'kommende' : 'tidligere'} arrangementer å vise.
@@ -184,14 +174,13 @@
 						{/if}
 					</tr>
 				</thead>
-				<tbody class="whitespace-nowrap break-words border-b border-gray-100">
+				<tbody>
 					{#each filteredEvents as event (event.id)}
 						{@const status = getEventStatus(event)}
-						<tr
-							class="cursor-pointer hover:bg-gray-50"
-							onclick={() => goto(`arrangementer/${event.id}`)}
-						>
+						<tr class="relative hover:bg-gray-50">
 							<td class="overflow-hidden overflow-ellipsis p-4">
+								<a href="arrangementer/{event.id}" class="absolute inset-0" aria-label={event.name}>
+								</a>
 								{event.name}
 							</td>
 							{#if isMobile}
@@ -208,19 +197,17 @@
 								<td class="overflow-hidden overflow-ellipsis p-4 {getStatusClass(status)}">
 									{status}
 								</td>
-								{#if !isMobile}
-									<td class="p-4">
-										{#if $user?.role === 'board'}
-											<a
-												href="arrangementer/{event.id}/edit"
-												class="inline-flex text-gray-400 opacity-70 transition-all duration-200 ease-in-out hover:text-blue-500 hover:opacity-100"
-												aria-label="Rediger arrangement"
-											>
-												<SquarePen size={18} />
-											</a>
-										{/if}
-									</td>
-								{/if}
+								<td class="p-4">
+									{#if $user?.role === 'board'}
+										<a
+											href="arrangementer/{event.id}/edit"
+											class="relative z-10 inline-flex text-gray-400 opacity-70 transition-all duration-200 ease-in-out hover:text-blue-500 hover:opacity-100"
+											aria-label="Rediger {event.name}"
+										>
+											<SquarePen size={18} />
+										</a>
+									{/if}
+								</td>
 							{/if}
 						</tr>
 					{/each}

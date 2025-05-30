@@ -4,7 +4,7 @@
 	import { capitalize } from '$lib/utils';
 	import { enhance } from '$app/forms';
 	import { getUser } from '$lib/context/user.context.js';
-	import { X, Plus, Calendar, Clock, Users } from '@lucide/svelte';
+	import { X, Plus, Calendar, Clock, Users, ArrowLeft } from '@lucide/svelte';
 
 	let { data } = $props();
 	let user = getUser();
@@ -20,6 +20,16 @@
 <svelte:head>
 	<title>{data.event.name}</title>
 </svelte:head>
+
+<section>
+	<a
+		href="/portal/arrangementer/"
+		class="inline-flex items-center text-sm font-medium text-blue-500 hover:text-blue-600"
+	>
+		<ArrowLeft size={16} />
+		Tilbake
+	</a>
+</section>
 
 <section class="mt-8">
 	<div
