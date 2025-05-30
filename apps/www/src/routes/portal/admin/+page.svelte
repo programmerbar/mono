@@ -12,17 +12,19 @@
 	let isModalOpen = $state(false);
 
 	let boardMembers = $derived.by(() =>
-		data.users.filter((user: User) => {
-			return user.role === 'board' && user.name.toLowerCase().includes(search.toLowerCase());
-		})
-    .sort((a, b) => a.name.localeCompare(b.name))
+		data.users
+			.filter((user: User) => {
+				return user.role === 'board' && user.name.toLowerCase().includes(search.toLowerCase());
+			})
+			.sort((a, b) => a.name.localeCompare(b.name))
 	);
 
 	let normalMembers = $derived.by(() =>
-		data.users.filter((user: User) => {
-			return user.role === 'normal' && user.name.toLowerCase().includes(search.toLowerCase());
-		}) 
-    .sort((a, b) => a.name.localeCompare(b.name))
+		data.users
+			.filter((user: User) => {
+				return user.role === 'normal' && user.name.toLowerCase().includes(search.toLowerCase());
+			})
+			.sort((a, b) => a.name.localeCompare(b.name))
 	);
 
 	function closeModal() {

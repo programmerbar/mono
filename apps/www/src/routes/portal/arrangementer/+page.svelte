@@ -8,6 +8,6 @@
 	<title>Arrangementer</title>
 </svelte:head>
 
-<div class="mx-auto mx-auto max-w-4xl p-4">
+<div class="mx-auto max-w-4xl p-4">
 	<EventsTable events={data.events} outdated={data.outdatedEvents} />
 </div>
