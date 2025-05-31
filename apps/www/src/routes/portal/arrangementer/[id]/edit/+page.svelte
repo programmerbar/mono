@@ -45,7 +45,7 @@
 	<title>Rediger arrangement: {eventState.name}</title>
 </svelte:head>
 
-<div class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+<div class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
 	<div class="items-centter flex justify-between border-b border-gray-300 bg-gray-50 px-6 py-4">
 		<h2 class="text-lg font-medium">Arrangement detaljer</h2>
 		<form method="POST" action="?/delete" use:enhance>
@@ -234,7 +234,7 @@
 			<div class="flex justify-between gap-4 border-t border-gray-100 pt-6">
 				<div class="flex gap-2">
 					<a href="/portal/arrangementer/">
-						<Button type="button" intent="outline">Avbryt</Button>
+						<Button type="button" intent="warning">Avbryt</Button>
 					</a>
 					<Button type="submit" intent="primary" disabled={!eventState.isValid()}>
 						<Save class="mr-1 h-4 w-4" />
