@@ -38,7 +38,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const eventId = params.id;
 
-		const updated = await locals.eventService.updateEvent(params.id, {
+		await locals.eventService.updateEvent(params.id, {
 			name: String(formData.get('name') || ''),
 			date: new Date(String(formData.get('date') || ''))
 		});

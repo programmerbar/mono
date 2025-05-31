@@ -14,7 +14,7 @@
 			id: string;
 			startAt: Date;
 			endAt: Date;
-			members: any[];
+			members: [''];
 		}[];
 	};
 
