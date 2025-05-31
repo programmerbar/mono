@@ -11,9 +11,9 @@
 	let activeTab = $state('details');
 	let isPastEvent = $state(false);
 	$effect(() => {
-		const today = formatDate(new Date());
-		const eventDate = formatDate(data.event.date);
-		isPastEvent = eventDate < today;
+		const today = new Date();
+		const eventDate = new Date(data.event.date);
+		isPastEvent = today > eventDate;
 	});
 </script>
 
