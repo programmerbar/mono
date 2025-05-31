@@ -53,8 +53,8 @@
 	<title>Nytt arrangement</title>
 </svelte:head>
 
-<div class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
-	<div class="border-b border-gray-300 bg-gray-50 px-6 py-4">
+<div class="mx-auto max-w-4xl overflow-hidden rounded-xl border-2 bg-background shadow-lg">
+	<div class="border-b-2 bg-gray-200 px-6 py-4">
 		<h2 class="text-lg font-medium">Nytt arrangement</h2>
 	</div>
 	<div class="p-6">
@@ -71,7 +71,7 @@
 		{/if}
 
 		<form onsubmit={handleSubmit} class="space-y-6">
-			<div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+			<div class="rounded-lg border-2 bg-background p-4">
 				<div class="space-y-4">
 					<FormInput
 						label="Navn"
@@ -96,11 +96,9 @@
 					{@const startDate = shift.startAt ? new Date(shift.startAt) : new Date()}
 					{@const endDate = shift.endAt ? new Date(shift.endAt) : new Date()}
 					{@const shiftLength = differenceInHours(endDate, startDate)}
-					<div
-						class="relative mb-4 flex flex-col space-y-4 rounded-lg border border-gray-200 bg-gray-50 p-4"
-					>
+					<div class="relative mb-4 flex flex-col space-y-4 rounded-lg border-2 bg-background p-4">
 						<div class="flex items-center justify-between">
-							<h3 class="text-base font-medium">Vakt {i + 1}</h3>
+							<h3 class="font-medium">Vakt {i + 1}</h3>
 							<button
 								type="button"
 								class="rounded-full p-1 text-red-400 transition-colors hover:bg-red-50 hover:text-red-600"
@@ -197,7 +195,7 @@
 				</Button>
 			</div>
 
-			<div class="flex justify-end gap-4 border-t border-gray-100 pt-6">
+			<div class="flex justify-end gap-4 border-t pt-6">
 				<a href="/portal/arrangementer/">
 					<Button type="button" intent="warning">Avbryt</Button>
 				</a>

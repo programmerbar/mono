@@ -45,9 +45,9 @@
 	<title>Rediger arrangement: {eventState.name}</title>
 </svelte:head>
 
-<div class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
-	<div class="items-centter flex justify-between border-b border-gray-300 bg-gray-50 px-6 py-4">
-		<h2 class="text-lg font-medium">Arrangement detaljer</h2>
+<div class="mx-auto max-w-4xl overflow-hidden rounded-xl border-2 bg-background shadow-lg">
+	<div class="items-centter flex justify-between border-b-2 bg-gray-200 px-6 py-4">
+		<h2 class="text-lg font-semibold">Arrangement detaljer</h2>
 		<form method="POST" action="?/delete" use:enhance>
 			<Button
 				type="submit"
@@ -103,7 +103,7 @@
 				<input type="hidden" name="removedUserShifts" value={keyValue} />
 			{/each}
 
-			<div class="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
+			<div class="mb-6 rounded-lg border-2 bg-background p-4 shadow-lg">
 				<div class="space-y-4">
 					<FormInput label="Navn" name="name" bind:value={eventState.name} required />
 					<FormInput
@@ -131,7 +131,7 @@
 				</div>
 
 				{#each eventState.shifts as shift, i}
-					<div class="mb-4 rounded-lg border border-gray-200 bg-gray-50 p-4 transition-opacity">
+					<div class="mb-4 rounded-lg border-2 bg-background p-4 shadow-lg transition-opacity">
 						<div class="flex items-center justify-between">
 							<h3 class="font-medium">Vakt {i + 1}</h3>
 							<button
@@ -173,7 +173,7 @@
 							/>
 						</div>
 
-						<div class="mt-4 border-t border-gray-300 pt-4">
+						<div class="mt-4 border-t pt-4">
 							<div class="mb-2 flex items-center justify-between">
 								<h4 class="font-medium">Ansvarlige</h4>
 								<Button type="button" class="text-sm" onclick={() => eventState.addUserToShift(i)}>
@@ -209,7 +209,7 @@
 											<input type="hidden" name={`shift[${i}].user[${j}].id`} value={user.id} />
 											<button
 												type="button"
-												class="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-300 hover:text-red-500"
+												class="flex h-10 w-10 items-center justify-center rounded-lg border hover:text-red-500"
 												onclick={() => {
 													if (i < originalShifts.length && user.id) {
 														removedUserShifts = [
@@ -231,7 +231,7 @@
 				{/each}
 			</div>
 
-			<div class="flex justify-between gap-4 border-t border-gray-100 pt-6">
+			<div class="flex justify-end gap-4 border-t pt-6">
 				<div class="flex gap-2">
 					<a href="/portal/arrangementer/">
 						<Button type="button" intent="warning">Avbryt</Button>

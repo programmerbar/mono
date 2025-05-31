@@ -32,15 +32,13 @@
 </section>
 
 <section class="mt-8">
-	<div
-		class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg"
-	>
-		<div class="border-b border-gray-300 bg-gray-50 px-6 py-4">
+	<div class="mx-auto max-w-4xl overflow-hidden rounded-xl border-2 bg-background shadow-lg">
+		<div class="border-b-2 bg-gray-200 px-6 py-4">
 			<div>
-				<h1 class="break-words text-xl font-semibold text-gray-800">{data.event.name}</h1>
+				<h1 class="break-words text-xl font-semibold">{data.event.name}</h1>
 			</div>
 		</div>
-		<div class="border-b border-gray-100 px-6 pt-4">
+		<div class="border-b px-6 pt-4">
 			<div class="flex gap-2">
 				<button
 					class={`rounded-t-lg px-4 py-2 font-medium transition-colors ${activeTab === 'details' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
@@ -105,8 +103,8 @@
 				<div class="space-y-4">
 					{#each data.event.shifts as shift, i}
 						{@const isInShift = shift.members.some((member) => member.userId === $user?.id)}
-						<div class="overflow-hidden rounded-lg border border-gray-200">
-							<div class="border-b border-gray-200 bg-gray-50 px-4 py-2">
+						<div class="overflow-hidden rounded-lg border">
+							<div class="border-b bg-gray-200 px-4 py-2">
 								<h3 class="font-medium">Vakt {i + 1}</h3>
 							</div>
 							<div class="space-y-2 p-4">

@@ -107,13 +107,13 @@
 	});
 </script>
 
-<div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg">
-	<div class="flex flex-wrap gap-2 bg-white p-2">
+<div class="border-gray overflow-hidden rounded-2xl border-2 bg-background shadow-lg">
+	<div class="flex flex-wrap gap-2 border-b-2 bg-gray-200 p-2">
 		<button
 			class="min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out {activeTab ===
 			'upcoming'
-				? 'bg-blue-100 font-semibold text-blue-600'
-				: 'hover:bg-gray-100 hover:text-blue-500'}}"
+				? 'bg-gray-300 font-semibold'
+				: 'hover:bg-gray-250 hover:text-blue-500'}"
 			onclick={() => (activeTab = 'upcoming')}
 		>
 			Arrangementer
@@ -122,8 +122,8 @@
 		<button
 			class="min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out {activeTab ===
 			'past'
-				? 'bg-blue-100 font-semibold text-blue-600'
-				: 'hover:bg-gray-100 hover:text-blue-500'}"
+				? 'bg-gray-300 font-semibold'
+				: 'hover:bg-gray-250 hover:text-blue-500'}"
 			onclick={() => (activeTab = 'past')}
 		>
 			Tidligere arrangementer
@@ -132,19 +132,19 @@
 		{#if isMobile && $user?.role === 'board'}
 			<a
 				href="arrangementer/ny"
-				class="w-full cursor-pointer rounded-lg bg-blue-50 px-6 py-3 font-medium font-semibold text-blue-600"
+				class="w-full cursor-pointer rounded-lg bg-blue-50 px-6 py-3 font-semibold text-blue-600"
 			>
 				<button class="text-center"> Nytt Arrangement </button>
 			</a>
 		{/if}
 	</div>
 
-	<div class="flex items-center gap-2 px-2">
+	<div class="flex items-center gap-2 p-2">
 		<Input
 			type="search"
 			placeholder="Søk etter arrangementer..."
 			bind:value={search}
-			class="w-full flex-1 {isMobile || !($user?.role === 'board') ? 'pr-4' : 'pr-32'}"
+			class="w-full flex-1 border-2 {isMobile || !($user?.role === 'board') ? 'pr-4' : 'pr-32'}"
 		/>
 		{#if !isMobile && $user?.role === 'board'}
 			<a href="arrangementer/ny">
