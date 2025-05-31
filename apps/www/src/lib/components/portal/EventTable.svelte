@@ -130,11 +130,12 @@
 		</button>
 
 		{#if isMobile && $user?.role === 'board'}
-      <a href="arrangementer/ny" class="w-full cursor-pointer rounded-lg bg-blue-50 px-6 py-3 font-medium font-semibold text-blue-600">
-			<button class="text-center">
-				Nytt Arrangement
-			</button>
-      </a>
+			<a
+				href="arrangementer/ny"
+				class="w-full cursor-pointer rounded-lg bg-blue-50 px-6 py-3 font-medium font-semibold text-blue-600"
+			>
+				<button class="text-center"> Nytt Arrangement </button>
+			</a>
 		{/if}
 	</div>
 
@@ -146,9 +147,9 @@
 			class="w-full flex-1 {isMobile || !($user?.role === 'board') ? 'pr-4' : 'pr-32'}"
 		/>
 		{#if !isMobile && $user?.role === 'board'}
-      <a href="arrangementer/ny">
-        <Button type="button" intent="primary">Nytt arrangement</Button>
-      </a>
+			<a href="arrangementer/ny">
+				<Button type="button" intent="primary">Nytt arrangement</Button>
+			</a>
 		{/if}
 	</div>
 
