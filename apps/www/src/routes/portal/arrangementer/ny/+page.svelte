@@ -71,7 +71,7 @@
 		{/if}
 
 		<form onsubmit={handleSubmit} class="space-y-6">
-			<div class="rounded-lg border-2 bg-background p-4">
+			<div class="rounded-lg border-2 bg-background p-4 shadow-lg">
 				<div class="space-y-4">
 					<FormInput
 						label="Navn"
@@ -96,7 +96,7 @@
 					{@const startDate = shift.startAt ? new Date(shift.startAt) : new Date()}
 					{@const endDate = shift.endAt ? new Date(shift.endAt) : new Date()}
 					{@const shiftLength = differenceInHours(endDate, startDate)}
-					<div class="relative mb-4 flex flex-col space-y-4 rounded-lg border-2 bg-background p-4">
+					<div class="relative mb-4 flex flex-col space-y-4 rounded-lg border-2 bg-background p-4 shadow-lg">
 						<div class="flex items-center justify-between">
 							<h3 class="font-medium">Vakt {i + 1}</h3>
 							<button
