@@ -9,12 +9,7 @@
 	let { data } = $props();
 	let user = getUser();
 	let activeTab = $state('details');
-	let isPastEvent = $state(false);
-	$effect(() => {
-		const today = new Date();
-		const eventDate = new Date(data.event.date);
-		isPastEvent = today > eventDate;
-	});
+	let isPastEvent = $derived(new Date() > new Date(data.event.date));
 </script>
 
 <svelte:head>
