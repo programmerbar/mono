@@ -14,8 +14,6 @@
 		onSelect?.(user);
 	}
 
-	let mail = '';
-
 	function handleKeyDown(event: KeyboardEvent) {
 		if (event.key === 'Enter' || event.key === ' ') {
 			handleClick();
@@ -53,8 +51,8 @@
 			{/if}
 		</p>
 		<p class="mt-1 text-center text-sm">
-			<a class="hover:underline" href={mailto(mail ? user.email : user.altEmail || user.email)}>
-				{mail ? user.email : user.altEmail || user.email}
+			<a class="hover:underline" href={mailto(user.altEmail || user.email)}>
+				{user.altEmail || user.email}
 			</a>
 		</p>
 	</div>
