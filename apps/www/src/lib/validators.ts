@@ -23,6 +23,8 @@ export const CreateInvitationSchema = z.object({
 	email: z.string().email()
 });
 
+export const isValidEmail = (x: unknown): boolean => z.string().email().safeParse(x).success;
+
 export const CreateEmailShiftSchema = z.object({
 	user: z.object({
 		name: z.string().min(1),

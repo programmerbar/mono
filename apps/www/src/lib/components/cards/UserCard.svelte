@@ -51,7 +51,10 @@
 			{/if}
 		</p>
 		<p class="mt-1 text-center text-sm">
-			<a class="hover:underline" href={mailto(user.altEmail || user.email)}>
+			<a
+				class="block max-w-full truncate hover:underline"
+				href={mailto(user.altEmail || user.email)}
+			>
 				{user.altEmail || user.email}
 			</a>
 		</p>

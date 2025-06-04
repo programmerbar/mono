@@ -1,5 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { z } from 'zod';
+import { isValidEmail } from '$lib/validators';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -20,9 +20,7 @@ export const actions: Actions = {
 		const data = await request.formData();
 		const altEmail = data.get('altEmail') as string;
 
-		const isEmail = (x: unknown) => z.string().email().parse(x);
-
-		if (!isEmail(altEmail)) {
+		if (!isValidEmail(altEmail)) {
 			return fail(400, {
 				success: false,
 				message: 'Ugyldig e-postadresse',
