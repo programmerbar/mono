@@ -43,7 +43,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 					const emailData: ShiftEmailProps = {
 						user: {
 							name: user.name || 'Frivillig',
-							email: user.email
+							email: user.altEmail || user.email
 						},
 						shift: {
 							id: shift.id,

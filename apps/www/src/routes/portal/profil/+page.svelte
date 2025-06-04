@@ -1,0 +1,70 @@
+<script lang="ts">
+	import FormInput from '$lib/components/ui/form/FormInput.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import { enhance } from '$app/forms';
+	import { Save } from '@lucide/svelte';
+
+	let { data, form } = $props();
+	let isSubmitting = $state(false);
+</script>
+
+<svelte:head>
+	<title>Min Profil</title>
+</svelte:head>
+<div class="mx-auto max-w-4xl space-y-8 px-4">
+	<div class="overflow-hidden rounded-2xl border-2 bg-background shadow-lg">
+		<div class="border-b bg-gray-200 px-8 py-6">
+			<div class="flex items-center justify-between">
+				<div>
+					<h2 class="text-xl font-semibold text-gray-800">Profilinnstillinger</h2>
+					<p class="text-sm text-gray-600">Oppdater din informasjon og innstillinger</p>
+				</div>
+			</div>
+		</div>
+		<div class="p-8">
+			{#if form?.message}
+				<div
+					class="mb-4 rounded-md p-4 {form.success
+						? 'bg-green-50 text-green-700'
+						: 'bg-red-50 text-red-700'}"
+				>
+					<p>{form.message}</p>
+				</div>
+			{/if}
+
+			<form id="profile-form" method="POST" action="?/save" use:enhance>
+				<div class="group">
+					<div class="rounded-xl border-2 bg-background p-6 shadow-lg">
+						<div class="mb-6">
+							<h3 class="flex items-center gap-2 text-lg font-medium text-gray-800">
+								Kontaktinformasjon
+							</h3>
+							<p class="text-sm text-gray-600">Oppdater din alternative e-postadresse</p>
+						</div>
+						<div class="space-y-4">
+							<FormInput
+								type="email"
+								id="altEmail"
+								name="altEmail"
+								label="Alternativ e-post"
+								bind:value={data.user.altEmail}
+								placeholder="din.epost@example.com"
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="flex justify-end gap-4 border-t pt-6">
+					<Button
+						type="submit"
+						intent="primary"
+						disabled={isSubmitting}
+						class="flex items-center gap-2"
+					>
+						<Save size={16} />
+						{isSubmitting ? 'Lagrer...' : 'Lagre endringer'}
+					</Button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

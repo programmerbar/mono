@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD `alt_email` text;

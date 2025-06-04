@@ -14,6 +14,8 @@
 		onSelect?.(user);
 	}
 
+	let mail = '';
+
 	function handleKeyDown(event: KeyboardEvent) {
 		if (event.key === 'Enter' || event.key === ' ') {
 			handleClick();
@@ -31,7 +33,6 @@
 	onkeydown={handleKeyDown}
 	aria-label={`Click to view details of ${user.name}`}
 >
-	<!-- User avatar and name -->
 	<div class="mb-2 flex justify-center">
 		<div class="flex h-16 w-16 items-center justify-center rounded-full border bg-gray-200">
 			<span class="text-lg font-medium text-gray-600">{initials(user.name)}</span>
@@ -52,7 +53,9 @@
 			{/if}
 		</p>
 		<p class="mt-1 text-center text-sm">
-			<a class="hover:underline" href={mailto(user.email)}>{user.email}</a>
+			<a class="hover:underline" href={mailto(mail ? user.email : user.altEmail || user.email)}>
+				{mail ? user.email : user.altEmail || user.email}
+			</a>
 		</p>
 	</div>
 </div>
