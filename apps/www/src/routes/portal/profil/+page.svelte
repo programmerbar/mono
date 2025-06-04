@@ -5,7 +5,6 @@
 	import { Save } from '@lucide/svelte';
 
 	let { data, form } = $props();
-	let isSubmitting = $state(false);
 </script>
 
 <svelte:head>
@@ -53,14 +52,9 @@
 					</div>
 				</div>
 				<div class="flex justify-end pt-6">
-					<Button
-						type="submit"
-						intent="primary"
-						disabled={isSubmitting}
-						class="flex items-center gap-2"
-					>
+					<Button type="submit" intent="primary" class="flex items-center gap-2">
 						<Save size={16} />
-						{isSubmitting ? 'Lagrer...' : 'Lagre endringer'}
+						Lagre endringer
 					</Button>
 				</div>
 			</form>
