@@ -67,7 +67,85 @@ export class EventService {
 		return event;
 	}
 
+	async updateEvent(id: string, eventData: { name: string; date: Date }) {
+		const event = await this.#db
+			.insert(events)
+			.values({
+				id,
+				...eventData
+			})
+			.onConflictDoUpdate({
+				target: events.id,
+				set: eventData
+			})
+			.returning()
+			.then((rows) => rows[0]);
+
+		return event;
+	}
+
+	async updateShift(id: string, shiftData: { eventId: string; startAt: Date; endAt: Date }) {
+		const shift = await this.#db
+			.insert(shifts)
+			.values({
+				id,
+				...shiftData
+			})
+			.onConflictDoUpdate({
+				target: shifts.id,
+				set: shiftData
+			})
+			.returning()
+			.then((rows) => rows[0]);
+		return shift;
+	}
+
+	async findUpcomingEvents() {
+		const event = await this.#db.query.events.findMany({
+			orderBy: (row, { asc }) => [asc(row.date)],
+			with: {
+				shifts: {
+					with: {
+						members: {
+							with: {
+								user: true
+							}
+						}
+					}
+				}
+			},
+			where: (events, { gte }) => gte(events.date, new Date())
+		});
+
+		return event;
+	}
+
+	async findPastEvents() {
+		const event = await this.#db.query.events.findMany({
+			orderBy: (row, { desc }) => [desc(row.date)],
+			with: {
+				shifts: {
+					with: {
+						members: {
+							with: {
+								user: true
+							}
+						}
+					}
+				}
+			},
+			where: (events, { lt }) => lt(events.date, new Date())
+		});
+
+		return event;
+	}
+
 	async delete(id: string) {
 		await this.#db.delete(events).where(eq(events.id, id));
+	}
+
+	async deleteShift(id: string) {
+		await this.#db.delete(userShifts).where(eq(userShifts.shiftId, id));
+		await this.#db.delete(shifts).where(eq(shifts.id, id));
 	}
 }

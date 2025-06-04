@@ -18,3 +18,7 @@ export const time = (date: Dateish) => {
 export const normalDate = (date: Dateish) => {
 	return format(new Date(date), 'dd.MM.yyyy HH:mm');
 };
+
+export const ISOStandard = (date: Dateish) => {
+	return format(new Date(date), "yyyy-MM-dd'T'HH:mm");
+};

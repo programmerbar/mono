@@ -13,9 +13,11 @@
 	let search = $state('');
 
 	let filteredUsers = $derived.by(() =>
-		data.users.filter((user) => {
-			return user.name.toLowerCase().includes(search.toLowerCase());
-		})
+		data.users
+			.filter((user) => {
+				return user.name.toLowerCase().includes(search.toLowerCase());
+			})
+			.sort((a, b) => a.name.localeCompare(b.name))
 	);
 </script>
 
