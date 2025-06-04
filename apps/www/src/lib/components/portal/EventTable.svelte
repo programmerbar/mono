@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { formatDate } from '$lib/date';
-	import { goto } from '$app/navigation';
 	import { SquarePen } from '@lucide/svelte';
 	import { getUser } from '$lib/context/user.context';
 	import Button from '../ui/Button.svelte';
@@ -93,20 +92,16 @@
 
 	let isMobile = $state(false);
 
+	const handleResize = () => {
+		isMobile = window.innerWidth < 568;
+	};
+
 	$effect(() => {
-		const updateLayout = () => {
-			isMobile = window.innerWidth < 546;
-		};
-
-		updateLayout();
-		window.addEventListener('resize', updateLayout);
-
-		return () => {
-			window.removeEventListener('resize', updateLayout);
-		};
+		handleResize();
 	});
 </script>
 
+<svelte:window onresize={handleResize} />
 <div class="border-gray overflow-hidden rounded-2xl border-2 bg-background shadow-lg">
 	<div class="flex flex-wrap gap-2 border-b-2 bg-gray-200 p-2">
 		<button
@@ -128,29 +123,24 @@
 		>
 			Tidligere arrangementer
 		</button>
-
-		{#if isMobile && $user?.role === 'board'}
-			<a
-				href="arrangementer/ny"
-				class="w-full cursor-pointer rounded-lg bg-blue-50 px-6 py-3 font-semibold text-blue-600"
-			>
-				<button class="text-center"> Nytt Arrangement </button>
-			</a>
-		{/if}
 	</div>
 
-	<div class="flex items-center gap-2 p-2">
+	<div class="flex {isMobile ? 'flex-col' : 'flex-row items-center'} gap-2 p-2">
+		{#if $user?.role === 'board'}
+			<a href="arrangementer/ny" class={isMobile ? 'order-first w-full' : 'order-last'}>
+				<Button type="button" intent="primary" class={isMobile ? 'w-full' : ''}>
+					Nytt arrangement
+				</Button>
+			</a>
+		{/if}
+
 		<Input
 			type="search"
 			placeholder="Søk etter arrangementer..."
 			bind:value={search}
-			class="w-full flex-1 border-2 {isMobile || !($user?.role === 'board') ? 'pr-4' : 'pr-32'}"
+			class="w-full flex-1 border-2
+      {isMobile || !($user?.role === 'board') ? 'pr-4' : 'pr-32'}"
 		/>
-		{#if !isMobile && $user?.role === 'board'}
-			<a href="arrangementer/ny">
-				<Button type="button" intent="primary">Nytt arrangement</Button>
-			</a>
-		{/if}
 	</div>
 
 	{#if filteredEvents.length === 0}
@@ -189,11 +179,10 @@
 				<tbody class="whitespace-nowrap break-words border-b border-gray-100">
 					{#each filteredEvents as event (event.id)}
 						{@const status = getEventStatus(event)}
-						<tr
-							class="cursor-pointer hover:bg-gray-50"
-							onclick={() => goto(`arrangementer/${event.id}`)}
-						>
+						<tr class="relative cursor-pointer hover:bg-gray-50">
 							<td class="overflow-hidden overflow-ellipsis p-4">
+								<a href="arrangementer/{event.id}" class="absolute inset-0 z-0" aria-hidden="true">
+								</a>
 								{event.name}
 							</td>
 							{#if isMobile}
@@ -215,7 +204,7 @@
 										{#if $user?.role === 'board'}
 											<a
 												href="arrangementer/{event.id}/edit"
-												class="inline-flex text-gray-400 opacity-70 transition-all duration-200 ease-in-out hover:text-blue-500 hover:opacity-100"
+												class="relative z-10 inline-flex text-gray-400 opacity-70 transition-all duration-200 ease-in-out hover:text-blue-500 hover:opacity-100"
 												aria-label="Rediger arrangement"
 											>
 												<SquarePen size={18} />
