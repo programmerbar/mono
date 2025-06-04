@@ -1,4 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
+import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -19,8 +20,9 @@ export const actions: Actions = {
 		const data = await request.formData();
 		const altEmail = data.get('altEmail') as string;
 
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if (!emailRegex.test(altEmail)) {
+		const isEmail = (x: unknown) => z.string().email().parse(x);
+
+		if (!isEmail(altEmail)) {
 			return fail(400, {
 				success: false,
 				message: 'Ugyldig e-postadresse',
