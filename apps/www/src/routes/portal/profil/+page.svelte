@@ -31,7 +31,6 @@
 					<p>{form.message}</p>
 				</div>
 			{/if}
-
 			<form id="profile-form" method="POST" action="?/save" use:enhance>
 				<div class="group">
 					<div class="rounded-xl border-2 bg-background p-6 shadow-lg">
@@ -53,7 +52,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="flex justify-end gap-4 border-t pt-6">
+				<div class="flex justify-end pt-6">
 					<Button
 						type="submit"
 						intent="primary"
