@@ -7,6 +7,8 @@ import {
   Tailwind,
 } from "@react-email/components";
 
+import { normalDate } from "$lib/date";
+
 export interface ShiftEmailProps {
   shift: {
     startAt: string;
@@ -36,11 +38,13 @@ const ShiftEmail = ({ shift, user }: ShiftEmailProps) => {
             </Text>
 
             <Text className="mt-2">
-              <strong>Fra:</strong> {new Date(shift.startAt).toLocaleString()}
+              <strong>Fra:</strong>{" "}
+              {normalDate(new Date(shift.startAt).toLocaleString())}
             </Text>
 
             <Text className="mt-1">
-              <strong>Til:</strong> {new Date(shift.endAt).toLocaleString()}
+              <strong>Til:</strong>{" "}
+              {normalDate(new Date(shift.endAt).toLocaleString())}
             </Text>
 
             {shift.description && (
