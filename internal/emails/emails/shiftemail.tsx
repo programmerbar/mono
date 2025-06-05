@@ -36,11 +36,13 @@ const ShiftEmail = ({ shift, user }: ShiftEmailProps) => {
             </Text>
 
             <Text className="mt-2">
-              <strong>Fra:</strong> {new Date(shift.startAt).toLocaleString()}
+              <strong>Fra:</strong>{" "}
+              {new Date(shift.startAt).toLocaleString("nb-NO")}
             </Text>
 
             <Text className="mt-1">
-              <strong>Til:</strong> {new Date(shift.endAt).toLocaleString()}
+              <strong>Til:</strong>{" "}
+              {new Date(shift.endAt).toLocaleString("nb-NO")}
             </Text>
 
             {shift.description && (

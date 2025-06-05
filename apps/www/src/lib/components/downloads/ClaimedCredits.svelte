@@ -3,18 +3,11 @@
 	import { Download } from '@lucide/svelte';
 	import Input from '../ui/Input.svelte';
 	import Button from '../ui/Button.svelte';
+	import { ISOStandard } from '$lib/date';
 
 	let startDate = $state('');
 	let loading = $state(false);
-	let endDate = $state('');
-
-	$effect(() => {
-		if (!endDate) {
-			const today = new Date();
-			const formattedDate = today.toISOString().slice(0, 16);
-			endDate = formattedDate;
-		}
-	});
+	let endDate = $derived(ISOStandard(new Date()));
 </script>
 
 <div class="flex max-w-xs flex-col gap-4">

@@ -4,6 +4,7 @@ import { fail } from '@sveltejs/kit';
 import { getProducts } from '$lib/api/sanity/products';
 import { claimedCredits, users } from '$lib/db/schemas';
 import { gte, eq, desc, lte, and } from 'drizzle-orm';
+import { formatDate } from '$lib/date';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const userId = await locals.user?.id;
@@ -175,20 +176,6 @@ export const actions: Actions = {
 				stringField = stringField.replace(/"/g, '""');
 
 				return `"${stringField}"`;
-			};
-
-			const formatDate = (date: Date): string => {
-				return date
-					.toLocaleString('en-US', {
-						year: 'numeric',
-						month: '2-digit',
-						day: '2-digit',
-						hour: '2-digit',
-						minute: '2-digit',
-						second: '2-digit',
-						hour12: false
-					})
-					.replace(/,/g, '');
 			};
 
 			const headers = ['Product', 'Name', 'Cost', 'Created At'];

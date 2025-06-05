@@ -10,6 +10,7 @@
 	import { FilterState } from '$lib/states/filter-state.svelte';
 	import { urlFor } from '$lib/api/sanity/image';
 	import Button from '$lib/components/ui/Button.svelte';
+	import { normalDate } from '$lib/date';
 
 	let loading = $state(false);
 	let selectedProduct = $state<null | Product>(null);
@@ -87,16 +88,6 @@
 			timerInterval = null;
 		}
 		claimedProduct = null;
-	}
-
-	function formatDate(date: Date) {
-		return new Date(date).toLocaleString('no-NO', {
-			day: '2-digit',
-			month: '2-digit',
-			year: 'numeric',
-			hour: '2-digit',
-			minute: '2-digit'
-		});
 	}
 </script>
 
@@ -254,7 +245,7 @@
 
 	{#if data.lastClaimed}
 		<p class="mt-8 text-center text-lg text-gray-600">
-			Historikk: {data.lastClaimed.productName} - {formatDate(data.lastClaimed.claimedAt)}
+			Historikk: {data.lastClaimed.productName} - {normalDate(data.lastClaimed.claimedAt)}
 		</p>
 	{/if}
 {/if}
