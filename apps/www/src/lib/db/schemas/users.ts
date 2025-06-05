@@ -15,7 +15,8 @@ export const users = sqliteTable(
 		role: text({ enum: ['board', 'normal'] })
 			.notNull()
 			.default('normal'),
-		additionalBeers: integer().default(0).notNull()
+		additionalBeers: integer().default(0).notNull(),
+		altEmail: text().default('')
 	},
 	(t) => [uniqueIndex('email_idx').on(t.email), uniqueIndex('feide_id_idx').on(t.feideId)]
 );

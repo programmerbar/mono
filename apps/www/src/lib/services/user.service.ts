@@ -36,6 +36,15 @@ export class UserService {
 			.then((rows) => rows[0]);
 	}
 
+	async updateAltEmail(userId: string, email: string) {
+		return await this.#db
+			.update(users)
+			.set({ altEmail: email })
+			.where(eq(users.id, userId))
+			.returning()
+			.then((rows) => rows[0]);
+	}
+
 	async findById(userId: string) {
 		const user = await this.#db
 			.select()

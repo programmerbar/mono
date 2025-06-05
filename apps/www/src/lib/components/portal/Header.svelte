@@ -36,6 +36,10 @@
 			href: '/portal/brukere'
 		},
 		{
+			name: 'Min Profil',
+			href: '/portal/profil'
+		},
+		{
 			name: 'Admin',
 			href: '/portal/admin',
 			visible: $user?.role === 'board'
