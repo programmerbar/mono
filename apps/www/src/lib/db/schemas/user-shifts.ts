@@ -3,6 +3,7 @@ import { relations, type InferSelectModel, type InferInsertModel } from 'drizzle
 import { shifts } from './shifts';
 import { users } from './users';
 
+
 export const userShifts = sqliteTable('user_shift', {
 	userId: text()
 		.notNull()

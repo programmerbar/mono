@@ -1,8 +1,13 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import Combobox from '$lib/components/ui/Combobox.svelte';
 	import { formatDate } from '$lib/date';
+	import { enhance } from '$app/forms';
 
 	let { data } = $props();
+	let selectedReferrerName = $state('');
+	let selectedReferrerId = $state('');
 </script>
 
 <svelte:head>
@@ -21,9 +26,45 @@
 		</div>
 	</div>
 
+	{#if data.canRefer}
+		<form method="POST" action="?/refer" use:enhance>
+			<div class="rounded-lg border-2 bg-background p-4 shadow-sm">
+				<div class="space-y-4">
+					<div>
+						<p class="mb-2 block text-sm font-medium text-gray-700">
+							Skriv namnet på den som referte deg
+						</p>
+						<div class="flex items-end gap-2">
+							<div class="flex-1">
+								<Combobox
+									name="referrer"
+									bind:value={selectedReferrerName}
+									onchange={(option) => {
+										selectedReferrerId = option?.value || '';
+									}}
+									options={data.users}
+									placeholder="Søk etter navn..."
+									class="w-full"
+								/>
+							</div>
+							<Button
+								type="submit"
+								intent="primary"
+								disabled={!selectedReferrerId}
+								class="flex shrink-0 items-center gap-2"
+							>
+								Referrer
+							</Button>
+						</div>
+						<input type="hidden" name="referrerId" value={selectedReferrerId} />
+					</div>
+				</div>
+			</div>
+		</form>
+	{/if}
+
 	<section>
 		<Heading level={2}>Kommende vakter</Heading>
-
 		<ul class="mt-4 flex flex-col gap-4">
 			{#each data.upcomingShifts as shift}
 				<li>

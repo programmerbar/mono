@@ -125,7 +125,7 @@
 		</button>
 	</div>
 
-	<div class="flex {isMobile ? 'flex-col' : 'flex-row items-center'} gap-2 p-2">
+	<div class="flex {isMobile ? 'flex-col' : 'flex-row items-center'} gap-1 p-2">
 		{#if $user?.role === 'board'}
 			<a href="arrangementer/ny" class={isMobile ? 'order-first w-full' : 'order-last'}>
 				<Button type="button" intent="primary" class={isMobile ? 'w-full' : ''}>
