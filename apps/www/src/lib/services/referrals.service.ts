@@ -1,5 +1,5 @@
 import type { Database } from '$lib/db/drizzle';
-import { eq, and, ilike } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { referrals, users, type ReferralInsert } from '$lib/db/schemas';
 import { nanoid } from 'nanoid';
 
@@ -8,12 +8,6 @@ export class ReferralService {
 
 	constructor(db: Database) {
 		this.#db = db;
-	}
-
-	async findReferrerByName(name: string) {
-		return await this.#db.query.users.findMany({
-			where: (row, { ilike }) => ilike(row.name, `%${name}%`)
-		});
 	}
 
 	async createReferral(referrerId: string, referredId: string) {
@@ -84,14 +78,21 @@ export class ReferralService {
 	}
 
 	async awardReferralCredit(referrerId: string, creditAmount = 1) {
-		return await this.#db
+		const user = await this.#db.query.users.findFirst({
+			where: (row, { eq }) => eq(row.id, referrerId)
+		});
+
+		if (!user) return null;
+
+		const [updated] = await this.#db
 			.update(users)
 			.set({
-				additionalBeers: sql`${users.additionalBeers} + ${creditAmount}`
+				additionalBeers: (user.additionalBeers || 0) + creditAmount
 			})
 			.where(eq(users.id, referrerId))
-			.returning()
-			.then((rows) => rows[0]);
+			.returning();
+
+		return updated;
 	}
 
 	async getReferralStats(userId: string) {
