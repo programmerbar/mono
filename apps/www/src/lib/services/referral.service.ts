@@ -62,6 +62,7 @@ export class ReferralService {
 			}
 		});
 	}
+
 	async canUserRefer(userId: string) {
 		const existingReferrals = await this.#db
 			.select()

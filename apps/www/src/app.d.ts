@@ -32,6 +32,7 @@ declare global {
 			banService: import('$lib/services/ban.service').BanService;
 			notificationService: import('$lib/services/notification.service').NotificationService;
 			groupsService: import('$lib/services/groups.service').GroupsService;
+			referralService: import('$lib/services/referral.service').ReferralService;
 		}
 		// interface PageData {}
 		// interface PageState {}

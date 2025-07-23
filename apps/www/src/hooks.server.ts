@@ -9,7 +9,7 @@ import { EventService } from '$lib/services/event.service';
 import { GroupsService } from '$lib/services/groups.service';
 import { InvitationService } from '$lib/services/invitation.service';
 import { NotificationService } from '$lib/services/notification.service';
-import { ReferralService } from '$lib/services/referrals.service'
+import { ReferralService } from '$lib/services/referral.service';
 import { ShiftService } from '$lib/services/shift.service';
 import { StatusService } from '$lib/services/status.service';
 import { UserService } from '$lib/services/user.service';
@@ -81,7 +81,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const groupsService = new GroupsService(db);
 	event.locals.groupsService = groupsService;
-
 
 	// Validate auth
 	const sessionId = event.cookies.get(auth.sessionCookieName);
