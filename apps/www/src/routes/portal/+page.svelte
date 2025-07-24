@@ -15,16 +15,6 @@
 </svelte:head>
 
 <div class="space-y-10">
-	<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-		<div class="flex flex-col items-center justify-center rounded-lg border bg-white p-4">
-			<span class="text-gray-600">Vakter ferdig:</span>
-			<span class="text-2xl font-medium">{data.shiftsCompleted}</span>
-		</div>
-		<div class="flex flex-col items-center justify-center rounded-lg border bg-white p-4">
-			<span class="text-gray-600">Gratis øl igjen:</span>
-			<span class="text-2xl font-medium">{data.unclaimedBeers}</span>
-		</div>
-	</div>
 
 	{#if data.canRefer}
 		<form method="POST" action="?/refer" use:enhance>
@@ -62,6 +52,35 @@
 			</div>
 		</form>
 	{/if}
+
+	<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+		<div class="flex flex-col items-center justify-center rounded-lg border bg-white p-4">
+			<span class="text-gray-600">Vakter ferdig:</span>
+			<span class="text-2xl font-medium">{data.shiftsCompleted}</span>
+		</div>
+		<div class="flex flex-col items-center justify-center rounded-lg border bg-white p-4">
+			<span class="text-gray-600">Gratis øl igjen:</span>
+			<span class="text-2xl font-medium">{data.unclaimedBeers}</span>
+		</div>
+	</div>
+
+<section>
+		<Heading level={2}>Referral Stats</Heading>
+		<div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+			<div class="flex flex-col items-center justify-center rounded-lg border-2 bg-background p-4">
+				<span class="text-gray-600">Total:</span>
+				<span class="text-2xl font-medium">{data.referralStats.totalReferrals}</span>
+			</div>
+			<div class="flex flex-col items-center justify-center rounded-lg border-2 bg-background p-4">
+				<span class="text-gray-600">Fullført 1 vakt:</span>
+				<span class="text-2xl font-medium text-green-600">{data.referralStats.completedReferrals}</span>
+			</div>
+			<div class="flex flex-col items-center justify-center rounded-lg border-2 bg-background p-4">
+				<span class="text-gray-600">Ventende:</span>
+				<span class="text-2xl font-medium text-orange-600">{data.referralStats.pendingReferrals}</span>
+			</div>
+		</div>
+	</section>
 
 	<section>
 		<Heading level={2}>Kommende vakter</Heading>

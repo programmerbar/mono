@@ -6,7 +6,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		throw redirect(307, '/login');
 	}
 
-	const [userShifts, unclaimedBeers, upcomingShifts, canUserRefer, users] = await Promise.all([
+	const [userShifts, unclaimedBeers, upcomingShifts, canUserRefer, users, referralStats] = await Promise.all([
 		locals.shiftService.findCompletedShiftsByUserId(locals.user.id),
 		locals.beerService.getTotalAvailableBeers(locals.user.id),
 		locals.shiftService.findUpcomingShiftsByUserId(locals.user.id),
@@ -16,7 +16,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 				label: user.name,
 				value: user.id
 			}))
-		)
+		),
+    locals.referralService.getReferralStats(locals.user.id)
 	]);
 
 	checkAndCompleteReferrals(locals).catch(console.error);
@@ -26,7 +27,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 		unclaimedBeers: unclaimedBeers,
 		upcomingShifts,
 		canRefer: canUserRefer,
-		users
+		users,
+    referralStats
 	};
 };
 
@@ -58,9 +60,9 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const referrerId = formData.get('referrerId')?.toString();
 
-		if (referrerId === locals.user.id) {
-			return fail(400, { error: 'Du kan ikke referrere deg selv' });
-		}
+		// if (referrerId === locals.user.id) {
+		// 	return fail(400, { error: 'Du kan ikke referrere deg selv' });
+		// }
 
 		if (!referrerId) {
 			return fail(400, { error: 'No person found' });
