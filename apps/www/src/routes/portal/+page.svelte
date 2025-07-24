@@ -31,7 +31,7 @@
 									onchange={(option) => {
 										selectedReferrerId = option?.value || '';
 									}}
-									options={data.users}
+                  options={data.users.filter(user => user.value !== data.currentUserId)}
 									placeholder="Søk etter navn..."
 									class="w-full"
 								/>

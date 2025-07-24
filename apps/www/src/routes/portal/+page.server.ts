@@ -45,7 +45,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 		upcomingShifts,
 		canRefer: canUserRefer,
 		users,
-		referralStats
+		referralStats,
+    currentUserId: locals.user.id
 	};
 };
 

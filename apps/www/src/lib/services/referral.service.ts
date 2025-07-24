@@ -64,12 +64,11 @@ export class ReferralService {
 	}
 
 	async canUserRefer(userId: string) {
-		const existingReferrals = await this.#db
+		const existingReferral = await this.#db
 			.select()
 			.from(referrals)
-			.where(eq(referrals.referredBy, userId));
-
-		return existingReferrals.length === 0;
+			.where(eq(referrals.referred, userId));
+		return existingReferral.length === 0;
 	}
 
 	async findPendingReferralForUser(userId: string) {
