@@ -27,8 +27,8 @@ export const usersRelations = relations(users, ({ many }) => ({
 	shifts: many(shifts),
 	memberships: many(usersGroups),
 	notifications: many(notifications),
-  referralsGiven: many(referrals, { relationName: 'referrer'}),
-  referralsReceived: many(referrals, {relationName: 'referred'})
+	referralsGiven: many(referrals, { relationName: 'referrer' }),
+	referralsReceived: many(referrals, { relationName: 'referred' })
 }));
 
 export type User = InferSelectModel<typeof users>;

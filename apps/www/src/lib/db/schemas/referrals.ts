@@ -1,11 +1,15 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { users } from './users';
-import { relations, type InferSelectModel, type InferInsertModel } from 'drizzle-orm'; 
+import { relations, type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
 
-export const referrals = sqliteTable('referral', { 
+export const referrals = sqliteTable('referral', {
 	id: text('id').primaryKey(),
-	referredBy: text().notNull().references(() => users.id), 
-	referred: text().notNull().references(() => users.id), 
+	referredBy: text()
+		.notNull()
+		.references(() => users.id),
+	referred: text()
+		.notNull()
+		.references(() => users.id),
 	status: text({ enum: ['pending', 'completed', 'expired'] })
 		.notNull()
 		.default('pending'),
@@ -16,17 +20,17 @@ export const referrals = sqliteTable('referral', {
 });
 
 export const referralsRelations = relations(referrals, ({ one }) => ({
-	referrer: one(users, { 
+	referrer: one(users, {
 		fields: [referrals.referredBy],
 		references: [users.id],
 		relationName: 'referrer'
 	}),
 	referred: one(users, {
-		fields: [referrals.referred], 
+		fields: [referrals.referred],
 		references: [users.id],
 		relationName: 'referred'
 	})
 }));
 
-export type Referral = InferSelectModel<typeof referrals>; 
-export type ReferralInsert = InferInsertModel<typeof referrals>; 
+export type Referral = InferSelectModel<typeof referrals>;
+export type ReferralInsert = InferInsertModel<typeof referrals>;

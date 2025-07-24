@@ -6,33 +6,22 @@ export const load: PageServerLoad = async ({ locals }) => {
 		throw redirect(307, '/login');
 	}
 
-	const [userShifts, unclaimedBeers, upcomingShifts, canUserRefer, users, referralStats] = await Promise.all([
-		locals.shiftService.findCompletedShiftsByUserId(locals.user.id),
-		locals.beerService.getTotalAvailableBeers(locals.user.id),
-		locals.shiftService.findUpcomingShiftsByUserId(locals.user.id),
-		locals.referralService.canUserRefer(locals.user.id),
-		locals.userService.findAll().then((users) =>
-			users.map((user) => ({
-				label: user.name,
-				value: user.id
-			}))
-		),
-    locals.referralService.getReferralStats(locals.user.id)
-	]);
+	const [userShifts, unclaimedBeers, upcomingShifts, canUserRefer, users, referralStats] =
+		await Promise.all([
+			locals.shiftService.findCompletedShiftsByUserId(locals.user.id),
+			locals.beerService.getTotalAvailableBeers(locals.user.id),
+			locals.shiftService.findUpcomingShiftsByUserId(locals.user.id),
+			locals.referralService.canUserRefer(locals.user.id),
+			locals.userService.findAll().then((users) =>
+				users.map((user) => ({
+					label: user.name,
+					value: user.id
+				}))
+			),
+			locals.referralService.getReferralStats(locals.user.id)
+		]);
 
-	checkAndCompleteReferrals(locals).catch(console.error);
-
-	return {
-		shiftsCompleted: userShifts.length,
-		unclaimedBeers: unclaimedBeers,
-		upcomingShifts,
-		canRefer: canUserRefer,
-		users,
-    referralStats
-	};
-};
-
-async function checkAndCompleteReferrals(locals: any) {
+	// Cheks if an referred user has had it first shift.
 	try {
 		const allUsers = await locals.userService.findAll();
 
@@ -49,7 +38,16 @@ async function checkAndCompleteReferrals(locals: any) {
 	} catch (error) {
 		console.error('Referral check failed:', error);
 	}
-}
+
+	return {
+		shiftsCompleted: userShifts.length,
+		unclaimedBeers: unclaimedBeers,
+		upcomingShifts,
+		canRefer: canUserRefer,
+		users,
+		referralStats
+	};
+};
 
 export const actions: Actions = {
 	refer: async ({ request, locals }) => {
@@ -60,9 +58,9 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const referrerId = formData.get('referrerId')?.toString();
 
-		// if (referrerId === locals.user.id) {
-		// 	return fail(400, { error: 'Du kan ikke referrere deg selv' });
-		// }
+		if (referrerId === locals.user.id) {
+			return fail(400, { error: 'Du kan ikke referrere deg selv' });
+		}
 
 		if (!referrerId) {
 			return fail(400, { error: 'No person found' });
