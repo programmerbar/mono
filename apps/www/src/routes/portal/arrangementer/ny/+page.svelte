@@ -92,7 +92,7 @@
 
 			<div>
 				<h2 class="mb-4 text-lg font-medium">Vakter</h2>
-				{#each createEventState.shifts as shift, i (shift.startAt.toString() + shift.endAt.toString())}
+				{#each createEventState.shifts as shift, i (i + shift.startAt.toString() + shift.endAt.toString())}
 					{@const startDate = shift.startAt ? new Date(shift.startAt) : new Date()}
 					{@const endDate = shift.endAt ? new Date(shift.endAt) : new Date()}
 					{@const shiftLength = differenceInHours(endDate, startDate)}
@@ -152,21 +152,23 @@
 							</p>
 
 							<div class="space-y-2">
-								{#each createEventState.shifts[i].users as user, j (user)}
+								{#each createEventState.shifts[i].users as user, j (user.id)}
 									<div class="flex items-center gap-2">
 										<Combobox
+											type="single"
 											name="user"
-											class="flex-1"
-											bind:value={createEventState.shifts[i].users[j].name}
+											inputValue={createEventState.shifts[i].users[j].name}
+											bind:value={createEventState.shifts[i].users[j].id}
 											disabledOptions={createEventState.shifts[i].users.map((user) => user.id)}
-											onchange={(option) => {
-												const id = option?.value;
-												if (id) {
-													createEventState.shifts[i].users[j].id = id;
+											onValueChange={(option) => {
+												const selectedUser = data.users.find((u) => u.value === option);
+												if (selectedUser) {
+													createEventState.shifts[i].users[j].id = option;
+													createEventState.shifts[i].users[j].name = selectedUser.label;
 												}
 											}}
-											options={data.users}
-											placeholder="Velg en bruker"
+											items={data.users}
+											inputProps={{ class: 'flex-1', placeholder: 'Velg bruker' }}
 										/>
 										<button
 											type="button"

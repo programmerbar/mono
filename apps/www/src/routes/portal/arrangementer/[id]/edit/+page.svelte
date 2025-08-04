@@ -191,22 +191,26 @@
 									{#each shift.users as user, j (user.id)}
 										<div class="flex items-center gap-2">
 											<Combobox
-												name={`shift[${i}].user[${j}].name`}
-												class="flex-1"
-												bind:value={user.name}
-												options={data.users}
+												type="single"
+												name="shift[{i}].user[{j}].id"
+												inputValue={eventState.shifts[i].users[j].name}
+												bind:value={eventState.shifts[i].users[j].id}
+												items={data.users}
 												disabledOptions={eventState.shifts[i].users
 													.filter((u) => u.id && u.id !== user.id)
 													.map((u) => u.id)}
-												onchange={(option) => {
-													if (option?.value) {
-														user.id = option.value;
-														user.name = option.label || '';
+												onValueChange={(option) => {
+													const selectedUser = data.users.find((u) => u.value === option);
+													if (selectedUser) {
+														eventState.shifts[i].users[j].id = selectedUser.value;
+														eventState.shifts[i].users[j].name = selectedUser.label;
 													}
 												}}
-												placeholder="Velg en bruker"
+												inputProps={{
+													class: 'flex-1',
+													placeholder: 'Velg en bruker'
+												}}
 											/>
-											<input type="hidden" name={`shift[${i}].user[${j}].id`} value={user.id} />
 											<button
 												type="button"
 												class="flex h-10 w-10 items-center justify-center rounded-lg border hover:text-red-500"
