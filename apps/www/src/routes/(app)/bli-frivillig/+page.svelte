@@ -8,7 +8,7 @@
 	let isSubmitting = $state(false);
 </script>
 
-<div class="mx-auto max-w-[600px] space-y-8 rounded-xl border-2 bg-background p-8">
+<div class="bg-background mx-auto max-w-[600px] space-y-8 rounded-xl border-2 p-8">
 	<div class="space-y-4">
 		<h1 class="text-center text-3xl font-bold">Bli frivillig i Programmerbar</h1>
 		<p class="text-center text-gray-600">
@@ -82,7 +82,7 @@
 		<button
 			type="submit"
 			disabled={isSubmitting}
-			class="w-full rounded-lg border-2 border-primary bg-primary p-4 text-center text-lg font-medium text-white transition-colors hover:bg-primary-dark disabled:opacity-70"
+			class="border-primary bg-primary hover:bg-primary-dark w-full rounded-lg border-2 p-4 text-center text-lg font-medium text-white transition-colors disabled:opacity-70"
 		>
 			{isSubmitting ? 'Sender...' : 'Send søknad'}
 		</button>
@@ -91,7 +91,7 @@
 		<p class="mb-2">Har du allerede ein konto?</p>
 		<a
 			href="/auth/feide"
-			class="inline-block rounded-md bg-primary px-4 py-2 text-white transition-colors hover:bg-primary-dark"
+			class="bg-primary hover:bg-primary-dark inline-block rounded-md px-4 py-2 text-white transition-colors"
 			>Logg inn</a
 		>
 	</div>

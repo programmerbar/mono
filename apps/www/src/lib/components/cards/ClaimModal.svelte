@@ -13,7 +13,7 @@
 </script>
 
 {#if claimedProduct}
-	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+	<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
 		<div class="w-[400px] rounded-lg bg-white p-6 shadow-lg">
 			<h2 class="mb-4 text-center text-2xl font-bold">Produkt claimet!</h2>
 			<div class="mb-6 flex items-center justify-center">

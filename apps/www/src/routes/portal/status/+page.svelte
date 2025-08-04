@@ -18,8 +18,8 @@
 	<title>Endre status</title>
 </svelte:head>
 
-<div class="mx-auto flex max-w-[300px] flex-col gap-2 rounded-lg border bg-background p-4">
-	{#each statusButtons as { status, Icon, label }}
+<div class="bg-background mx-auto flex max-w-[300px] flex-col gap-2 rounded-lg border p-4">
+	{#each statusButtons as { status, Icon, label } (status)}
 		{@const isSelected = data.status === status}
 		<form
 			method="post"

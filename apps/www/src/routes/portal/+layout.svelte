@@ -5,7 +5,7 @@
 </script>
 
 <div class="flex min-h-screen flex-col">
-	<div class="sticky top-0 z-10 bg-background">
+	<div class="bg-background sticky top-0 z-10">
 		<div class="mx-auto max-w-screen-lg">
 			<Header notifications={data.notifications} />
 		</div>

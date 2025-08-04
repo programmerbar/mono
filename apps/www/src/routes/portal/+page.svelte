@@ -25,10 +25,10 @@
 		<Heading level={2}>Kommende vakter</Heading>
 
 		<ul class="mt-4 flex flex-col gap-4">
-			{#each data.upcomingShifts as shift}
+			{#each data.upcomingShifts as shift (shift.shift.id)}
 				<li>
 					<a class="hover:underline" href="/portal/arrangementer/{shift.event?.id}">
-						<div class="rounded-lg border border-border bg-white p-2">
+						<div class="border-border rounded-lg border bg-white p-2">
 							<p>
 								{shift.event?.name}: {formatDate(shift.shift.startAt)} - {formatDate(
 									shift.shift.endAt

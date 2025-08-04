@@ -34,7 +34,7 @@
 	</div>
 
 	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
-		{#each filteredUsers as user}
+		{#each filteredUsers as user (user.id)}
 			<li>
 				<UserCard {user} />
 			</li>
@@ -52,11 +52,11 @@
 		<Heading>Invitasjoner</Heading>
 
 		<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
-			{#each data.invitations as invitation}
+			{#each data.invitations as invitation (invitation.id)}
 				<li class="relative block rounded-lg border bg-white p-4">
 					<form method="post" action="?/deleteInvitation" use:enhance>
 						<input name="invitationId" hidden value={invitation.id} />
-						<button class="absolute right-2 top-2 h-6 w-6 cursor-pointer text-gray-500">
+						<button class="absolute top-2 right-2 h-6 w-6 cursor-pointer text-gray-500">
 							<X class="h-6 w-6 text-gray-500" />
 						</button>
 					</form>

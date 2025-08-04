@@ -10,7 +10,6 @@
 
 	interface Props {
 		selectedUser: User;
-		currentUserRole?: 'board' | 'normal';
 		onClose: () => void;
 	}
 
@@ -40,7 +39,7 @@
 	});
 </script>
 
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
 	<div
 		in:fly={{ easing: cubicInOut, y: 20, duration: 300 }}
 		out:fly={{ easing: cubicInOut, y: 20, duration: 300 }}
@@ -82,9 +81,9 @@
 							bind:group={selectedUser.role}
 						/>
 						<span
-							class="flex items-center justify-center rounded-xl border px-2 py-px text-sm
-							  hover:bg-gray-200 peer-checked:border-transparent peer-checked:bg-primary
-							  peer-checked:text-white"
+							class="peer-checked:bg-primary flex items-center justify-center rounded-xl border px-2 py-px
+							  text-sm peer-checked:border-transparent peer-checked:text-white
+							  hover:bg-gray-200"
 						>
 							Frivillig
 						</span>
@@ -99,9 +98,9 @@
 							bind:group={selectedUser.role}
 						/>
 						<span
-							class="flex items-center justify-center rounded-xl border px-2 py-px text-sm
-							  hover:bg-gray-200 peer-checked:border-transparent peer-checked:bg-primary
-							  peer-checked:text-white"
+							class="peer-checked:bg-primary flex items-center justify-center rounded-xl border px-2 py-px
+							  text-sm peer-checked:border-transparent peer-checked:text-white
+							  hover:bg-gray-200"
 						>
 							Styret
 						</span>

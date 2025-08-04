@@ -23,7 +23,7 @@
 </svelte:head>
 
 <div class="flex flex-col-reverse md:flex-row md:space-x-6">
-	<div class="h-fit space-y-6 rounded-xl border-2 bg-background p-6 shadow-xl md:w-2/3">
+	<div class="bg-background h-fit space-y-6 rounded-xl border-2 p-6 shadow-xl md:w-2/3">
 		<h1 class="text-3xl font-semibold text-gray-900">{data.product.name}</h1>
 
 		{#if variants.length > 0}
@@ -35,7 +35,7 @@
 		{@html html}
 
 		<div>
-			{#each metadata as { title, value }}
+			{#each metadata as { title, value } (value)}
 				<div class="grid w-full grid-cols-3 border-b last:border-b-0">
 					<p class="col-span-1 font-medium">{title}</p>
 					<p class="col-span-2">{value}</p>
@@ -45,7 +45,7 @@
 	</div>
 
 	{#if data.product.image}
-		<div class="mb-6 h-fit rounded-xl border-2 bg-background shadow-xl md:mb-0 md:w-1/3">
+		<div class="bg-background mb-6 h-fit rounded-xl border-2 shadow-xl md:mb-0 md:w-1/3">
 			<img
 				class="h-64 w-full rounded-xl bg-white object-contain md:h-auto"
 				src={urlFor(data.product.image).width(500).height(500).url()}

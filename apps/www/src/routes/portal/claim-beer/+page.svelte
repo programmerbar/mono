@@ -103,7 +103,7 @@
 	<ClaimModal {claimedProduct} {timerSeconds} onClose={closeClaimPopup} />
 
 	{#if selectedProduct}
-		<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+		<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
 			<div class="w-[400px] rounded-lg bg-white p-6 shadow-lg">
 				<h2 class="mb-4 text-center text-2xl font-bold">Claim produkt</h2>
 
@@ -201,7 +201,7 @@
 
 	<div class="flex w-full flex-col gap-8 sm:mx-auto sm:max-w-screen-sm md:max-w-full md:flex-row">
 		<div>
-			<div class="mb-4 items-center justify-center rounded-xl border-2 bg-background p-4 shadow-md">
+			<div class="bg-background mb-4 items-center justify-center rounded-xl border-2 p-4 shadow-md">
 				<div class="bg-backg text-2xl font-bold text-gray-900">
 					{unclaimedBeers}
 					{unclaimedBeers === 1 ? 'bong' : 'bonger'}
@@ -219,7 +219,7 @@
 			{#if filteredProducts && filteredProducts.length > 0}
 				<p class="mb-2 text-sm text-gray-800">Viser {filteredProducts.length} resultater</p>
 				<ul class="grid w-full grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
-					{#each filteredProducts as product}
+					{#each filteredProducts as product (product._id)}
 						<li>
 							<button
 								class="block h-full w-full text-left"

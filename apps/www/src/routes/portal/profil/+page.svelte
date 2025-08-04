@@ -11,7 +11,7 @@
 	<title>Min Profil</title>
 </svelte:head>
 <div class="mx-auto max-w-4xl space-y-8 px-4">
-	<div class="overflow-hidden rounded-2xl border-2 bg-background shadow-lg">
+	<div class="bg-background overflow-hidden rounded-2xl border-2 shadow-lg">
 		<div class="border-b bg-gray-200 px-8 py-6">
 			<div class="flex items-center justify-between">
 				<div>
@@ -32,7 +32,7 @@
 			{/if}
 			<form id="profile-form" method="POST" action="?/save" use:enhance>
 				<div class="group">
-					<div class="rounded-xl border-2 bg-background p-6 shadow-lg">
+					<div class="bg-background rounded-xl border-2 p-6 shadow-lg">
 						<div class="mb-6">
 							<h3 class="flex items-center gap-2 text-lg font-medium text-gray-800">
 								Kontaktinformasjon

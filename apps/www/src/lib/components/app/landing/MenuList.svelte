@@ -24,17 +24,17 @@
 	});
 </script>
 
-<div class="rounded-xl border-2 bg-background p-2 shadow-md">
+<div class="bg-background rounded-xl border-2 p-2 shadow-md">
 	<h2 class="py-6 text-center font-mono text-3xl font-medium md:text-4xl">
 		<a href="/meny" class="hover:underline">Meny</a>
 	</h2>
 
 	<ul class="flex flex-col divide-y overflow-hidden">
-		{#each products.slice(start, end) as { _id, name, producer, priceList }}
+		{#each products.slice(start, end) as { _id, name, producer, priceList } (_id)}
 			<li class="py-1">
 				<a href="/produkt/{_id}" class="group overflow-hidden">
 					<div
-						class="flex h-16 items-center justify-between rounded-xl px-4 py-2 transition-all hover:bg-primary-light"
+						class="hover:bg-primary-light flex h-16 items-center justify-between rounded-xl px-4 py-2 transition-all"
 					>
 						<div class="flex flex-col">
 							<p class="text-lg group-hover:underline md:text-xl">{name}</p>

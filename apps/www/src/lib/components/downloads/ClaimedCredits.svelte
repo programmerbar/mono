@@ -11,7 +11,7 @@
 </script>
 
 <div class="flex max-w-xs flex-col gap-4">
-	<div class="mt-6 rounded-lg border-2 bg-background p-4 shadow-lg">
+	<div class="bg-background mt-6 rounded-lg border-2 p-4 shadow-lg">
 		<h3 class="mb-4 text-lg font-semibold">Last ned CSV fil</h3>
 
 		<form

@@ -102,7 +102,7 @@
 </script>
 
 <svelte:window onresize={handleResize} />
-<div class="border-gray overflow-hidden rounded-2xl border-2 bg-background shadow-lg">
+<div class="border-gray bg-background overflow-hidden rounded-2xl border-2 shadow-lg">
 	<div class="flex flex-wrap gap-2 border-b-2 bg-gray-200 p-2">
 		<button
 			class="min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out {activeTab ===
@@ -176,27 +176,27 @@
 						{/if}
 					</tr>
 				</thead>
-				<tbody class="whitespace-nowrap break-words border-b border-gray-100">
+				<tbody class="border-b border-gray-100 break-words whitespace-nowrap">
 					{#each filteredEvents as event (event.id)}
 						{@const status = getEventStatus(event)}
 						<tr class="relative cursor-pointer hover:bg-gray-50">
-							<td class="overflow-hidden overflow-ellipsis p-4">
+							<td class="overflow-hidden p-4 overflow-ellipsis">
 								<a href="arrangementer/{event.id}" class="absolute inset-0 z-0" aria-hidden="true">
 								</a>
 								{event.name}
 							</td>
 							{#if isMobile}
-								<td class="overflow-hidden overflow-ellipsis p-4 {getStatusClass(status)}">
+								<td class="overflow-hidden p-4 overflow-ellipsis {getStatusClass(status)}">
 									{status}
 								</td>
 							{:else}
-								<td class="overflow-hidden overflow-ellipsis p-4">
+								<td class="overflow-hidden p-4 overflow-ellipsis">
 									{formatDate(event.date)}
 								</td>
-								<td class="overflow-hidden overflow-ellipsis p-4">
+								<td class="overflow-hidden p-4 overflow-ellipsis">
 									{countShifts(event)}
 								</td>
-								<td class="overflow-hidden overflow-ellipsis p-4 {getStatusClass(status)}">
+								<td class="overflow-hidden p-4 overflow-ellipsis {getStatusClass(status)}">
 									{status}
 								</td>
 								{#if !isMobile}

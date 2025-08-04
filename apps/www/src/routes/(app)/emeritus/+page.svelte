@@ -1,18 +1,8 @@
 <script lang="ts">
-	// Define the props interface
-	interface Props {
-		groupLogo?: string;
-		groupName?: string;
-		estYear?: string;
-		description?: string;
-	}
-
-	let {
-		groupLogo = '/android-chrome-192x192.png',
-		groupName = 'Programmerbar',
-		estYear = '2020',
-		description = 'Tidligere og nåværende medlemmer av echo Programmerbar.'
-	}: Props = $props();
+	const groupLogo = '/android-chrome-192x192.png';
+	const groupName = 'Programmerbar';
+	const estYear = '2020';
+	const description = 'Tidligere og nåværende medlemmer av echo Programmerbar';
 
 	const coFounders = [
 		{ name: 'Brigt A.T Håvardstun', role: 'Co-founder' },
@@ -67,11 +57,11 @@
 	<div class="mx-auto my-10 max-w-md space-y-8">
 		<!-- Co-founders -->
 		<ul class="list-none p-0 text-lg">
-			{#each coFounders as founder}
+			{#each coFounders as founder (founder.name)}
 				<li class="relative mx-auto w-fit">
 					<!-- Inline crown icon -->
 					<svg
-						class="absolute -left-6 top-1 h-4 w-4 text-yellow-400"
+						class="absolute top-1 -left-6 h-4 w-4 text-yellow-400"
 						xmlns="http://www.w3.org/2000/svg"
 						fill="currentColor"
 						viewBox="0 0 16 16"
@@ -88,7 +78,7 @@
 		<!-- Members -->
 		<h2 class="text-xl font-bold">Styremedlemmer</h2>
 		<ul class="list-none p-0 text-lg">
-			{#each members as member}
+			{#each members as member (member)}
 				<li>{member}</li>
 			{/each}
 		</ul>
@@ -96,7 +86,7 @@
 		<!-- Past Members -->
 		<h2 class="mt-16 text-xl font-bold">Tidligere Styremedlemmer</h2>
 		<ul class="list-none p-0 text-lg">
-			{#each pastMembers as member}
+			{#each pastMembers as member (member)}
 				<li>{member}</li>
 			{/each}
 		</ul>

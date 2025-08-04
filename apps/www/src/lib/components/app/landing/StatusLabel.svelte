@@ -10,7 +10,7 @@
 </script>
 
 <div
-	class="mx-auto flex w-fit items-center gap-2 rounded-xl border bg-background px-4 py-1.5 text-sm font-medium shadow-md"
+	class="bg-background mx-auto flex w-fit items-center gap-2 rounded-xl border px-4 py-1.5 text-sm font-medium shadow-md"
 >
 	<div
 		class={cn('h-3 w-3 rounded-full shadow-lg', {

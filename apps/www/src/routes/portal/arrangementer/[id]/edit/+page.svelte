@@ -45,7 +45,7 @@
 	<title>Rediger arrangement: {eventState.name}</title>
 </svelte:head>
 
-<div class="mx-auto max-w-4xl overflow-hidden rounded-xl border-2 bg-background shadow-lg">
+<div class="bg-background mx-auto max-w-4xl overflow-hidden rounded-xl border-2 shadow-lg">
 	<div class="items-centter flex justify-between border-b-2 bg-gray-200 px-6 py-4">
 		<h2 class="text-lg font-semibold">Arrangement detaljer</h2>
 		<form method="POST" action="?/delete" use:enhance>
@@ -96,14 +96,14 @@
 
 		<form method="POST" action="?/save" use:enhance>
 			<input type="hidden" name="shiftsCount" value={eventState.shifts.length} />
-			{#each deletedShiftIds as id}
+			{#each deletedShiftIds as id (id)}
 				<input type="hidden" name="deletedShiftIds" value={id} />
 			{/each}
-			{#each removedUserShifts as keyValue}
+			{#each removedUserShifts as keyValue (keyValue)}
 				<input type="hidden" name="removedUserShifts" value={keyValue} />
 			{/each}
 
-			<div class="mb-6 rounded-lg border-2 bg-background p-4 shadow-lg">
+			<div class="bg-background mb-6 rounded-lg border-2 p-4 shadow-lg">
 				<div class="space-y-4">
 					<FormInput label="Navn" name="name" bind:value={eventState.name} required />
 					<FormInput
@@ -130,8 +130,8 @@
 					</Button>
 				</div>
 
-				{#each eventState.shifts as shift, i}
-					<div class="mb-4 rounded-lg border-2 bg-background p-4 shadow-lg transition-opacity">
+				{#each eventState.shifts as shift, i (shift.startAt.toString() + shift.endAt.toString())}
+					<div class="bg-background mb-4 rounded-lg border-2 p-4 shadow-lg transition-opacity">
 						<div class="flex items-center justify-between">
 							<h3 class="font-medium">Vakt {i + 1}</h3>
 							<button
@@ -185,10 +185,10 @@
 							<input type="hidden" name={`shift[${i}].userCount`} value={shift.users.length} />
 
 							{#if shift.users.length === 0}
-								<p class="py-2 text-sm italic text-gray-500">Ingen ansvarlige</p>
+								<p class="py-2 text-sm text-gray-500 italic">Ingen ansvarlige</p>
 							{:else}
 								<div class="space-y-2">
-									{#each shift.users as user, j}
+									{#each shift.users as user, j (user.id)}
 										<div class="flex items-center gap-2">
 											<Combobox
 												name={`shift[${i}].user[${j}].name`}

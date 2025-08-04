@@ -24,7 +24,7 @@
 			<p class="mb-2 text-sm text-gray-800">Viser {filteredProducts.length} resultater</p>
 
 			<ul class="grid w-full grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
-				{#each filteredProducts as product}
+				{#each filteredProducts as product (product._id)}
 					<li>
 						<ProductPreview {product} {filterState} />
 					</li>

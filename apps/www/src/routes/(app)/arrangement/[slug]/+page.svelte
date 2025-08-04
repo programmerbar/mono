@@ -15,8 +15,8 @@
 </svelte:head>
 
 <main class="flex flex-col-reverse gap-8 md:flex-row">
-	<div class="h-fit w-full rounded-xl border-2 bg-background p-6 shadow-xl">
-		<article class="prose font-sans md:prose-lg prose-h1:text-3xl md:prose-h1:text-4xl">
+	<div class="bg-background h-fit w-full rounded-xl border-2 p-6 shadow-xl">
+		<article class="prose md:prose-lg prose-h1:text-3xl md:prose-h1:text-4xl font-sans">
 			<h1>{data.event.title}</h1>
 
 			{@html html}
@@ -24,7 +24,7 @@
 	</div>
 
 	<aside class="w-full space-y-4 md:max-w-[350px]">
-		<div class="h-fit rounded-xl border-2 bg-background p-6 shadow-xl">
+		<div class="bg-background h-fit rounded-xl border-2 p-6 shadow-xl">
 			<ul class="space-y-8">
 				<li>
 					<h3 class="font-mono text-lg font-medium">Når?:</h3>

@@ -2,7 +2,7 @@
 	<title>Beer Pong</title>
 </svelte:head>
 
-<main class="mx-auto max-w-screen-md rounded-xl border-2 bg-background p-8 py-24">
+<main class="bg-background mx-auto max-w-screen-md rounded-xl border-2 p-8 py-24">
 	<h1 class="mb-16 text-center font-mono text-4xl font-medium md:text-5xl">"Beer Pong"-regler</h1>
 
 	<ul class="space-y-8 text-xl">

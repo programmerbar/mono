@@ -36,11 +36,11 @@
 </script>
 
 <div
-	class="relative flex h-full flex-col overflow-hidden rounded-xl border-2 bg-background shadow-md"
+	class="bg-background relative flex h-full flex-col overflow-hidden rounded-xl border-2 shadow-md"
 >
 	<div class="relative border-b-2">
 		{#if !disableWishlist}
-			<div class="absolute right-0 top-0 z-10 rounded-bl bg-white px-2 py-1 text-xs font-semibold">
+			<div class="absolute top-0 right-0 z-10 rounded-bl bg-white px-2 py-1 text-xs font-semibold">
 				<button
 					onclick={handleHeartClick}
 					aria-label={isWishlisted ? 'Remove from favorites' : 'Add to favorites'}
@@ -56,7 +56,7 @@
 
 		{#if product.isSoldOut}
 			<div
-				class="absolute left-0 top-0 rounded-br bg-red-500 px-2 py-1 text-xs font-semibold text-white"
+				class="absolute top-0 left-0 rounded-br bg-red-500 px-2 py-1 text-xs font-semibold text-white"
 			>
 				Utsolgt
 			</div>
