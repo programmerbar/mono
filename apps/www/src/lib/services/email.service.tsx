@@ -121,16 +121,12 @@ export class EmailService {
 	}
 
 	private async sendEmail(payload: CreateEmailOptions) {
+		console.log('###### SENDING EMAIL ########');
+		console.log(`Sending real email to: ${payload.to}`);
+		console.log(payload.html);
+		console.log('#############################');
+
 		if (dev) {
-			console.log('#############################');
-			console.log('# NOT SENDING EMAILS IN DEV #');
-			console.log('#############################');
-
-			console.log('########### EMAIL ############');
-			console.log(`Sending real email to: ${payload.to}`);
-			console.log(payload.html);
-			console.log('#############################');
-
 			if (payload.attachments) {
 				console.log('########### ATTACHMENTS ############');
 				console.log(payload.attachments);
