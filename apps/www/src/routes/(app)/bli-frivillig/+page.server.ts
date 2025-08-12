@@ -17,7 +17,7 @@ export const actions: Actions = {
 			if (!email.endsWith('@student.uib.no')) {
 				return fail(400, {
 					success: false,
-					message: 'E-postadressen må være en student.uib.no-adresse.'
+					error: 'E-postadressen må være en student.uib.no-adresse.'
 				});
 			}
 

@@ -21,6 +21,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const ip = event.getClientAddress();
 	const isIpBanned = await banService.isIpBanned(ip);
+
 	if (isIpBanned) {
 		return new Response(null, {
 			status: 429,

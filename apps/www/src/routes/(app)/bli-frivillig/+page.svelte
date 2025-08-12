@@ -48,10 +48,15 @@
 				await update();
 				isSubmitting = false;
 
-				if (result.type === 'error') {
-					toast.error('Noe gikk galt. Vennligst prøv igjen senere.');
-				} else {
+				if (result.type === 'failure') {
+					// Server validation failed
+					toast.error(result.data?.message || result.data?.error || 'Noe gikk galt. Vennligst prøv igjen senere.');
+				} else if (result.type === 'success' && result.data?.success) {
+					// Success response from server
 					toast.success('Din søknad er mottatt!');
+				} else {
+					// Other errors
+					toast.error('Noe gikk galt. Vennligst prøv igjen senere.');
 				}
 			};
 		}}
