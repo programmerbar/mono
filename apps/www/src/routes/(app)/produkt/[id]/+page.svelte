@@ -3,6 +3,7 @@
 	import { marked } from 'marked';
 	import { page } from '$app/state';
 	import ProductDetailsCard from '$lib/components/app/product/ProductDetailsCard.svelte';
+	import { Image } from '@lucide/svelte';
 
 	let { data } = $props();
 
@@ -22,6 +23,8 @@
 		{ title: 'Pris (Student)', value: data.product.priceList.student + ' NOK' },
 		{ title: 'Bong pris', value: data.product.priceList.credits }
 	];
+
+	let imageLoaded = $state(false);
 </script>
 
 <svelte:head>
@@ -44,12 +47,23 @@
 		<div class="space-y-6">
 			<!-- Product Image -->
 			{#if data.product.image}
-				<div class="bg-background h-fit overflow-hidden rounded-2xl border shadow-lg">
-					<img
-						class="max-h-80 w-full bg-white object-contain object-center"
-						src={urlFor(data.product.image).width(400).url()}
-						alt={data.product.name}
-					/>
+				<div class="bg-background overflow-hidden rounded-2xl border shadow-lg">
+					<div class="aspect-square bg-white flex items-center justify-center relative">
+						<!-- Placeholder Icon -->
+						{#if !imageLoaded}
+							<div class="absolute inset-0 flex items-center justify-center">
+								<Image class="w-16 h-16 text-gray-400" />
+							</div>
+						{/if}
+						
+						<!-- Product Image -->
+						<img
+							class="max-h-full max-w-full object-contain {imageLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300"
+							src={urlFor(data.product.image).width(400).url()}
+							alt={data.product.name}
+							onload={() => imageLoaded = true}
+						/>
+					</div>
 				</div>
 			{/if}
 
