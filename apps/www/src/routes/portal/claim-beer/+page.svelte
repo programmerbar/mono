@@ -103,7 +103,7 @@
 	<ClaimModal {claimedProduct} {timerSeconds} onClose={closeClaimPopup} />
 
 	{#if selectedProduct}
-		<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+		<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md">
 			<div class="w-[400px] rounded-lg bg-white p-6 shadow-lg">
 				<h2 class="mb-4 text-center text-2xl font-bold">Claim produkt</h2>
 
@@ -208,7 +208,7 @@
 				</div>
 			</div>
 
-			<Sidebar {types} {filterState} alwaysFilteredByCredits={true} />
+			<Sidebar {types} {filterState} alwaysFilteredByCredits disableSticky />
 
 			{#if userRole === 'board'}
 				<ClaimedCredit />

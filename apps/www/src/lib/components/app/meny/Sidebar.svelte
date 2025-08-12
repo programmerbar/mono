@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cn } from '$lib/cn';
 	import type { extractTypes } from '$lib/extract-types';
 	import { FilterState, SORT_OPTIONS } from '$lib/states/filter-state.svelte';
 
@@ -6,13 +7,24 @@
 		filterState: FilterState;
 		types: ReturnType<typeof extractTypes>;
 		alwaysFilteredByCredits?: boolean;
+		disableSticky?: boolean;
 	};
 
-	let { filterState = $bindable(), types, alwaysFilteredByCredits = false }: Props = $props();
+	let {
+		filterState = $bindable(),
+		types,
+		alwaysFilteredByCredits = false,
+		disableSticky = false
+	}: Props = $props();
 </script>
 
 <div
-	class="bg-background flex h-fit w-full flex-col gap-2 rounded-lg border-2 p-4 shadow-lg md:sticky md:top-5 md:max-w-[300px]"
+	class={cn(
+		'bg-background flex h-fit w-full flex-col gap-2 rounded-lg border-2 p-4 shadow-lg md:max-w-[300px]',
+		{
+			'md:sticky md:top-5': !disableSticky
+		}
+	)}
 >
 	<div class="flex flex-col gap-1">
 		<label for="search" class="text-sm font-semibold">Søk</label>
