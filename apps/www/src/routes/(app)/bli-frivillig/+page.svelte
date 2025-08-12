@@ -50,7 +50,8 @@
 
 				if (result.type === 'failure') {
 					// Server validation failed
-					toast.error(result.data?.message || result.data?.error || 'Noe gikk galt. Vennligst prøv igjen senere.');
+					const errorMessage: string = (result.data?.message || result.data?.error || 'Noe gikk galt. Vennligst prøv igjen senere.') as string;
+					toast.error(errorMessage);
 				} else if (result.type === 'success' && result.data?.success) {
 					// Success response from server
 					toast.success('Din søknad er mottatt!');

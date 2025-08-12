@@ -1,7 +1,7 @@
 <script lang="ts">
 	type DetailItem = {
 		title: string;
-		value: string | number;
+		value: string | number | undefined;
 	};
 
 	type Props = {
@@ -20,7 +20,7 @@
 		{#each details as { title, value } (title)}
 			<div class="flex items-center justify-between px-6 py-4 transition-colors hover:bg-gray-50">
 				<span class="font-medium text-gray-700">{title}</span>
-				<span class="text-gray-900">{value}</span>
+				<span class="text-gray-900">{value ?? 'Ukjent'}</span>
 			</div>
 		{/each}
 	</div>
