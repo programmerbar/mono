@@ -37,7 +37,7 @@
 							<h3 class="flex items-center gap-2 text-lg font-medium text-gray-800">
 								Kontaktinformasjon
 							</h3>
-							<p class="text-sm text-gray-600">Oppdater din alternative e-postadresse</p>
+							<p class="text-sm text-gray-600">Oppdater din kontaktinformasjon</p>
 						</div>
 						<div class="space-y-4">
 							<FormInput
@@ -47,6 +47,16 @@
 								label="Alternativ e-post"
 								bind:value={data.user.altEmail}
 								placeholder="din.epost@example.com"
+							/>
+						</div>
+						<div class="space-y-4">
+							<FormInput
+								type="phone"
+								id="phone"
+								name="phone"
+								label="Telefon nr"
+								bind:value={data.user.phone}
+								placeholder="+47 12 345 678"
 							/>
 						</div>
 					</div>

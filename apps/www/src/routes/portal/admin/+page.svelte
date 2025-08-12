@@ -2,6 +2,7 @@
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import type { User } from '$lib/db/schemas';
 	import Input from '$lib/components/ui/Input.svelte';
+	import { initials } from '$lib/utils.js';
 
 	let { data } = $props();
 	let search = $state('');
@@ -118,7 +119,7 @@
 									<div class="h-8 w-8 flex-shrink-0">
 										<div class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300">
 											<span class="text-sm font-medium text-gray-700">
-												{user.name.charAt(0).toUpperCase()}
+												{initials(user.name)}
 											</span>
 										</div>
 									</div>

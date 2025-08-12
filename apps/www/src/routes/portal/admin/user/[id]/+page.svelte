@@ -34,38 +34,12 @@
 	function toggleEdit() {
 		if (isEditing) {
 			editForm = {
-				email: data.user.altEmail || user.email,
+				email: data.user.altEmail || data.user.email,
 				role: data.user.role,
 				phone: data.user.phone || ''
 			};
 		}
 		isEditing = !isEditing;
-	}
-
-	function getRoleBadgeClass(role: string) {
-		switch (role) {
-			case 'board':
-				return 'bg-purple-100 text-purple-800 border-purple-200';
-			case 'normal':
-				return 'bg-blue-100 text-blue-800 border-blue-200';
-			case 'admin':
-				return 'bg-red-100 text-red-800 border-red-200';
-			default:
-				return 'bg-gray-100 text-gray-800 border-gray-200';
-		}
-	}
-
-	function getRoleLabel(role: string) {
-		switch (role) {
-			case 'board':
-				return 'Styret';
-			case 'normal':
-				return 'Frivillig';
-			case 'admin':
-				return 'Administrator';
-			default:
-				return role;
-		}
 	}
 </script>
 
@@ -93,11 +67,12 @@
 					<Heading class="mb-1">{user.name}</Heading>
 					<div class="flex items-center gap-3">
 						<span
-							class="inline-flex rounded-full border px-3 py-1 text-sm font-semibold {getRoleBadgeClass(
-								user.role
-							)}"
+							class="inline-flex rounded-full border px-3 py-1 text-sm font-semibold {user.role ===
+							'board'
+								? 'border-purple-200 bg-purple-100 text-purple-800'
+								: 'border-blue-200 bg-blue-100 text-blue-800'}"
 						>
-							{getRoleLabel(user.role)}
+							{user.role === 'board' ? 'Styret' : 'Frivillig'}
 						</span>
 					</div>
 				</div>
@@ -176,7 +151,7 @@
 									id="edit-email"
 									bind:value={editForm.email}
 									type="email"
-									placeholder="bruker@eksempel.no"
+									placeholder="ola.nordmann@eksempel.no"
 								/>
 							</div>
 							<div>
@@ -237,7 +212,7 @@
 							</div>
 							<div>
 								<dt class="text-sm font-medium text-gray-500">E-post</dt>
-								<dd class="mt-1 text-sm text-gray-900">{user.email || 'Ikke oppgitt'}</dd>
+								<dd class="mt-1 text-sm text-gray-900">{user.altEmail || user.email}</dd>
 							</div>
 							<div>
 								<dt class="text-sm font-medium text-gray-500">Telefon</dt>
@@ -247,11 +222,12 @@
 								<dt class="text-sm font-medium text-gray-500">Rolle</dt>
 								<dd class="mt-1">
 									<span
-										class="inline-flex rounded-full border px-2 py-1 text-xs font-semibold {getRoleBadgeClass(
-											user.role
-										)}"
+										class="inline-flex rounded-full border px-2 py-1 text-xs font-semibold {user.role ===
+										'board'
+											? 'border-purple-200 bg-purple-100 text-purple-800'
+											: 'border-blue-200 bg-blue-100 text-blue-800'}"
 									>
-										{getRoleLabel(user.role)}
+										{user.role === 'board' ? 'Styret' : 'Frivillig'}
 									</span>
 								</dd>
 							</div>
@@ -313,8 +289,10 @@
 						<span class="text-sm font-semibold text-gray-900">{data.unclaimedBeers || 0}</span>
 					</div>
 					<div class="flex justify-between">
-						<span class="text-sm text-gray-600">Kommende arrangemennt</span>
-						<span class="text-sm font-semibold text-gray-900">I dag</span>
+						<span class="text-sm text-gray-600">Kommende arrangement</span>
+						<span class="text-sm font-semibold text-gray-900">
+							{data.shifts?.length > 0 ? data.shifts[0].event?.name : 'Ingen'}
+						</span>
 					</div>
 				</div>
 			</div>
