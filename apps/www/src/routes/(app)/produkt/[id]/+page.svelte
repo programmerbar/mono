@@ -47,8 +47,8 @@
 	{#if data.product.image}
 		<div class="bg-background mb-6 h-fit rounded-xl border-2 shadow-xl md:mb-0 md:w-1/3">
 			<img
-				class="h-64 w-full rounded-xl bg-white object-contain md:h-auto"
-				src={urlFor(data.product.image).width(500).height(500).url()}
+				class="h-64 w-full rounded-xl bg-white object-contain object-center md:h-auto"
+				src={urlFor(data.product.image).width(500).url()}
 				alt={data.product.name}
 			/>
 		</div>

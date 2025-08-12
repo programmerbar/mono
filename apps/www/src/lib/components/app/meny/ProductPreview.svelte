@@ -38,7 +38,7 @@
 <div
 	class="bg-background relative flex h-full flex-col overflow-hidden rounded-xl border-2 shadow-md"
 >
-	<div class="relative border-b-2">
+	<div class="relative border-b-2 overflow-hidden">
 		{#if !disableWishlist}
 			<div class="absolute top-0 right-0 z-10 rounded-bl bg-white px-2 py-1 text-xs font-semibold">
 				<button
@@ -62,11 +62,21 @@
 			</div>
 		{/if}
 		{#if product.image}
-			<img
-				src={urlFor(product.image).width(500).height(500).url()}
-				alt={product.name}
-				class="h-48 w-full bg-white object-contain"
-			/>
+			{#if !disableLink}
+				<a href="/produkt/{product._id}" class="block">
+					<img
+						src={urlFor(product.image).width(500).url()}
+						alt={product.name}
+						class="h-48 w-full bg-white object-contain object-center transition-transform duration-300 hover:scale-110"
+					/>
+				</a>
+			{:else}
+				<img
+					src={urlFor(product.image).width(500).url()}
+					alt={product.name}
+					class="h-48 w-full bg-white object-contain object-center transition-transform duration-300 hover:scale-110"
+				/>
+			{/if}
 		{:else}
 			<div class="h-48 w-full bg-gray-200" aria-label="No image available"></div>
 		{/if}
