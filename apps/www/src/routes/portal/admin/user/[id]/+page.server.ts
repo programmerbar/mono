@@ -1,7 +1,56 @@
+import { error } from '@sveltejs/kit';
+import type { PageServerLoad, Actions } from './$types';
 import { fail } from '@sveltejs/kit';
-import type { Actions } from './$types';
+
+export const load: PageServerLoad = async ({ params, locals }) => {
+	const userId = params.id;
+
+	if (!locals.user || locals.user.role !== 'board') {
+		throw error(401, 'Unauthorized');
+	}
+
+	if (!userId) {
+		throw error(404, 'User ID not provided');
+	}
+
+	const user = await locals.userService.findById(userId);
+	if (!user) {
+		throw error(404, 'User not found');
+	}
+
+	const userShifts = await locals.shiftService.findCompletedShiftsByUserId(userId);
+	const unclaimedBeers = await locals.beerService.getTotalAvailableBeers(userId);
+  const referrals = await locals.referralService.getReferralStats(userId);
+
+	return {
+		user,
+		timesVolunteered: userShifts.length,
+		unclaimedBeers,
+    referrals
+	};
+};
+
 
 export const actions: Actions = {
+
+
+  updateUser: async ({ params, request, locals }) => {
+    const userId = params.id;
+    const formData = await request.formData();
+
+    const updateData = {
+      // name: formData.get('name')?.toString(),
+      // email: formData.get('email')?.toString(),
+      role: formData.get('role')?.toString(),
+      // phone: formData.get('phone')?.toString(),
+      // notes: formData.get('notes')?.toString()
+    };
+
+    await locals.userService.updateUser(userId, updateData);
+
+    return { success: true };
+  },
+
 	addBeers: async ({ params, request, locals }) => {
 		const userId = params.id;
 		if (!locals.user || locals.user.role !== 'board') {
@@ -39,7 +88,7 @@ export const actions: Actions = {
 		if (confirmDelete !== user?.name) {
 			return fail(400, {
 				success: false,
-				message: "Names dosen't match"
+				message: "Names doesn't match"
 			});
 		}
 		const success = await locals.userService.deleteUser(userId);
@@ -57,6 +106,6 @@ export const actions: Actions = {
 			});
 		}
 
-		return { success: true };
+		return { success: true, message: `${user.name} er no slettet!`};
 	}
 };
