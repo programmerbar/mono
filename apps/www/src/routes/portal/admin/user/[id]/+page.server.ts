@@ -20,36 +20,30 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	const userShifts = await locals.shiftService.findCompletedShiftsByUserId(userId);
 	const unclaimedBeers = await locals.beerService.getTotalAvailableBeers(userId);
-  const referrals = await locals.referralService.getReferralStats(userId);
+	const referrals = await locals.referralService.getReferralStats(userId);
 
 	return {
 		user,
 		timesVolunteered: userShifts.length,
 		unclaimedBeers,
-    referrals
+		referrals
 	};
 };
 
-
 export const actions: Actions = {
-
-
-  updateUser: async ({ params, request, locals }) => {
-    const userId = params.id;
-    const formData = await request.formData();
-
-    const updateData = {
-      // name: formData.get('name')?.toString(),
-      // email: formData.get('email')?.toString(),
-      role: formData.get('role')?.toString(),
-      // phone: formData.get('phone')?.toString(),
-      // notes: formData.get('notes')?.toString()
-    };
-
-    await locals.userService.updateUser(userId, updateData);
-
-    return { success: true };
-  },
+	updateUser: async ({ params, request, locals }) => {
+		const userId = params.id;
+		const formData = await request.formData();
+		const role = formData.get('role')?.toString() as 'board' | 'normal';
+		const phone = formData.get('phone')?.toString();
+		if (phone) {
+			await locals.userService.updatePhone(userId, phone);
+		}
+		if (role) {
+			await locals.userService.updateUserRole(userId, role);
+		}
+		return { success: true };
+	},
 
 	addBeers: async ({ params, request, locals }) => {
 		const userId = params.id;
@@ -106,6 +100,6 @@ export const actions: Actions = {
 			});
 		}
 
-		return { success: true, message: `${user.name} er no slettet!`};
+		return { success: true, message: `${user.name} er no slettet!` };
 	}
 };

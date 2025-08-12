@@ -45,6 +45,15 @@ export class UserService {
 			.then((rows) => rows[0]);
 	}
 
+	async updatePhone(userId: string, phonenr: string) {
+		return await this.#db
+			.update(users)
+			.set({ phone: phonenr })
+			.where(eq(users.id, userId))
+			.returning()
+			.then((rows) => rows[0]);
+	}
+
 	async findById(userId: string) {
 		const user = await this.#db
 			.select()
