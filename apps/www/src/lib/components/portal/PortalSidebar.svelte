@@ -12,7 +12,7 @@
 		X,
 		Shield
 	} from '@lucide/svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { getUser } from '$lib/context/user.context';
 	import type { Notification as DbNotification } from '$lib/db/schemas';
 	import { cn } from '$lib/cn';
@@ -196,8 +196,8 @@
 					Portal
 				</h2>
 				<ul class="space-y-1">
-					{#each portalRoutes as route}
-						{@const isActive = $page.url.pathname === route.href}
+					{#each portalRoutes as route (route.href)}
+						{@const isActive = page.url.pathname === route.href}
 						<li>
 							<a
 								href={route.href}
@@ -237,9 +237,9 @@
 						Administrator
 					</h2>
 					<ul class="space-y-1">
-						{#each adminRoutes as route}
+						{#each adminRoutes as route (route.href)}
 							{@const isActive =
-								$page.url.pathname === route.href || $page.url.pathname.startsWith('/portal/admin')}
+								page.url.pathname === route.href || page.url.pathname.startsWith('/portal/admin')}
 							<li>
 								<a
 									href={route.href}
@@ -279,9 +279,9 @@
 								{
 									'justify-center gap-0 px-1': !showFullLayout,
 									'justify-start gap-3 px-3': showFullLayout,
-									'bg-gray-100 text-gray-900': $page.url.pathname === '/portal/notifikasjoner',
+									'bg-gray-100 text-gray-900': page.url.pathname === '/portal/notifikasjoner',
 									'text-gray-600 hover:bg-gray-50 hover:text-gray-900':
-										$page.url.pathname !== '/portal/notifikasjoner'
+										page.url.pathname !== '/portal/notifikasjoner'
 								}
 							)}
 							title="Notifikasjoner"
