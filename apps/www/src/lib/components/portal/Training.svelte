@@ -1,9 +1,13 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
+
 	interface TrainingItem {
 		id: number;
 		title: string;
 		description: string;
 		completed: boolean;
+		category: string;
 	}
 
 	interface Props {
@@ -23,12 +27,28 @@
 	}: Props = $props();
 
 	const defaultTrainingItems = [
-		{ id: 1, title: 'Sikkerhetsprosedyrer', description: 'Kjennskap til nødutganger og sikkerhetstiltak', completed: false },
-		{ id: 2, title: 'Kassasystem', description: 'Betjening av kasse og betalingsløsninger', completed: false },
-		{ id: 3, title: 'Produktkjennskap', description: 'Oversikt over øl, mat og priser', completed: false },
-		{ id: 4, title: 'Kundeservice', description: 'Håndtering av kunder og konfliktsituasjoner', completed: false },
-		{ id: 5, title: 'Oppstilling og nedrigging', description: 'Prosedyrer for start og slutt av arrangement', completed: false },
-		{ id: 6, title: 'Kommunikasjon', description: 'Bruk av radio/kommunikasjonssystemer', completed: false }
+		{ id: 1, title: 'Bytte keg på en riktig måte', description: 'Lært at kegs burde bli oppbevart kjølig og stående kaldt for å holde seg', completed: false, category: 'Bruk av bar' },
+		{ id: 2, title: 'Tappe pils på en riktig måte', description: 'Riktig tapping av øl', completed: false, category: 'Bruk av bar' },
+		{ id: 3, title: 'Glassvasken', description: 'Skru på/av glassvasken, tømme og skylle glass før maskinen', completed: false, category: 'Bruk av bar' },
+		{ id: 4, title: 'Isbiter og isbitmaskin', description: 'Bruke dedikert isbit "skje", sjekke at maskinen er på og lager isbiter', completed: false, category: 'Bruk av bar' },
+		{ id: 5, title: 'Kassesystem', description: 'Åpne kassen, ta imot betaling (vanlig pris og internpris), slette/redigere priser, stenge kassen', completed: false, category: 'Bruk av bar' },
+		{ id: 6, title: 'Påfyll av varer', description: 'Fylle på varer kontinuerlig, spesielt mot slutten av vakten', completed: false, category: 'Bruk av bar' },
+		{ id: 7, title: 'Temperatursjekk', description: 'Sjekke temperatur på kjøleskap (skal bli skrevet ned)', completed: false, category: 'Bruk av bar' },
+		
+		{ id: 8, title: 'Ikke oversjenke', description: 'Aldri oversjenke da dette er ulovlig', completed: false, category: 'Lover og sikkerhet' },
+		{ id: 9, title: 'Autoritet til å si nei', description: 'Har autoritet til å si nei til å servere alkohol', completed: false, category: 'Lover og sikkerhet' },
+		{ id: 10, title: 'Skjenkeløyve og dokumenter', description: 'Hvor skjenkeløyve og opplæringsskjema er i baren, i tilfelle kontroll', completed: false, category: 'Lover og sikkerhet' },
+		{ id: 11, title: 'Nødsituasjoner', description: 'Vite hva å gjøre i nødsituasjon, for eksempel brann', completed: false, category: 'Lover og sikkerhet' },
+		{ id: 12, title: 'Fast skjenkeløyve', description: 'Baren har fast skjenkeløyve som vi kan miste hvis vi får for mange prikker', completed: false, category: 'Lover og sikkerhet' },
+		{ id: 13, title: 'Alkoholreklame', description: 'Ikke lov til å reklamere for alkohol, ikke foreslå alkohol men spørre "Hva vil du ha?"', completed: false, category: 'Lover og sikkerhet' },
+		
+		{ id: 14, title: 'Renhold i baren', description: 'Viktigheten av å holde det rent i baren og på lageret (før, under og etter servering)', completed: false, category: 'Vask og hygiene' },
+		{ id: 15, title: 'Personlig hygiene', description: 'Viktigheten av å ha god personlig hygiene', completed: false, category: 'Vask og hygiene' },
+		{ id: 16, title: 'Håndvask', description: 'Hvordan vaske hendene ordentlig', completed: false, category: 'Vask og hygiene' },
+		{ id: 17, title: 'Rengjøring av arbeidsflater', description: 'Hvordan tørke over benk og vask av gulv', completed: false, category: 'Vask og hygiene' },
+		{ id: 18, title: 'Søppelhåndtering', description: 'Hva å gjøre med papp og annet søppel, og koden til søppelstasjonen', completed: false, category: 'Vask og hygiene' },
+		{ id: 19, title: 'Vask etter kegbytte', description: 'Bytter man keg, så vasker man hendene', completed: false, category: 'Vask og hygiene' },
+		{ id: 20, title: 'Rengjøring av barutstyr', description: 'Vask og rengjør barutstyr, f.eks. tappetårn, målebeger, shaker, isøse, barskje osv.', completed: false, category: 'Vask og hygiene' }
 	];
 
 	let trainingItems = $state([...defaultTrainingItems]);
@@ -41,26 +61,37 @@
 		? 'Marker av hvert punkt etter som opplæringen blir fullført'
 		: 'Oversikt over alle opplæringspunkter som må gjennomgås');
 
-	$effect(async () => {
+	let groupedTrainingItems = $derived.by(() => {
+		const grouped = trainingItems.reduce((acc, item) => {
+			if (!acc[item.category]) {
+				acc[item.category] = [];
+			}
+			acc[item.category].push(item);
+			return acc;
+		}, {} as Record<string, TrainingItem[]>);
+		return grouped;
+	});
+
+	$effect(() => {
 		if (isTrainingMode && isOpen) {
 			isLoading = true;
-			try {
-				const response = await fetch(`/api/training/${userId}`);
-				if (response.ok) {
-					const userData = await response.json();
-					trainingItems = userData.trainingData || [...defaultTrainingItems];
-				} else {
-					// If no data exists, start with default items
+			(async () => {
+				try {
+					const response = await fetch(`/api/training/${userId}`);
+					if (response.ok) {
+						const userData = await response.json() as { trainingData?: TrainingItem[] };
+						trainingItems = userData.trainingData || [...defaultTrainingItems];
+					} else {
+						trainingItems = [...defaultTrainingItems];
+					}
+				} catch (error) {
+					console.error('Failed to load training data:', error);
 					trainingItems = [...defaultTrainingItems];
+				} finally {
+					isLoading = false;
 				}
-			} catch (error) {
-				console.error('Failed to load training data:', error);
-				trainingItems = [...defaultTrainingItems];
-			} finally {
-				isLoading = false;
-			}
+			})();
 		} else if (!isTrainingMode) {
-			// In reference mode, always show default unchecked items
 			trainingItems = [...defaultTrainingItems];
 		}
 	});
@@ -81,46 +112,19 @@
 		}
 	}
 
-	async function handleSave() {
+	function handleSave() {
 		if (!isTrainingMode) return;
 		
 		const completionStatus = getCompletionStatus();
 		if (!completionStatus.isComplete) {
-			// Don't save if not complete - they need to finish everything
 			return;
 		}
 		
 		isSaving = true;
 		
-		try {
-			// For now, just simulate a save
-			// Later you can add your actual API call here
-			await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-			
-			// Uncomment when you have your API ready:
-			// const response = await fetch(`/api/training/${userId}`, {
-			// 	method: 'POST',
-			// 	headers: {
-			// 		'Content-Type': 'application/json',
-			// 	},
-			// 	body: JSON.stringify({
-			// 		trainingData: trainingItems,
-			// 		completedAt: new Date().toISOString()
-			// 	})
-			// });
-			// 
-			// if (!response.ok) {
-			// 	throw new Error('Failed to save training data');
-			// }
-			
-			if (onsave) {
-				onsave({ userId, items: trainingItems, completionStatus });
-			}
-		} catch (error) {
-			console.error('Failed to save training progress:', error);
-			// You might want to show an error toast here
-		} finally {
-			isSaving = false;
+		const form = document.getElementById('trainingForm') as HTMLFormElement;
+		if (form) {
+			form.requestSubmit();
 		}
 	}
 
@@ -140,26 +144,33 @@
 			</div>
 			
 			<div class="p-6">
-				<div class="space-y-4">
-					{#each trainingItems as item (item.id)}
-						<div class="flex items-start gap-3 p-3 rounded-lg border transition-all duration-200 {item.completed ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'} {isTrainingMode ? 'hover:border-gray-300' : ''}">
-							<button
-								class="mt-1 flex-shrink-0 {isTrainingMode ? 'cursor-pointer' : 'cursor-default'}"
-								onclick={() => toggleTrainingItem(item.id)}
-								disabled={!isTrainingMode || isSaving}
-							>
-								<div class="w-5 h-5 rounded border-2 flex items-center justify-center {item.completed ? 'bg-green-500 border-green-500' : isTrainingMode ? 'border-gray-300 hover:border-gray-400' : 'border-gray-300'} transition-colors">
-									{#if item.completed}
-										<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-										</svg>
-									{/if}
-								</div>
-							</button>
-							
-							<div class="flex-1">
-								<h4 class="font-medium text-gray-900 transition-all duration-200 {item.completed ? 'line-through text-gray-500' : ''}">{item.title}</h4>
-								<p class="text-sm text-gray-600 transition-all duration-200 {item.completed ? 'line-through text-gray-400' : ''}">{item.description}</p>
+				<div class="space-y-6">
+					{#each Object.entries(groupedTrainingItems) as [category, items] (category)}
+						<div class="space-y-3">
+							<h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">{category}</h3>
+							<div class="space-y-3">
+								{#each items as item (item.id)}
+									<div class="flex items-start gap-3 p-3 rounded-lg border transition-all duration-200 {item.completed ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'} {isTrainingMode ? 'hover:border-gray-300' : ''}">
+										<button
+											class="mt-1 flex-shrink-0 {isTrainingMode ? 'cursor-pointer' : 'cursor-default'}"
+											onclick={() => toggleTrainingItem(item.id)}
+											disabled={!isTrainingMode || isSaving}
+										>
+											<div class="w-5 h-5 rounded border-2 flex items-center justify-center {item.completed ? 'bg-green-500 border-green-500' : isTrainingMode ? 'border-gray-300 hover:border-gray-400' : 'border-gray-300'} transition-colors">
+												{#if item.completed}
+													<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+													</svg>
+												{/if}
+											</div>
+										</button>
+										
+										<div class="flex-1">
+											<h4 class="font-medium text-gray-900 transition-all duration-200 {item.completed ? 'line-through text-gray-500' : ''}">{item.title}</h4>
+											<p class="text-sm text-gray-600 transition-all duration-200 {item.completed ? 'line-through text-gray-400' : ''}">{item.description}</p>
+										</div>
+									</div>
+								{/each}
 							</div>
 						</div>
 					{/each}
@@ -242,5 +253,35 @@
 				</div>
 			</div>
 		</div>
+
+		{#if isTrainingMode}
+			<form
+				id="trainingForm"
+				method="POST"
+				action="?/completeTraining"
+				style="display: none;"
+				use:enhance={() => {
+					return async ({ result }) => {
+						isSaving = false;
+						if (result.type === 'success') {
+							const data = result.data as { trainingCompleted?: boolean } | undefined;
+							if (data?.trainingCompleted) {
+								await invalidateAll(); // Refresh page data
+								if (onsave && userId !== null) {
+									const completionStatus = getCompletionStatus();
+									onsave({ userId, items: trainingItems, completionStatus });
+								}
+							}
+						} else if (result.type === 'failure') {
+							const data = result.data as { error?: string } | undefined;
+							console.error('Failed to complete training:', data?.error);
+						}
+					};
+				}}
+			>
+				<input type="hidden" name="userId" value={userId?.toString() || ''} />
+				<input type="hidden" name="trainingData" value={JSON.stringify(trainingItems)} />
+			</form>
+		{/if}
 	</div>
 {/if}

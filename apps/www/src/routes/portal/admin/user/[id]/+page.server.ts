@@ -103,5 +103,40 @@ export const actions: Actions = {
 		}
 
 		return { success: true, message: `${user.name} er no slettet!` };
+	},
+
+	completeTraining: async ({ params, request, locals }) => {
+		const userId = params.id;
+		const formData = await request.formData();
+		const trainingDataJson = formData.get('trainingData') as string;
+
+		if (!userId) {
+			return fail(400, { error: 'User ID is required' });
+		}
+
+		if (!locals.user || locals.user.role !== 'board') {
+			return fail(401, { error: 'Unauthorized' });
+		}
+
+		try {
+			const trainingData = JSON.parse(trainingDataJson);
+			
+			const isComplete = trainingData && trainingData.every((item: any) => item.completed === true);
+			
+			if (!isComplete) {
+				return fail(400, { error: 'All training items must be completed' });
+			}
+
+			const updatedUser = await locals.userService.updateTrainingStatus(userId, true);
+			
+			if (!updatedUser) {
+				return fail(404, { error: 'User not found' });
+			}
+
+			return { success: true, trainingCompleted: true };
+		} catch (err) {
+			console.error('Failed to complete training:', err);
+			return fail(500, { error: 'Failed to complete training' });
+		}
 	}
 };

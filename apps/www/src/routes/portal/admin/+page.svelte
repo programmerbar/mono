@@ -58,7 +58,7 @@
 			<div class="sm:w-48">
 				<select
 					bind:value={selectedRole}
-					class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+					class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
 				>
 					<option value="all">Alle roller</option>
 					<option value="board">Styret</option>
@@ -68,7 +68,56 @@
 		</div>
 	</div>
 
-	<div class="border-gray overflow-hidden rounded-lg border bg-background shadow-lg">
+	<div class="block sm:hidden space-y-3">
+		{#each filteredUsers as user (user.id)}
+			<div class="border border-gray rounded-lg bg-background p-4 shadow-sm">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center gap-3">
+						<div class="h-10 w-10 flex-shrink-0">
+							<div class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-300">
+								<span class="text-sm font-medium text-gray-700">
+									{initials(user.name)}
+								</span>
+							</div>
+						</div>
+						<div class="min-w-0 flex-1">
+							<div class="text-sm font-medium text-gray-900 truncate">{user.name}</div>
+							<div class="text-xs text-gray-500 truncate max-w-32">{user.altEmail || user.email}</div>
+						</div>
+					</div>
+					<div class="flex flex-col items-end gap-2">
+						<span
+							class="inline-flex rounded-full border px-2 py-1 text-xs font-semibold {user.role ===
+							'board'
+								? 'border-purple-200 bg-purple-100 text-purple-800'
+								: 'border-blue-200 bg-blue-100 text-blue-800'}"
+						>
+							{user.role === 'board' ? 'Styret' : 'Frivillig'}
+						</span>
+						<a
+							href="./admin/user/{user.id}"
+							class="text-xs font-medium text-blue-600 hover:text-blue-900"
+						>
+							Vis detaljer →
+						</a>
+					</div>
+				</div>
+			</div>
+		{/each}
+		{#if filteredUsers.length === 0}
+			<div class="border border-gray-200 rounded-lg bg-background p-8 text-center">
+				<div class="flex flex-col items-center gap-2">
+					<div class="text-4xl">👤</div>
+					<div class="text-sm text-gray-500">Ingen brukere funnet</div>
+					{#if search}
+						<div class="text-xs text-gray-400">Prøv å endre søkekriteriene</div>
+					{/if}
+				</div>
+			</div>
+		{/if}
+	</div>
+
+	<div class="hidden sm:block border-gray overflow-hidden rounded-lg border bg-background shadow-lg">
 		<div class="overflow-x-auto">
 			<table class="w-full">
 				<thead class="border-gray border-b bg-gray-200">
@@ -87,7 +136,7 @@
 							</button>
 						</th>
 						<th
-							class="flex items-center px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500"
+							class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
 						>
 							E-post
 						</th>
@@ -153,7 +202,7 @@
 					{/each}
 					{#if filteredUsers.length === 0}
 						<tr>
-							<td colspan="5" class="px-6 py-12 text-center text-gray-500">
+							<td colspan="4" class="px-6 py-12 text-center text-gray-500">
 								<div class="flex flex-col items-center gap-2">
 									<div class="text-4xl">👤</div>
 									<div class="text-sm">Ingen brukere funnet</div>

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import TrainingChecklist from '$lib/components/portal/Training.svelte';
 	import type { User } from '$lib/db/schemas';
 	import { initials, mailto } from '$lib/utils';
 	import { goto } from '$app/navigation';
@@ -18,10 +20,13 @@
 
 	let showDeleteConfirm = $state(false);
 	let showAddBeers = $state(false);
+	let showTrainingChecklist = $state(false);
 	let additionalBeers = $state(0);
 	let deleteConfirmName = $state('');
 	let isSubmitting = $state(false);
-	let knowTheShit = $state(false);
+
+	let userHasCompletedTraining = $state(data.user.isTrained || false);
+
 	let toastMessage = $state('');
 
 	function showToast(message: string) {
@@ -41,6 +46,16 @@
 		}
 		isEditing = !isEditing;
 	}
+
+	// Handle training completion
+	function onTrainingSave(data: { completionStatus: { isComplete: boolean } }) {
+		if (data.completionStatus.isComplete) {
+			userHasCompletedTraining = true;
+			user.isTrained = true; // Update user object
+			showTrainingChecklist = false;
+			showToast(`${user.name} har fullført opplæringen! ✅`);
+		}
+	}
 </script>
 
 <svelte:head>
@@ -55,16 +70,16 @@
 		← Tilbake til admin page
 	</a>
 
-	<div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-		<div class="flex items-start justify-between">
+	<div class="rounded-lg border border-gray bg-background p-4 sm:p-6 shadow-sm">
+		<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 			<div class="flex items-center gap-4">
 				<div class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-300">
 					<span class="text-2xl font-semibold text-gray-700">
 						{initials(data.user.name)}
 					</span>
 				</div>
-				<div>
-					<Heading class="mb-1">{user.name}</Heading>
+				<div class="min-w-0 flex-1">
+					<Heading class="mb-1 truncate">{user.name}</Heading>
 					<div class="flex items-center gap-3">
 						<span
 							class="inline-flex rounded-full border px-3 py-1 text-sm font-semibold {user.role ===
@@ -77,27 +92,24 @@
 					</div>
 				</div>
 			</div>
-			<div class="flex gap-2">
+			<div class="flex flex-col gap-2 sm:flex-row sm:gap-2">
 				{#if !isEditing}
-					<button
-						onclick={toggleEdit}
-						class="rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
-					>
+					<Button onclick={toggleEdit} intent="primary">
 						Rediger
-					</button>
+					</Button>
 				{:else}
-					<button
-						onclick={toggleEdit}
-						class="rounded-md bg-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-400"
+					<Button 
+						onclick={toggleEdit} 
+						intent="outline" 
 						disabled={isSubmitting}
 					>
 						Avbryt
-					</button>
+					</Button>
 
 					<form
 						method="POST"
 						action="?/updateUser"
-						class="inline"
+						class="w-full sm:w-auto"
 						use:enhance={() => {
 							isSubmitting = true;
 							return async ({ result }) => {
@@ -117,13 +129,14 @@
 						<input type="hidden" name="role" value={editForm.role} />
 						<input type="hidden" name="phone" value={editForm.phone} />
 
-						<button
-							type="submit"
-							class="rounded-md bg-green-600 px-4 py-2 text-white transition-colors hover:bg-green-700 disabled:opacity-50"
+						<Button 
+							type="submit" 
+							intent="primary" 
 							disabled={isSubmitting}
+							class="w-full"
 						>
 							{isSubmitting ? 'Lagrer...' : 'Lagre'}
-						</button>
+						</Button>
 					</form>
 				{/if}
 			</div>
@@ -132,8 +145,8 @@
 
 	<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 		<div class="space-y-6 lg:col-span-2">
-			<div class="rounded-lg border border-gray-200 bg-white shadow-sm">
-				<div class="border-b border-gray-200 px-6 py-4">
+			<div class="rounded-lg border border-gray bg-background shadow-sm">
+				<div class="border-b border-gray-200 px-6 py-4 shadow-sm">
 					<h3 class="text-lg font-semibold text-gray-900">Brukerinformasjon</h3>
 				</div>
 				<div class="space-y-4 p-6">
@@ -236,8 +249,8 @@
 				</div>
 			</div>
 
-			<div class="rounded-lg border border-gray-200 bg-white shadow-sm">
-				<div class="border-b border-gray-200 px-6 py-4">
+			<div class="rounded-lg border border-gray bg-background shadow-sm">
+				<div class="border-b border-gray-200 px-6 py-4 shadow-sm">
 					<h3 class="text-lg font-semibold text-gray-900">Verv stats</h3>
 				</div>
 				<div class="p-6">
@@ -256,7 +269,7 @@
 						>
 							<div class="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-green-400"></div>
 							<div class="flex-1">
-								<p class="text-sm text-gray-900">Godkjente referreringer</p>
+								<p class="text-sm text-gray-900">Godkjente referreninger</p>
 								<p class="text-xs text-gray-500">{data.referrals.completedReferrals}</p>
 							</div>
 						</div>
@@ -275,8 +288,8 @@
 		</div>
 
 		<div class="space-y-6">
-			<div class="rounded-lg border border-gray-200 bg-white shadow-sm">
-				<div class="border-b border-gray-200 px-6 py-4">
+			<div class="rounded-lg border border-gray bg-background shadow-sm">
+				<div class="border-b border-gray-200 px-6 py-4 shadow-sm">
 					<h3 class="text-lg font-semibold text-gray-900">Statistikk</h3>
 				</div>
 				<div class="space-y-4 p-6">
@@ -297,8 +310,8 @@
 				</div>
 			</div>
 
-			<div class="rounded-lg border border-gray-200 bg-white shadow-sm">
-				<div class="border-b border-gray-200 px-6 py-4">
+			<div class="rounded-lg border border-gray bg-background shadow-sm">
+				<div class="border-b border-gray-200 px-6 py-4 shadow-sm">
 					<h3 class="text-lg font-semibold text-gray-900">Handlinger</h3>
 				</div>
 				<div class="space-y-2 p-6">
@@ -315,12 +328,13 @@
 						🍺 Legg til / Fjern bonger
 					</button>
 					<button
-						class="w-full rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50"
+						class="w-full rounded-md px-4 py-2 text-left text-sm transition-colors hover:bg-gray-50 {userHasCompletedTraining ? 'text-green-600' : 'text-gray-700'}"
+						onclick={() => (showTrainingChecklist = true)}
 					>
-						{#if knowTheShit === false}
-							❌ Fått opplæring?
+						{#if userHasCompletedTraining}
+							✅ Opplæring fullført
 						{:else}
-							✅ Fått opplæring
+							📋 Start opplæring
 						{/if}
 					</button>
 					<div class="border-t border-gray-200 pt-2">
@@ -337,12 +351,21 @@
 	</div>
 </div>
 
+<!-- Training Checklist Component -->
+<TrainingChecklist 
+	userId={user.id}
+	userName={user.name}
+	isOpen={showTrainingChecklist}
+	onclose={() => (showTrainingChecklist = false)}
+	onsave={onTrainingSave}
+/>
+
 {#if showAddBeers}
 	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 		<div class="mx-4 w-full max-w-md rounded-lg bg-white p-6">
 			<h3 class="mb-2 text-lg font-semibold text-gray-900">Legg til øl</h3>
 			<p class="mb-4 text-sm text-gray-600">
-				Det du srkiver her, vil endre på antall ekstra bonger <strong>{user.name}</strong> har tilgjengelig.
+				Det du skriver her, vil endre på antall ekstra bonger <strong>{user.name}</strong> har tilgjengelig.
 			</p>
 			<p class="mb-4 text-sm text-gray-600">Påvirker ikke antall bonger som dei har stått for</p>
 			<form

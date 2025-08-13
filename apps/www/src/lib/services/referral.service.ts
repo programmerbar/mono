@@ -77,22 +77,34 @@ export class ReferralService {
 		});
 	}
 
-	async awardReferralCredit(referrerId: string, creditAmount = 1) {
-		const user = await this.#db.query.users.findFirst({
-			where: (row, { eq }) => eq(row.id, referrerId)
-		});
+	async awardReferralCredit(referrerId: string) {
+		const stats = await this.getReferralStats(referrerId);
+		const completedReferrals = stats.completedReferrals;
+		
+		const earnedBeers = Math.floor(completedReferrals / 2);
+		
+		const previousCompletedReferrals = completedReferrals - 1; 
+		const previousEarnedBeers = Math.floor(previousCompletedReferrals / 2);
+		
+		if (earnedBeers > previousEarnedBeers) {
+			const user = await this.#db.query.users.findFirst({
+				where: (row, { eq }) => eq(row.id, referrerId)
+			});
 
-		if (!user) return null;
+			if (!user) return null;
 
-		const [updated] = await this.#db
-			.update(users)
-			.set({
-				additionalBeers: (user.additionalBeers || 0) + creditAmount
-			})
-			.where(eq(users.id, referrerId))
-			.returning();
+			const [updated] = await this.#db
+				.update(users)
+				.set({
+					additionalBeers: (user.additionalBeers || 0) + 1
+				})
+				.where(eq(users.id, referrerId))
+				.returning();
 
-		return updated;
+			return updated;
+		}
+		
+		return null; 
 	}
 
 	async getReferralStats(userId: string) {
