@@ -10,7 +10,7 @@
 			<Header notifications={data.notifications} />
 		</div>
 	</div>
-	<div class="flex-1 px-4 py-10">
+	<div class="flex-1 px-2 py-10">
 		<div class="mx-auto max-w-screen-lg">
 			{@render children()}
 		</div>
