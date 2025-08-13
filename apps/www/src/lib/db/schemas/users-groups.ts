@@ -4,12 +4,12 @@ import { users } from './users';
 import { relations, type InferInsertModel, type InferSelectModel } from 'drizzle-orm';
 
 export const usersGroups = sqliteTable('users_groups', {
-	userId: text('user_id')
+	userId: text()
 		.notNull()
 		.references(() => users.id, {
 			onDelete: 'cascade'
 		}),
-	groupId: text('group_id')
+	groupId: text()
 		.notNull()
 		.references(() => groups.id, {
 			onDelete: 'cascade'
