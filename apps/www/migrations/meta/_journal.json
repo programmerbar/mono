@@ -113,6 +113,20 @@
       "when": 1749127867652,
       "tag": "0015_daily_the_anarchist",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "6",
+      "when": 1755097080490,
+      "tag": "0016_certain_quasar",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "6",
+      "when": 1755099981630,
+      "tag": "0017_rare_professor_monster",
+      "breakpoints": true
     }
   ]
 }
