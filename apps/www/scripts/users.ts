@@ -1,33 +1,52 @@
-import { createDatabase } from '../src/lib/db/drizzle';
-import { type D1Database } from '@cloudflare/workers-types';
-import { getPlatformProxy } from 'wrangler';
 import { faker } from '@faker-js/faker';
 import { nanoid } from 'nanoid';
-import { users } from '../src/lib/db/schemas';
+import { User, users } from '../src/lib/db/schemas';
+import { setup } from './setup';
 
-type Env = {
-	DB: D1Database;
-};
+/**
+ * You have to do one user at a time, becuase D1 only allows
+ * for 100 parameters per query.
+ */
 
-const main = async () => {
-	const { env } = await getPlatformProxy<Env>({
-		configPath: './apps/www/wrangler.jsonc',
-		persist: {
-			path: './apps/www/.wrangler/state/v3'
-		}
-	});
-	const db = createDatabase(env.DB);
-	const fakeUsers = Array.from({ length: 100 }, () => ({
+async function main() {
+	const { db } = await setup();
+
+	const fakeNormalUsers = Array.from({ length: 40 }, () => ({
 		id: nanoid(),
 		email: faker.internet.email(),
 		name: faker.person.fullName(),
-		role: 'normal'
+		role: 'normal' as const,
+		additionalBeers: faker.number.int({ min: 0, max: 10 }),
+		altEmail: faker.helpers.maybe(() => faker.internet.email()) ?? null,
+		feideId: faker.string.uuid()
 	}));
 
-	for (const user of fakeUsers) {
+	for (const user of fakeNormalUsers) {
 		await db.insert(users).values(user);
 	}
-};
+
+	const fakeBoardUsers = Array.from(
+		{ length: 13 },
+		() =>
+			({
+				id: nanoid(),
+				email: faker.internet.email(),
+				name: faker.person.fullName(),
+				role: 'board' as const,
+				additionalBeers: faker.number.int({ min: 0, max: 10 }),
+				altEmail: faker.helpers.maybe(() => faker.internet.email()) ?? null,
+				feideId: faker.string.uuid()
+			}) satisfies User
+	);
+
+	for (const user of fakeBoardUsers) {
+		await db.insert(users).values(user);
+	}
+
+	console.log(
+		`Added ${fakeNormalUsers.length} normal users and ${fakeBoardUsers.length} board users.`
+	);
+}
 
 main()
 	.then(() => {

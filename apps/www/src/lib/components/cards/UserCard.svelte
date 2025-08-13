@@ -23,7 +23,7 @@
 
 <div
 	class={cn('relative block cursor-default rounded-lg border bg-white p-4 transition-colors', {
-		'cursor-pointer hover:bg-gray-100': onSelect !== undefined
+		'cursor-pointer hover:bg-gray-100 active:bg-gray-200/70': onSelect !== undefined
 	})}
 	role="button"
 	tabindex="0"

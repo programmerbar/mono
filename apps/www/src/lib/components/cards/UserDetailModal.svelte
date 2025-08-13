@@ -39,7 +39,7 @@
 	});
 </script>
 
-<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+<div class="backdrop-blur-xs fixed inset-0 z-50 flex items-center justify-center bg-black/20">
 	<div
 		in:fly={{ easing: cubicInOut, y: 20, duration: 300 }}
 		out:fly={{ easing: cubicInOut, y: 20, duration: 300 }}
@@ -82,8 +82,8 @@
 						/>
 						<span
 							class="peer-checked:bg-primary flex items-center justify-center rounded-xl border px-2 py-px
-							  text-sm peer-checked:border-transparent peer-checked:text-white
-							  hover:bg-gray-200"
+							  text-sm hover:bg-gray-200 peer-checked:border-transparent
+							  peer-checked:text-white"
 						>
 							Frivillig
 						</span>
@@ -99,8 +99,8 @@
 						/>
 						<span
 							class="peer-checked:bg-primary flex items-center justify-center rounded-xl border px-2 py-px
-							  text-sm peer-checked:border-transparent peer-checked:text-white
-							  hover:bg-gray-200"
+							  text-sm hover:bg-gray-200 peer-checked:border-transparent
+							  peer-checked:text-white"
 						>
 							Styret
 						</span>
