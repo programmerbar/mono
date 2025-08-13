@@ -18,6 +18,32 @@ export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 	const feideUser = await getFeideUser(tokens.accessToken());
 	const existingUser = await locals.userService.findByFeideId(feideUser.id);
 
+	const from = cookies.get('from');
+	if (from === 'bli-frivillig') {
+		cookies.delete('from', { path: '/' });
+
+		if (existingUser) {
+			return new Response(null, {
+				status: 302,
+				headers: {
+					location: '/bli-frivillig?error=already_registered'
+				}
+			});
+		}
+
+		await locals.emailService.sendVolunteerRequestEmail({
+			name: feideUser.username,
+			email: feideUser.email
+		});
+
+		return new Response(null, {
+			status: 302,
+			headers: {
+				location: '/bli-frivillig?success=true'
+			}
+		});
+	}
+
 	if (existingUser) {
 		const session = await locals.auth.createSession(existingUser.id, {});
 		const sessionCookie = locals.auth.createSessionCookie(session.id);

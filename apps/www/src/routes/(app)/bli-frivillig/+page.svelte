@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import { toast } from 'svelte-sonner';
+	import { page } from '$app/state';
+	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 
 	let { form } = $props();
 
 	let error = $derived(form?.error);
-	let isSubmitting = $state(false);
 </script>
 
 <div class="bg-background mx-auto max-w-[600px] space-y-8 rounded-xl border-2 p-8">
@@ -38,67 +37,19 @@
 			<p>{error}</p>
 		</div>
 	{/if}
-	<form
-		method="post"
-		class="space-y-4"
-		use:enhance={() => {
-			isSubmitting = true;
-
-			return async ({ update, result }) => {
-				await update();
-				isSubmitting = false;
-
-				if (result.type === 'failure') {
-					// Server validation failed
-					const errorMessage: string = (result.data?.message || result.data?.error || 'Noe gikk galt. Vennligst prøv igjen senere.') as string;
-					toast.error(errorMessage);
-				} else if (result.type === 'success' && result.data?.success) {
-					// Success response from server
-					toast.success('Din søknad er mottatt!');
-				} else {
-					// Other errors
-					toast.error('Noe gikk galt. Vennligst prøv igjen senere.');
-				}
-			};
-		}}
-	>
-		<div class="space-y-2">
-			<label for="name" class="block text-sm font-medium">Navn</label>
-			<input
-				type="text"
-				id="name"
-				name="name"
-				class="w-full rounded-lg border border-gray-300 p-2"
-				placeholder="Ditt fulle navn"
-				required
-			/>
+	{#if page.url.searchParams.get('success') === 'true'}
+		<div class="rounded-md bg-green-50 p-4 text-green-700">
+			<p>Du er nå registrert som frivillig!</p>
 		</div>
-		<div class="space-y-2">
-			<label for="email" class="block text-sm font-medium">Student-e-post</label>
-			<input
-				type="email"
-				id="email"
-				name="email"
-				class="w-full rounded-lg border border-gray-300 p-2"
-				placeholder="fornavn.etternavn@student.uib.no"
-				required
-			/>
-			<p class="text-xs text-gray-500">Du må bruke din student-e-post fra UiB</p>
+	{/if}
+	{#if page.url.searchParams.get('error') === 'already_registered'}
+		<div class="rounded-md bg-red-50 p-4 text-red-700">
+			<p>Du har allerede registrert deg som frivillig eller sendt inn søknad.</p>
 		</div>
-		<button
-			type="submit"
-			disabled={isSubmitting}
-			class="border-primary bg-primary hover:bg-primary-dark w-full rounded-lg border-2 p-4 text-center text-lg font-medium text-white transition-colors disabled:opacity-70"
-		>
-			{isSubmitting ? 'Sender...' : 'Send søknad'}
-		</button>
-	</form>
+	{/if}
+	<ButtonLink intent="primary" href="/bli-frivillig/no">Bli frivillig med Feide</ButtonLink>
 	<div class="text-center">
 		<p class="mb-2">Har du allerede ein konto?</p>
-		<a
-			href="/auth/feide"
-			class="bg-primary hover:bg-primary-dark inline-block rounded-md px-4 py-2 text-white transition-colors"
-			>Logg inn</a
-		>
+		<ButtonLink class="mx-auto w-fit" href="/auth/feide">Logg inn</ButtonLink>
 	</div>
 </div>

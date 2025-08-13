@@ -7,6 +7,7 @@ import {
 } from '@programmerbar/emails';
 import type { CreateEmailOptions, Resend } from 'resend';
 import { formatDate, normalDate } from '$lib/date';
+import { render } from '@react-email/render';
 
 const PROGRAMMERBAR_EMAIL = 'styret@programmerbar.no';
 const FROM_EMAIL = 'ikkesvar@programmer.bar';
@@ -123,16 +124,16 @@ export class EmailService {
 
 	private async sendEmail(payload: CreateEmailOptions) {
 		console.log('###### SENDING EMAIL ########');
-		console.log(`Sending real email to: ${payload.to}`);
-		console.log(payload.html);
+		console.log(`Sending email to: ${payload.to}`);
+		console.log(await render(payload.react));
 		console.log('#############################');
 
-		if (dev) {
-			if (payload.attachments) {
-				console.log('########### ATTACHMENTS ############');
-				console.log(payload.attachments);
-			}
+		if (payload.attachments) {
+			console.log('########### ATTACHMENTS ############');
+			console.log(payload.attachments);
+		}
 
+		if (dev) {
 			return;
 		}
 
