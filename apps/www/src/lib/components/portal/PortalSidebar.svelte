@@ -115,7 +115,7 @@
 <svelte:window onresize={handleResize} />
 
 <!-- Mobile toggle button - floating action button -->
-<div class="z-60 fixed bottom-6 right-6 lg:hidden">
+<div class="fixed right-6 bottom-6 z-60 lg:hidden">
 	<button
 		onclick={toggleSidebar}
 		class="flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-all duration-200 hover:bg-blue-700 hover:shadow-xl active:scale-95"
@@ -133,7 +133,7 @@
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div
-		class="backdrop-blur-xs fixed inset-0 z-40 bg-black/20 lg:hidden"
+		class="fixed inset-0 z-40 bg-black/20 backdrop-blur-xs lg:hidden"
 		onclick={toggleSidebar}
 	></div>
 {/if}
@@ -141,7 +141,7 @@
 <!-- Sidebar -->
 <aside
 	class={cn(
-		'fixed left-0 top-0 z-50 h-[100svh] transform border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out',
+		'fixed top-0 left-0 z-50 h-[100svh] transform border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out',
 		{
 			'w-80': isSidebarOpen && isMobile, // Large width when opened on mobile
 			'w-16 sm:w-20': !isSidebarOpen || !isMobile, // Narrow when closed or not mobile
@@ -180,7 +180,7 @@
 
 		<!-- Navigation -->
 		<nav
-			class={cn('flex-1 space-y-6 py-6 overflow-y-auto', {
+			class={cn('flex-1 space-y-6 overflow-y-auto py-6', {
 				'px-1': !showFullLayout,
 				'space-y-8 px-4': showFullLayout
 			})}
@@ -188,7 +188,7 @@
 			<!-- Main Portal Section -->
 			<div>
 				<h2
-					class={cn('mb-3 px-2 text-xs font-semibold uppercase tracking-wide text-gray-500', {
+					class={cn('mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase', {
 						hidden: !showFullLayout,
 						block: showFullLayout
 					})}
@@ -229,7 +229,7 @@
 			{#if adminRoutes.length > 0}
 				<div>
 					<h2
-						class={cn('mb-3 px-2 text-xs font-semibold uppercase tracking-wide text-gray-500', {
+						class={cn('mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase', {
 							hidden: !showFullLayout,
 							block: showFullLayout
 						})}
@@ -298,7 +298,7 @@
 									class={cn(
 										'flex items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white',
 										{
-											'absolute -right-1 -top-1 h-4 w-4': !showFullLayout,
+											'absolute -top-1 -right-1 h-4 w-4': !showFullLayout,
 											'static h-5 w-5': showFullLayout
 										}
 									)}

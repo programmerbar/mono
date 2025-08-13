@@ -22,7 +22,9 @@
 		{ title: 'Volum', value: data.product.volume ? `${data.product.volume} l` : 'Ukjent' },
 		{ title: 'Pris (Ordinær)', value: data.product.priceList.ordinary + ' NOK' },
 		{ title: 'Pris (Student)', value: data.product.priceList.student + ' NOK' },
-		...(data.product.priceList.credits && data.product.priceList.credits > 0 ? [{ title: 'Bong pris', value: data.product.priceList.credits }] : [])
+		...(data.product.priceList.credits && data.product.priceList.credits > 0
+			? [{ title: 'Bong pris', value: data.product.priceList.credits }]
+			: [])
 	];
 
 	let imageLoaded = $state(false);
@@ -49,20 +51,22 @@
 			<!-- Product Image -->
 			{#if data.product.image}
 				<div class="bg-background overflow-hidden rounded-2xl border shadow-lg">
-					<div class="aspect-square bg-white flex items-center justify-center relative">
+					<div class="relative flex aspect-square items-center justify-center bg-white">
 						<!-- Placeholder Icon -->
 						{#if !imageLoaded}
 							<div class="absolute inset-0 flex items-center justify-center">
-								<Image class="w-16 h-16 text-gray-400" />
+								<Image class="h-16 w-16 text-gray-400" />
 							</div>
 						{/if}
-						
+
 						<!-- Product Image -->
 						<img
-							class="max-h-full max-w-full object-contain {imageLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300"
+							class="max-h-full max-w-full object-contain {imageLoaded
+								? 'opacity-100'
+								: 'opacity-0'} transition-opacity duration-300"
 							src={urlFor(data.product.image).width(400).url()}
 							alt={data.product.name}
-							onload={() => imageLoaded = true}
+							onload={() => (imageLoaded = true)}
 						/>
 					</div>
 				</div>
@@ -86,10 +90,18 @@
 
 			<!-- Pricing -->
 			<div class="rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-6">
-				<div class={cn("grid grid-cols-1 gap-4", {
-					"sm:grid-cols-3": isAuthenticated && data.product.priceList.credits && data.product.priceList.credits > 0,
-					"sm:grid-cols-2": !isAuthenticated || !data.product.priceList.credits || data.product.priceList.credits <= 0
-				})}>
+				<div
+					class={cn('grid grid-cols-1 gap-4', {
+						'sm:grid-cols-3':
+							isAuthenticated &&
+							data.product.priceList.credits &&
+							data.product.priceList.credits > 0,
+						'sm:grid-cols-2':
+							!isAuthenticated ||
+							!data.product.priceList.credits ||
+							data.product.priceList.credits <= 0
+					})}
+				>
 					<div class="text-center">
 						<p class="text-sm font-medium text-gray-600">Ordinær pris</p>
 						<p class="text-2xl font-bold text-gray-900">{data.product.priceList.ordinary} kr</p>
@@ -117,7 +129,6 @@
 					<div class="prose prose-gray max-w-none">{@html html}</div>
 				</div>
 			{/if}
-
 		</div>
 	</div>
 

@@ -33,7 +33,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const confirmDelete = formData.get('confirmDelete')?.toString();
 		const formUserId = formData.get('userId')?.toString();
-		
+
 		// Use user ID from form data or fallback to params
 		const userId = formUserId || params.id;
 

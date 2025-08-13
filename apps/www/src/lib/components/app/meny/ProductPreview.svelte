@@ -38,7 +38,7 @@
 <div
 	class="bg-background relative flex h-full flex-col overflow-hidden rounded-xl border-2 shadow-md"
 >
-	<div class="relative border-b-2 overflow-hidden">
+	<div class="relative overflow-hidden border-b-2">
 		{#if !disableWishlist}
 			<div class="absolute top-0 right-0 z-10 rounded-bl bg-white px-2 py-1 text-xs font-semibold">
 				<button

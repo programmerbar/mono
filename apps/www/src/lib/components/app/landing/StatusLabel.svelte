@@ -27,10 +27,10 @@
 		})}
 	>
 		{#if status === 1}
-			<div class="absolute inset-0 rounded-full bg-green-500 animate-pulse"></div>
+			<div class="absolute inset-0 animate-pulse rounded-full bg-green-500"></div>
 		{/if}
 		{#if status === 2}
-			<div class="absolute inset-0 rounded-full bg-orange-500 animate-pulse"></div>
+			<div class="absolute inset-0 animate-pulse rounded-full bg-orange-500"></div>
 		{/if}
 	</div>
 

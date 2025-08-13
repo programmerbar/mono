@@ -174,27 +174,30 @@
 						{/if}
 					</tr>
 				</thead>
-				<tbody class="whitespace-nowrap break-words border-b border-gray-100">
+				<tbody class="border-b border-gray-100 break-words whitespace-nowrap">
 					{#each filteredEvents as event (event.id)}
 						{@const status = getEventStatus(event)}
 						<tr class="hover:bg-gray-50">
-							<td class="overflow-hidden overflow-ellipsis p-4">
-								<a href="arrangementer/{event.id}" class="text-blue-600 hover:text-blue-800 hover:underline">
+							<td class="overflow-hidden p-4 overflow-ellipsis">
+								<a
+									href="arrangementer/{event.id}"
+									class="text-blue-600 hover:text-blue-800 hover:underline"
+								>
 									{event.name}
 								</a>
 							</td>
 							{#if isMobile}
-								<td class="overflow-hidden overflow-ellipsis p-4 {getStatusClass(status)}">
+								<td class="overflow-hidden p-4 overflow-ellipsis {getStatusClass(status)}">
 									{status}
 								</td>
 							{:else}
-								<td class="overflow-hidden overflow-ellipsis p-4">
+								<td class="overflow-hidden p-4 overflow-ellipsis">
 									{formatDate(event.date)}
 								</td>
-								<td class="overflow-hidden overflow-ellipsis p-4">
+								<td class="overflow-hidden p-4 overflow-ellipsis">
 									{countShifts(event)}
 								</td>
-								<td class="overflow-hidden overflow-ellipsis p-4 {getStatusClass(status)}">
+								<td class="overflow-hidden p-4 overflow-ellipsis {getStatusClass(status)}">
 									{status}
 								</td>
 								{#if !isMobile}
