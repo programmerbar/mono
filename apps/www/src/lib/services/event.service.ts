@@ -1,5 +1,5 @@
 import type { Database } from '$lib/db/drizzle';
-import { events, shifts, userShifts, users, type UserShiftInsert } from '$lib/db/schemas';
+import { events, shifts, userShifts, type UserShiftInsert } from '$lib/db/schemas';
 import { and, eq } from 'drizzle-orm';
 
 export class EventService {
