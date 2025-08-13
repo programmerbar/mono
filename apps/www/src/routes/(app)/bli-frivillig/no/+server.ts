@@ -1,5 +1,9 @@
 import { generateState } from '$lib/auth/providers/oauth2';
-import { COOKIE_NAME_FEIDE_OAUTH_STATE, COOKIE_VALUE_BLI_FRIVILLIG } from '$lib/constants';
+import {
+	COOKIE_NAME_FEIDE_OAUTH_STATE,
+	COOKIE_NAME_FROM,
+	COOKIE_VALUE_BLI_FRIVILLIG
+} from '$lib/constants';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ locals, cookies }) => {
@@ -12,7 +16,7 @@ export const GET: RequestHandler = ({ locals, cookies }) => {
 		maxAge: 60 * 10
 	});
 
-	cookies.set(COOKIE_VALUE_BLI_FRIVILLIG, COOKIE_VALUE_BLI_FRIVILLIG, {
+	cookies.set(COOKIE_NAME_FROM, COOKIE_VALUE_BLI_FRIVILLIG, {
 		path: '/',
 		httpOnly: true,
 		maxAge: 60 * 10
