@@ -177,3 +177,4 @@ All services require database and auth initialization. Check `src/hooks.server.t
 
 ### Migration Failures
 If migrations fail, check D1 database status in Cloudflare dashboard and ensure proper credentials in `drizzle.config.ts`.
+
