@@ -1,19 +1,17 @@
 <script lang="ts">
-	import Header from '$lib/components/portal/Header.svelte';
-	import Footer from '$lib/components/footer/Footer.svelte';
+	import PortalSidebar from '$lib/components/portal/PortalSidebar.svelte';
 	let { data, children } = $props();
 </script>
 
-<div class="flex min-h-screen flex-col">
-	<div class="bg-background sticky top-0 z-10">
-		<div class="mx-auto max-w-screen-lg">
-			<Header notifications={data.notifications} />
-		</div>
+<div class="flex min-h-screen bg-gray-50">
+	<PortalSidebar notifications={data.notifications} />
+
+	<!-- Main content -->
+	<div class="flex-1 lg:ml-64">
+		<main class="flex-1 p-4 sm:p-6 lg:p-8">
+			<div class="mx-auto max-w-5xl">
+				{@render children()}
+			</div>
+		</main>
 	</div>
-	<div class="flex-1 px-2 py-10">
-		<div class="mx-auto max-w-screen-lg">
-			{@render children()}
-		</div>
-	</div>
-	<Footer />
 </div>

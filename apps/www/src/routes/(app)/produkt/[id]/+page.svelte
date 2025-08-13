@@ -4,6 +4,7 @@
 	import { page } from '$app/state';
 	import ProductDetailsCard from '$lib/components/app/product/ProductDetailsCard.svelte';
 	import { Image } from '@lucide/svelte';
+	import { cn } from '$lib/cn';
 
 	let { data } = $props();
 
@@ -21,7 +22,7 @@
 		{ title: 'Volum', value: data.product.volume ? `${data.product.volume} l` : 'Ukjent' },
 		{ title: 'Pris (Ordinær)', value: data.product.priceList.ordinary + ' NOK' },
 		{ title: 'Pris (Student)', value: data.product.priceList.student + ' NOK' },
-		{ title: 'Bong pris', value: data.product.priceList.credits }
+		...(data.product.priceList.credits && data.product.priceList.credits > 0 ? [{ title: 'Bong pris', value: data.product.priceList.credits }] : [])
 	];
 
 	let imageLoaded = $state(false);
@@ -85,7 +86,10 @@
 
 			<!-- Pricing -->
 			<div class="rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-6">
-				<div class="grid grid-cols-1 {isAuthenticated ? 'sm:grid-cols-3' : 'sm:grid-cols-2'} gap-4">
+				<div class={cn("grid grid-cols-1 gap-4", {
+					"sm:grid-cols-3": isAuthenticated && data.product.priceList.credits && data.product.priceList.credits > 0,
+					"sm:grid-cols-2": !isAuthenticated || !data.product.priceList.credits || data.product.priceList.credits <= 0
+				})}>
 					<div class="text-center">
 						<p class="text-sm font-medium text-gray-600">Ordinær pris</p>
 						<p class="text-2xl font-bold text-gray-900">{data.product.priceList.ordinary} kr</p>
@@ -94,7 +98,7 @@
 						<p class="text-sm font-medium text-gray-600">Student pris</p>
 						<p class="text-2xl font-bold text-blue-600">{data.product.priceList.student} kr</p>
 					</div>
-					{#if isAuthenticated}
+					{#if isAuthenticated && data.product.priceList.credits && data.product.priceList.credits > 0}
 						<div class="text-center">
 							<p class="text-sm font-medium text-gray-600">Bong pris</p>
 							<p class="text-2xl font-bold text-indigo-600">
