@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
+	import { ERROR_SEARCH_PARAM_ALREADY_REGISTERED } from '$lib/constants';
 
 	let { form } = $props();
 
@@ -42,9 +43,9 @@
 			<p>Du er nå registrert som frivillig!</p>
 		</div>
 	{/if}
-	{#if page.url.searchParams.get('error') === 'already_registered'}
+	{#if page.url.searchParams.get('error') === ERROR_SEARCH_PARAM_ALREADY_REGISTERED}
 		<div class="rounded-md bg-red-50 p-4 text-red-700">
-			<p>Du har allerede registrert deg som frivillig eller sendt inn søknad.</p>
+			<p>Du harBLI_FRIVILLIG_ALREADY_REGISTERED_ERRORrivillig eller sendt inn søknad.</p>
 		</div>
 	{/if}
 	<ButtonLink intent="primary" href="/bli-frivillig/no">Bli frivillig med Feide</ButtonLink>
