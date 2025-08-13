@@ -238,8 +238,7 @@
 					</h2>
 					<ul class="space-y-1">
 						{#each adminRoutes as route (route.href)}
-							{@const isActive =
-								page.url.pathname === route.href || page.url.pathname.startsWith('/portal/admin')}
+							{@const isActive = page.url.pathname === route.href}
 							<li>
 								<a
 									href={route.href}
