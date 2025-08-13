@@ -10,15 +10,29 @@
 </script>
 
 <div
-	class="bg-background mx-auto flex w-fit items-center gap-2 rounded-xl border px-4 py-1.5 text-sm font-medium shadow-md"
+	class={cn(
+		'mx-auto flex w-fit items-center gap-3 rounded-2xl border-2 px-6 py-3 text-base font-semibold shadow-lg transition-all duration-300',
+		{
+			'border-red-200 bg-red-50 text-red-800 shadow-red-100': status === 0,
+			'border-green-200 bg-green-50 text-green-800 shadow-green-100': status === 1,
+			'border-orange-200 bg-orange-50 text-orange-800 shadow-orange-100': status === 2
+		}
+	)}
 >
 	<div
-		class={cn('h-3 w-3 rounded-full shadow-lg', {
-			'bg-red-500 shadow-red-500': status === 0,
-			'bg-green-500 shadow-green-500': status === 1,
-			'bg-yellow-500 shadow-yellow-500': status === 2
+		class={cn('relative h-4 w-4 rounded-full shadow-lg', {
+			'bg-red-500 shadow-red-300': status === 0,
+			'bg-green-500 shadow-green-300': status === 1,
+			'bg-orange-500 shadow-orange-300': status === 2
 		})}
-	></div>
+	>
+		{#if status === 1}
+			<div class="absolute inset-0 rounded-full bg-green-500 animate-pulse"></div>
+		{/if}
+		{#if status === 2}
+			<div class="absolute inset-0 rounded-full bg-orange-500 animate-pulse"></div>
+		{/if}
+	</div>
 
 	{message}
 </div>
