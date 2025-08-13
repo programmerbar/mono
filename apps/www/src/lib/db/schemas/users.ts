@@ -17,9 +17,7 @@ export const users = sqliteTable(
 			.default('normal'),
 		additionalBeers: integer().default(0).notNull(),
 		altEmail: text(),
-		isdeleted: text({ enum: ['true', 'false'] })
-			.default('false')
-			.notNull()
+		isDeleted: integer({ mode: 'boolean' }).default(false).notNull()
 	},
 	(t) => [uniqueIndex('email_idx').on(t.email), uniqueIndex('feide_id_idx').on(t.feideId)]
 );

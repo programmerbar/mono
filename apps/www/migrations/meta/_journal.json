@@ -117,15 +117,8 @@
     {
       "idx": 16,
       "version": "6",
-      "when": 1755097080490,
-      "tag": "0016_certain_quasar",
-      "breakpoints": true
-    },
-    {
-      "idx": 17,
-      "version": "6",
-      "when": 1755099981630,
-      "tag": "0017_rare_professor_monster",
+      "when": 1755101772220,
+      "tag": "0016_white_psynapse",
       "breakpoints": true
     }
   ]
