@@ -6,6 +6,7 @@
 	import Input from '../ui/Input.svelte';
 	import { outsideClick } from '$lib/actions/outside-click';
 	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import { onMount } from 'svelte';
 
 	interface Props {
@@ -142,13 +143,15 @@
 						method="post"
 						action="/portal/admin/user/{selectedUser.id}?/deleteUser"
 						use:enhance={() => {
-							return ({ result }) => {
+							return async ({ result }) => {
 								if (result.type === 'success') {
+									await invalidateAll();
 									onClose();
 								}
 							};
 						}}
 					>
+						<input type="hidden" name="userId" value={selectedUser.id} />
 						<div class="space-y-2">
 							<p class="mb-1 text-sm">
 								Skriv <strong>{selectedUser.name}</strong> for å bekrefte

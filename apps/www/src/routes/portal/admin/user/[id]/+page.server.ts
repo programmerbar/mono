@@ -23,8 +23,6 @@ export const actions: Actions = {
 	},
 
 	deleteUser: async ({ params, request, locals }) => {
-		const userId = params.id;
-
 		if (!locals.user || locals.user.role !== 'board') {
 			return fail(401, {
 				success: false,
@@ -34,14 +32,33 @@ export const actions: Actions = {
 
 		const formData = await request.formData();
 		const confirmDelete = formData.get('confirmDelete')?.toString();
+		const formUserId = formData.get('userId')?.toString();
+		
+		// Use user ID from form data or fallback to params
+		const userId = formUserId || params.id;
+
+		if (!userId) {
+			return fail(400, {
+				success: false,
+				message: 'User ID is required'
+			});
+		}
 
 		const user = await locals.userService.findById(userId);
-		if (confirmDelete !== user?.name) {
+		if (!user) {
+			return fail(404, {
+				success: false,
+				message: 'User not found'
+			});
+		}
+
+		if (confirmDelete !== user.name) {
 			return fail(400, {
 				success: false,
 				message: "Names dosen't match"
 			});
 		}
+
 		const success = await locals.userService.deleteUser(userId);
 
 		const invId = await locals.invitationService.findByEmail(user.email);
