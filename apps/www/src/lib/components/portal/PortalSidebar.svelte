@@ -141,7 +141,7 @@
 <!-- Sidebar -->
 <aside
 	class={cn(
-		'fixed left-0 top-0 z-50 h-full transform border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out',
+		'fixed left-0 top-0 z-50 h-[100svh] transform border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out',
 		{
 			'w-80': isSidebarOpen && isMobile, // Large width when opened on mobile
 			'w-16 sm:w-20': !isSidebarOpen || !isMobile, // Narrow when closed or not mobile
@@ -180,7 +180,7 @@
 
 		<!-- Navigation -->
 		<nav
-			class={cn('flex-1 space-y-6 py-6', {
+			class={cn('flex-1 space-y-6 py-6 overflow-y-auto', {
 				'px-1': !showFullLayout,
 				'space-y-8 px-4': showFullLayout
 			})}
