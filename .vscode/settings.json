@@ -4,5 +4,6 @@
     "./apps/cms",
     "./internal/emails"
   ],
+  "prettier.configPath": "./apps/www/.prettierrc",
   "typescript.tsdk": "node_modules/typescript/lib"
 }
