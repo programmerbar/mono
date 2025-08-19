@@ -58,13 +58,13 @@
 
 <div class="relative" bind:this={container}>
 	{#if label}
-		<label class="mb-1 block text-sm font-semibold">{label}</label>
+		<span class="mb-1 block text-sm font-semibold">{label}</span>
 	{/if}
 
 	<button
 		type="button"
 		class={cn(
-			'border-border flex w-full items-center justify-between rounded-lg border-2 bg-white px-2 py-1 text-left',
+			'border-border flex h-10 w-full items-center justify-between rounded-lg border-2 bg-white px-2 py-1 text-left text-sm',
 			{
 				'text-gray-500': selected.size === 0
 			}

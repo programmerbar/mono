@@ -18,6 +18,8 @@ export class FilterState {
 	#sort = $state<Sort>('name-asc');
 	#types = $state<SvelteSet<string>>(new SvelteSet<string>());
 	#breweries = $state<SvelteSet<string>>(new SvelteSet<string>());
+	#priceRange = $state<{ min: number; max: number }>({ min: 0, max: 1000 });
+	#originalPriceRange = { min: 0, max: 1000 };
 	#hideSoldOut = $state(true);
 	#showStudentPrice = $state(true);
 	#showCreditPrice = $state(false);
@@ -36,6 +38,10 @@ export class FilterState {
 
 	get breweries() {
 		return this.#breweries;
+	}
+
+	get priceRange() {
+		return this.#priceRange;
 	}
 
 	get hideSoldOut() {
@@ -66,6 +72,10 @@ export class FilterState {
 		this.#breweries = value;
 	}
 
+	set priceRange(value: { min: number; max: number }) {
+		this.#priceRange = value;
+	}
+
 	set hideSoldOut(value: boolean) {
 		this.#hideSoldOut = value;
 	}
@@ -82,8 +92,14 @@ export class FilterState {
 		this.#sort = 'name-asc';
 		this.#types = new SvelteSet<string>();
 		this.#breweries = new SvelteSet<string>();
+		this.#priceRange = { min: this.#originalPriceRange.min, max: this.#originalPriceRange.max };
 		this.#hideSoldOut = true;
 		this.#showStudentPrice = true;
 		this.#showCreditPrice = false;
+	}
+
+	initializePriceRange(minPrice: number, maxPrice: number) {
+		this.#originalPriceRange = { min: minPrice, max: maxPrice };
+		this.#priceRange = { min: minPrice, max: maxPrice };
 	}
 }

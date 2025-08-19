@@ -3,13 +3,18 @@
 	import type { extractTypes } from '$lib/extract-types';
 	import { FilterState, SORT_OPTIONS } from '$lib/states/filter-state.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import Input from '$lib/components/ui/Input.svelte';
+	import Select from '$lib/components/ui/Select.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import MultipleSelect from '$lib/components/ui/MultipleSelect.svelte';
+	import PriceRangeSlider from '$lib/components/ui/PriceRangeSlider.svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 
 	type Props = {
 		filterState: FilterState;
 		types: ReturnType<typeof extractTypes>;
 		breweries: Array<string>;
+		priceRange: { min: number; max: number };
 		alwaysFilteredByCredits?: boolean;
 		disableSticky?: boolean;
 	};
@@ -18,6 +23,7 @@
 		filterState = $bindable(),
 		types,
 		breweries,
+		priceRange,
 		alwaysFilteredByCredits = false,
 		disableSticky = false
 	}: Props = $props();
@@ -42,6 +48,10 @@
 		filterState.types = newTypes;
 	}
 
+	function updatePriceRange(newRange: { min: number; max: number }) {
+		filterState.priceRange = newRange;
+	}
+
 	// Create a map of type IDs to titles for the MultipleSelect component
 	const typeOptions = types.map((type) => ({ id: type._id, label: type.title }));
 </script>
@@ -56,26 +66,17 @@
 >
 	<div class="flex flex-col gap-1">
 		<label for="search" class="text-sm font-semibold">Søk</label>
-		<input
-			type="text"
+		<Input
 			id="search"
+			type="text"
 			placeholder="Søk etter produkt"
-			class="border-border rounded-lg border-2 px-2 py-1"
 			bind:value={filterState.search}
 		/>
 	</div>
 
 	<div class="flex flex-col gap-1">
 		<label for="sort" class="text-sm font-semibold">Sorter etter</label>
-		<select
-			id="sort"
-			class="border-border rounded-lg border-2 px-2 py-1"
-			bind:value={filterState.sort}
-		>
-			{#each SORT_OPTIONS as option (option.value)}
-				<option value={option.value}>{option.label}</option>
-			{/each}
-		</select>
+		<Select id="sort" options={SORT_OPTIONS} bind:value={filterState.sort} />
 	</div>
 
 	<MultipleSelect
@@ -94,26 +95,21 @@
 		label="Bryggeri"
 	/>
 
-	{#if alwaysFilteredByCredits}{:else}
-		<div class="flex items-center justify-between py-2">
-			<label for="hideSoldOut" class="text-sm font-semibold">Skjul utsolgt</label>
-			<input
-				type="checkbox"
-				id="hideSoldOut"
-				class="h-4 w-4 rounded border-2"
-				bind:checked={filterState.hideSoldOut}
-			/>
-		</div>
+	<PriceRangeSlider
+		min={priceRange.min}
+		max={priceRange.max}
+		value={filterState.priceRange}
+		onUpdate={updatePriceRange}
+	/>
 
-		<div class="flex items-center justify-between py-2">
-			<label for="showStudentPrice" class="text-sm font-semibold">Vis studentpris</label>
-			<input
-				type="checkbox"
-				id="showStudentPrice"
-				class="h-4 w-4 rounded border-2"
-				bind:checked={filterState.showStudentPrice}
-			/>
-		</div>
+	{#if alwaysFilteredByCredits}{:else}
+		<Checkbox id="hideSoldOut" label="Skjul utsolgt" bind:checked={filterState.hideSoldOut} />
+
+		<Checkbox
+			id="showStudentPrice"
+			label="Vis studentpris"
+			bind:checked={filterState.showStudentPrice}
+		/>
 	{/if}
 
 	<div class="pt-2">

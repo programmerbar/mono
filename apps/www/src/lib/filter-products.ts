@@ -24,6 +24,13 @@ export const filterProducts = (products: GetProductsQueryResult, filter: FilterS
 			return false;
 		}
 
+		if (filter.priceRange) {
+			const price = filter.showStudentPrice ? product.priceList.student : product.priceList.normal;
+			if (price < filter.priceRange.min || price > filter.priceRange.max) {
+				return false;
+			}
+		}
+
 		if (filter.search && !product.name.toLowerCase().includes(filter.search.toLowerCase())) {
 			return false;
 		}
