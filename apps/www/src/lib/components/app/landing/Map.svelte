@@ -1,4 +1,4 @@
-<div class="h-fit w-full overflow-hidden rounded-xl border shadow-md">
+<div class="h-fit w-full overflow-hidden rounded-xl border-2 shadow-md">
 	<iframe
 		title="Programmerbar"
 		width="100%"
