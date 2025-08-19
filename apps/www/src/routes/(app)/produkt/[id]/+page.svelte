@@ -20,8 +20,16 @@
 			value: data.product.alcoholContent ? `${data.product.alcoholContent}%` : 'Ukjent'
 		},
 		{ title: 'Volum', value: data.product.volume ? `${data.product.volume} l` : 'Ukjent' },
-		{ title: 'Pris (Ordinær)', value: data.product.priceList.ordinary + ' NOK' },
-		{ title: 'Pris (Student)', value: data.product.priceList.student + ' NOK' },
+		{
+			title: 'Pris (Ordinær)',
+			value:
+				data.product.priceList.ordinary === 0 ? 'Gratis' : data.product.priceList.ordinary + ' NOK'
+		},
+		{
+			title: 'Pris (Student)',
+			value:
+				data.product.priceList.student === 0 ? 'Gratis' : data.product.priceList.student + ' NOK'
+		},
 		...(data.product.priceList.credits && data.product.priceList.credits > 0
 			? [{ title: 'Bong pris', value: data.product.priceList.credits }]
 			: [])
@@ -46,9 +54,9 @@
 	</div>
 
 	<div class="grid gap-8 lg:grid-cols-2">
-		<!-- Left Column: Image and Mobile Product Details -->
+		<!-- Left Column: Image and Description -->
 		<div class="space-y-6">
-			<!-- Product Image -->
+			<!-- Product Image with Description -->
 			{#if data.product.image}
 				<div class="bg-background overflow-hidden rounded-2xl border shadow-lg">
 					<div class="relative flex aspect-square items-center justify-center bg-white">
@@ -69,11 +77,15 @@
 							onload={() => (imageLoaded = true)}
 						/>
 					</div>
+
+					<!-- Description attached to image -->
+					{#if html}
+						<div class="border-t bg-white p-6">
+							<div class="prose prose-gray max-w-none">{@html html}</div>
+						</div>
+					{/if}
 				</div>
 			{/if}
-
-			<!-- Desktop Product Details - Only visible on desktop, directly under image -->
-			<ProductDetailsCard details={metadata.slice(0, 4)} class="hidden lg:block" />
 		</div>
 
 		<!-- Right Column: Product Details -->
@@ -104,31 +116,38 @@
 				>
 					<div class="text-center">
 						<p class="text-sm font-medium text-gray-600">Ordinær pris</p>
-						<p class="text-2xl font-bold text-gray-900">{data.product.priceList.ordinary} kr</p>
+						<p class="text-2xl font-bold text-gray-900">
+							{data.product.priceList.ordinary === 0
+								? 'Gratis'
+								: `${data.product.priceList.ordinary} kr`}
+						</p>
 					</div>
 					<div class="text-center">
 						<p class="text-sm font-medium text-gray-600">Student pris</p>
-						<p class="text-2xl font-bold text-blue-600">{data.product.priceList.student} kr</p>
+						<p class="text-2xl font-bold text-blue-600">
+							{data.product.priceList.student === 0
+								? 'Gratis'
+								: `${data.product.priceList.student} kr`}
+						</p>
 					</div>
 					{#if isAuthenticated && data.product.priceList.credits && data.product.priceList.credits > 0}
 						<div class="text-center">
 							<p class="text-sm font-medium text-gray-600">Bong pris</p>
 							<p class="text-2xl font-bold text-indigo-600">
-								{data.product.priceList.credits}
-								{data.product.priceList.credits === 1 ? 'bong' : 'bonger'}
+								{#if data.product.priceList.credits === 0}
+									Gratis
+								{:else}
+									{data.product.priceList.credits}
+									{data.product.priceList.credits === 1 ? 'bong' : 'bonger'}
+								{/if}
 							</p>
 						</div>
 					{/if}
 				</div>
 			</div>
 
-			<!-- Description -->
-			{#if html}
-				<div class="rounded-xl border bg-white p-6 shadow-sm">
-					<h2 class="mb-3 text-xl font-semibold text-gray-900">Beskrivelse</h2>
-					<div class="prose prose-gray max-w-none">{@html html}</div>
-				</div>
-			{/if}
+			<!-- Desktop Product Details - Only visible on desktop, under pricing -->
+			<ProductDetailsCard details={metadata.slice(0, 4)} class="hidden lg:block" />
 		</div>
 	</div>
 
