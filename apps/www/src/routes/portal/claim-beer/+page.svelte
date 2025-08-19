@@ -11,16 +11,21 @@
 	import { urlFor } from '$lib/api/sanity/image';
 	import Button from '$lib/components/ui/Button.svelte';
 	import { normalDate } from '$lib/date';
+	import { extractBreweries } from '$lib/extract-breweries.js';
+	import { extractPriceRange } from '$lib/extract-price-range.js';
 
+	let { data } = $props();
+	let { unclaimedBeers } = $derived(data);
+
+	let filterState = new FilterState();
 	let loading = $state(false);
+	let types = extractTypes(data.products);
+	let breweries = extractBreweries(data.products);
+	let priceRange = $derived(extractPriceRange(data.products, filterState.showStudentPrice));
 	let selectedProduct = $state<null | Product>(null);
 	let claimedProduct = $state<null | Product>(null);
 	let timerSeconds = $state(30);
 	let timerInterval = $state<ReturnType<typeof setInterval> | null>(null);
-	let { data } = $props();
-	let { unclaimedBeers } = $derived(data);
-	let types = extractTypes(data.products);
-	let filterState = new FilterState();
 
 	let userRole = $derived(data.user?.role);
 	let isLoading = $state(true);
@@ -208,7 +213,14 @@
 				</div>
 			</div>
 
-			<Sidebar {types} {filterState} alwaysFilteredByCredits disableSticky />
+			<Sidebar
+				{types}
+				{breweries}
+				{priceRange}
+				{filterState}
+				alwaysFilteredByCredits
+				disableSticky
+			/>
 
 			{#if userRole === 'board'}
 				<ClaimedCredit />

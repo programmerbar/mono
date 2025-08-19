@@ -42,7 +42,7 @@
 	<div class="relative overflow-hidden">
 		{#if !disableWishlist}
 			<div
-				class="absolute right-3 top-3 z-10 rounded-full bg-white/90 p-2 shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
+				class="absolute top-3 right-3 z-10 rounded-full bg-white/90 p-2 shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
 			>
 				<button
 					onclick={handleHeartClick}
@@ -60,7 +60,7 @@
 
 		{#if product.isSoldOut}
 			<div
-				class="absolute left-3 top-3 z-10 rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white shadow-md"
+				class="absolute top-3 left-3 z-10 rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white shadow-md"
 			>
 				Utsolgt
 			</div>
@@ -94,7 +94,7 @@
 	<div class="flex min-h-[140px] flex-1 flex-col p-4">
 		{#if disableLink}
 			<div class="flex flex-1 flex-col">
-				<h2 class="mb-1 text-lg font-semibold leading-tight">{product.name}</h2>
+				<h2 class="mb-1 text-lg leading-tight font-semibold">{product.name}</h2>
 				<div class="mb-3 flex flex-col gap-1">
 					{#if product.producer}
 						<p class="text-sm font-medium text-gray-600">{product.producer}</p>
@@ -128,7 +128,7 @@
 		{:else}
 			<a class="group-content flex flex-1 flex-col" href="/produkt/{product._id}">
 				<h2
-					class="group-hover:text-primary mb-1 text-lg font-semibold leading-tight transition-colors"
+					class="group-hover:text-primary mb-1 text-lg leading-tight font-semibold transition-colors"
 				>
 					{product.name}
 				</h2>
