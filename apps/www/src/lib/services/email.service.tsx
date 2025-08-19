@@ -7,6 +7,7 @@ import {
 } from '@programmerbar/emails';
 import type { CreateEmailOptions, Resend } from 'resend';
 import { formatDate, normalDate } from '$lib/date';
+import { render } from '@react-email/render';
 
 const PROGRAMMERBAR_EMAIL = 'styret@programmerbar.no';
 const FROM_EMAIL = 'ikkesvar@programmer.bar';
@@ -81,8 +82,7 @@ export class EmailService {
 			from: FROM_EMAIL,
 			subject: 'Kontaktskjema på hjemmesiden',
 			to: [PROGRAMMERBAR_EMAIL],
-			react: <ContactUsEmail {...data} />,
-			text: `Navn: ${data.name}\nE-post: ${data.email}\n\nMelding:\n${data.message}`
+			react: <ContactUsEmail {...data} />
 		});
 	}
 
@@ -91,8 +91,7 @@ export class EmailService {
 			from: FROM_EMAIL,
 			subject: 'Invitasjon til Programmerbar',
 			to: [data.email],
-			react: <InvitationEmail email={data.email} />,
-			text: `Hei!\n\nDu har blitt invitert til å bli med i Programmerbar. Klikk på lenken under for å bli med:\n\nhttps://programmerbar.no/logg-inn\n\nVi gleder oss til å se deg!\n\nHilsen Programmerbar`
+			react: <InvitationEmail email={data.email} />
 		});
 	}
 
@@ -101,8 +100,7 @@ export class EmailService {
 			from: FROM_EMAIL,
 			subject: 'Ny frivillig-søknad',
 			to: ['frivilligansvarlig@programmerbar.no'],
-			react: <VoulenteerEmail name={data.name} email={data.email} />,
-			text: `Ny søknad om å bli frivillig:\n\nNavn: ${data.name}\nE-post: ${data.email}`
+			react: <VoulenteerEmail name={data.name} email={data.email} />
 		});
 	}
 
@@ -114,7 +112,6 @@ export class EmailService {
 			subject: 'Du har fått en vakt',
 			to: [data.user.email],
 			react: <ShiftEmail shift={data.shift} user={data.user} />,
-			text: `Du har fått en vakt: ${data.shift.summary}.\n\nStart: ${data.shift.startAt}\nSlutt: ${data.shift.endAt}\n\nSe vedlagt kalenderfil for mer informasjon.`,
 			attachments: [
 				{
 					filename: 'shift.ics',
@@ -129,7 +126,7 @@ export class EmailService {
 		console.log('###### SENDING EMAIL ########');
 		console.log(`Sending email to: ${payload.to}`);
 		console.log(`Subject: ${payload.subject}`);
-		console.log(payload.text);
+		console.log(await render(payload.react));
 		console.log('#############################');
 
 		if (payload.attachments) {

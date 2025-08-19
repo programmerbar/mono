@@ -5,11 +5,8 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig(({ mode }) => ({
 	plugins: [sveltekit(), tailwindcss()],
 	resolve: {
-		alias:
-			mode === 'production'
-				? {
-						'react-dom/server': 'react-dom/server.edge'
-					}
-				: undefined
+		alias: {
+			'react-dom/server': 'react-dom/server.edge'
+		}
 	}
 }));

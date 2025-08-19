@@ -8,7 +8,9 @@
 </script>
 
 <div class="bg-background rounded-xl border-2 p-6 shadow-md">
-	<Heading level={2} class="mb-6 text-center font-mono text-3xl font-medium md:text-4xl">Kontakt oss</Heading>
+	<Heading level={2} class="mb-6 text-center font-mono text-3xl font-medium md:text-4xl"
+		>Kontakt oss</Heading
+	>
 
 	<form
 		method="post"
@@ -33,34 +35,17 @@
 
 		<div class="field">
 			<label for="email" class="label">Email</label>
-			<Input
-				type="email"
-				name="email"
-				placeholder="kari.nordmann@noreg.no"
-				class="shadow-lg"
-			/>
+			<Input type="email" name="email" placeholder="kari.nordmann@noreg.no" class="shadow-lg" />
 		</div>
 
 		<div class="flex flex-col gap-2">
 			<label for="name" class="text-sm font-medium text-gray-700">Navn</label>
-			<Input
-				type="text"
-				id="name"
-				name="namekjkj"
-				placeholder="Kari Nordmann"
-				required
-			/>
+			<Input type="text" id="name" name="namekjkj" placeholder="Kari Nordmann" required />
 		</div>
 
 		<div class="flex flex-col gap-2">
 			<label for="email" class="text-sm font-medium text-gray-700">E-post</label>
-			<Input
-				type="email"
-				id="email"
-				name="emailkjkj"
-				placeholder="kari@norge.no"
-				required
-			/>
+			<Input type="email" id="email" name="emailkjkj" placeholder="kari@norge.no" required />
 		</div>
 
 		<div class="flex flex-col gap-2">
