@@ -6,6 +6,10 @@
       "persistent": true,
       "cache": false
     },
+    "preview": {
+      "persistent": true,
+      "cache": false
+    },
     "build": {
       "persistent": false,
       "outputs": [

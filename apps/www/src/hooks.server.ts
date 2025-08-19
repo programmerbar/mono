@@ -4,6 +4,7 @@ import { createFeideProvider } from '$lib/auth/providers/feide';
 import { createDatabase } from '$lib/db/drizzle';
 import { BanService } from '$lib/services/ban.service';
 import { BeerService } from '$lib/services/beer.service';
+import { ContactSubmissionService } from '$lib/services/contact-submission.service';
 import { EmailService } from '$lib/services/email.service';
 import { EventService } from '$lib/services/event.service';
 import { GroupsService } from '$lib/services/groups.service';
@@ -78,6 +79,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const groupsService = new GroupsService(db);
 	event.locals.groupsService = groupsService;
+
+	const contactSubmissionService = new ContactSubmissionService(db);
+	event.locals.contactSubmissionService = contactSubmissionService;
 
 	// Validate auth
 	const sessionId = event.cookies.get(auth.sessionCookieName);

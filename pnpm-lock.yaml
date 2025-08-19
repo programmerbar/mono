@@ -75,9 +75,6 @@ importers:
       '@programmerbar/emails':
         specifier: workspace:*
         version: link:../../internal/emails
-      '@react-email/render':
-        specifier: 1.2.0
-        version: 1.2.0(react-dom@19.1.1)(react@19.1.1)
       '@sanity/client':
         specifier: 7.8.2
         version: 7.8.2(debug@4.4.1)
@@ -117,9 +114,12 @@ importers:
       react:
         specifier: 19.1.1
         version: 19.1.1
+      react-dom:
+        specifier: 19.1.1
+        version: 19.1.1(react@19.1.1)
       resend:
         specifier: 6.0.1
-        version: 6.0.1(@react-email/render@1.2.0)
+        version: 6.0.1
       svelte-sonner:
         specifier: 1.0.5
         version: 1.0.5(svelte@5.38.1)
@@ -175,6 +175,9 @@ importers:
       '@types/react':
         specifier: 19.1.10
         version: 19.1.10
+      '@types/react-dom':
+        specifier: 19.1.7
+        version: 19.1.7(@types/react@19.1.10)
       drizzle-kit:
         specifier: 0.31.4
         version: 0.31.4
@@ -5775,20 +5778,6 @@ packages:
       react-promise-suspense: 0.3.4
     dev: false
 
-  /@react-email/render@1.2.0(react-dom@19.1.1)(react@19.1.1):
-    resolution: {integrity: sha512-5fpbV16VYR9Fmk8t7xiwPNAjxjdI8XzVtlx9J9OkhOsIHdr2s5DwAj8/MXzWa9qRYJyLirQ/l7rBSjjgyRAomw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^18.0 || ^19.0 || ^19.0.0-rc
-      react-dom: ^18.0 || ^19.0 || ^19.0.0-rc
-    dependencies:
-      html-to-text: 9.0.5
-      prettier: 3.6.2
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
-      react-promise-suspense: 0.3.4
-    dev: false
-
   /@react-email/row@0.0.12(react@19.1.1):
     resolution: {integrity: sha512-HkCdnEjvK3o+n0y0tZKXYhIXUNPDx+2vq1dJTmqappVHXS5tXS6W5JOPZr5j+eoZ8gY3PShI2LWj5rWF7ZEtIQ==}
     engines: {node: '>=18.0.0'}
@@ -7242,6 +7231,14 @@ packages:
       '@types/react': ^19.0.0
     dependencies:
       '@types/react': 19.0.10
+    dev: true
+
+  /@types/react-dom@19.1.7(@types/react@19.1.10):
+    resolution: {integrity: sha512-i5ZzwYpqjmrKenzkoLM2Ibzt6mAsM7pxB6BCIouEVVmgiqaMj1TjaK7hnA36hbW5aZv20kx7Lw6hWzPWg0Rurw==}
+    peerDependencies:
+      '@types/react': ^19.0.0
+    dependencies:
+      '@types/react': 19.1.10
     dev: true
 
   /@types/react-dom@19.1.7(@types/react@19.1.9):
@@ -13694,7 +13691,7 @@ packages:
     resolution: {integrity: sha512-K/BG6eIky/SBpzfHZv/dd+9JBFiS4SWV7FIujVyJRux6e45+73RaUHXLmIR1f7WOMaQ0U1km6qwklRQxpJJY0w==}
     dev: false
 
-  /resend@6.0.1(@react-email/render@1.2.0):
+  /resend@6.0.1:
     resolution: {integrity: sha512-xNZ0gKAOqQcH83lXsqNOwBbpKROnsZpQr9mXRdG6hrHTF9G9Il2pkoTRtq7rJzXMvCZX+I79oahsbSeaYOWRFA==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -13702,8 +13699,6 @@ packages:
     peerDependenciesMeta:
       '@react-email/render':
         optional: true
-    dependencies:
-      '@react-email/render': 1.2.0(react-dom@19.1.1)(react@19.1.1)
     dev: false
 
   /resolve-from@4.0.0:

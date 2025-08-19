@@ -11,6 +11,10 @@
 		return ({ result }) => {
 			if (result.type === 'success') {
 				toast.success('Takk for din henvendelse!');
+			} else {
+				toast.error(
+					'Noe gikk galt, prøv igjen senere. Hvis problemet vedvarer, kontakt oss på e-post, hei@programmerbar.no.'
+				);
 			}
 		};
 	}}
