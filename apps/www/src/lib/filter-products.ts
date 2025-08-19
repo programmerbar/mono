@@ -25,7 +25,9 @@ export const filterProducts = (products: GetProductsQueryResult, filter: FilterS
 		}
 
 		if (filter.priceRange) {
-			const price = filter.showStudentPrice ? product.priceList.student : product.priceList.normal;
+			const price = filter.showStudentPrice
+				? product.priceList.student
+				: product.priceList.ordinary;
 			if (price < filter.priceRange.min || price > filter.priceRange.max) {
 				return false;
 			}

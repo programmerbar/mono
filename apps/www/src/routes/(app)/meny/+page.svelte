@@ -12,7 +12,7 @@
 	let types = extractTypes(data.products);
 	let breweries = extractBreweries(data.products);
 	let filterState = new FilterState();
-	let priceRange = $derived(extractPriceRange(data.products, filterState.showStudentPrice));
+	let priceRange = $derived(extractPriceRange(data.products, filterState.showStudentPrice)!); // Fix the bang operator
 	let filteredProducts = $derived(filterProducts(data.products, filterState));
 
 	// Initialize price range when component mounts

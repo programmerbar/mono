@@ -9,7 +9,7 @@ export const extractPriceRange = (
 	}
 
 	const prices = products.map((product) =>
-		useStudentPrice ? product.priceList.student : product.priceList.normal
+		useStudentPrice ? product.priceList.student : product.priceList.ordinary
 	);
 
 	const min = Math.min(...prices);
