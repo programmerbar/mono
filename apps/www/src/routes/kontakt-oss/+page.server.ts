@@ -15,7 +15,12 @@ export const actions: Actions = {
 			return fail(400, { success: false });
 		}
 
-		const data = ContactUsSchema.parse(formData);
+		const { data, success } = ContactUsSchema.safeParse(formData);
+
+		if (!success) {
+			console.error('Validation failed:', data);
+			return fail(400, { success: false, error: 'Invalid input' });
+		}
 
 		// Save to database
 		await locals.contactSubmissionService.create({

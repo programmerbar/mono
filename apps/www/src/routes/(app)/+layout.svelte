@@ -1,9 +1,12 @@
 <script lang="ts">
 	import Footer from '$lib/components/footer/Footer.svelte';
 	import Header from '$lib/components/app/header/Header.svelte';
+	import StatusBanner from '$lib/components/app/landing/StatusBanner.svelte';
 
 	let { children } = $props();
 </script>
+
+<StatusBanner />
 
 <div class="flex min-h-screen flex-col bg-[url('/circuit-board.svg')] bg-[length:400px]">
 	<Header />

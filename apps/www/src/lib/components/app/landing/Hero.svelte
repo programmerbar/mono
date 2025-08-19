@@ -1,17 +1,4 @@
-<script lang="ts">
-	import StatusLabel from './StatusLabel.svelte';
-
-	type Props = {
-		status: number;
-		message: string;
-	};
-
-	let { status, message }: Props = $props();
-</script>
-
-<div class="space-y-10 pt-32 pb-56">
-	<StatusLabel {status} {message} />
-
+<div class="space-y-10 pb-56 pt-32">
 	<h1 class="text-center font-mono text-4xl text-gray-700 sm:text-5xl md:text-6xl lg:text-7xl">
 		$ programmerbar
 	</h1>
