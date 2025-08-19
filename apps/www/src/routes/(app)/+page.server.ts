@@ -1,14 +1,13 @@
 import { getEvents, getRepeatingEvents } from '$lib/api/sanity/events';
 import { getProducts } from '$lib/api/sanity/products';
-import { getStatus } from '$lib/api/status';
 import { flattenRepeatingEvents } from '$lib/repeating-events';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
 	const [products, events, status, repeatingEvents] = await Promise.all([
 		getProducts(),
 		getEvents(),
-		getStatus(),
+		locals.statusService.getWithMessage(),
 		getRepeatingEvents()
 	]);
 

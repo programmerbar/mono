@@ -23,6 +23,14 @@ export class StatusService {
 		await this.#kv.put(STATUS_KEY, String(status));
 	}
 
+	async getWithMessage() {
+		const status = await this.get();
+		return {
+			status,
+			message: StatusService.getMessage(status)
+		};
+	}
+
 	static getMessage(status: number) {
 		switch (status) {
 			case STATUS.CLOSED:
