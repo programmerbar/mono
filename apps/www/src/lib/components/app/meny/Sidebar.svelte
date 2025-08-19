@@ -2,10 +2,14 @@
 	import { cn } from '$lib/cn';
 	import type { extractTypes } from '$lib/extract-types';
 	import { FilterState, SORT_OPTIONS } from '$lib/states/filter-state.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import MultipleSelect from '$lib/components/ui/MultipleSelect.svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 
 	type Props = {
 		filterState: FilterState;
 		types: ReturnType<typeof extractTypes>;
+		breweries: Array<string>;
 		alwaysFilteredByCredits?: boolean;
 		disableSticky?: boolean;
 	};
@@ -13,9 +17,33 @@
 	let {
 		filterState = $bindable(),
 		types,
+		breweries,
 		alwaysFilteredByCredits = false,
 		disableSticky = false
 	}: Props = $props();
+
+	function toggleBrewery(brewery: string) {
+		const newBreweries = new SvelteSet<string>(filterState.breweries);
+		if (newBreweries.has(brewery)) {
+			newBreweries.delete(brewery);
+		} else {
+			newBreweries.add(brewery);
+		}
+		filterState.breweries = newBreweries;
+	}
+
+	function toggleType(typeId: string) {
+		const newTypes = new SvelteSet<string>(filterState.types);
+		if (newTypes.has(typeId)) {
+			newTypes.delete(typeId);
+		} else {
+			newTypes.add(typeId);
+		}
+		filterState.types = newTypes;
+	}
+
+	// Create a map of type IDs to titles for the MultipleSelect component
+	const typeOptions = types.map((type) => ({ id: type._id, label: type.title }));
 </script>
 
 <div
@@ -50,19 +78,21 @@
 		</select>
 	</div>
 
-	<div class="flex flex-col gap-1">
-		<label for="type" class="text-sm font-semibold">Type</label>
-		<select
-			id="type"
-			class="border-border rounded-lg border-2 px-2 py-1"
-			bind:value={filterState.type}
-		>
-			<option value="">Alle</option>
-			{#each types as type (type._id)}
-				<option value={type._id}>{type.title}</option>
-			{/each}
-		</select>
-	</div>
+	<MultipleSelect
+		options={typeOptions}
+		selected={filterState.types}
+		onToggle={toggleType}
+		placeholder="Alle typer"
+		label="Type"
+	/>
+
+	<MultipleSelect
+		options={breweries}
+		selected={filterState.breweries}
+		onToggle={toggleBrewery}
+		placeholder="Alle bryggerier"
+		label="Bryggeri"
+	/>
 
 	{#if alwaysFilteredByCredits}{:else}
 		<div class="flex items-center justify-between py-2">
@@ -85,4 +115,10 @@
 			/>
 		</div>
 	{/if}
+
+	<div class="pt-2">
+		<Button intent="outline" class="w-full" onclick={() => filterState.reset()}>
+			Tilbakestill filtre
+		</Button>
+	</div>
 </div>

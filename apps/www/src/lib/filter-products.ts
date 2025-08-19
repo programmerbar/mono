@@ -7,7 +7,20 @@ export const filterProducts = (products: GetProductsQueryResult, filter: FilterS
 			return false;
 		}
 
-		if (filter.type && !product.productTypes?.map((type) => type._id).includes(filter.type)) {
+		if (filter.types.size > 0) {
+			// If product has no types, exclude it when type filtering is active
+			if (!product.productTypes || product.productTypes.length === 0) {
+				return false;
+			}
+			// Check if product has any of the selected types
+			const productTypeIds = product.productTypes.map((type) => type._id);
+			const hasMatchingType = productTypeIds.some((typeId) => filter.types.has(typeId));
+			if (!hasMatchingType) {
+				return false;
+			}
+		}
+
+		if (filter.breweries.size > 0 && product.producer && !filter.breweries.has(product.producer)) {
 			return false;
 		}
 

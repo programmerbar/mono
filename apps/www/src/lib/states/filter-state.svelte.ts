@@ -1,3 +1,5 @@
+import { SvelteSet } from 'svelte/reactivity';
+
 export const SORT_OPTIONS = [
 	{ value: 'name-asc', label: 'Navn (A-Å)' },
 	{ value: 'name-desc', label: 'Navn (Å-A)' },
@@ -14,7 +16,8 @@ export type Sort = (typeof SORT_OPTIONS)[number]['value'];
 export class FilterState {
 	#search = $state('');
 	#sort = $state<Sort>('name-asc');
-	#type = $state<string | null>('');
+	#types = $state<SvelteSet<string>>(new SvelteSet<string>());
+	#breweries = $state<SvelteSet<string>>(new SvelteSet<string>());
 	#hideSoldOut = $state(true);
 	#showStudentPrice = $state(true);
 	#showCreditPrice = $state(false);
@@ -27,8 +30,12 @@ export class FilterState {
 		return this.#sort;
 	}
 
-	get type() {
-		return this.#type;
+	get types() {
+		return this.#types;
+	}
+
+	get breweries() {
+		return this.#breweries;
 	}
 
 	get hideSoldOut() {
@@ -51,8 +58,12 @@ export class FilterState {
 		this.#sort = value;
 	}
 
-	set type(value: string | null) {
-		this.#type = value;
+	set types(value: SvelteSet<string>) {
+		this.#types = value;
+	}
+
+	set breweries(value: SvelteSet<string>) {
+		this.#breweries = value;
 	}
 
 	set hideSoldOut(value: boolean) {
@@ -64,5 +75,15 @@ export class FilterState {
 	}
 	set showCreditPrice(value: boolean) {
 		this.#showCreditPrice = value;
+	}
+
+	reset() {
+		this.#search = '';
+		this.#sort = 'name-asc';
+		this.#types = new SvelteSet<string>();
+		this.#breweries = new SvelteSet<string>();
+		this.#hideSoldOut = true;
+		this.#showStudentPrice = true;
+		this.#showCreditPrice = false;
 	}
 }
