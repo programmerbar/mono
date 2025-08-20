@@ -18,8 +18,8 @@ impl InvitationRepository {
 
     pub async fn get_by_email(&self, email: &str) -> Result<Option<Invitation>, sqlx::Error> {
         query_as!(
-            Invitation, 
-            "SELECT * FROM invitation WHERE email = $1 AND claimed_at IS NULL AND expires_at > NOW()", 
+            Invitation,
+            "SELECT * FROM invitation WHERE email = $1 AND claimed_at IS NULL AND expires_at > NOW()",
             email
         )
         .fetch_optional(&self.pool)
