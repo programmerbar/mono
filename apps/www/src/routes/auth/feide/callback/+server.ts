@@ -39,6 +39,22 @@ export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 			});
 		}
 
+		const existingApplication = await locals.pendingApplicationService.findByFeideId(feideUser.id);
+		if (existingApplication) {
+			return new Response(null, {
+				status: 302,
+				headers: {
+					location: `/bli-frivillig?error=${ERROR_SEARCH_PARAM_ALREADY_REGISTERED}`
+				}
+			});
+		}
+
+		await locals.pendingApplicationService.create({
+			name: feideUser.username,
+			email: feideUser.email,
+			feideId: feideUser.id
+		});
+
 		await locals.emailService.sendVolunteerRequestEmail({
 			name: feideUser.username,
 			email: feideUser.email
