@@ -7,8 +7,39 @@ export const filterProducts = (products: GetProductsQueryResult, filter: FilterS
 			return false;
 		}
 
-		if (filter.type && !product.productTypes?.map((type) => type._id).includes(filter.type)) {
-			return false;
+		if (filter.types.size > 0) {
+			// If product has no types, exclude it when type filtering is active
+			if (!product.productTypes || product.productTypes.length === 0) {
+				return false;
+			}
+			// Check if product has any of the selected types
+			const productTypeIds = product.productTypes.map((type) => type._id);
+			const hasMatchingType = productTypeIds.some((typeId) => filter.types.has(typeId));
+			if (!hasMatchingType) {
+				return false;
+			}
+		}
+
+		if (filter.breweries.size > 0) {
+			// Check if "No brewery" is selected
+			const hasNoBrewer = filter.breweries.has('__no_brewery__');
+			// Check if product has a matching producer
+			const hasMatchingProducer = product.producer && filter.breweries.has(product.producer);
+			// Check if product has no producer and "No brewery" is selected
+			const isNoProducerMatch = !product.producer && hasNoBrewer;
+
+			if (!hasMatchingProducer && !isNoProducerMatch) {
+				return false;
+			}
+		}
+
+		if (filter.priceRange) {
+			const price = filter.showStudentPrice
+				? product.priceList.student
+				: product.priceList.ordinary;
+			if (price < filter.priceRange.min || price > filter.priceRange.max) {
+				return false;
+			}
 		}
 
 		if (filter.search && !product.name.toLowerCase().includes(filter.search.toLowerCase())) {

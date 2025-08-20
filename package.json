@@ -3,6 +3,7 @@
   "packageManager": "pnpm@8.7.0",
   "scripts": {
     "dev": "turbo run dev",
+    "preview": "turbo run preview",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "check": "turbo run check",
@@ -10,9 +11,11 @@
     "db:generate": "turbo run db:generate",
     "db:migrate": "turbo run db:migrate",
     "db:migrate:local": "turbo run db:migrate:local",
-    "types": "turbo run types"
+    "extract": "turbo run extract",
+    "typegen": "turbo run typegen"
   },
   "dependencies": {
-    "turbo": "2.3.3"
+    "turbo": "2.5.5",
+    "typescript": "5.8.3"
   }
 }

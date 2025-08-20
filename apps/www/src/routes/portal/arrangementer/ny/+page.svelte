@@ -53,7 +53,7 @@
 	<title>Nytt arrangement</title>
 </svelte:head>
 
-<div class="mx-auto max-w-4xl overflow-hidden rounded-xl border-2 bg-background shadow-lg">
+<div class="bg-background mx-auto max-w-4xl overflow-hidden rounded-xl border-2 shadow-lg">
 	<div class="border-b-2 bg-gray-200 px-6 py-4">
 		<h2 class="text-lg font-medium">Nytt arrangement</h2>
 	</div>
@@ -71,7 +71,7 @@
 		{/if}
 
 		<form onsubmit={handleSubmit} class="space-y-6">
-			<div class="rounded-lg border-2 bg-background p-4 shadow-lg">
+			<div class="bg-background rounded-lg border-2 p-4 shadow-lg">
 				<div class="space-y-4">
 					<FormInput
 						label="Navn"
@@ -92,12 +92,12 @@
 
 			<div>
 				<h2 class="mb-4 text-lg font-medium">Vakter</h2>
-				{#each createEventState.shifts as shift, i}
+				{#each createEventState.shifts as shift, i (i + shift.startAt.toString() + shift.endAt.toString())}
 					{@const startDate = shift.startAt ? new Date(shift.startAt) : new Date()}
 					{@const endDate = shift.endAt ? new Date(shift.endAt) : new Date()}
 					{@const shiftLength = differenceInHours(endDate, startDate)}
 					<div
-						class="relative mb-4 flex flex-col space-y-4 rounded-lg border-2 bg-background p-4 shadow-lg"
+						class="bg-background relative mb-4 flex flex-col space-y-4 rounded-lg border-2 p-4 shadow-lg"
 					>
 						<div class="flex items-center justify-between">
 							<h3 class="font-medium">Vakt {i + 1}</h3>
@@ -152,21 +152,23 @@
 							</p>
 
 							<div class="space-y-2">
-								{#each createEventState.shifts[i].users as user, j (user)}
+								{#each createEventState.shifts[i].users as user, j (user.id)}
 									<div class="flex items-center gap-2">
 										<Combobox
+											type="single"
 											name="user"
-											class="flex-1"
-											bind:value={createEventState.shifts[i].users[j].name}
+											inputValue={createEventState.shifts[i].users[j].name}
+											bind:value={createEventState.shifts[i].users[j].id}
 											disabledOptions={createEventState.shifts[i].users.map((user) => user.id)}
-											onchange={(option) => {
-												const id = option?.value;
-												if (id) {
-													createEventState.shifts[i].users[j].id = id;
+											onValueChange={(option) => {
+												const selectedUser = data.users.find((u) => u.value === option);
+												if (selectedUser) {
+													createEventState.shifts[i].users[j].id = option;
+													createEventState.shifts[i].users[j].name = selectedUser.label;
 												}
 											}}
-											options={data.users}
-											placeholder="Velg en bruker"
+											items={data.users}
+											inputProps={{ class: 'flex-1', placeholder: 'Velg bruker' }}
 										/>
 										<button
 											type="button"

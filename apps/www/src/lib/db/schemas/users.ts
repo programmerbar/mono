@@ -4,7 +4,6 @@ import { sessions } from './sessions';
 import { shifts } from './shifts';
 import { usersGroups } from './users-groups';
 import { notifications } from './notifications';
-import { referrals } from './referrals';
 
 export const users = sqliteTable(
 	'user',
@@ -16,10 +15,9 @@ export const users = sqliteTable(
 		role: text({ enum: ['board', 'normal'] })
 			.notNull()
 			.default('normal'),
-		altEmail: text(),
-		phone: text(),
 		additionalBeers: integer().default(0).notNull(),
-		isTrained: integer({ mode: 'boolean' }).default(false).notNull()
+		altEmail: text(),
+		isDeleted: integer({ mode: 'boolean' }).default(false).notNull()
 	},
 	(t) => [uniqueIndex('email_idx').on(t.email), uniqueIndex('feide_id_idx').on(t.feideId)]
 );
@@ -28,9 +26,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 	sessions: many(sessions),
 	shifts: many(shifts),
 	memberships: many(usersGroups),
-	notifications: many(notifications),
-	referralsGiven: many(referrals, { relationName: 'referrer' }),
-	referralsReceived: many(referrals, { relationName: 'referred' })
+	notifications: many(notifications)
 }));
 
 export type User = InferSelectModel<typeof users>;

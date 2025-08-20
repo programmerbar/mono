@@ -1,23 +1,9 @@
-import { createDatabase } from '../src/lib/db/drizzle';
-import { type D1Database } from '@cloudflare/workers-types';
-import { getPlatformProxy } from 'wrangler';
 import { invitations } from '../src/lib/db/schemas';
 import { nanoid } from 'nanoid';
+import { setup } from './setup';
 
-type Env = {
-	DB: D1Database;
-};
-
-// Example "tsx ./apps/www/scripts/add-invitation.ts "some@email.com""
-const main = async () => {
-	const { env } = await getPlatformProxy<Env>({
-		configPath: './apps/www/wrangler.jsonc',
-		persist: {
-			path: './apps/www/.wrangler/state/v3'
-		}
-	});
-
-	const db = createDatabase(env.DB);
+async function main() {
+	const { db } = await setup();
 
 	const email = process.argv[2];
 
@@ -35,7 +21,7 @@ const main = async () => {
 	});
 
 	console.log(`Invitation for ${email} added.`);
-};
+}
 
 main()
 	.then(() => {

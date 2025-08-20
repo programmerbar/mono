@@ -1,5 +1,5 @@
 import type { Database } from '$lib/db/drizzle';
-import { eq } from 'drizzle-orm';
+import { eq, and, not } from 'drizzle-orm';
 import { users, type UserInsert } from '$lib/db/schemas';
 
 export class UserService {
@@ -24,7 +24,9 @@ export class UserService {
 	}
 
 	async findAll() {
-		return await this.#db.query.users.findMany();
+		return await this.#db.query.users.findMany({
+			where: (row, { not }) => not(row.isDeleted)
+		});
 	}
 
 	async updateUserRole(userId: string, role: 'board' | 'normal') {
@@ -45,16 +47,25 @@ export class UserService {
 			.then((rows) => rows[0]);
 	}
 
-	async updatePhone(userId: string, phonenr: string) {
+	async findById(userId: string) {
+		const user = await this.#db
+			.select()
+			.from(users)
+			.where(and(eq(users.id, userId), not(users.isDeleted)))
+			.then((results) => results[0]);
+
+		return user;
+	}
+	async deleteUser(userId: string) {
 		return await this.#db
 			.update(users)
-			.set({ phone: phonenr })
+			.set({ isDeleted: true })
 			.where(eq(users.id, userId))
 			.returning()
 			.then((rows) => rows[0]);
 	}
 
-	async findById(userId: string) {
+	async findByIdIncludeDeleted(userId: string) {
 		const user = await this.#db
 			.select()
 			.from(users)
@@ -63,20 +74,8 @@ export class UserService {
 
 		return user;
 	}
-	async deleteUser(userId: string) {
-		return await this.#db
-			.delete(users)
-			.where(eq(users.id, userId))
-			.returning()
-			.then((rows) => rows[0]);
-	}
 
-	async updateTrainingStatus(userId: string, isTrained: boolean) {
-		return await this.#db
-			.update(users)
-			.set({ isTrained })
-			.where(eq(users.id, userId))
-			.returning()
-			.then((rows) => rows[0]);
+	async findAllIncludeDeleted() {
+		return await this.#db.query.users.findMany();
 	}
 }

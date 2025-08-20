@@ -1,3 +1,5 @@
+import z from 'zod';
+
 export const STATUS_KEY = 'status';
 
 export const STATUS = {
@@ -5,19 +7,6 @@ export const STATUS = {
 	OPEN: 1,
 	PRIVATE: 2
 } as const;
-
-export const getStatusMessage = (status: number) => {
-	switch (status) {
-		case STATUS.CLOSED:
-			return 'Baren er nå stengt! 🚪';
-		case STATUS.OPEN:
-			return 'Baren er nå åpen! 🍻';
-		case STATUS.PRIVATE:
-			return 'Lukket arrangement. 🎉';
-		default:
-			return 'Ukjent status.';
-	}
-};
 
 export class StatusService {
 	#kv: KVNamespace;
@@ -32,5 +21,34 @@ export class StatusService {
 
 	async set(status: number) {
 		await this.#kv.put(STATUS_KEY, String(status));
+	}
+
+	async getWithMessage() {
+		const status = await this.get();
+		return {
+			status,
+			message: StatusService.getMessage(status)
+		};
+	}
+
+	static getMessage(status: number) {
+		switch (status) {
+			case STATUS.CLOSED:
+				return 'Baren er nå stengt! 🚪';
+			case STATUS.OPEN:
+				return 'Baren er nå åpen! 🍻';
+			case STATUS.PRIVATE:
+				return 'Lukket arrangement. 🎉';
+			default:
+				return 'Ukjent status.';
+		}
+	}
+
+	static validateStatus(json: unknown) {
+		return z
+			.object({
+				status: z.number().int().min(0).max(2)
+			})
+			.safeParse(json);
 	}
 }

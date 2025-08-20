@@ -3,13 +3,13 @@ import { users } from './users';
 import type { InferSelectModel, InferInsertModel } from 'drizzle-orm';
 
 export const claimedCredits = sqliteTable('claimed_credits', {
-	id: text('id').primaryKey(),
-	userId: text('user_id')
+	id: text().primaryKey(),
+	userId: text()
 		.notNull()
 		.references(() => users.id),
-	productId: text('product_id').notNull(),
-	creditCost: integer('credit_cost').notNull(),
-	createdAt: integer('created_at', { mode: 'timestamp' })
+	productId: text().notNull(),
+	creditCost: integer().notNull(),
+	createdAt: integer({ mode: 'timestamp' })
 		.notNull()
 		.$defaultFn(() => new Date())
 });

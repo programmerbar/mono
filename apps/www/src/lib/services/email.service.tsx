@@ -6,8 +6,8 @@ import {
 	VoulenteerEmail
 } from '@programmerbar/emails';
 import type { CreateEmailOptions, Resend } from 'resend';
-import { render } from '@react-email/render';
 import { formatDate, normalDate } from '$lib/date';
+import { render } from '@react-email/render';
 
 const PROGRAMMERBAR_EMAIL = 'styret@programmerbar.no';
 const FROM_EMAIL = 'ikkesvar@programmer.bar';
@@ -41,13 +41,15 @@ export type ShiftEmailProps = {
 	};
 };
 
-function generateICS(shift: {
+type IcsShiftEvent = {
 	id: string;
 	startAt: string;
 	endAt: string;
 	summary: string;
 	description?: string;
-}): string {
+};
+
+function createIcsEvent(shift: IcsShiftEvent): string {
 	const uid = shift.id;
 
 	const dtstamp = formatDate(new Date().toISOString());
@@ -80,7 +82,7 @@ export class EmailService {
 			from: FROM_EMAIL,
 			subject: 'Kontaktskjema på hjemmesiden',
 			to: [PROGRAMMERBAR_EMAIL],
-			html: await render(ContactUsEmail({ ...data }))
+			react: <ContactUsEmail {...data} />
 		});
 	}
 
@@ -89,7 +91,7 @@ export class EmailService {
 			from: FROM_EMAIL,
 			subject: 'Invitasjon til Programmerbar',
 			to: [data.email],
-			html: await render(InvitationEmail({ ...data }))
+			react: <InvitationEmail email={data.email} />
 		});
 	}
 
@@ -98,18 +100,18 @@ export class EmailService {
 			from: FROM_EMAIL,
 			subject: 'Ny frivillig-søknad',
 			to: ['frivilligansvarlig@programmerbar.no'],
-			html: await render(VoulenteerEmail({ name: data.name, email: data.email }))
+			react: <VoulenteerEmail name={data.name} email={data.email} />
 		});
 	}
 
 	async sendShiftEmail(data: ShiftEmailProps) {
-		const icsContent = generateICS(data.shift);
+		const icsContent = createIcsEvent(data.shift);
 
 		await this.sendEmail({
 			from: FROM_EMAIL,
 			subject: 'Du har fått en vakt',
 			to: [data.user.email],
-			html: await render(ShiftEmail({ ...data })),
+			react: <ShiftEmail shift={data.shift} user={data.user} />,
 			attachments: [
 				{
 					filename: 'shift.ics',
@@ -121,21 +123,18 @@ export class EmailService {
 	}
 
 	private async sendEmail(payload: CreateEmailOptions) {
+		console.log('###### SENDING EMAIL ########');
+		console.log(`Sending email to: ${payload.to}`);
+		console.log(`Subject: ${payload.subject}`);
+		console.log(await render(payload.react));
+		console.log('#############################');
+
+		if (payload.attachments) {
+			console.log('########### ATTACHMENTS ############');
+			console.log(payload.attachments);
+		}
+
 		if (dev) {
-			console.log('#############################');
-			console.log('# NOT SENDING EMAILS IN DEV #');
-			console.log('#############################');
-
-			console.log('########### EMAIL ############');
-			console.log(`Sending real email to: ${payload.to}`);
-			console.log(payload.html);
-			console.log('#############################');
-
-			if (payload.attachments) {
-				console.log('########### ATTACHMENTS ############');
-				console.log(payload.attachments);
-			}
-
 			return;
 		}
 

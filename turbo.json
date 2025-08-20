@@ -6,14 +6,28 @@
       "persistent": true,
       "cache": false
     },
+    "preview": {
+      "persistent": true,
+      "cache": false
+    },
     "build": {
       "persistent": false,
-      "outputs": ["build/**", ".svelte-kit/**", "dist/**", ".react-email/**"]
+      "outputs": [
+        "build/**",
+        ".svelte-kit/**",
+        "dist/**",
+        ".react-email/**"
+      ]
     },
     "lint": {},
     "check": {},
     "format": {},
-    "types": {},
+    "extract": {
+      "cache": false
+    },
+    "typegen": {
+      "cache": false
+    },
     "db:generate": {
       "cache": false
     },

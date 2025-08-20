@@ -4,26 +4,24 @@
 	import { getUser } from '$lib/context/user.context';
 	import Button from '../ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import type { Event, Shift } from '$lib/db/schemas';
 
-	type Event = {
-		id: string;
-		name: string;
-		date: Date;
-		shifts: {
-			id: string;
-			startAt: Date;
-			endAt: Date;
-			members: [''];
-		}[];
+	type EventWithShifts = Event & {
+		shifts: Array<Shift>;
 	};
 
-	const { events, outdated } = $props();
+	type Props = {
+		events: Array<EventWithShifts>;
+		outdated: Array<EventWithShifts>;
+	};
+
+	const { events, outdated }: Props = $props();
 
 	let search = $state('');
 	let activeTab = $state('upcoming');
 	let user = getUser();
 
-	function hasActiveShifts(event: Event) {
+	function hasActiveShifts(event: EventWithShifts) {
 		const now = new Date();
 		return event.shifts.some((shift) => {
 			const startTime = new Date(shift.startAt);
@@ -32,7 +30,7 @@
 		});
 	}
 
-	function hasUpcomingShifts(event: Event) {
+	function hasUpcomingShifts(event: EventWithShifts) {
 		const now = new Date();
 		const hasActive = hasActiveShifts(event);
 		if (hasActive) return false;
@@ -43,31 +41,31 @@
 		});
 	}
 
-	function hasActiveOrUpcoming(event: Event) {
+	function hasActiveOrUpcoming(event: EventWithShifts) {
 		return hasActiveShifts(event) || hasUpcomingShifts(event);
 	}
 
 	const upcomingEvents = $derived(
-		[...events, ...outdated.filter((event: Event) => hasActiveOrUpcoming(event))].sort((a, b) => {
+		[...events, ...outdated.filter((event) => hasActiveOrUpcoming(event))].sort((a, b) => {
 			if (hasActiveShifts(a)) return -1;
 			if (hasActiveShifts(b)) return 1;
 			return 0;
 		})
 	);
 
-	const pastEvnts = $derived(outdated.filter((event: Event) => !hasActiveOrUpcoming(event)));
+	const pastEvnts = $derived(outdated.filter((event) => !hasActiveOrUpcoming(event)));
 
 	const activeEvnts = $derived(activeTab === 'upcoming' ? upcomingEvents : pastEvnts);
 
 	let filteredEvents = $derived(
-		activeEvnts.filter((event: Event) => event.name.toLowerCase().includes(search.toLowerCase()))
+		activeEvnts.filter((event) => event.name.toLowerCase().includes(search.toLowerCase()))
 	);
 
-	function countShifts(event: Event) {
+	function countShifts(event: EventWithShifts) {
 		return event.shifts.length;
 	}
 
-	function getEventStatus(event: Event) {
+	function getEventStatus(event: EventWithShifts) {
 		if (hasActiveShifts(event)) {
 			return 'Aktiv';
 		} else if (hasUpcomingShifts(event)) {
@@ -102,7 +100,7 @@
 </script>
 
 <svelte:window onresize={handleResize} />
-<div class="border-gray overflow-hidden rounded-2xl border-2 bg-background shadow-lg">
+<div class="border-gray bg-background overflow-hidden rounded-2xl border-2 shadow-lg">
 	<div class="flex flex-wrap gap-2 border-b-2 bg-gray-200 p-2">
 		<button
 			class="min-w-[200px] flex-1 cursor-pointer rounded-lg px-6 py-3 font-medium text-gray-500 transition-all duration-200 ease-in-out {activeTab ===
@@ -176,27 +174,30 @@
 						{/if}
 					</tr>
 				</thead>
-				<tbody class="whitespace-nowrap break-words border-b border-gray-100">
+				<tbody class="border-b border-gray-100 break-words whitespace-nowrap">
 					{#each filteredEvents as event (event.id)}
 						{@const status = getEventStatus(event)}
-						<tr class="relative cursor-pointer hover:bg-gray-50">
-							<td class="overflow-hidden overflow-ellipsis p-4">
-								<a href="arrangementer/{event.id}" class="absolute inset-0 z-0" aria-hidden="true">
+						<tr class="hover:bg-gray-50">
+							<td class="overflow-hidden p-4 overflow-ellipsis">
+								<a
+									href="arrangementer/{event.id}"
+									class="text-blue-600 hover:text-blue-800 hover:underline"
+								>
+									{event.name}
 								</a>
-								{event.name}
 							</td>
 							{#if isMobile}
-								<td class="overflow-hidden overflow-ellipsis p-4 {getStatusClass(status)}">
+								<td class="overflow-hidden p-4 overflow-ellipsis {getStatusClass(status)}">
 									{status}
 								</td>
 							{:else}
-								<td class="overflow-hidden overflow-ellipsis p-4">
+								<td class="overflow-hidden p-4 overflow-ellipsis">
 									{formatDate(event.date)}
 								</td>
-								<td class="overflow-hidden overflow-ellipsis p-4">
+								<td class="overflow-hidden p-4 overflow-ellipsis">
 									{countShifts(event)}
 								</td>
-								<td class="overflow-hidden overflow-ellipsis p-4 {getStatusClass(status)}">
+								<td class="overflow-hidden p-4 overflow-ellipsis {getStatusClass(status)}">
 									{status}
 								</td>
 								{#if !isMobile}

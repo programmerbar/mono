@@ -1,12 +1,13 @@
 import { dev } from '$app/environment';
 import { generateState } from '$lib/auth/providers/oauth2';
+import { COOKIE_NAME_FEIDE_OAUTH_STATE } from '$lib/constants';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ locals, cookies }) => {
 	const state = generateState();
 	const url = locals.feideProvider.createAuthorizationURL(state, []);
 
-	cookies.set('feide_oauth_state', state, {
+	cookies.set(COOKIE_NAME_FEIDE_OAUTH_STATE, state, {
 		path: '/',
 		httpOnly: true,
 		secure: !dev,

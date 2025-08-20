@@ -27,10 +27,10 @@
 </section>
 
 <section class="mt-8">
-	<div class="mx-auto max-w-4xl overflow-hidden rounded-xl border-2 bg-background shadow-lg">
+	<div class="bg-background mx-auto max-w-4xl overflow-hidden rounded-xl border-2 shadow-lg">
 		<div class="border-b-2 bg-gray-200 px-6 py-4">
 			<div>
-				<h1 class="break-words text-xl font-semibold">{data.event.name}</h1>
+				<h1 class="text-xl font-semibold break-words">{data.event.name}</h1>
 			</div>
 		</div>
 		<div class="border-b px-6 pt-4">
@@ -83,7 +83,7 @@
 						<div>
 							<h3 class="font-medium">Ansvarlige</h3>
 							<ul class="text-sm">
-								{#each data.event.shifts as shift, i}
+								{#each data.event.shifts as shift, i (shift.id)}
 									<li>
 										<strong>Vakt {i + 1}:</strong>
 										{shift.members.map((member) => member.user.name).join(', ') ||
@@ -96,7 +96,7 @@
 				</div>
 			{:else if activeTab === 'shifts'}
 				<div class="space-y-4">
-					{#each data.event.shifts as shift, i}
+					{#each data.event.shifts as shift, i (shift.id)}
 						{@const isInShift = shift.members.some((member) => member.userId === $user?.id)}
 						<div class="overflow-hidden rounded-lg border">
 							<div class="border-b bg-gray-200 px-4 py-2">

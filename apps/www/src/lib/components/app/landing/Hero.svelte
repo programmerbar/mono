@@ -1,19 +1,82 @@
 <script lang="ts">
-	import StatusLabel from './StatusLabel.svelte';
+	import { onMount } from 'svelte';
 
-	type Props = {
-		status: number;
-		message: string;
-	};
+	let displayText = $state('');
+	let showCursor = $state(true);
+	let isGlitching = $state(false);
+	const fullText = 'programmerbar';
+	const glitchChars = '!@#$%^&*()_+-=[]{}|;:,.<>?~`';
 
-	let { status, message }: Props = $props();
+	onMount(() => {
+		let currentIndex = 0;
+
+		function glitchCharacter(targetChar: string, callback: () => void) {
+			isGlitching = true;
+			let glitchCount = 0;
+			const maxGlitches = 2 + Math.floor(Math.random() * 3); // 2-4 glitches
+
+			const glitchInterval = setInterval(() => {
+				if (glitchCount < maxGlitches) {
+					const randomChar = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+					displayText = displayText.slice(0, -1) + randomChar;
+					glitchCount++;
+				} else {
+					displayText = displayText.slice(0, -1) + targetChar;
+					isGlitching = false;
+					clearInterval(glitchInterval);
+					callback();
+				}
+			}, 30);
+		}
+
+		function typeNextCharacter() {
+			if (currentIndex < fullText.length) {
+				displayText += '_';
+
+				setTimeout(() => {
+					glitchCharacter(fullText[currentIndex], () => {
+						currentIndex++;
+						setTimeout(typeNextCharacter, 80 + Math.random() * 120);
+					});
+				}, 50);
+			}
+		}
+
+		setTimeout(typeNextCharacter, 200);
+
+		const cursorInterval = setInterval(() => {
+			showCursor = !showCursor;
+		}, 500);
+
+		const randomGlitchInterval = setInterval(() => {
+			if (currentIndex >= fullText.length && Math.random() < 0.1) {
+				const randomPos = Math.floor(Math.random() * fullText.length);
+				const originalChar = fullText[randomPos];
+				const beforeText = displayText.slice(0, randomPos);
+				const afterText = displayText.slice(randomPos + 1);
+
+				const randomChar = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+				displayText = beforeText + randomChar + afterText;
+
+				setTimeout(() => {
+					displayText = beforeText + originalChar + afterText;
+				}, 100);
+			}
+		}, 2000);
+
+		return () => {
+			clearInterval(cursorInterval);
+			clearInterval(randomGlitchInterval);
+		};
+	});
 </script>
 
-<div class="space-y-10 pb-56 pt-32">
-	<StatusLabel {status} {message} />
-
+<div class="space-y-10 pt-32 pb-56">
 	<h1 class="text-center font-mono text-4xl text-gray-700 sm:text-5xl md:text-6xl lg:text-7xl">
-		$ programmerbar
+		$ <span class:text-red-500={isGlitching}>{displayText}</span><span
+			class="text-gray-500"
+			class:opacity-0={!showCursor}>_</span
+		>
 	</h1>
 
 	<div class="mx-auto w-fit pt-8">

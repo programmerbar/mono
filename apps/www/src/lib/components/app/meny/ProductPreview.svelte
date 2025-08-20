@@ -4,6 +4,7 @@
 	import type { filterProducts } from '$lib/filter-products';
 	import type { FilterState } from '$lib/states/filter-state.svelte';
 	import { WishlistState } from '$lib/states/wishlist-state.svelte';
+	import Chip from '$lib/components/ui/Chip.svelte';
 
 	type Props = {
 		product: ReturnType<typeof filterProducts>[number];
@@ -36,19 +37,22 @@
 </script>
 
 <div
-	class="relative flex h-full flex-col overflow-hidden rounded-xl border-2 bg-background shadow-md"
+	class="bg-background group relative flex h-full flex-col overflow-hidden rounded-2xl border-2 shadow-lg transition-all duration-300 hover:shadow-xl"
 >
-	<div class="relative border-b-2">
+	<div class="relative overflow-hidden">
 		{#if !disableWishlist}
-			<div class="absolute right-0 top-0 z-10 rounded-bl bg-white px-2 py-1 text-xs font-semibold">
+			<div
+				class="absolute top-3 right-3 z-10 rounded-full bg-white/90 p-2 shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
+			>
 				<button
 					onclick={handleHeartClick}
 					aria-label={isWishlisted ? 'Remove from favorites' : 'Add to favorites'}
+					class="flex items-center justify-center"
 				>
 					{#if isWishlisted}
-						<Heart class="fill-red-500 stroke-red-200" />
+						<Heart class="h-4 w-4 fill-red-500 stroke-red-500" />
 					{:else}
-						<Heart class="stroke-red-500" />
+						<Heart class="h-4 w-4 stroke-gray-600 transition-colors hover:stroke-red-500" />
 					{/if}
 				</button>
 			</div>
@@ -56,63 +60,108 @@
 
 		{#if product.isSoldOut}
 			<div
-				class="absolute left-0 top-0 rounded-br bg-red-500 px-2 py-1 text-xs font-semibold text-white"
+				class="absolute top-3 left-3 z-10 rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white shadow-md"
 			>
 				Utsolgt
 			</div>
 		{/if}
 		{#if product.image}
-			<img
-				src={urlFor(product.image).width(500).height(500).url()}
-				alt={product.name}
-				class="h-48 w-full bg-white object-contain"
-			/>
+			{#if !disableLink}
+				<a href="/produkt/{product._id}" class="block">
+					<img
+						src={urlFor(product.image).width(500).url()}
+						alt={product.name}
+						class="h-56 w-full bg-white object-contain object-center transition-all duration-500 group-hover:scale-105"
+					/>
+				</a>
+			{:else}
+				<img
+					src={urlFor(product.image).width(500).url()}
+					alt={product.name}
+					class="h-56 w-full bg-white object-contain object-center transition-all duration-500 group-hover:scale-105"
+				/>
+			{/if}
 		{:else}
-			<div class="h-48 w-full bg-gray-200" aria-label="No image available"></div>
+			<div
+				class="flex h-56 w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200"
+				aria-label="No image available"
+			>
+				<span class="text-sm font-medium text-gray-400">Ingen bilde</span>
+			</div>
 		{/if}
 	</div>
 
-	{#if disableLink}
-		<div class="flex flex-1 flex-col p-2">
-			<h2 class="text-lg font-semibold">{product.name}</h2>
-			{#if product.producer}
-				<p class="text-sm text-gray-800">{product.producer}</p>
-			{/if}
-			{#if product.productTypes}
-				<p class="text-sm text-gray-800">
-					{product.productTypes.map((type) => type.title).join(', ')}
-				</p>
-			{/if}
-			{#if alwaysShowCreditPrice || filterState.showCreditPrice}
-				{@const unit = product.priceList.credits === 1 ? 'bong' : 'bonger'}
-				<p class="mt-auto text-lg font-semibold">{product.priceList.credits || 0} {unit}</p>
-			{:else if filterState.showStudentPrice}
-				<p class="mt-auto text-lg font-semibold">{product.priceList.student} kr</p>
-			{:else}
-				<p class="mt-auto text-lg font-semibold">{product.priceList.ordinary} kr</p>
-			{/if}
-		</div>
-	{:else}
-		<a class="group" href="/produkt/{product._id}">
-			<div class="flex flex-1 flex-col p-2">
-				<h2 class="text-lg font-semibold group-hover:underline">{product.name}</h2>
-				{#if product.producer}
-					<p class="text-sm text-gray-800">{product.producer}</p>
-				{/if}
-				{#if product.productTypes}
-					<p class="text-sm text-gray-800">
-						{product.productTypes.map((type) => type.title).join(', ')}
-					</p>
-				{/if}
-				{#if alwaysShowCreditPrice || filterState.showCreditPrice}
-					{@const unit = product.priceList.credits === 1 ? 'bong' : 'bonger'}
-					<p class="mt-auto text-lg font-semibold">{product.priceList.credits || 0} {unit}</p>
-				{:else if filterState.showStudentPrice}
-					<p class="mt-auto text-lg font-semibold">{product.priceList.student} kr</p>
-				{:else}
-					<p class="mt-auto text-lg font-semibold">{product.priceList.ordinary} kr</p>
-				{/if}
+	<div class="flex min-h-[140px] flex-1 flex-col p-4">
+		{#if disableLink}
+			<div class="flex flex-1 flex-col">
+				<h2 class="mb-1 text-lg leading-tight font-semibold">{product.name}</h2>
+				<div class="mb-3 flex flex-col gap-1">
+					{#if product.producer}
+						<p class="text-sm font-medium text-gray-600">{product.producer}</p>
+					{/if}
+					{#if product.productTypes}
+						<div class="flex flex-wrap gap-1">
+							{#each product.productTypes as type (type._id)}
+								<Chip label={type.title} />
+							{/each}
+						</div>
+					{/if}
+				</div>
+				<div class="mt-auto">
+					{#if alwaysShowCreditPrice || filterState.showCreditPrice}
+						{@const credits = product.priceList.credits || 0}
+						{@const unit = credits === 1 ? 'bong' : 'bonger'}
+						<p class="text-xl font-bold text-black">
+							{credits === 0 ? 'Gratis' : `${credits} ${unit}`}
+						</p>
+					{:else if filterState.showStudentPrice}
+						<p class="text-xl font-bold text-black">
+							{product.priceList.student === 0 ? 'Gratis' : `${product.priceList.student} kr`}
+						</p>
+					{:else}
+						<p class="text-xl font-bold text-black">
+							{product.priceList.ordinary === 0 ? 'Gratis' : `${product.priceList.ordinary} kr`}
+						</p>
+					{/if}
+				</div>
 			</div>
-		</a>
-	{/if}
+		{:else}
+			<a class="group-content flex flex-1 flex-col" href="/produkt/{product._id}">
+				<h2
+					class="group-hover:text-primary mb-1 text-lg leading-tight font-semibold transition-colors"
+				>
+					{product.name}
+				</h2>
+				<div class="mb-3 flex flex-col gap-1">
+					{#if product.producer}
+						<p class="text-sm font-medium text-gray-600">{product.producer}</p>
+					{/if}
+					{#if product.productTypes}
+						<div class="flex flex-wrap gap-1">
+							{#each product.productTypes as type (type._id)}
+								<Chip label={type.title} />
+							{/each}
+						</div>
+					{/if}
+				</div>
+				<div class="mt-auto">
+					{#if alwaysShowCreditPrice || filterState.showCreditPrice}
+						{@const credits = product.priceList.credits || 0}
+						{@const unit = credits === 1 ? 'bong' : 'bonger'}
+						<p class="text-xl font-bold text-black">
+							{credits === 0 ? 'Gratis' : `${credits} ${unit}`}
+						</p>
+					{:else if filterState.showStudentPrice}
+						<p class="text-xl font-bold text-black">
+							{product.priceList.student === 0 ? 'Gratis' : `${product.priceList.student} kr`}
+						</p>
+					{:else}
+						<p class="text-xl font-bold text-black">
+							{product.priceList.ordinary === 0 ? 'Gratis' : `${product.priceList.ordinary} kr`}
+						</p>
+					{/if}
+				</div>
+			</a>
+		{/if}
+	</div>
 </div>

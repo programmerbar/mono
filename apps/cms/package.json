@@ -14,20 +14,20 @@
     "clean": "rm -rf .sanity node_modules .turbo"
   },
   "dependencies": {
-    "@sanity/icons": "3.5.2",
-    "@sanity/vision": "3.67.1",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
-    "sanity": "3.67.1",
-    "sanity-plugin-markdown": "5.0.0",
-    "sanity-plugin-media": "2.3.2",
-    "styled-components": "6.1.13"
+    "@sanity/icons": "3.7.4",
+    "@sanity/vision": "4.4.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "sanity": "4.4.0",
+    "sanity-plugin-markdown": "6.0.0",
+    "sanity-plugin-media": "4.0.0",
+    "styled-components": "6.1.19"
   },
   "devDependencies": {
-    "@sanity/eslint-config-studio": "5.0.0",
-    "@types/react": "19.0.1",
-    "eslint": "9.16.0",
-    "prettier": "3.4.2",
-    "typescript": "5.7.2"
+    "@sanity/eslint-config-studio": "5.0.2",
+    "@types/react": "19.1.10",
+    "eslint": "9.33.0",
+    "prettier": "3.6.2",
+    "typescript": "5.8.3"
   }
 }

@@ -4,9 +4,9 @@
 
 	type Props = HTMLButtonAttributes & ButtonVariantProps;
 
-	let { class: className, intent = 'primary', children, ...props }: Props = $props();
+	let { class: className, intent, size, children, ...props }: Props = $props();
 </script>
 
-<button class={buttonVariant({ intent, className })} {...props}>
+<button class={buttonVariant({ intent, size, className })} {...props}>
 	{@render children?.()}
 </button>

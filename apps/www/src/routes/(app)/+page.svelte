@@ -6,7 +6,7 @@
 	import MenuList from '$lib/components/app/landing/MenuList.svelte';
 
 	let { data } = $props();
-	let { products, events, status } = $derived(data);
+	let { products, events } = $derived(data);
 </script>
 
 <svelte:head>
@@ -21,16 +21,16 @@
 	/>
 </svelte:head>
 
-<Hero {...status} />
+<Hero />
 
-<div class="space-y-10">
-	<div class="mx-auto grid w-full grid-cols-1 gap-10 md:grid-cols-2">
+<div class="space-y-16 py-8">
+	<section class="mx-auto grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
 		<MenuList {products} />
 		<EventList {events} />
-	</div>
+	</section>
 
-	<div class="mx-auto grid w-full grid-cols-1 gap-10 md:grid-cols-2">
+	<section class="mx-auto grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
 		<ContactForm />
 		<Map />
-	</div>
+	</section>
 </div>

@@ -1,56 +1,156 @@
 <script lang="ts">
 	import { urlFor } from '$lib/api/sanity/image';
 	import { marked } from 'marked';
+	import { page } from '$app/state';
+	import ProductDetailsCard from '$lib/components/app/product/ProductDetailsCard.svelte';
+	import { Image } from '@lucide/svelte';
+	import { cn } from '$lib/cn';
 
 	let { data } = $props();
 
 	const html = marked(data.product.description ?? '');
+	const isAuthenticated = $derived(page.data.user);
 
 	const variants = data.product.variants?.map((variant) => variant) ?? [];
 
 	const metadata = [
 		{ title: 'Produsent', value: data.product.producer ?? 'Ingen' },
-		{ title: 'Alkoholinnhold', value: data.product.alcoholContent ?? 'Ukjent' },
-		{ title: 'Volum', value: data.product.volume ?? 'Ukjent' },
-		{ title: 'Pris (Ordinær)', value: data.product.priceList.ordinary },
-		{ title: 'Pris (Student)', value: data.product.priceList.student },
-		{ title: 'Bong pris', value: data.product.priceList.credits }
+		{
+			title: 'Alkoholinnhold',
+			value: data.product.alcoholContent ? `${data.product.alcoholContent}%` : 'Ukjent'
+		},
+		{ title: 'Volum', value: data.product.volume ? `${data.product.volume} l` : 'Ukjent' },
+		{
+			title: 'Pris (Ordinær)',
+			value:
+				data.product.priceList.ordinary === 0 ? 'Gratis' : data.product.priceList.ordinary + ' NOK'
+		},
+		{
+			title: 'Pris (Student)',
+			value:
+				data.product.priceList.student === 0 ? 'Gratis' : data.product.priceList.student + ' NOK'
+		},
+		...(data.product.priceList.credits && data.product.priceList.credits > 0
+			? [{ title: 'Bong pris', value: data.product.priceList.credits }]
+			: [])
 	];
+
+	let imageLoaded = $state(false);
 </script>
 
 <svelte:head>
 	<title>{data.product.name}</title>
 </svelte:head>
 
-<div class="flex flex-col-reverse md:flex-row md:space-x-6">
-	<div class="h-fit space-y-6 rounded-xl border-2 bg-background p-6 shadow-xl md:w-2/3">
-		<h1 class="text-3xl font-semibold text-gray-900">{data.product.name}</h1>
-
+<div class="mx-auto max-w-6xl">
+	<!-- Mobile Header - Only visible on mobile -->
+	<div class="mb-6 lg:hidden">
+		<h1 class="text-3xl font-bold text-gray-900">{data.product.name}</h1>
 		{#if variants.length > 0}
-			<p class="py-2 text-lg text-gray-700">
-				{variants.join(', ')}
+			<p class="mt-2 text-lg text-gray-600">
+				{variants.join(' • ')}
 			</p>
 		{/if}
+	</div>
 
-		{@html html}
+	<div class="grid gap-8 lg:grid-cols-2">
+		<!-- Left Column: Image and Description -->
+		<div class="space-y-6">
+			<!-- Product Image with Description -->
+			{#if data.product.image}
+				<div class="bg-background overflow-hidden rounded-2xl border shadow-lg">
+					<div class="relative flex aspect-square items-center justify-center bg-white">
+						<!-- Placeholder Icon -->
+						{#if !imageLoaded}
+							<div class="absolute inset-0 flex items-center justify-center">
+								<Image class="h-16 w-16 text-gray-400" />
+							</div>
+						{/if}
 
-		<div>
-			{#each metadata as { title, value }}
-				<div class="grid w-full grid-cols-3 border-b last:border-b-0">
-					<p class="col-span-1 font-medium">{title}</p>
-					<p class="col-span-2">{value}</p>
+						<!-- Product Image -->
+						<img
+							class="max-h-full max-w-full object-contain {imageLoaded
+								? 'opacity-100'
+								: 'opacity-0'} transition-opacity duration-300"
+							src={urlFor(data.product.image).width(400).url()}
+							alt={data.product.name}
+							onload={() => (imageLoaded = true)}
+						/>
+					</div>
+
+					<!-- Description attached to image -->
+					{#if html}
+						<div class="border-t bg-white p-6">
+							<div class="prose prose-gray max-w-none">{@html html}</div>
+						</div>
+					{/if}
 				</div>
-			{/each}
+			{/if}
+		</div>
+
+		<!-- Right Column: Product Details -->
+		<div class="space-y-6">
+			<!-- Desktop Header - Only visible on desktop -->
+			<div class="hidden space-y-2 lg:block">
+				<h1 class="text-4xl font-bold text-gray-900">{data.product.name}</h1>
+				{#if variants.length > 0}
+					<p class="text-lg text-gray-600">
+						{variants.join(' • ')}
+					</p>
+				{/if}
+			</div>
+
+			<!-- Pricing -->
+			<div class="rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-6">
+				<div
+					class={cn('grid grid-cols-1 gap-4', {
+						'sm:grid-cols-3':
+							isAuthenticated &&
+							data.product.priceList.credits &&
+							data.product.priceList.credits > 0,
+						'sm:grid-cols-2':
+							!isAuthenticated ||
+							!data.product.priceList.credits ||
+							data.product.priceList.credits <= 0
+					})}
+				>
+					<div class="text-center">
+						<p class="text-sm font-medium text-gray-600">Ordinær pris</p>
+						<p class="text-2xl font-bold text-gray-900">
+							{data.product.priceList.ordinary === 0
+								? 'Gratis'
+								: `${data.product.priceList.ordinary} kr`}
+						</p>
+					</div>
+					<div class="text-center">
+						<p class="text-sm font-medium text-gray-600">Student pris</p>
+						<p class="text-2xl font-bold text-blue-600">
+							{data.product.priceList.student === 0
+								? 'Gratis'
+								: `${data.product.priceList.student} kr`}
+						</p>
+					</div>
+					{#if isAuthenticated && data.product.priceList.credits && data.product.priceList.credits > 0}
+						<div class="text-center">
+							<p class="text-sm font-medium text-gray-600">Bong pris</p>
+							<p class="text-2xl font-bold text-indigo-600">
+								{#if data.product.priceList.credits === 0}
+									Gratis
+								{:else}
+									{data.product.priceList.credits}
+									{data.product.priceList.credits === 1 ? 'bong' : 'bonger'}
+								{/if}
+							</p>
+						</div>
+					{/if}
+				</div>
+			</div>
+
+			<!-- Desktop Product Details - Only visible on desktop, under pricing -->
+			<ProductDetailsCard details={metadata.slice(0, 4)} class="hidden lg:block" />
 		</div>
 	</div>
 
-	{#if data.product.image}
-		<div class="mb-6 h-fit rounded-xl border-2 bg-background shadow-xl md:mb-0 md:w-1/3">
-			<img
-				class="h-64 w-full rounded-xl bg-white object-contain md:h-auto"
-				src={urlFor(data.product.image).width(500).height(500).url()}
-				alt={data.product.name}
-			/>
-		</div>
-	{/if}
+	<!-- Mobile Product Details - Only visible on mobile, at the bottom -->
+	<ProductDetailsCard details={metadata.slice(0, 4)} class="mt-8 lg:hidden" />
 </div>

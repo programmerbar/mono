@@ -6,16 +6,16 @@ import { users } from './users';
 export const notifications = sqliteTable(
 	'notification',
 	{
-		id: text('id').primaryKey().$defaultFn(nanoid),
-		userId: text('user_id')
+		id: text().primaryKey().$defaultFn(nanoid),
+		userId: text()
 			.notNull()
 			.references(() => users.id, {
 				onDelete: 'cascade'
 			}),
-		title: text('title').notNull(),
-		body: text('body'),
-		archivedAt: integer('archived_at', { mode: 'timestamp' }),
-		createdAt: integer('created_at', { mode: 'timestamp' })
+		title: text().notNull(),
+		body: text(),
+		archivedAt: integer({ mode: 'timestamp' }),
+		createdAt: integer({ mode: 'timestamp' })
 			.notNull()
 			.$defaultFn(() => new Date())
 	},

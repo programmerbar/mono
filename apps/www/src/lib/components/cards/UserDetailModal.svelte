@@ -6,11 +6,11 @@
 	import Input from '../ui/Input.svelte';
 	import { outsideClick } from '$lib/actions/outside-click';
 	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import { onMount } from 'svelte';
 
 	interface Props {
 		selectedUser: User;
-		currentUserRole?: 'board' | 'normal';
 		onClose: () => void;
 	}
 
@@ -40,7 +40,7 @@
 	});
 </script>
 
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs">
 	<div
 		in:fly={{ easing: cubicInOut, y: 20, duration: 300 }}
 		out:fly={{ easing: cubicInOut, y: 20, duration: 300 }}
@@ -82,9 +82,9 @@
 							bind:group={selectedUser.role}
 						/>
 						<span
-							class="flex items-center justify-center rounded-xl border px-2 py-px text-sm
-							  hover:bg-gray-200 peer-checked:border-transparent peer-checked:bg-primary
-							  peer-checked:text-white"
+							class="peer-checked:bg-primary flex items-center justify-center rounded-xl border px-2 py-px
+							  text-sm peer-checked:border-transparent peer-checked:text-white
+							  hover:bg-gray-200"
 						>
 							Frivillig
 						</span>
@@ -99,9 +99,9 @@
 							bind:group={selectedUser.role}
 						/>
 						<span
-							class="flex items-center justify-center rounded-xl border px-2 py-px text-sm
-							  hover:bg-gray-200 peer-checked:border-transparent peer-checked:bg-primary
-							  peer-checked:text-white"
+							class="peer-checked:bg-primary flex items-center justify-center rounded-xl border px-2 py-px
+							  text-sm peer-checked:border-transparent peer-checked:text-white
+							  hover:bg-gray-200"
 						>
 							Styret
 						</span>
@@ -143,13 +143,15 @@
 						method="post"
 						action="/portal/admin/user/{selectedUser.id}?/deleteUser"
 						use:enhance={() => {
-							return ({ result }) => {
+							return async ({ result }) => {
 								if (result.type === 'success') {
+									await invalidateAll();
 									onClose();
 								}
 							};
 						}}
 					>
+						<input type="hidden" name="userId" value={selectedUser.id} />
 						<div class="space-y-2">
 							<p class="mb-1 text-sm">
 								Skriv <strong>{selectedUser.name}</strong> for å bekrefte

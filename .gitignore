@@ -6,3 +6,7 @@ dist
 .turbo
 .wrangler
 .idea
+
+# Rust
+/target
+apps/*/target/

@@ -1,0 +1,17 @@
+{
+  "name": "@programmerbar/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "cargo run",
+    "build": "cargo build --release",
+    "start": "cargo run --release",
+    "test": "cargo test",
+    "lint": "cargo clippy -- -D warnings",
+    "format": "cargo fmt",
+    "format:check": "cargo fmt --check",
+    "clean": "cargo clean",
+    "add-migration": "sqlx migrate add",
+    "run-migrations": "sqlx migrate run"
+  }
+}

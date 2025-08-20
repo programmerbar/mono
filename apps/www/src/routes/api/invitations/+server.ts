@@ -6,10 +6,18 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		return new Response(null, { status: 401 });
 	}
 
-	const email = await request
-		.json()
-		.then(CreateInvitationSchema.parse)
-		.then((data) => data.email.toLowerCase());
+	const json = await request.json();
+
+	const { data, success } = CreateInvitationSchema.safeParse(json);
+
+	if (!success) {
+		return new Response(JSON.stringify(data), {
+			status: 400,
+			headers: { 'Content-Type': 'application/json' }
+		});
+	}
+
+	const email = data.email.toLowerCase().trim();
 
 	await locals.invitationService.invite(email);
 	await locals.emailService.sendInvitaitonEmail({ email });

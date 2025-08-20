@@ -1,5 +1,6 @@
 import type { Actions } from './$types';
 import { ContactUsSchema } from '$lib/validators';
+import { fail } from '@sveltejs/kit';
 
 export const actions: Actions = {
 	default: async ({ locals, request, getClientAddress }) => {
@@ -11,17 +12,36 @@ export const actions: Actions = {
 
 		if (name || email) {
 			await locals.banService.banIp(ip);
-			return { success: false };
+			return fail(400, { success: false });
 		}
 
-		const data = ContactUsSchema.parse(formData);
+		const { data, success } = ContactUsSchema.safeParse(formData);
 
-		await locals.emailService.sendContactUsEmail({
+		if (!success) {
+			console.error('Validation failed:', data);
+			return fail(400, { success: false, error: 'Invalid input' });
+		}
+
+		// Save to database
+		await locals.contactSubmissionService.create({
 			name: data.namekjkj,
 			email: data.emailkjkj,
-			message: data.messagekjkj
+			message: data.messagekjkj,
+			ipAddress: ip
 		});
 
-		return { success: true };
+		try {
+			// Still send email notification
+			await locals.emailService.sendContactUsEmail({
+				name: data.namekjkj,
+				email: data.emailkjkj,
+				message: data.messagekjkj
+			});
+
+			return { success: true };
+		} catch (error) {
+			console.error('Failed to send email:', error);
+			return fail(500, { success: false, error: 'Failed to send email' });
+		}
 	}
 };

@@ -13,7 +13,7 @@
 	<title>Om oss</title>
 </svelte:head>
 
-<div class="mx-auto w-full max-w-screen-lg rounded-xl border-2 bg-background p-8 shadow-lg">
+<div class="bg-background mx-auto w-full max-w-screen-lg rounded-xl border-2 p-8 shadow-lg">
 	<Heading class="mb-4 text-4xl">Om oss</Heading>
 
 	<div class="mb-16">
@@ -23,18 +23,18 @@
 			{#if data.programmerbar.image}
 				<img
 					src={echoUrlFor(data.programmerbar.image).url()}
-					alt={'Programmerbar'}
+					alt="Programmerbar"
 					class="h-full w-full rounded-xl object-cover"
 				/>
 			{:else}
-				<Smile class="h-16 w-16 text-primary" />
-				<Beer class="h-16 w-16 text-primary" />
-				<Wine class="h-16 w-16 text-primary" />
-				<Wifi class="h-16 w-16 text-primary" />
+				<Smile class="text-primary h-16 w-16" />
+				<Beer class="text-primary h-16 w-16" />
+				<Wine class="text-primary h-16 w-16" />
+				<Wifi class="text-primary h-16 w-16" />
 			{/if}
 		</div>
 
-		<article class="prose prose-xl break-words text-xl">
+		<article class="prose prose-xl text-xl break-words">
 			{@html html}
 		</article>
 	</div>
@@ -43,7 +43,7 @@
 		<Heading class="text-3xl" level={2}>Styremedlemmer</Heading>
 
 		<ul class="mt-4 grid grid-cols-1 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
-			{#each data.programmerbar.members as member}
+			{#each data.programmerbar.members as member (member.profile._id)}
 				<li class="p-1 text-center">
 					<div class="mb-3 flex items-center justify-center">
 						{#if member.profile.picture}
