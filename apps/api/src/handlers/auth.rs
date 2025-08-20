@@ -86,7 +86,7 @@ pub async fn feide_callback(
         let session_cookie = state.session_service.create_session_cookie(&session.id);
         let updated_jar = jar.add(session_cookie);
 
-        return Ok((updated_jar, Redirect::to("/")).into());
+        return Ok((updated_jar, Redirect::to("/")));
     }
 
     // Check for valid invitation

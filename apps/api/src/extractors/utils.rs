@@ -11,7 +11,7 @@ pub fn extract_session_cookie(parts: &Parts) -> Result<String, ApiError> {
 
     for cookie in cookies.split(';') {
         let cookie = cookie.trim();
-        if let Some(session_id) = cookie.strip_prefix(format!("{}=", COOKIE_NAME).as_str()) {
+        if let Some(session_id) = cookie.strip_prefix(format!("{COOKIE_NAME}=").as_str()) {
             return Ok(session_id.to_string());
         }
     }

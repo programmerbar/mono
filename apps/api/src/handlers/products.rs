@@ -29,8 +29,7 @@ pub async fn get_product_by_id(
     match product {
         Some(product) => Ok(Json(product)),
         None => Err(ApiError::NotFound(format!(
-            "Product with id '{}' not found",
-            id
+            "Product with id '{id}' not found"
         ))),
     }
 }

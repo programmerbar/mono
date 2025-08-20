@@ -107,15 +107,14 @@ impl FeideProvider {
         let response = self
             .http_client
             .get(FEIDE_USERINFO_ENDPOINT)
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", format!("Bearer {access_token}"))
             .send()
             .await?;
 
         if !response.status().is_success() {
             let error_text = response.text().await?;
             return Err(FeideError::TokenExchangeError(format!(
-                "Failed to get user info: {}",
-                error_text
+                "Failed to get user info: {error_text}"
             )));
         }
 
