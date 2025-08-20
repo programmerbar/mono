@@ -20,6 +20,7 @@ import type { Handle } from '@sveltejs/kit';
 import { Resend } from 'resend';
 import { ImageService } from '$lib/services/image.service';
 import { ReferralService } from '$lib/services/referral.service';
+import { PendingApplicationService } from '$lib/services/pending-application.service';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const STATUS_KV = event.platform!.env.STATUS_KV;
@@ -106,6 +107,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const referralService = new ReferralService(db);
 	event.locals.referralService = referralService;
+
+	const pendingApplicationService = new PendingApplicationService(db);
+	event.locals.pendingApplicationService = pendingApplicationService;
 
 	// Validate auth
 	const sessionId = event.cookies.get(auth.sessionCookieName);

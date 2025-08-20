@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "78d3abaf-dde5-4380-9c0a-d36b16172ee2",
+  "id": "909bc89a-0da2-4330-9fc3-64b6de72ef53",
   "prevId": "3d643972-c02b-4390-af85-a4d6cd8e7776",
   "tables": {
     "claimed_credits": {
@@ -933,8 +933,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "referral": {
-      "name": "referral",
+    "pending_application": {
+      "name": "pending_application",
       "columns": {
         "id": {
           "name": "id",
@@ -943,27 +943,26 @@
           "notNull": true,
           "autoincrement": false
         },
-        "referred_by": {
-          "name": "referred_by",
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "referred": {
-          "name": "referred",
+        "email": {
+          "name": "email",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "status": {
-          "name": "status",
+        "feide_id": {
+          "name": "feide_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'pending'"
+          "autoincrement": false
         },
         "created_at": {
           "name": "created_at",
@@ -971,44 +970,25 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "completed_at": {
-          "name": "completed_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         }
       },
-      "indexes": {},
-      "foreignKeys": {
-        "referral_referred_by_user_id_fk": {
-          "name": "referral_referred_by_user_id_fk",
-          "tableFrom": "referral",
-          "tableTo": "user",
-          "columnsFrom": [
-            "referred_by"
+      "indexes": {
+        "pending_application_email_idx": {
+          "name": "pending_application_email_idx",
+          "columns": [
+            "email"
           ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "isUnique": false
         },
-        "referral_referred_user_id_fk": {
-          "name": "referral_referred_user_id_fk",
-          "tableFrom": "referral",
-          "tableTo": "user",
-          "columnsFrom": [
-            "referred"
+        "pending_application_feide_id_idx": {
+          "name": "pending_application_feide_id_idx",
+          "columns": [
+            "feide_id"
           ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "isUnique": false
         }
       },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}

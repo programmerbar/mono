@@ -1,5 +1,3 @@
-pub mod user;
-pub mod session;
 pub mod claimed_credit;
 pub mod contact_submission;
 pub mod event;
@@ -11,6 +9,8 @@ pub mod producer;
 pub mod product;
 pub mod product_product_type;
 pub mod product_type;
+pub mod session;
 pub mod shift;
+pub mod user;
 pub mod user_shift;
 pub mod users_group;

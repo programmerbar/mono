@@ -12,3 +12,9 @@ pub struct User {
     pub alt_email: Option<String>,
     pub is_deleted: bool,
 }
+
+impl User {
+    pub fn is_board_member(&self) -> bool {
+        self.role == "board"
+    }
+}

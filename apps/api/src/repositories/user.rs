@@ -1,6 +1,6 @@
-use sqlx::{Pool, Postgres};
+use sqlx::{Pool, Postgres, query_as};
 
-use crate::models::user::User;
+use crate::{errors::ApiError, models::user::User};
 
 pub struct UserRepository {
     pub pool: Pool<Postgres>,
@@ -11,23 +11,48 @@ impl UserRepository {
         Self { pool }
     }
 
-    fn get_user_by_id(&self, user_id: i32) -> Option<User> {
-        // Implementation to retrieve a user by ID from the database
-        unimplemented!()
+    pub async fn find_active_by_id(&self, user_id: &str) -> Result<User, ApiError> {
+        query_as!(
+            User,
+            "SELECT id, name, email, feide_id, role, additional_beers, alt_email, is_deleted
+             FROM \"user\" WHERE id = $1 AND is_deleted = false",
+            user_id
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|err| match err {
+            sqlx::Error::RowNotFound => ApiError::Unauthorized,
+            _ => ApiError::InternalServerError,
+        })
     }
 
-    fn create_user(&self, user: User) -> Result<User, String> {
-        // Implementation to create a new user in the database
-        unimplemented!()
+    pub async fn get_by_feide_id(&self, feide_id: &str) -> Result<Option<User>, sqlx::Error> {
+        query_as!(
+            User,
+            "SELECT id, name, email, feide_id, role, additional_beers, alt_email, is_deleted
+             FROM \"user\" WHERE feide_id = $1 AND is_deleted = false",
+            feide_id
+        )
+        .fetch_optional(&self.pool)
+        .await
     }
 
-    fn update_user(&self, user: User) -> Result<User, String> {
-        // Implementation to update an existing user in the database
-        unimplemented!()
-    }
+    pub async fn create(&self, user: &User) -> Result<(), sqlx::Error> {
+        sqlx::query!(
+            "INSERT INTO \"user\" (id, name, email, feide_id, role, additional_beers, alt_email, is_deleted)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+            user.id,
+            user.name,
+            user.email,
+            user.feide_id,
+            user.role,
+            user.additional_beers,
+            user.alt_email,
+            user.is_deleted
+        )
+        .execute(&self.pool)
+        .await?;
 
-    fn delete_user(&self, user_id: i32) -> Result<(), String> {
-        // Implementation to delete a user by ID from the database
-        unimplemented!()
+        Ok(())
     }
 }

@@ -8,6 +8,7 @@
     "start": "cargo run --release",
     "test": "cargo test",
     "lint": "cargo clippy -- -D warnings",
+    "lint:fix": "cargo clippy --fix --allow-dirty -- -D warnings",
     "format": "cargo fmt",
     "format:check": "cargo fmt --check",
     "clean": "cargo clean",

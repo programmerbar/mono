@@ -22,9 +22,9 @@ impl ProductRepository {
             .await
     }
 
-    pub async fn create(&self, product: &Product) -> Result<(), sqlx::Error> {
-        query!(
-            "INSERT INTO product (id, sku, name, description, is_sold_out, ordinary_price, student_price, internal_price, credits, volume, alcohol_content, variants, image_id, producer_id, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)",
+    pub async fn create(&self, product: &Product) -> Result<Product, sqlx::Error> {
+        let product = query_as!(Product,
+            "INSERT INTO product (id, sku, name, description, is_sold_out, ordinary_price, student_price, internal_price, credits, volume, alcohol_content, variants, image_id, producer_id, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *",
             product.id,
             product.sku,
             product.name,
@@ -42,9 +42,10 @@ impl ProductRepository {
             product.created_at,
             product.updated_at
         )
-        .execute(&self.pool)
+        .fetch_one(&self.pool)
         .await?;
-        Ok(())
+
+        Ok(product)
     }
 
     pub async fn update(&self, product: &Product) -> Result<(), sqlx::Error> {
