@@ -14,10 +14,13 @@ pub struct Config {
     pub s3_region: String,
     pub s3_bucket: String,
     pub redis_url: String,
+    pub admin_key: String,
 }
 
 impl Config {
     pub fn from_env() -> Self {
+        dotenvy::dotenv().ok();
+
         let database_url = std::env::var("DATABASE_URL")
             .expect("Expected DATABASE_URL environment variable to be set");
 
@@ -57,6 +60,9 @@ impl Config {
         let redis_url =
             std::env::var("REDIS_URL").unwrap_or_else(|_| "redis://localhost:6379".to_string());
 
+        let admin_key =
+            std::env::var("ADMIN_KEY").expect("Expected ADMIN_KEY environment variable to be set");
+
         Config {
             database_url,
             server_port,
@@ -70,6 +76,7 @@ impl Config {
             s3_region,
             s3_bucket,
             redis_url,
+            admin_key,
         }
     }
 }

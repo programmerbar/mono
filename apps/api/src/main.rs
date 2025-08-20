@@ -1,13 +1,10 @@
 use tower_http::{cors::CorsLayer, normalize_path::NormalizePathLayer, trace::TraceLayer};
 use tracing_subscriber::{self, layer::SubscriberExt, util::SubscriberInitExt};
-use utoipa::{
-    Modify, OpenApi,
-    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
-};
+use utoipa::OpenApi;
 use utoipa_axum::{router::OpenApiRouter, routes};
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::{config::Config, state::AppState};
+use crate::{config::Config, openapi::ApiDoc, state::AppState};
 
 mod config;
 mod dto;
@@ -15,44 +12,14 @@ mod errors;
 mod extractors;
 mod handlers;
 mod models;
+mod openapi;
 mod providers;
 mod repositories;
 mod services;
 mod state;
 
-#[derive(OpenApi)]
-#[openapi(
-    modifiers(&SecurityAddon),
-    tags(
-        (name = "General", description = "General API endpoints"),
-        (name = "Health", description = "Health check endpoints"),
-        (name = "Products", description = "Product management"),
-        (name = "Events", description = "Event and shift management"),
-        (name = "Authentication", description = "User authentication via Feide"),
-        (name = "Profile", description = "User profile management"),
-        (name = "Images", description = "Image upload and retrieval"),
-        (name = "Status", description = "Status of the bar")
-    )
-)]
-struct ApiDoc;
-
-struct SecurityAddon;
-
-impl Modify for SecurityAddon {
-    fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
-        if let Some(components) = openapi.components.as_mut() {
-            components.add_security_scheme(
-                "session",
-                SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("session_token"))),
-            )
-        }
-    }
-}
-
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    dotenvy::dotenv().ok();
-
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| {
@@ -96,19 +63,35 @@ async fn main() -> anyhow::Result<()> {
     let app = router
         .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", api))
         // Middleware / Layers
-        .layer(CorsLayer::permissive())
+        .layer(
+            CorsLayer::new()
+                .allow_origin(
+                    "http://localhost:5173"
+                        .parse::<axum::http::HeaderValue>()
+                        .unwrap(),
+                ) // SvelteKit dev server
+                .allow_origin(
+                    "https://programmer.bar"
+                        .parse::<axum::http::HeaderValue>()
+                        .unwrap(),
+                ) // Production
+                .allow_methods([axum::http::Method::GET, axum::http::Method::POST])
+                .allow_headers([
+                    axum::http::header::CONTENT_TYPE,
+                    axum::http::header::AUTHORIZATION,
+                ])
+                .allow_credentials(true),
+        )
         .layer(TraceLayer::new_for_http())
         .layer(NormalizePathLayer::trim_trailing_slash())
         // State
         .with_state(state);
 
-    let listener =
-        tokio::net::TcpListener::bind(format!("127.0.0.1:{}", config.server_port)).await?;
+    let port = config.server_port;
+    let listener = tokio::net::TcpListener::bind(format!("127.0.0.1:{port}")).await?;
 
-    tracing::info!(
-        "🚀 Programmerbar API server starting on http://127.0.0.1:{}",
-        config.server_port
-    );
+    tracing::info!("🚀 Programmerbar API server starting on http://127.0.0.1:{port}",);
+    tracing::info!("🤓 Visit http://127.0.0.1:{port}/swagger-ui for the API documentation");
 
     axum::serve(listener, app).await?;
 
