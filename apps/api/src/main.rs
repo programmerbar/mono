@@ -2,7 +2,7 @@ use axum::{
     Router,
     routing::{get, post},
 };
-use tower_http::{cors::CorsLayer, trace::TraceLayer};
+use tower_http::{cors::CorsLayer, normalize_path::NormalizePathLayer, trace::TraceLayer};
 use tracing_subscriber::{self, layer::SubscriberExt, util::SubscriberInitExt};
 
 use crate::{config::Config, state::AppState};
@@ -53,6 +53,7 @@ async fn main() -> anyhow::Result<()> {
         // Middleware / Layers
         .layer(CorsLayer::permissive())
         .layer(TraceLayer::new_for_http())
+        .layer(NormalizePathLayer::trim_trailing_slash())
         // State
         .with_state(state);
 

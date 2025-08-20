@@ -33,11 +33,8 @@ pub struct FeideUser {
 pub struct TokenResponse {
     pub access_token: String,
     pub token_type: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub refresh_token: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub expires_in: Option<u64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub scope: Option<String>,
 }
 
