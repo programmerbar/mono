@@ -1,14 +1,21 @@
-use axum::{Router, routing::get};
+use axum::{
+    Router,
+    routing::{get, post},
+};
 use tower_http::{cors::CorsLayer, trace::TraceLayer};
 use tracing_subscriber::{self, layer::SubscriberExt, util::SubscriberInitExt};
 
 use crate::{config::Config, state::AppState};
 
 mod config;
+mod dto;
+mod errors;
 mod extractors;
 mod handlers;
 mod models;
+mod providers;
 mod repositories;
+mod services;
 mod state;
 
 #[tokio::main]
@@ -32,16 +39,29 @@ async fn main() -> anyhow::Result<()> {
     let state = AppState::from_config(config.clone()).await;
 
     let app = Router::new()
-        .layer(CorsLayer::permissive())
-        .layer(TraceLayer::new_for_http())
+        // Routes
         .route("/", get(handlers::root::root))
         .route("/health", get(handlers::health::health))
         .route("/products", get(handlers::products::all_products))
+        .route("/products", post(handlers::products::create_product))
+        .route("/products/{id}", get(handlers::products::get_product_by_id))
+        .route("/auth/feide", get(handlers::auth::feide_auth))
+        .route("/auth/feide/callback", get(handlers::auth::feide_callback))
+        .route("/auth/logout", post(handlers::auth::logout))
+        .route("/profile", get(handlers::profile::get_profile))
+        // Middleware / Layers
+        .layer(CorsLayer::permissive())
+        .layer(TraceLayer::new_for_http())
+        // State
         .with_state(state);
 
-    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", config.server_port)).await?;
+    let listener =
+        tokio::net::TcpListener::bind(format!("127.0.0.1:{}", config.server_port)).await?;
 
-    tracing::info!("🚀 Programmerbar API server starting on http://0.0.0.0:8000");
+    tracing::info!(
+        "🚀 Programmerbar API server starting on http://127.0.0.1:{}",
+        config.server_port
+    );
 
     axum::serve(listener, app).await?;
 

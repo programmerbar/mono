@@ -2,8 +2,12 @@
 
 use std::sync::Arc;
 
+use axum::extract::FromRef;
+use axum_extra::extract::cookie::Key;
+
 use crate::{
     config::Config,
+    providers::feide::FeideProvider,
     repositories::{
         claimed_credit::ClaimedCreditRepository, contact_submission::ContactSubmissionRepository,
         event::EventRepository, group::GroupRepository, image::ImageRepository,
@@ -12,11 +16,14 @@ use crate::{
         product_product_type::ProductProductTypeRepository, product_type::ProductTypeRepository,
         session::SessionRepository, user::UserRepository, user_shift::UserShiftRepository,
     },
+    services::{auth::AuthService, session::SessionService},
 };
 
 #[derive(Clone)]
 pub struct AppState {
+    // General
     pub config: Config,
+    pub key: Key,
 
     // Repositories
     pub claimed_credit_repo: Arc<ClaimedCreditRepository>,
@@ -34,6 +41,13 @@ pub struct AppState {
     pub user_shift_repo: Arc<UserShiftRepository>,
     pub user_repo: Arc<UserRepository>,
     pub user_group_repo: Arc<GroupRepository>,
+
+    // Services
+    pub auth_service: Arc<AuthService>,
+    pub session_service: Arc<SessionService>,
+
+    // Providers
+    pub feide_provider: Arc<FeideProvider>,
 }
 
 impl AppState {
@@ -52,6 +66,8 @@ impl AppState {
             .await
             .expect("Failed to run database migrations");
 
+        let key = Key::generate();
+
         let claimed_credit_repo = Arc::new(ClaimedCreditRepository::new(pool.clone()));
         let contact_submission_repo = Arc::new(ContactSubmissionRepository::new(pool.clone()));
         let event_repo = Arc::new(EventRepository::new(pool.clone()));
@@ -68,8 +84,26 @@ impl AppState {
         let user_repo = Arc::new(UserRepository::new(pool.clone()));
         let user_group_repo = Arc::new(GroupRepository::new(pool.clone()));
 
+        // Services
+        let auth_service = Arc::new(AuthService::new(
+            SessionRepository::new(pool.clone()),
+            UserRepository::new(pool.clone()),
+        ));
+
+        let session_service = Arc::new(SessionService::new(SessionRepository::new(pool.clone())));
+
+        let feide_provider = Arc::new(FeideProvider::new(
+            config.feide_client_id.clone(),
+            config.feide_client_secret.clone(),
+            config.feide_redirect_uri.clone(),
+        ));
+
         AppState {
+            // General
             config,
+            key,
+
+            // Repositories
             claimed_credit_repo,
             contact_submission_repo,
             event_repo,
@@ -85,6 +119,20 @@ impl AppState {
             user_shift_repo,
             user_repo,
             user_group_repo,
+
+            // Services
+            auth_service,
+            session_service,
+
+            // Providers
+            feide_provider,
         }
+    }
+}
+
+// This allows us to extract the Key from the AppState in handlers
+impl FromRef<AppState> for axum_extra::extract::cookie::Key {
+    fn from_ref(state: &AppState) -> Self {
+        state.key.clone()
     }
 }

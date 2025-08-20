@@ -16,6 +16,16 @@ impl InvitationRepository {
             .await
     }
 
+    pub async fn get_by_email(&self, email: &str) -> Result<Option<Invitation>, sqlx::Error> {
+        query_as!(
+            Invitation, 
+            "SELECT * FROM invitation WHERE email = $1 AND claimed_at IS NULL AND expires_at > NOW()", 
+            email
+        )
+        .fetch_optional(&self.pool)
+        .await
+    }
+
     pub async fn create(&self, invitation: &Invitation) -> Result<(), sqlx::Error> {
         query!(
             "INSERT INTO invitation (id, email, claimed_at, created_at, expires_at) VALUES ($1, $2, $3, $4, $5)",
