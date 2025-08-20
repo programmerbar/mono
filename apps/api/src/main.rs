@@ -4,6 +4,7 @@ use axum::{
 };
 use tower_http::{cors::CorsLayer, normalize_path::NormalizePathLayer, trace::TraceLayer};
 use tracing_subscriber::{self, layer::SubscriberExt, util::SubscriberInitExt};
+use utoipa_swagger_ui::SwaggerUi;
 
 use crate::{config::Config, state::AppState};
 
@@ -50,6 +51,10 @@ async fn main() -> anyhow::Result<()> {
         .route("/auth/feide/callback", get(handlers::auth::feide_callback))
         .route("/auth/logout", post(handlers::auth::logout))
         .route("/profile", get(handlers::profile::get_profile))
+        .route("/images/upload", post(handlers::image::upload_image))
+        .route("/images/:id", get(handlers::image::get_image_by_id))
+        // Swagger
+        // .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
         // Middleware / Layers
         .layer(CorsLayer::permissive())
         .layer(TraceLayer::new_for_http())

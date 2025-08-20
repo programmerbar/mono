@@ -1,7 +1,7 @@
 use axum::{Json, extract::State};
 
 use crate::{
-    dto::event::EventWithShifts, errors::ApiError, models::auth::AuthorizedMember, state::AppState,
+    dto::EventWithShifts, errors::ApiError, models::auth::AuthorizedMember, state::AppState,
 };
 
 pub async fn all_events(

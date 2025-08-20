@@ -1,4 +1,4 @@
-use crate::{dto::user::ProfileResponse, errors::ApiError, models::auth::AuthorizedMember};
+use crate::{dto::ProfileResponse, errors::ApiError, models::auth::AuthorizedMember};
 use axum::Json;
 
 pub async fn get_profile(auth: AuthorizedMember) -> Result<Json<ProfileResponse>, ApiError> {

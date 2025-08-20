@@ -12,7 +12,7 @@ thiserror = "2.0"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 sqlx = { version = "0.8.6", features = ["postgres", "runtime-tokio-native-tls", "chrono"] }
-axum = { version = "0.8.4", features = ["tracing"] }
+axum = { version = "0.8.4", features = ["tracing", "multipart"] }
 axum-extra = { version = "0.10.1", features = ["cookie", "cookie-private"] }
 tower = "0.5"
 tower-http = { version = "0.6", features = ["cors", "trace", "normalize-path"] }
@@ -23,3 +23,5 @@ oauth2 = "5.0.0"
 reqwest = { version = "0.12.23", features = ["json"] }
 url = "2.5"
 cookie = "0.18.1"
+rust-s3 = "0.35.1"
+utoipa-swagger-ui = { version = "9.0.2", features = ["axum"] }

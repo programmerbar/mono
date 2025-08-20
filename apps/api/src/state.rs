@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use axum::extract::FromRef;
 use axum_extra::extract::cookie::Key;
+use s3::{Bucket, Region, creds::Credentials};
 
 use crate::{
     config::Config,
@@ -23,6 +24,7 @@ pub struct AppState {
     // General
     pub config: Config,
     pub key: Key,
+    pub bucket: Arc<Box<Bucket>>,
 
     // Repositories
     pub claimed_credit_repo: Arc<ClaimedCreditRepository>,
@@ -68,6 +70,22 @@ impl AppState {
 
         let key = Key::generate();
 
+        let bucket_name = &config.s3_bucket;
+        let region = Region::Custom {
+            region: config.s3_region.clone(),
+            endpoint: config.s3_endpoint.clone(),
+        };
+        let credentials = Credentials::new(
+            Some(&config.s3_access_key),
+            Some(&config.s3_secret_key),
+            None,
+            None,
+            None,
+        )
+        .expect("Failed to create S3 credentials");
+
+        let bucket = Arc::new(Bucket::new(bucket_name, region, credentials).unwrap());
+
         let claimed_credit_repo = Arc::new(ClaimedCreditRepository::new(pool.clone()));
         let contact_submission_repo = Arc::new(ContactSubmissionRepository::new(pool.clone()));
         let event_repo = Arc::new(EventRepository::new(pool.clone()));
@@ -103,6 +121,7 @@ impl AppState {
             // General
             config,
             key,
+            bucket,
 
             // Repositories
             claimed_credit_repo,

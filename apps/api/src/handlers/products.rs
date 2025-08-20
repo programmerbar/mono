@@ -4,7 +4,7 @@ use axum::{
 };
 
 use crate::{
-    dto::product::CreateProductJson,
+    dto::CreateProductJson,
     errors::ApiError,
     models::{auth::AuthorizedBoardMember, product::Product},
     state::AppState,

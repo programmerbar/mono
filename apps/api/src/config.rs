@@ -8,6 +8,11 @@ pub struct Config {
     pub feide_client_secret: ClientSecret,
     pub feide_redirect_uri: RedirectUrl,
     pub is_dev: bool,
+    pub s3_endpoint: String,
+    pub s3_access_key: String,
+    pub s3_secret_key: String,
+    pub s3_region: String,
+    pub s3_bucket: String,
 }
 
 impl Config {
@@ -38,6 +43,17 @@ impl Config {
 
         let is_dev = std::env::var("IS_DEV").unwrap_or_default() == "true";
 
+        let s3_endpoint = std::env::var("S3_ENDPOINT")
+            .unwrap_or_else(|_| "http://localhost:9000".to_string());
+        let s3_access_key = std::env::var("S3_ACCESS_KEY")
+            .unwrap_or_else(|_| "minioadmin".to_string());
+        let s3_secret_key = std::env::var("S3_SECRET_KEY")
+            .unwrap_or_else(|_| "minioadmin".to_string());
+        let s3_region = std::env::var("S3_REGION")
+            .unwrap_or_else(|_| "us-east-1".to_string());
+        let s3_bucket = std::env::var("S3_BUCKET")
+            .expect("Expected S3_BUCKET environment variable to be set");
+
         Config {
             database_url,
             server_port,
@@ -45,6 +61,11 @@ impl Config {
             feide_client_secret,
             feide_redirect_uri,
             is_dev,
+            s3_endpoint,
+            s3_access_key,
+            s3_secret_key,
+            s3_region,
+            s3_bucket,
         }
     }
 }
