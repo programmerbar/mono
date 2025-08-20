@@ -9,7 +9,7 @@ pub struct HealthResponse {
 }
 
 /// Check the health status of the API.
-/// 
+///
 /// Returns a simple health check response indicating that the API is running.
 /// This endpoint is typically used by monitoring systems and load balancers.
 #[utoipa::path(

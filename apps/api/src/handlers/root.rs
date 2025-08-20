@@ -5,11 +5,11 @@ use axum::Json;
 use crate::dto;
 
 /// Get basic API information.
-/// 
+///
 /// Returns fundamental information about the Programmerbar API including
 /// its name and version. This endpoint serves as a simple way to verify
 /// that the API is running and accessible.
-/// 
+///
 /// This endpoint is public and does not require authentication.
 #[utoipa::path(
     get,

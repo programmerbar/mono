@@ -25,7 +25,7 @@ pub struct AppState {
     // General
     pub config: Config,
     pub key: Key,
-    pub bucket: Arc<Box<Bucket>>,
+    pub bucket: Box<Bucket>,
     pub redis: Arc<RedisClient>,
 
     // Repositories
@@ -87,7 +87,7 @@ impl AppState {
         )
         .expect("Failed to create S3 credentials");
 
-        let bucket = Arc::new(Bucket::new(bucket_name, region, credentials).unwrap());
+        let bucket = Bucket::new(bucket_name, region, credentials).unwrap();
 
         // Initialize Redis client
         let redis = Arc::new(

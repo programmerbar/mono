@@ -16,10 +16,12 @@
         "build/**",
         ".svelte-kit/**",
         "dist/**",
-        ".react-email/**"
+        ".react-email/**",
+        "target/**"
       ]
     },
     "lint": {},
+    "lint:fix": {},
     "check": {},
     "format": {},
     "extract": {

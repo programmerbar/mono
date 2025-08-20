@@ -19,11 +19,11 @@ pub struct CallbackParams {
 }
 
 /// Initiate OAuth authentication with Feide.
-/// 
+///
 /// Redirects the user to Feide (Norwegian education federation) for authentication.
 /// This is the first step in the OAuth flow. After successful authentication,
 /// the user will be redirected back to the callback endpoint.
-/// 
+///
 /// Sets a secure state cookie to prevent CSRF attacks during the OAuth flow.
 #[utoipa::path(
     get,
@@ -57,15 +57,15 @@ pub async fn feide_auth(
 }
 
 /// Handle OAuth callback from Feide authentication.
-/// 
+///
 /// This endpoint receives the authorization code from Feide after successful authentication.
 /// It validates the state parameter, exchanges the code for tokens, retrieves user information,
 /// and either creates a new user account (if invited) or logs in an existing user.
-/// 
+///
 /// # Parameters
 /// * `code` - Authorization code from Feide OAuth
 /// * `state` - State parameter for CSRF protection
-/// 
+///
 /// # User Creation
 /// New users can only be created if they have a valid invitation in the system.
 /// The invitation is matched by email address and deleted after successful account creation.
@@ -186,11 +186,11 @@ pub async fn feide_callback(
 }
 
 /// Log out the authenticated user.
-/// 
+///
 /// Terminates the user's current session by deleting it from the database
 /// and clearing the session cookie. After logout, the user will need to
 /// authenticate again to access protected endpoints.
-/// 
+///
 /// # Authentication
 /// Requires a valid session token.
 #[utoipa::path(

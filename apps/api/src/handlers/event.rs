@@ -5,11 +5,11 @@ use crate::{
 };
 
 /// Get all events with their associated volunteer shifts.
-/// 
+///
 /// Returns a comprehensive list of all events in the system, including detailed information
 /// about volunteer shifts for each event. This endpoint requires authentication as it contains
 /// sensitive volunteer scheduling information.
-/// 
+///
 /// # Authentication
 /// Requires a valid session token to access.
 #[utoipa::path(

@@ -9,20 +9,20 @@ use chrono::Utc;
 use crate::{dto, errors::ApiError, models::auth::AuthorizedMember, state::AppState};
 
 /// Upload an image file to the server.
-/// 
+///
 /// Accepts multipart form data with an image file and uploads it to S3-compatible storage.
 /// The uploaded image is validated for format and size, then stored with a unique filename.
 /// Metadata about the image is saved to the database for future reference.
-/// 
+///
 /// # Supported Formats
 /// - JPEG (.jpg)
-/// - PNG (.png) 
+/// - PNG (.png)
 /// - GIF (.gif)
 /// - WebP (.webp)
-/// 
+///
 /// # Authentication
 /// Requires a valid session token to upload images.
-/// 
+///
 /// # Form Data
 /// Must include a field named "image" containing the image file.
 #[utoipa::path(
@@ -79,7 +79,7 @@ pub async fn upload_image(
         "image/webp" => "webp",
         _ => return Err(ApiError::BadRequest("Unsupported image format".into())),
     };
-    let file_name = format!("{}.{}", file_id, extension);
+    let file_name = format!("{file_id}.{extension}");
 
     // Upload to S3
     let response = state
@@ -120,14 +120,14 @@ pub async fn upload_image(
 }
 
 /// Retrieve an image file by its ID.
-/// 
+///
 /// Serves the actual image file data from S3-compatible storage. Returns the image
 /// with appropriate headers including content type, caching directives, and metadata.
 /// This endpoint is public and does not require authentication for viewing images.
-/// 
+///
 /// # Parameters
 /// * `id` - The unique identifier of the image to retrieve
-/// 
+///
 /// # Response Headers
 /// - Content-Type: Matches the original image format
 /// - Cache-Control: Configured for efficient caching
@@ -152,7 +152,7 @@ pub async fn get_image_by_id(
 ) -> Result<(HeaderMap, Body), ApiError> {
     let object = state.bucket.get_object(&id).await.map_err(|e| {
         tracing::error!("Failed to get image from S3: {}", e);
-        ApiError::NotFound(format!("Image with id '{}' not found", id))
+        ApiError::NotFound(format!("Image with id '{id}' not found"))
     })?;
 
     let image = state
@@ -162,7 +162,7 @@ pub async fn get_image_by_id(
         .map_err(|_| ApiError::InternalServerError)?
         .ok_or_else(|| {
             tracing::error!("Image with id '{}' not found in database", id);
-            ApiError::NotFound(format!("Image with id '{}' not found", id))
+            ApiError::NotFound(format!("Image with id '{id}' not found"))
         })?;
 
     let body = Body::from(object.into_bytes());
@@ -175,7 +175,7 @@ pub async fn get_image_by_id(
         "Last-Modified",
         image.created_at.to_rfc2822().parse().unwrap(),
     );
-    headers.insert("ETag", format!("\"{}\"", id).parse().unwrap());
+    headers.insert("ETag", format!("\"{id}\"").parse().unwrap());
 
     Ok((headers, body))
 }

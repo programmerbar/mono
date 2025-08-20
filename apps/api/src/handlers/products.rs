@@ -11,7 +11,7 @@ use crate::{
 };
 
 /// Get all products available in the bar.
-/// 
+///
 /// Returns a complete list of all products including beers, beverages, and other items
 /// available for purchase. This endpoint is public and does not require authentication.
 /// Each product includes pricing information, availability status, and metadata.
@@ -37,11 +37,11 @@ pub async fn all_products(State(state): State<AppState>) -> Json<Vec<dto::FullPr
 }
 
 /// Get a specific product by its ID.
-/// 
+///
 /// Retrieves detailed information about a single product including its pricing,
 /// availability, alcohol content, and other metadata. This endpoint is public
 /// and does not require authentication.
-/// 
+///
 /// # Parameters
 /// * `id` - The unique identifier of the product to retrieve
 #[utoipa::path(
@@ -73,14 +73,14 @@ pub async fn get_product_by_id(
 }
 
 /// Create a new product in the bar inventory.
-/// 
+///
 /// Adds a new product to the bar's inventory system. This endpoint is restricted to
 /// board members only as it involves inventory management and pricing decisions.
 /// The created product will be immediately available for purchase.
-/// 
+///
 /// # Authentication
 /// Requires board member privileges (role: "board").
-/// 
+///
 /// # Request Body
 /// Must include all required product information including name, pricing, and metadata.
 #[utoipa::path(
