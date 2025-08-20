@@ -1,7 +1,12 @@
 import type { PageServerLoad, Actions } from './$types';
 import { nanoid } from 'nanoid';
+import { redirect, fail } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ locals }) => {
+	if (!locals.user || locals.user.role !== 'board') {
+		throw redirect(303, '/portal');
+	}
+
 	const pendingApplications = await locals.pendingApplicationService.findAll();
 
 	return {
@@ -11,6 +16,10 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
 	approve: async ({ locals, request }) => {
+		if (!locals.user || locals.user.role !== 'board') {
+			return fail(401, { error: 'Unauthorized' });
+		}
+
 		const data = await request.formData();
 		const applicationId = data.get('applicationId') as string;
 		const name = data.get('name') as string;
@@ -31,6 +40,10 @@ export const actions: Actions = {
 	},
 
 	deny: async ({ locals, request }) => {
+		if (!locals.user || locals.user.role !== 'board') {
+			return fail(401, { error: 'Unauthorized' });
+		}
+
 		const data = await request.formData();
 		const applicationId = data.get('applicationId') as string;
 		const email = data.get('email') as string;
