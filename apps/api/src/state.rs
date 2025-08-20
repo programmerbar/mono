@@ -1,5 +1,3 @@
-#![allow(dead_code)] // TODO REMOVE
-
 use std::sync::Arc;
 
 use axum::extract::FromRef;
@@ -14,7 +12,8 @@ use crate::{
         invitation::InvitationRepository, notification::NotificationRepository,
         producer::ProducerRepository, product::ProductRepository,
         product_product_type::ProductProductTypeRepository, product_type::ProductTypeRepository,
-        session::SessionRepository, user::UserRepository, user_shift::UserShiftRepository,
+        session::SessionRepository, shift::ShiftRepository, user::UserRepository,
+        user_shift::UserShiftRepository, users_group::UsersGroupRepository,
     },
     services::{auth::AuthService, session::SessionService},
 };
@@ -38,9 +37,10 @@ pub struct AppState {
     pub product_type_repo: Arc<ProductTypeRepository>,
     pub product_repo: Arc<ProductRepository>,
     pub session_repo: Arc<SessionRepository>,
+    pub shift_repo: Arc<ShiftRepository>,
     pub user_shift_repo: Arc<UserShiftRepository>,
     pub user_repo: Arc<UserRepository>,
-    pub user_group_repo: Arc<GroupRepository>,
+    pub user_group_repo: Arc<UsersGroupRepository>,
 
     // Services
     pub auth_service: Arc<AuthService>,
@@ -80,9 +80,10 @@ impl AppState {
         let product_type_repo = Arc::new(ProductTypeRepository::new(pool.clone()));
         let product_repo = Arc::new(ProductRepository::new(pool.clone()));
         let session_repo = Arc::new(SessionRepository::new(pool.clone()));
+        let shift_repo = Arc::new(ShiftRepository::new(pool.clone()));
         let user_shift_repo = Arc::new(UserShiftRepository::new(pool.clone()));
         let user_repo = Arc::new(UserRepository::new(pool.clone()));
-        let user_group_repo = Arc::new(GroupRepository::new(pool.clone()));
+        let user_group_repo = Arc::new(UsersGroupRepository::new(pool.clone()));
 
         // Services
         let auth_service = Arc::new(AuthService::new(
@@ -116,6 +117,7 @@ impl AppState {
             product_type_repo,
             product_repo,
             session_repo,
+            shift_repo,
             user_shift_repo,
             user_repo,
             user_group_repo,

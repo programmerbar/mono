@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use crate::models::{session::Session, user::User};
 
 pub struct AuthorizedBoardMember {

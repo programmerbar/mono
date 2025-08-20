@@ -44,13 +44,13 @@ pub struct TokenResponse {
 #[derive(Debug, thiserror::Error)]
 pub enum FeideError {
     #[error("HTTP request failed: {0}")]
-    HttpError(#[from] reqwest::Error),
+    Http(#[from] reqwest::Error),
     #[error("JSON parsing error: {0}")]
-    JsonError(#[from] serde_json::Error),
+    Json(#[from] serde_json::Error),
     #[error("OAuth2 token exchange failed: {0}")]
-    TokenExchangeError(String),
+    TokenExchange(String),
     #[error("URL parsing error: {0}")]
-    UrlParseError(#[from] url::ParseError),
+    UrlParse(#[from] url::ParseError),
 }
 
 impl FeideProvider {
@@ -96,7 +96,7 @@ impl FeideProvider {
 
         if !response.status().is_success() {
             let error_text = response.text().await?;
-            return Err(FeideError::TokenExchangeError(error_text));
+            return Err(FeideError::TokenExchange(error_text));
         }
 
         let token_response: TokenResponse = response.json().await?;
@@ -113,7 +113,7 @@ impl FeideProvider {
 
         if !response.status().is_success() {
             let error_text = response.text().await?;
-            return Err(FeideError::TokenExchangeError(format!(
+            return Err(FeideError::TokenExchange(format!(
                 "Failed to get user info: {error_text}"
             )));
         }

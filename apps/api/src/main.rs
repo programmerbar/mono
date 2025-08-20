@@ -42,6 +42,7 @@ async fn main() -> anyhow::Result<()> {
         // Routes
         .route("/", get(handlers::root::root))
         .route("/health", get(handlers::health::health))
+        .route("/events", get(handlers::event::all_events))
         .route("/products", get(handlers::products::all_products))
         .route("/products", post(handlers::products::create_product))
         .route("/products/{id}", get(handlers::products::get_product_by_id))
