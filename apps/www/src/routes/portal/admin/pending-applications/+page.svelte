@@ -11,7 +11,7 @@
 </script>
 
 <svelte:head>
-	<title>Admin - Pending Applications</title>
+	<title>Admin - Søkere</title>
 </svelte:head>
 
 <section class="space-y-6">
