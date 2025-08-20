@@ -19,6 +19,7 @@ import { UserService } from '$lib/services/user.service';
 import type { Handle } from '@sveltejs/kit';
 import { Resend } from 'resend';
 import { ImageService } from '$lib/services/image.service';
+import { PendingApplicationService } from '$lib/services/pending-application.service';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const STATUS_KV = event.platform!.env.STATUS_KV;
@@ -102,6 +103,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const imageService = new ImageService(R2_BUCKET, db);
 	event.locals.imageService = imageService;
+
+	const pendingApplicationService = new PendingApplicationService(db);
+	event.locals.pendingApplicationService = pendingApplicationService;
 
 	// Validate auth
 	const sessionId = event.cookies.get(auth.sessionCookieName);

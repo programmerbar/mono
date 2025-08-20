@@ -11,7 +11,8 @@
 		Menu,
 		X,
 		Shield,
-		Database
+		Database,
+		UserCheck
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { getUser } from '$lib/context/user.context';
@@ -28,7 +29,6 @@
 	let isSidebarOpen = $state(false);
 	let isMobile = $state(true); // Start as mobile to prevent flash
 
-	// Show full layout when: opened on mobile OR on desktop
 	const showFullLayout = $derived((isSidebarOpen && isMobile) || !isMobile);
 
 	// Main portal navigation items
@@ -73,6 +73,11 @@
 						name: 'Admin Panel',
 						href: '/portal/admin',
 						icon: Shield
+					},
+					{
+						name: 'Søknader',
+						href: '/portal/admin/pending-applications',
+						icon: UserCheck
 					}
 				]
 			: []
