@@ -37,6 +37,7 @@ declare global {
 			productTypeService: import('$lib/services/product-type.service').ProductTypeService;
 			productService: import('$lib/services/product.service').ProductService;
 			imageService: import('$lib/services/image.service').ImageService;
+			referralService: import('$lib/services/referral.service').ReferralService;
 		}
 		// interface PageData {}
 		// interface PageState {}

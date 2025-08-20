@@ -155,6 +155,20 @@
       "when": 1755665199729,
       "tag": "0021_broken_professor_monster",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "6",
+      "when": 1755720434367,
+      "tag": "0022_youthful_risque",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "6",
+      "when": 1755720987349,
+      "tag": "0023_harsh_johnny_blaze",
+      "breakpoints": true
     }
   ]
 }
