@@ -14,7 +14,7 @@ export class ImageService {
 	async upload(file: File): Promise<string> {
 		const id = nanoid();
 
-		this.#bucket.put(id, file, {
+		await this.#bucket.put(id, file, {
 			httpMetadata: {
 				contentType: file.type,
 				cacheControl: 'max-age=31536000, immutable',

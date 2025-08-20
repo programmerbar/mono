@@ -48,7 +48,7 @@
 			const response = await fetch('/api/upload', {
 				method: 'POST',
 				body: formData,
-				credentials: 'same-origin'
+				credentials: 'include'
 			});
 
 			if (!response.ok) {

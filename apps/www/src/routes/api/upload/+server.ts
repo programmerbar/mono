@@ -9,40 +9,38 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		throw error(403, { message: 'Unauthorized' });
 	}
 
+	const formData = await request.formData();
+	const file = formData.get('file') as File;
+	const type = formData.get('type') as string;
+
+	if (!file) {
+		throw error(400, { message: 'No file provided' });
+	}
+
+	if (!ALLOWED_TYPES.includes(file.type)) {
+		throw error(400, { message: 'Invalid file type. Only JPEG, PNG, and WebP are allowed.' });
+	}
+
+	if (file.size > MAX_FILE_SIZE) {
+		throw error(400, { message: 'File too large. Maximum size is 5MB.' });
+	}
+
+	if (!type || !['product', 'producer'].includes(type)) {
+		throw error(400, { message: 'Invalid upload type. Must be "product" or "producer".' });
+	}
+
+	let imageId;
+
 	try {
-		const formData = await request.formData();
-		const file = formData.get('file') as File;
-		const type = formData.get('type') as string;
-
-		if (!file) {
-			throw error(400, { message: 'No file provided' });
-		}
-
-		if (!ALLOWED_TYPES.includes(file.type)) {
-			throw error(400, { message: 'Invalid file type. Only JPEG, PNG, and WebP are allowed.' });
-		}
-
-		if (file.size > MAX_FILE_SIZE) {
-			throw error(400, { message: 'File too large. Maximum size is 5MB.' });
-		}
-
-		if (!type || !['product', 'producer'].includes(type)) {
-			throw error(400, { message: 'Invalid upload type. Must be "product" or "producer".' });
-		}
-
-		const imageId = await locals.imageService.upload(file);
-
-		return json({
-			success: true,
-			imageId
-		});
+		imageId = await locals.imageService.upload(file);
 	} catch (err) {
 		console.error('Upload error:', err);
 
-		if (err instanceof Response) {
-			throw err;
-		}
-
 		throw error(500, { message: 'Upload failed' });
 	}
+
+	return json({
+		success: true,
+		imageId
+	});
 };
