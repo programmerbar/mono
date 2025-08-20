@@ -127,6 +127,34 @@
       "when": 1755607689282,
       "tag": "0017_lively_spacker_dave",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "6",
+      "when": 1755652984216,
+      "tag": "0018_ordinary_may_parker",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "6",
+      "when": 1755656373456,
+      "tag": "0019_charming_magik",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "6",
+      "when": 1755665112466,
+      "tag": "0020_silent_infant_terrible",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "6",
+      "when": 1755665199729,
+      "tag": "0021_broken_professor_monster",
+      "breakpoints": true
     }
   ]
 }

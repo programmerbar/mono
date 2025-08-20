@@ -2,17 +2,23 @@
 	import { cn } from '$lib/cn';
 	import { SvelteSet } from 'svelte/reactivity';
 
-	type OptionType = string | { id: string; label: string };
+	export type OptionType = string | { id: string; label: string };
 
 	type Props = {
-		options: OptionType[];
+		options: Array<OptionType>;
 		selected: SvelteSet<string>;
 		onToggle: (option: string) => void;
 		placeholder?: string;
 		label?: string;
 	};
 
-	let { options, selected, onToggle, placeholder = 'Select options...', label }: Props = $props();
+	let {
+		options,
+		selected = $bindable(),
+		onToggle,
+		placeholder = 'Select options...',
+		label
+	}: Props = $props();
 
 	let isOpen = $state(false);
 	let container: HTMLDivElement | undefined = $state();

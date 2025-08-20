@@ -7,9 +7,9 @@
 	<PortalSidebar notifications={data.notifications} />
 
 	<!-- Main content -->
-	<div class="flex-1 lg:ml-64">
-		<main class="flex-1 p-4 sm:p-6 lg:p-8">
-			<div class="mx-auto max-w-5xl">
+	<div class="min-w-0 flex-1 lg:ml-64">
+		<main class="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
+			<div class="mx-auto max-w-5xl min-w-0">
 				{@render children()}
 			</div>
 		</main>

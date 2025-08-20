@@ -10,7 +10,8 @@
 		Beer,
 		Menu,
 		X,
-		Shield
+		Shield,
+		Database
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { getUser } from '$lib/context/user.context';
@@ -72,6 +73,29 @@
 						name: 'Admin Panel',
 						href: '/portal/admin',
 						icon: Shield
+					}
+				]
+			: []
+	);
+
+	// CMS routes (only visible to board members)
+	const cmsRoutes = $derived(
+		$user?.role === 'board'
+			? [
+					{
+						name: 'Produsenter',
+						href: '/portal/admin/cms/producers',
+						icon: Database
+					},
+					{
+						name: 'Produkttyper',
+						href: '/portal/admin/cms/product-types',
+						icon: Database
+					},
+					{
+						name: 'Produkter',
+						href: '/portal/admin/cms/products',
+						icon: Database
 					}
 				]
 			: []
@@ -248,6 +272,48 @@
 											'justify-center gap-0 px-1': !showFullLayout,
 											'justify-start gap-3 px-3': showFullLayout,
 											'bg-amber-50 text-amber-700': isActive,
+											'text-gray-600 hover:bg-gray-50 hover:text-gray-900': !isActive
+										}
+									)}
+									title={route.name}
+								>
+									<route.icon class="h-5 w-5 flex-shrink-0" />
+									<span
+										class={cn('', {
+											hidden: !showFullLayout,
+											inline: showFullLayout
+										})}>{route.name}</span
+									>
+								</a>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+
+			<!-- CMS Section (only for board members) -->
+			{#if cmsRoutes.length > 0}
+				<div>
+					<h2
+						class={cn('mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase', {
+							hidden: !showFullLayout,
+							block: showFullLayout
+						})}
+					>
+						CMS
+					</h2>
+					<ul class="space-y-1">
+						{#each cmsRoutes as route (route.href)}
+							{@const isActive = page.url.pathname === route.href}
+							<li>
+								<a
+									href={route.href}
+									class={cn(
+										'flex items-center rounded-lg py-2 text-sm font-medium transition-colors',
+										{
+											'justify-center gap-0 px-1': !showFullLayout,
+											'justify-start gap-3 px-3': showFullLayout,
+											'bg-blue-50 text-blue-700': isActive,
 											'text-gray-600 hover:bg-gray-50 hover:text-gray-900': !isActive
 										}
 									)}

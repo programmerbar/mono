@@ -9,3 +9,8 @@ export * from './shifts';
 export * from './user-shifts';
 export * from './users-groups';
 export * from './users';
+export * from './producers';
+export * from './product-types';
+export * from './products';
+export * from './product-product-types';
+export * from './images';

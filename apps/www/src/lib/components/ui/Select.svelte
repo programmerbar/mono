@@ -8,7 +8,7 @@
 	};
 
 	type Props = HTMLSelectAttributes & {
-		options: Option[];
+		options: Array<Option>;
 		value?: string;
 	};
 

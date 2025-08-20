@@ -39,6 +39,11 @@
 	$effect(() => {
 		filterState.showCreditPrice = true;
 		filterState.showStudentPrice = false;
+
+		// If "No brewery" exists as an option, set it as default
+		if (breweries.includes('__no_brewery__')) {
+			filterState.breweries.add('__no_brewery__');
+		}
 	});
 
 	type Product = ReturnType<typeof filterProducts>[number];

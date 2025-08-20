@@ -4,17 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Programmerbar** is a Norwegian student bar website built as a monorepo using pnpm workspaces and Turbo. The system manages events, volunteer shifts, user authentication via Feide (Norwegian education SSO), and beer credit tracking. The architecture is built specifically for Cloudflare's ecosystem.
+**Programmerbar** is a Norwegian student bar website built as a monorepo using pnpm workspaces, Turbo, and Cargo workspaces. The system manages events, volunteer shifts, user authentication via Feide (Norwegian education SSO), and beer credit tracking. The architecture is built specifically for Cloudflare's ecosystem with a modern Rust API backend.
 
 ## Architecture
 
 ### Monorepo Structure
 - `apps/www/` - Main SvelteKit application (primary codebase)
 - `apps/cms/` - Sanity headless CMS for content management
+- `apps/api/` - Rust API backend with Axum web framework
 - `internal/emails/` - React Email templates for notifications
 
 ### Technology Stack
 - **Frontend**: SvelteKit 2.28 with Svelte 5, Tailwind CSS v4
+- **Backend**: Rust with Axum web framework, Tokio async runtime
 - **Database**: Cloudflare D1 (SQLite) with Drizzle ORM 0.44
 - **Auth**: Lucia v3 with Feide OAuth integration
 - **Deployment**: Cloudflare Pages with automatic deployments
@@ -43,20 +45,28 @@ The application uses a service layer pattern with dependency injection via Svelt
 cp apps/www/.dev.vars.example apps/www/.dev.vars
 # Fill in Resend API key, Feide OAuth credentials
 
-# Install dependencies
+# Install dependencies (Node.js and Rust)
 pnpm install
 
 # Apply local database migrations
 pnpm db:migrate:local
 
-# Start all development servers (website + CMS)
+# Start all development servers (website + CMS + API)
 pnpm dev
 ```
 
 ### Common Tasks
 ```bash
 # Development
-pnpm dev                    # Start all services (website: :5173, CMS: :3333)
+pnpm dev                    # Start all services (website: :5173, CMS: :3333, API: :3000)
+
+# Rust API Development
+cd apps/api
+cargo run                   # Run API server directly
+cargo build                # Build API binary
+cargo test                 # Run Rust tests
+cargo clippy               # Rust linting
+cargo fmt                  # Rust formatting
 
 # Database
 pnpm db:generate           # Generate migration from schema changes

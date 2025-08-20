@@ -35,5 +35,11 @@
 			"migrations_dir": "migrations",
 			"migrations_table": "__drizzle_migrations"
 		}
+	],
+	"r2_buckets": [
+		{
+			"bucket_name": "progbar-bucket",
+			"binding": "BUCKET"
+		}
 	]
 }

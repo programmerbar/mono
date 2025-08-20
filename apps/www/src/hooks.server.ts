@@ -10,14 +10,22 @@ import { EventService } from '$lib/services/event.service';
 import { GroupsService } from '$lib/services/groups.service';
 import { InvitationService } from '$lib/services/invitation.service';
 import { NotificationService } from '$lib/services/notification.service';
+import { ProducerService } from '$lib/services/producer.service';
+import { ProductService } from '$lib/services/product.service';
+import { ProductTypeService } from '$lib/services/product-type.service';
 import { ShiftService } from '$lib/services/shift.service';
 import { StatusService } from '$lib/services/status.service';
 import { UserService } from '$lib/services/user.service';
 import type { Handle } from '@sveltejs/kit';
 import { Resend } from 'resend';
+import { ImageService } from '$lib/services/image.service';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const banService = new BanService(event.platform!.env.STATUS_KV);
+	const STATUS_KV = event.platform!.env.STATUS_KV;
+	const R2_BUCKET = event.platform!.env.BUCKET;
+	const DB = event.platform!.env.DB;
+
+	const banService = new BanService(STATUS_KV);
 	event.locals.banService = banService;
 
 	const ip = event.getClientAddress();
@@ -37,7 +45,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.resend = resend;
 
 	// Setup database
-	const db = createDatabase(event.platform!.env.DB);
+	const db = createDatabase(DB);
 	event.locals.db = db;
 
 	// Setup auth
@@ -82,6 +90,18 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const contactSubmissionService = new ContactSubmissionService(db);
 	event.locals.contactSubmissionService = contactSubmissionService;
+
+	const producerService = new ProducerService(db);
+	event.locals.producerService = producerService;
+
+	const productTypeService = new ProductTypeService(db);
+	event.locals.productTypeService = productTypeService;
+
+	const productService = new ProductService(db);
+	event.locals.productService = productService;
+
+	const imageService = new ImageService(R2_BUCKET, db);
+	event.locals.imageService = imageService;
 
 	// Validate auth
 	const sessionId = event.cookies.get(auth.sessionCookieName);

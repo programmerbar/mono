@@ -12,20 +12,16 @@
 	];
 
 	const members = [
-		'Lars Bysheim',
 		'Erik Fjelltveit Nyhuus',
 		'Lene Soltveit',
 		'Lars Haukland',
-		'Gard Heine Kalland',
 		'Steffen Andre Pettersen',
 		'Siren Bjorøy',
-		'Stian Munkejord',
 		'Ole Straumland',
 		'Tony Lam',
 		'Eirik Rekve Thorsheim',
 		'Ole Magnus Fon Johnsen (første CTO)',
-		'August Ebne Røeggen',
-		'Simen Hauge Østbø'
+		'August Ebne Røeggen'
 	];
 
 	const pastMembers = [
@@ -44,7 +40,11 @@
 		'Henrik Trondseth',
 		'Emil Johannessen',
 		'Andre Normann',
-		'Sofie Nhu Nguyen'
+		'Sofie Nhu Nguyen',
+		'Simen Hauge Østbø',
+		'Stian Munkejord',
+		'Gard Heine Kalland',
+		'Lars Bysheim'
 	];
 </script>
 

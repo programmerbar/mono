@@ -20,8 +20,17 @@ export const filterProducts = (products: GetProductsQueryResult, filter: FilterS
 			}
 		}
 
-		if (filter.breweries.size > 0 && product.producer && !filter.breweries.has(product.producer)) {
-			return false;
+		if (filter.breweries.size > 0) {
+			// Check if "No brewery" is selected
+			const hasNoBrewer = filter.breweries.has('__no_brewery__');
+			// Check if product has a matching producer
+			const hasMatchingProducer = product.producer && filter.breweries.has(product.producer);
+			// Check if product has no producer and "No brewery" is selected
+			const isNoProducerMatch = !product.producer && hasNoBrewer;
+
+			if (!hasMatchingProducer && !isNoProducerMatch) {
+				return false;
+			}
 		}
 
 		if (filter.priceRange) {

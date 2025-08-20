@@ -33,6 +33,10 @@ declare global {
 			notificationService: import('$lib/services/notification.service').NotificationService;
 			groupsService: import('$lib/services/groups.service').GroupsService;
 			contactSubmissionService: import('$lib/services/contact-submission.service').ContactSubmissionService;
+			producerService: import('$lib/services/producer.service').ProducerService;
+			productTypeService: import('$lib/services/product-type.service').ProductTypeService;
+			productService: import('$lib/services/product.service').ProductService;
+			imageService: import('$lib/services/image.service').ImageService;
 		}
 		// interface PageData {}
 		// interface PageState {}

@@ -3,9 +3,6 @@
 	import type { extractTypes } from '$lib/extract-types';
 	import { FilterState, SORT_OPTIONS } from '$lib/states/filter-state.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
-	import Input from '$lib/components/ui/Input.svelte';
-	import Select from '$lib/components/ui/Select.svelte';
-	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import MultipleSelect from '$lib/components/ui/MultipleSelect.svelte';
 	import PriceRangeSlider from '$lib/components/ui/PriceRangeSlider.svelte';
 	import { SvelteSet } from 'svelte/reactivity';
@@ -66,17 +63,26 @@
 >
 	<div class="flex flex-col gap-1">
 		<label for="search" class="text-sm font-semibold">Søk</label>
-		<Input
-			id="search"
+		<input
 			type="text"
+			id="search"
 			placeholder="Søk etter produkt"
+			class="border-border rounded-lg border-2 px-2 py-1"
 			bind:value={filterState.search}
 		/>
 	</div>
 
 	<div class="flex flex-col gap-1">
 		<label for="sort" class="text-sm font-semibold">Sorter etter</label>
-		<Select id="sort" options={SORT_OPTIONS} bind:value={filterState.sort} />
+		<select
+			id="sort"
+			class="border-border rounded-lg border-2 px-2 py-1"
+			bind:value={filterState.sort}
+		>
+			{#each SORT_OPTIONS as option (option.value)}
+				<option value={option.value}>{option.label}</option>
+			{/each}
+		</select>
 	</div>
 
 	<MultipleSelect
@@ -88,7 +94,11 @@
 	/>
 
 	<MultipleSelect
-		options={breweries}
+		options={breweries.map((brewery) =>
+			brewery === '__no_brewery__'
+				? { id: '__no_brewery__', label: 'Uten bryggeri' }
+				: { id: brewery, label: brewery }
+		)}
 		selected={filterState.breweries}
 		onToggle={toggleBrewery}
 		placeholder="Alle bryggerier"
@@ -103,13 +113,25 @@
 	/>
 
 	{#if alwaysFilteredByCredits}{:else}
-		<Checkbox id="hideSoldOut" label="Skjul utsolgt" bind:checked={filterState.hideSoldOut} />
+		<div class="flex items-center justify-between py-2">
+			<label for="hideSoldOut" class="text-sm font-semibold">Skjul utsolgt</label>
+			<input
+				type="checkbox"
+				id="hideSoldOut"
+				class="h-4 w-4 rounded border-2"
+				bind:checked={filterState.hideSoldOut}
+			/>
+		</div>
 
-		<Checkbox
-			id="showStudentPrice"
-			label="Vis studentpris"
-			bind:checked={filterState.showStudentPrice}
-		/>
+		<div class="flex items-center justify-between py-2">
+			<label for="showStudentPrice" class="text-sm font-semibold">Vis studentpris</label>
+			<input
+				type="checkbox"
+				id="showStudentPrice"
+				class="h-4 w-4 rounded border-2"
+				bind:checked={filterState.showStudentPrice}
+			/>
+		</div>
 	{/if}
 
 	<div class="pt-2">
