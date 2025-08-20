@@ -7,6 +7,7 @@ pub struct Config {
     pub feide_client_id: ClientId,
     pub feide_client_secret: ClientSecret,
     pub feide_redirect_uri: RedirectUrl,
+    pub is_dev: bool,
 }
 
 impl Config {
@@ -35,12 +36,15 @@ impl Config {
         )
         .expect("FEIDE_REDIRECT_URI must be a valid URL");
 
+        let is_dev = std::env::var("IS_DEV").unwrap_or_default() == "true";
+
         Config {
             database_url,
             server_port,
             feide_client_id,
             feide_client_secret,
             feide_redirect_uri,
+            is_dev,
         }
     }
 }

@@ -6,7 +6,7 @@ use axum::{
     extract::{Query, State},
     response::{IntoResponse, Redirect},
 };
-use axum_extra::extract::{PrivateCookieJar, cookie::Cookie};
+use axum_extra::extract::{CookieJar, PrivateCookieJar, cookie::Cookie};
 use cookie::time::Duration;
 use oauth2::CsrfToken;
 use reqwest::StatusCode;
@@ -20,8 +20,8 @@ pub struct CallbackParams {
 
 pub async fn feide_auth(
     State(state): State<AppState>,
-    jar: PrivateCookieJar,
-) -> Result<(PrivateCookieJar, Redirect), ApiError> {
+    jar: CookieJar,
+) -> Result<(CookieJar, Redirect), ApiError> {
     let csrf_state = CsrfToken::new_random();
 
     // Generate authorization URL with CSRF state
@@ -30,9 +30,11 @@ pub async fn feide_auth(
         .authorization_url_with_state(&csrf_state)
         .map_err(|_| ApiError::InternalServerError)?;
 
-    // Store CSRF state in a cookie
+    // Store CSRF state in a regular cookie (not encrypted)
     let c = Cookie::build(("feide_oauth_state", csrf_state.into_secret()))
-        .max_age(Duration::seconds(600));
+        .max_age(Duration::seconds(600))
+        .http_only(true)
+        .secure(!state.config.is_dev);
     let jar = jar.add(c);
 
     Ok((jar, Redirect::to(&auth_url)))
@@ -41,10 +43,11 @@ pub async fn feide_auth(
 pub async fn feide_callback(
     State(state): State<AppState>,
     Query(params): Query<CallbackParams>,
-    jar: PrivateCookieJar,
+    regular_jar: CookieJar,
+    private_jar: PrivateCookieJar,
 ) -> Result<impl IntoResponse, ApiError> {
     // Validate state parameter
-    let feide_oauth_state = jar
+    let feide_oauth_state = regular_jar
         .get("feide_oauth_state")
         .ok_or(ApiError::BadRequest("Invalid state".to_string()))?;
 
@@ -84,7 +87,7 @@ pub async fn feide_callback(
             .map_err(|_| ApiError::InternalServerError)?;
 
         let session_cookie = state.session_service.create_session_cookie(&session.id);
-        let updated_jar = jar.add(session_cookie);
+        let updated_jar = private_jar.add(session_cookie);
 
         return Ok((updated_jar, Redirect::to("/")));
     }
@@ -134,7 +137,7 @@ pub async fn feide_callback(
         .map_err(|_| ApiError::InternalServerError)?;
 
     let session_cookie = state.session_service.create_session_cookie(&session.id);
-    let updated_jar = jar.add(session_cookie);
+    let updated_jar = private_jar.add(session_cookie);
 
     Ok((updated_jar, Redirect::to("/")))
 }
