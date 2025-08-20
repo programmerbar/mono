@@ -1,3 +1,4 @@
+pub mod auth;
 pub mod claimed_credit;
 pub mod contact_submission;
 pub mod event;

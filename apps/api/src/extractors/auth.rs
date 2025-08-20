@@ -1,42 +1,40 @@
-use axum::{
-    extract::FromRequestParts,
-    http::{StatusCode, request::Parts},
+use axum::{extract::FromRequestParts, http::request::Parts};
+
+use crate::{
+    errors::ApiError,
+    extractors::utils::extract_session_cookie,
+    models::auth::{AuthorizedBoardMember, AuthorizedMember},
+    state::AppState,
 };
 
-use crate::state::AppState;
-
-pub struct User;
-
-impl FromRequestParts<AppState> for User {
-    type Rejection = StatusCode;
+impl FromRequestParts<AppState> for AuthorizedMember {
+    type Rejection = ApiError;
 
     async fn from_request_parts(
         parts: &mut Parts,
-        _state: &AppState,
+        state: &AppState,
     ) -> Result<Self, Self::Rejection> {
-        if let Some(auth) = parts.headers.get("authorization") {
-            if auth == "Bearer secret-token" {
-                return Ok(User);
-            }
-        }
-        Err(StatusCode::UNAUTHORIZED)
+        let session_id = extract_session_cookie(parts)?;
+        let (session, user) = state.auth_service.validate_session(&session_id).await?;
+
+        Ok(AuthorizedMember { session, user })
     }
 }
 
-pub struct BoardUser;
-
-impl FromRequestParts<AppState> for BoardUser {
-    type Rejection = StatusCode;
+impl FromRequestParts<AppState> for AuthorizedBoardMember {
+    type Rejection = ApiError;
 
     async fn from_request_parts(
         parts: &mut Parts,
-        _state: &AppState,
+        state: &AppState,
     ) -> Result<Self, Self::Rejection> {
-        if let Some(auth) = parts.headers.get("authorization") {
-            if auth == "Bearer secret-token" {
-                return Ok(BoardUser);
-            }
+        let session_id = extract_session_cookie(parts)?;
+        let (session, user) = state.auth_service.validate_session(&session_id).await?;
+
+        if !user.is_board_member() {
+            return Err(ApiError::Forbidden);
         }
-        Err(StatusCode::UNAUTHORIZED)
+
+        Ok(AuthorizedBoardMember { session, user })
     }
 }
