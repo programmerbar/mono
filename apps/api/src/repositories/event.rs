@@ -1,4 +1,4 @@
-use crate::{dto::event::EventWithShifts, models::event::Event};
+use crate::{dto::EventWithShifts, models::event::Event};
 use sqlx::{FromRow, PgPool, query, query_as};
 use std::collections::HashMap;
 
@@ -109,14 +109,14 @@ impl EventRepository {
                     if let (Some(user_id), Some(user_name), Some(user_email)) =
                         (row.user_id, row.user_name, row.user_email)
                     {
-                        shift.users.push(crate::dto::event::User {
+                        shift.users.push(crate::dto::User {
                             id: user_id,
                             name: user_name,
                             email: user_email,
                         });
                     }
                 } else {
-                    let mut new_shift = crate::dto::event::Shift {
+                    let mut new_shift = crate::dto::Shift {
                         id: shift_id,
                         start_at: row.shift_start_at.unwrap(),
                         end_at: row.shift_end_at.unwrap(),
@@ -126,7 +126,7 @@ impl EventRepository {
                     if let (Some(user_id), Some(user_name), Some(user_email)) =
                         (row.user_id, row.user_name, row.user_email)
                     {
-                        new_shift.users.push(crate::dto::event::User {
+                        new_shift.users.push(crate::dto::User {
                             id: user_id,
                             name: user_name,
                             email: user_email,

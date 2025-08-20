@@ -18,6 +18,22 @@ pub struct CallbackParams {
     state: String,
 }
 
+/// Initiate OAuth authentication with Feide.
+/// 
+/// Redirects the user to Feide (Norwegian education federation) for authentication.
+/// This is the first step in the OAuth flow. After successful authentication,
+/// the user will be redirected back to the callback endpoint.
+/// 
+/// Sets a secure state cookie to prevent CSRF attacks during the OAuth flow.
+#[utoipa::path(
+    get,
+    path = "/auth/feide",
+    responses(
+        (status = 302, description = "Redirect to Feide OAuth"),
+        (status = 500, description = "Internal server error")
+    ),
+    tag = "Authentication"
+)]
 pub async fn feide_auth(
     State(state): State<AppState>,
     jar: CookieJar,
@@ -40,6 +56,33 @@ pub async fn feide_auth(
     Ok((jar, Redirect::to(&auth_url)))
 }
 
+/// Handle OAuth callback from Feide authentication.
+/// 
+/// This endpoint receives the authorization code from Feide after successful authentication.
+/// It validates the state parameter, exchanges the code for tokens, retrieves user information,
+/// and either creates a new user account (if invited) or logs in an existing user.
+/// 
+/// # Parameters
+/// * `code` - Authorization code from Feide OAuth
+/// * `state` - State parameter for CSRF protection
+/// 
+/// # User Creation
+/// New users can only be created if they have a valid invitation in the system.
+/// The invitation is matched by email address and deleted after successful account creation.
+#[utoipa::path(
+    get,
+    path = "/auth/feide/callback",
+    params(
+        ("code" = String, Query, description = "OAuth authorization code"),
+        ("state" = String, Query, description = "OAuth state parameter")
+    ),
+    responses(
+        (status = 302, description = "Redirect after successful authentication"),
+        (status = 400, description = "Invalid state or missing invitation"),
+        (status = 500, description = "Internal server error")
+    ),
+    tag = "Authentication"
+)]
 pub async fn feide_callback(
     State(state): State<AppState>,
     Query(params): Query<CallbackParams>,
@@ -142,6 +185,27 @@ pub async fn feide_callback(
     Ok((updated_jar, Redirect::to("/")))
 }
 
+/// Log out the authenticated user.
+/// 
+/// Terminates the user's current session by deleting it from the database
+/// and clearing the session cookie. After logout, the user will need to
+/// authenticate again to access protected endpoints.
+/// 
+/// # Authentication
+/// Requires a valid session token.
+#[utoipa::path(
+    post,
+    path = "/auth/logout",
+    responses(
+        (status = 200, description = "Successfully logged out"),
+        (status = 401, description = "Unauthorized"),
+        (status = 500, description = "Internal server error")
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = "Authentication"
+)]
 pub async fn logout(
     State(state): State<AppState>,
     jar: PrivateCookieJar,

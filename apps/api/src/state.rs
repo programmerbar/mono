@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use axum::extract::FromRef;
 use axum_extra::extract::cookie::Key;
+use redis::Client as RedisClient;
 use s3::{Bucket, Region, creds::Credentials};
 
 use crate::{
@@ -16,7 +17,7 @@ use crate::{
         session::SessionRepository, shift::ShiftRepository, user::UserRepository,
         user_shift::UserShiftRepository, users_group::UsersGroupRepository,
     },
-    services::{auth::AuthService, session::SessionService},
+    services::{auth::AuthService, session::SessionService, status::StatusService},
 };
 
 #[derive(Clone)]
@@ -25,6 +26,7 @@ pub struct AppState {
     pub config: Config,
     pub key: Key,
     pub bucket: Arc<Box<Bucket>>,
+    pub redis: Arc<RedisClient>,
 
     // Repositories
     pub claimed_credit_repo: Arc<ClaimedCreditRepository>,
@@ -47,6 +49,7 @@ pub struct AppState {
     // Services
     pub auth_service: Arc<AuthService>,
     pub session_service: Arc<SessionService>,
+    pub status_service: Arc<StatusService>,
 
     // Providers
     pub feide_provider: Arc<FeideProvider>,
@@ -86,6 +89,19 @@ impl AppState {
 
         let bucket = Arc::new(Bucket::new(bucket_name, region, credentials).unwrap());
 
+        // Initialize Redis client
+        let redis = Arc::new(
+            RedisClient::open(config.redis_url.as_str()).expect("Failed to create Redis client"),
+        );
+
+        // Test Redis connection
+        let mut conn = redis.get_connection().expect("Failed to connect to Redis");
+        redis::cmd("PING")
+            .query::<String>(&mut conn)
+            .expect("Failed to ping Redis");
+
+        tracing::info!("Connected to Redis at {}", config.redis_url);
+
         let claimed_credit_repo = Arc::new(ClaimedCreditRepository::new(pool.clone()));
         let contact_submission_repo = Arc::new(ContactSubmissionRepository::new(pool.clone()));
         let event_repo = Arc::new(EventRepository::new(pool.clone()));
@@ -111,6 +127,8 @@ impl AppState {
 
         let session_service = Arc::new(SessionService::new(SessionRepository::new(pool.clone())));
 
+        let status_service = Arc::new(StatusService::new(redis.clone()));
+
         let feide_provider = Arc::new(FeideProvider::new(
             config.feide_client_id.clone(),
             config.feide_client_secret.clone(),
@@ -122,6 +140,7 @@ impl AppState {
             config,
             key,
             bucket,
+            redis,
 
             // Repositories
             claimed_credit_repo,
@@ -144,6 +163,7 @@ impl AppState {
             // Services
             auth_service,
             session_service,
+            status_service,
 
             // Providers
             feide_provider,

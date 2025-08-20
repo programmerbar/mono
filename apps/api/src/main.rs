@@ -1,9 +1,10 @@
-use axum::{
-    Router,
-    routing::{get, post},
-};
 use tower_http::{cors::CorsLayer, normalize_path::NormalizePathLayer, trace::TraceLayer};
 use tracing_subscriber::{self, layer::SubscriberExt, util::SubscriberInitExt};
+use utoipa::{
+    Modify, OpenApi,
+    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
+};
+use utoipa_axum::{router::OpenApiRouter, routes};
 use utoipa_swagger_ui::SwaggerUi;
 
 use crate::{config::Config, state::AppState};
@@ -18,6 +19,35 @@ mod providers;
 mod repositories;
 mod services;
 mod state;
+
+#[derive(OpenApi)]
+#[openapi(
+    modifiers(&SecurityAddon),
+    tags(
+        (name = "General", description = "General API endpoints"),
+        (name = "Health", description = "Health check endpoints"),
+        (name = "Products", description = "Product management"),
+        (name = "Events", description = "Event and shift management"),
+        (name = "Authentication", description = "User authentication via Feide"),
+        (name = "Profile", description = "User profile management"),
+        (name = "Images", description = "Image upload and retrieval"),
+        (name = "Status", description = "Status of the bar")
+    )
+)]
+struct ApiDoc;
+
+struct SecurityAddon;
+
+impl Modify for SecurityAddon {
+    fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
+        if let Some(components) = openapi.components.as_mut() {
+            components.add_security_scheme(
+                "session",
+                SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("session_token"))),
+            )
+        }
+    }
+}
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -39,22 +69,32 @@ async fn main() -> anyhow::Result<()> {
     let config = Config::from_env();
     let state = AppState::from_config(config.clone()).await;
 
-    let app = Router::new()
-        // Routes
-        .route("/", get(handlers::root::root))
-        .route("/health", get(handlers::health::health))
-        .route("/events", get(handlers::event::all_events))
-        .route("/products", get(handlers::products::all_products))
-        .route("/products", post(handlers::products::create_product))
-        .route("/products/{id}", get(handlers::products::get_product_by_id))
-        .route("/auth/feide", get(handlers::auth::feide_auth))
-        .route("/auth/feide/callback", get(handlers::auth::feide_callback))
-        .route("/auth/logout", post(handlers::auth::logout))
-        .route("/profile", get(handlers::profile::get_profile))
-        .route("/images/upload", post(handlers::image::upload_image))
-        .route("/images/:id", get(handlers::image::get_image_by_id))
-        // Swagger
-        // .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
+    let (router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
+        // General endpoints
+        .routes(routes![handlers::root::root])
+        .routes(routes![handlers::health::health])
+        // Product endpoints
+        .routes(routes![handlers::products::all_products])
+        .routes(routes![handlers::products::create_product])
+        .routes(routes![handlers::products::get_product_by_id])
+        // Event endpoints
+        .routes(routes![handlers::event::all_events])
+        // Authentication endpoints
+        .routes(routes![handlers::auth::feide_auth])
+        .routes(routes![handlers::auth::feide_callback])
+        .routes(routes![handlers::auth::logout])
+        // User endpoints
+        .routes(routes![handlers::profile::get_profile])
+        // Image endpoints
+        .routes(routes![handlers::image::upload_image])
+        .routes(routes![handlers::image::get_image_by_id])
+        // Status endpoints
+        .routes(routes![handlers::status::status])
+        .routes(routes![handlers::status::set_status])
+        .split_for_parts();
+
+    let app = router
+        .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", api))
         // Middleware / Layers
         .layer(CorsLayer::permissive())
         .layer(TraceLayer::new_for_http())

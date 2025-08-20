@@ -8,6 +8,38 @@ use chrono::Utc;
 
 use crate::{dto, errors::ApiError, models::auth::AuthorizedMember, state::AppState};
 
+/// Upload an image file to the server.
+/// 
+/// Accepts multipart form data with an image file and uploads it to S3-compatible storage.
+/// The uploaded image is validated for format and size, then stored with a unique filename.
+/// Metadata about the image is saved to the database for future reference.
+/// 
+/// # Supported Formats
+/// - JPEG (.jpg)
+/// - PNG (.png) 
+/// - GIF (.gif)
+/// - WebP (.webp)
+/// 
+/// # Authentication
+/// Requires a valid session token to upload images.
+/// 
+/// # Form Data
+/// Must include a field named "image" containing the image file.
+#[utoipa::path(
+    post,
+    path = "/images/upload",
+    request_body(content = String, description = "Multipart form data with image field", content_type = "multipart/form-data"),
+    responses(
+        (status = 200, description = "Image uploaded successfully", body = dto::ImageResponse),
+        (status = 400, description = "Invalid image or missing image field"),
+        (status = 401, description = "Unauthorized"),
+        (status = 500, description = "Internal server error")
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = "Images"
+)]
 pub async fn upload_image(
     State(state): State<AppState>,
     _auth: AuthorizedMember,
@@ -87,6 +119,33 @@ pub async fn upload_image(
     }))
 }
 
+/// Retrieve an image file by its ID.
+/// 
+/// Serves the actual image file data from S3-compatible storage. Returns the image
+/// with appropriate headers including content type, caching directives, and metadata.
+/// This endpoint is public and does not require authentication for viewing images.
+/// 
+/// # Parameters
+/// * `id` - The unique identifier of the image to retrieve
+/// 
+/// # Response Headers
+/// - Content-Type: Matches the original image format
+/// - Cache-Control: Configured for efficient caching
+/// - ETag: For conditional requests
+/// - Last-Modified: When the image was uploaded
+#[utoipa::path(
+    get,
+    path = "/images/{id}",
+    params(
+        ("id" = String, Path, description = "Image ID")
+    ),
+    responses(
+        (status = 200, description = "Image file", content_type = "image/*"),
+        (status = 404, description = "Image not found"),
+        (status = 500, description = "Internal server error")
+    ),
+    tag = "Images"
+)]
 pub async fn get_image_by_id(
     State(state): State<AppState>,
     Path(id): Path<String>,

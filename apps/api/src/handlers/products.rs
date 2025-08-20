@@ -4,41 +4,104 @@ use axum::{
 };
 
 use crate::{
-    dto::CreateProductJson,
+    dto::{self, CreateProductJson, FullProduct},
     errors::ApiError,
     models::{auth::AuthorizedBoardMember, product::Product},
     state::AppState,
 };
 
-pub async fn all_products(State(state): State<AppState>) -> Json<Vec<Product>> {
-    let products = state.product_repo.list().await.unwrap_or_else(|_| vec![]);
+/// Get all products available in the bar.
+/// 
+/// Returns a complete list of all products including beers, beverages, and other items
+/// available for purchase. This endpoint is public and does not require authentication.
+/// Each product includes pricing information, availability status, and metadata.
+#[utoipa::path(
+    get,
+    path = "/products",
+    responses(
+        (status = 200, description = "List of all products", body = Vec<dto::FullProduct>)
+    ),
+    tag = "Products"
+)]
+pub async fn all_products(State(state): State<AppState>) -> Json<Vec<dto::FullProduct>> {
+    let products = state
+        .product_repo
+        .list()
+        .await
+        .unwrap_or_else(|_| vec![])
+        .into_iter()
+        .map(FullProduct::from)
+        .collect::<Vec<_>>();
 
     Json(products)
 }
 
+/// Get a specific product by its ID.
+/// 
+/// Retrieves detailed information about a single product including its pricing,
+/// availability, alcohol content, and other metadata. This endpoint is public
+/// and does not require authentication.
+/// 
+/// # Parameters
+/// * `id` - The unique identifier of the product to retrieve
+#[utoipa::path(
+    get,
+    path = "/products/{id}",
+    params(
+        ("id" = String, Path, description = "Product ID")
+    ),
+    responses(
+        (status = 200, description = "Product found", body = dto::FullProduct),
+        (status = 404, description = "Product not found"),
+        (status = 500, description = "Internal server error")
+    ),
+    tag = "Products"
+)]
 pub async fn get_product_by_id(
     State(state): State<AppState>,
     Path(id): Path<String>,
-) -> Result<Json<Product>, ApiError> {
+) -> Result<Json<dto::FullProduct>, ApiError> {
     let product = state
         .product_repo
         .get_by_id(&id)
         .await
-        .map_err(|_| ApiError::InternalServerError)?;
+        .map_err(|_| ApiError::InternalServerError)?
+        .ok_or_else(|| ApiError::NotFound(format!("Product with id '{id}' not found")))?
+        .into();
 
-    match product {
-        Some(product) => Ok(Json(product)),
-        None => Err(ApiError::NotFound(format!(
-            "Product with id '{id}' not found"
-        ))),
-    }
+    Ok(Json(product))
 }
 
+/// Create a new product in the bar inventory.
+/// 
+/// Adds a new product to the bar's inventory system. This endpoint is restricted to
+/// board members only as it involves inventory management and pricing decisions.
+/// The created product will be immediately available for purchase.
+/// 
+/// # Authentication
+/// Requires board member privileges (role: "board").
+/// 
+/// # Request Body
+/// Must include all required product information including name, pricing, and metadata.
+#[utoipa::path(
+    post,
+    path = "/products",
+    request_body = CreateProductJson,
+    responses(
+        (status = 201, description = "Product created", body = dto::FullProduct),
+        (status = 401, description = "Unauthorized"),
+        (status = 500, description = "Internal server error")
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = "Products"
+)]
 pub async fn create_product(
     State(state): State<AppState>,
     _auth: AuthorizedBoardMember,
     Json(product): Json<CreateProductJson>,
-) -> Result<Json<Product>, ApiError> {
+) -> Result<Json<dto::FullProduct>, ApiError> {
     let new_product = Product {
         id: uuid::Uuid::new_v4().to_string(),
         name: product.name,
@@ -58,11 +121,11 @@ pub async fn create_product(
         updated_at: chrono::Utc::now().to_rfc3339(),
     };
 
-    state
+    let created_product = state
         .product_repo
         .create(&new_product)
         .await
         .map_err(|_| ApiError::InternalServerError)?;
 
-    Ok(Json(new_product))
+    Ok(Json(created_product.into()))
 }

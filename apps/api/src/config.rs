@@ -13,6 +13,7 @@ pub struct Config {
     pub s3_secret_key: String,
     pub s3_region: String,
     pub s3_bucket: String,
+    pub redis_url: String,
 }
 
 impl Config {
@@ -54,6 +55,9 @@ impl Config {
         let s3_bucket = std::env::var("S3_BUCKET")
             .expect("Expected S3_BUCKET environment variable to be set");
 
+        let redis_url = std::env::var("REDIS_URL")
+            .unwrap_or_else(|_| "redis://localhost:6379".to_string());
+
         Config {
             database_url,
             server_port,
@@ -66,6 +70,7 @@ impl Config {
             s3_secret_key,
             s3_region,
             s3_bucket,
+            redis_url,
         }
     }
 }
