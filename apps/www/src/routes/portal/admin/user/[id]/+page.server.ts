@@ -120,15 +120,17 @@ export const actions: Actions = {
 
 		try {
 			const trainingData = JSON.parse(trainingDataJson);
-			
-			const isComplete = trainingData && trainingData.every((item: any) => item.completed === true);
-			
+
+			const isComplete =
+				trainingData &&
+				trainingData.every((item: { completed: boolean }) => item.completed === true);
+
 			if (!isComplete) {
 				return fail(400, { error: 'All training items must be completed' });
 			}
 
 			const updatedUser = await locals.userService.updateTrainingStatus(userId, true);
-			
+
 			if (!updatedUser) {
 				return fail(404, { error: 'User not found' });
 			}

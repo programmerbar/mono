@@ -68,9 +68,9 @@
 		</div>
 	</div>
 
-	<div class="block sm:hidden space-y-3">
+	<div class="block space-y-3 sm:hidden">
 		{#each filteredUsers as user (user.id)}
-			<div class="border border-gray rounded-lg bg-background p-4 shadow-sm">
+			<div class="border-gray rounded-lg border bg-background p-4 shadow-sm">
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
 						<div class="h-10 w-10 flex-shrink-0">
@@ -81,8 +81,10 @@
 							</div>
 						</div>
 						<div class="min-w-0 flex-1">
-							<div class="text-sm font-medium text-gray-900 truncate">{user.name}</div>
-							<div class="text-xs text-gray-500 truncate max-w-32">{user.altEmail || user.email}</div>
+							<div class="truncate text-sm font-medium text-gray-900">{user.name}</div>
+							<div class="max-w-32 truncate text-xs text-gray-500">
+								{user.altEmail || user.email}
+							</div>
 						</div>
 					</div>
 					<div class="flex flex-col items-end gap-2">
@@ -105,7 +107,7 @@
 			</div>
 		{/each}
 		{#if filteredUsers.length === 0}
-			<div class="border border-gray-200 rounded-lg bg-background p-8 text-center">
+			<div class="rounded-lg border border-gray-200 bg-background p-8 text-center">
 				<div class="flex flex-col items-center gap-2">
 					<div class="text-4xl">👤</div>
 					<div class="text-sm text-gray-500">Ingen brukere funnet</div>
@@ -117,7 +119,9 @@
 		{/if}
 	</div>
 
-	<div class="hidden sm:block border-gray overflow-hidden rounded-lg border bg-background shadow-lg">
+	<div
+		class="border-gray hidden overflow-hidden rounded-lg border bg-background shadow-lg sm:block"
+	>
 		<div class="overflow-x-auto">
 			<table class="w-full">
 				<thead class="border-gray border-b bg-gray-200">

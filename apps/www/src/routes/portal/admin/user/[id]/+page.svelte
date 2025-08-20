@@ -70,7 +70,7 @@
 		← Tilbake til admin page
 	</a>
 
-	<div class="rounded-lg border border-gray bg-background p-4 sm:p-6 shadow-sm">
+	<div class="border-gray rounded-lg border bg-background p-4 shadow-sm sm:p-6">
 		<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 			<div class="flex items-center gap-4">
 				<div class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-300">
@@ -94,17 +94,9 @@
 			</div>
 			<div class="flex flex-col gap-2 sm:flex-row sm:gap-2">
 				{#if !isEditing}
-					<Button onclick={toggleEdit} intent="primary">
-						Rediger
-					</Button>
+					<Button onclick={toggleEdit} intent="primary">Rediger</Button>
 				{:else}
-					<Button 
-						onclick={toggleEdit} 
-						intent="outline" 
-						disabled={isSubmitting}
-					>
-						Avbryt
-					</Button>
+					<Button onclick={toggleEdit} intent="outline" disabled={isSubmitting}>Avbryt</Button>
 
 					<form
 						method="POST"
@@ -129,12 +121,7 @@
 						<input type="hidden" name="role" value={editForm.role} />
 						<input type="hidden" name="phone" value={editForm.phone} />
 
-						<Button 
-							type="submit" 
-							intent="primary" 
-							disabled={isSubmitting}
-							class="w-full"
-						>
+						<Button type="submit" intent="primary" disabled={isSubmitting} class="w-full">
 							{isSubmitting ? 'Lagrer...' : 'Lagre'}
 						</Button>
 					</form>
@@ -145,7 +132,7 @@
 
 	<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 		<div class="space-y-6 lg:col-span-2">
-			<div class="rounded-lg border border-gray bg-background shadow-sm">
+			<div class="border-gray rounded-lg border bg-background shadow-sm">
 				<div class="border-b border-gray-200 px-6 py-4 shadow-sm">
 					<h3 class="text-lg font-semibold text-gray-900">Brukerinformasjon</h3>
 				</div>
@@ -249,7 +236,7 @@
 				</div>
 			</div>
 
-			<div class="rounded-lg border border-gray bg-background shadow-sm">
+			<div class="border-gray rounded-lg border bg-background shadow-sm">
 				<div class="border-b border-gray-200 px-6 py-4 shadow-sm">
 					<h3 class="text-lg font-semibold text-gray-900">Verv stats</h3>
 				</div>
@@ -288,7 +275,7 @@
 		</div>
 
 		<div class="space-y-6">
-			<div class="rounded-lg border border-gray bg-background shadow-sm">
+			<div class="border-gray rounded-lg border bg-background shadow-sm">
 				<div class="border-b border-gray-200 px-6 py-4 shadow-sm">
 					<h3 class="text-lg font-semibold text-gray-900">Statistikk</h3>
 				</div>
@@ -310,7 +297,7 @@
 				</div>
 			</div>
 
-			<div class="rounded-lg border border-gray bg-background shadow-sm">
+			<div class="border-gray rounded-lg border bg-background shadow-sm">
 				<div class="border-b border-gray-200 px-6 py-4 shadow-sm">
 					<h3 class="text-lg font-semibold text-gray-900">Handlinger</h3>
 				</div>
@@ -328,7 +315,9 @@
 						🍺 Legg til / Fjern bonger
 					</button>
 					<button
-						class="w-full rounded-md px-4 py-2 text-left text-sm transition-colors hover:bg-gray-50 {userHasCompletedTraining ? 'text-green-600' : 'text-gray-700'}"
+						class="w-full rounded-md px-4 py-2 text-left text-sm transition-colors hover:bg-gray-50 {userHasCompletedTraining
+							? 'text-green-600'
+							: 'text-gray-700'}"
 						onclick={() => (showTrainingChecklist = true)}
 					>
 						{#if userHasCompletedTraining}
@@ -352,7 +341,7 @@
 </div>
 
 <!-- Training Checklist Component -->
-<TrainingChecklist 
+<TrainingChecklist
 	userId={user.id}
 	userName={user.name}
 	isOpen={showTrainingChecklist}

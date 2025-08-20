@@ -80,12 +80,12 @@ export class ReferralService {
 	async awardReferralCredit(referrerId: string) {
 		const stats = await this.getReferralStats(referrerId);
 		const completedReferrals = stats.completedReferrals;
-		
+
 		const earnedBeers = Math.floor(completedReferrals / 2);
-		
-		const previousCompletedReferrals = completedReferrals - 1; 
+
+		const previousCompletedReferrals = completedReferrals - 1;
 		const previousEarnedBeers = Math.floor(previousCompletedReferrals / 2);
-		
+
 		if (earnedBeers > previousEarnedBeers) {
 			const user = await this.#db.query.users.findFirst({
 				where: (row, { eq }) => eq(row.id, referrerId)
@@ -103,8 +103,8 @@ export class ReferralService {
 
 			return updated;
 		}
-		
-		return null; 
+
+		return null;
 	}
 
 	async getReferralStats(userId: string) {
