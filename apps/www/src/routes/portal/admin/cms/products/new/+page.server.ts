@@ -91,14 +91,11 @@ export const actions: Actions = {
 				},
 				productTypeIds
 			);
-
-			throw redirect(302, '/portal/admin/cms/products');
 		} catch (error) {
-			if (error instanceof Error && error.message.includes('redirect')) {
-				throw error;
-			}
 			console.error('Error creating product:', error);
 			return fail(500, { message: 'Kunne ikke opprette produkt' });
 		}
+
+		throw redirect(302, '/portal/admin/cms/products');
 	}
 };

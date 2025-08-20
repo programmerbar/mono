@@ -1,4 +1,4 @@
-import { error, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
@@ -27,7 +27,7 @@ export const actions: Actions = {
 		const imageId = formData.get('imageId') as string | null;
 
 		if (!name) {
-			return { error: 'Name is required' };
+			return fail(400, { error: 'Name is required' });
 		}
 
 		try {
@@ -35,11 +35,11 @@ export const actions: Actions = {
 				name,
 				imageId: imageId || null
 			});
-
-			throw redirect(302, '/portal/admin/cms/producers');
 		} catch (err) {
 			console.error('Error updating producer:', err);
-			return { error: 'Failed to update producer' };
+			return fail(400, { error: 'Failed to update producer' });
 		}
+
+		throw redirect(302, '/portal/admin/cms/producers');
 	}
 };

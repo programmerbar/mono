@@ -37,13 +37,11 @@ export const actions: Actions = {
 				name: name.trim(),
 				imageId: imageId?.trim() || null
 			});
-			throw redirect(302, '/portal/admin/cms/producers');
 		} catch (error) {
-			if (error instanceof Error && error.message.includes('redirect')) {
-				throw error;
-			}
 			console.error('Error creating producer:', error);
 			return fail(500, { message: 'Kunne ikke opprette produsent' });
 		}
+
+		throw redirect(302, '/portal/admin/cms/producers');
 	}
 };

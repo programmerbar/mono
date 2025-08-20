@@ -1,4 +1,4 @@
-import { error, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
@@ -49,7 +49,7 @@ export const actions: Actions = {
 		const isSoldOut = formData.get('isSoldOut') === 'true';
 
 		if (!name || !ordinaryPrice || !studentPrice || !internalPrice) {
-			return { error: 'Name and prices are required' };
+			return fail(400, { error: 'Name and prices are required' });
 		}
 
 		try {
@@ -72,11 +72,11 @@ export const actions: Actions = {
 				},
 				productTypeIds
 			);
-
-			throw redirect(302, '/portal/admin/cms/products');
 		} catch (err) {
 			console.error('Error updating product:', err);
-			return { error: 'Failed to update product' };
+			return fail(400, { error: 'Failed to update product' });
 		}
+
+		throw redirect(302, '/portal/admin/cms/products');
 	}
 };

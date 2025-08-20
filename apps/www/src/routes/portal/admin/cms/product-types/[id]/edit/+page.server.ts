@@ -1,4 +1,4 @@
-import { error, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
@@ -26,18 +26,18 @@ export const actions: Actions = {
 		const title = formData.get('title') as string;
 
 		if (!title) {
-			return { error: 'Title is required' };
+			return fail(400, { error: 'Title is required' });
 		}
 
 		try {
 			await locals.productTypeService.update(params.id, {
 				title
 			});
-
-			throw redirect(302, '/portal/admin/cms/product-types');
 		} catch (err) {
 			console.error('Error updating product type:', err);
-			return { error: 'Failed to update product type' };
+			return fail(400, { error: 'Failed to update product type' });
 		}
+
+		throw redirect(302, '/portal/admin/cms/product-types');
 	}
 };

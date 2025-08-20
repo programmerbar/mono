@@ -24,13 +24,11 @@ export const actions: Actions = {
 
 		try {
 			await locals.productTypeService.create({ title: title.trim() });
-			throw redirect(302, '/portal/admin/cms/product-types');
 		} catch (error) {
-			if (error instanceof Error && error.message.includes('redirect')) {
-				throw error;
-			}
 			console.error('Error creating product type:', error);
 			return fail(500, { message: 'Kunne ikke opprette produkttype' });
 		}
+
+		throw redirect(302, '/portal/admin/cms/product-types');
 	}
 };
