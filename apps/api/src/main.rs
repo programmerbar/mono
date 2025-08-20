@@ -1,41 +1,20 @@
-use axum::{Router, response::Json, routing::get};
-use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use axum::{Router, routing::get};
 use tower_http::{cors::CorsLayer, trace::TraceLayer};
 use tracing_subscriber::{self, layer::SubscriberExt, util::SubscriberInitExt};
 
-#[derive(Serialize, Deserialize)]
-struct HealthResponse {
-    status: String,
-    message: String,
-}
+use crate::{config::Config, state::AppState};
 
-#[derive(Serialize, Deserialize)]
-struct ApiResponse<T> {
-    success: bool,
-    data: Option<T>,
-}
-
-async fn health() -> Json<HealthResponse> {
-    Json(HealthResponse {
-        status: "ok".to_string(),
-        message: "Programmerbar API is running".to_string(),
-    })
-}
-
-async fn root() -> Json<ApiResponse<HashMap<String, String>>> {
-    let mut info = HashMap::new();
-    info.insert("name".to_string(), "Programmerbar API".to_string());
-    info.insert("version".to_string(), "0.1.0".to_string());
-
-    Json(ApiResponse {
-        success: true,
-        data: Some(info),
-    })
-}
+mod config;
+mod extractors;
+mod handlers;
+mod models;
+mod repositories;
+mod state;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    dotenvy::dotenv().ok();
+
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| {
@@ -49,13 +28,18 @@ async fn main() -> anyhow::Result<()> {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    let app = Router::new()
-        .route("/", get(root))
-        .route("/health", get(health))
-        .layer(CorsLayer::permissive())
-        .layer(TraceLayer::new_for_http());
+    let config = Config::from_env();
+    let state = AppState::from_config(config.clone()).await;
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await?;
+    let app = Router::new()
+        .layer(CorsLayer::permissive())
+        .layer(TraceLayer::new_for_http())
+        .route("/", get(handlers::root::root))
+        .route("/health", get(handlers::health::health))
+        .route("/products", get(handlers::products::all_products))
+        .with_state(state);
+
+    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", config.server_port)).await?;
 
     tracing::info!("🚀 Programmerbar API server starting on http://0.0.0.0:8000");
 

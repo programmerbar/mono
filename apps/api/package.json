@@ -10,6 +10,8 @@
     "lint": "cargo clippy -- -D warnings",
     "format": "cargo fmt",
     "format:check": "cargo fmt --check",
-    "clean": "cargo clean"
+    "clean": "cargo clean",
+    "add-migration": "sqlx migrate add",
+    "run-migrations": "sqlx migrate run"
   }
 }

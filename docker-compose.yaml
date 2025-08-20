@@ -1,10 +1,11 @@
-version: '3.8'
 services:
   postgres:
     image: postgres
     restart: always
     environment:
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=programmerbar
     ports:
       - '5432:5432'
     volumes:
@@ -14,7 +15,7 @@ services:
     restart: always
     ports:
       - '6379:6379'
-minio:
+  minio:
     image: quay.io/minio/minio
     restart: always
     environment:
