@@ -7,8 +7,17 @@ export const load: PageServerLoad = async ({ locals }) => {
 		throw redirect(307, '/login');
 	}
 	const user = await locals.userService.findById(locals.user.id);
+	const userShifts = await locals.shiftService.findCompletedShiftsByUserId(locals.user.id);
+	const unclaimedBeers = await locals.beerService.getTotalAvailableBeers(locals.user.id);
+	const referrals = await locals.referralService.getReferralStats(locals.user.id);
+	const shifts = await locals.shiftService.findUpcomingShiftsByUserId(locals.user.id);
+
 	return {
-		user
+		user,
+		timesVolunteered: userShifts.length,
+		unclaimedBeers,
+		referrals,
+		shifts
 	};
 };
 
@@ -17,29 +26,37 @@ export const actions: Actions = {
 		if (!locals.user) {
 			throw redirect(307, '/login');
 		}
+		const userId = locals.user.id;
 		const data = await request.formData();
 		const altEmail = data.get('altEmail') as string;
+		const phone = data.get('phone') as string;
 
-		if (!isValidEmail(altEmail)) {
-			return fail(400, {
-				success: false,
-				message: 'Ugyldig e-postadresse',
-				altEmail
-			});
+		if (altEmail) {
+			if (!isValidEmail(altEmail)) {
+				return fail(400, {
+					success: false,
+					message: 'Ugyldig e-postadresse',
+					altEmail
+				});
+			}
+
+			const mail = await locals.userService.updateAltEmail(userId, altEmail);
+
+			if (!mail) {
+				return fail(500, {
+					success: false,
+					message: 'Kunne ikke oppdatere e-postadresse',
+					altEmail
+				});
+			}
 		}
 
-		const success = await locals.userService.updateAltEmail(locals.user.id, altEmail);
-		if (!success) {
-			return fail(500, {
-				success: false,
-				message: 'Kunne ikke oppdatere e-postadresse',
-				altEmail
-			});
+		if (phone) {
+			await locals.userService.updatePhone(userId, phone);
 		}
-
 		return {
 			success: true,
-			message: 'E-postadresse er oppdatert!'
+			message: 'Bruker er oppdatert!'
 		};
 	}
 };

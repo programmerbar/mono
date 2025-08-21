@@ -47,6 +47,24 @@ export class UserService {
 			.then((rows) => rows[0]);
 	}
 
+	async updatePhone(userId: string, phone: string) {
+		return await this.#db
+			.update(users)
+			.set({ phone })
+			.where(eq(users.id, userId))
+			.returning()
+			.then((rows) => rows[0]);
+	}
+
+	async updateTrainingStatus(userId: string, isTrained: boolean) {
+		return await this.#db
+			.update(users)
+			.set({ isTrained })
+			.where(eq(users.id, userId))
+			.returning()
+			.then((rows) => rows[0]);
+	}
+
 	async findById(userId: string) {
 		const user = await this.#db
 			.select()

@@ -24,26 +24,27 @@
 	{/if}
 
 	{#if data.pendingApplications.length === 0}
-		<div class="rounded-md bg-gray-50 p-8 text-center text-gray-600">
+		<div class="rounded-2xl border-2 bg-gray-50 p-8 text-center text-gray-600">
 			<p>Ingen ventende søknader</p>
 		</div>
 	{:else}
 		<div class="grid gap-4">
 			{#each data.pendingApplications as application (application.id)}
-				<div class="rounded-lg border bg-white p-6 shadow-sm">
-					<div class="flex items-center justify-between">
+				<div class="bg-background rounded-2xl border-2 p-4 shadow-lg sm:p-6">
+					<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div class="space-y-2">
 							<h3 class="text-lg font-semibold">{application.name}</h3>
-							<p class="text-gray-600">{application.email}</p>
-							<p class="text-sm text-gray-500">
+							<p class="text-sm text-gray-600 sm:text-base">{application.email}</p>
+							<p class="text-xs text-gray-500 sm:text-sm">
 								Søkte: {normalDate(application.createdAt)}
 							</p>
 						</div>
 
-						<div class="flex gap-2">
+						<div class="flex gap-2 sm:flex-shrink-0">
 							<form
 								method="POST"
 								action="?/approve"
+								class="flex-1 sm:flex-initial"
 								use:enhance={() => {
 									processingId = application.id;
 									return async ({ update }) => {
@@ -61,6 +62,7 @@
 									type="submit"
 									intent="primary"
 									size="sm"
+									class="w-full sm:w-auto"
 									disabled={processingId === application.id}
 								>
 									{processingId === application.id ? 'Behandler...' : 'Godkjenn'}
@@ -70,6 +72,7 @@
 							<form
 								method="POST"
 								action="?/deny"
+								class="flex-1 sm:flex-initial"
 								use:enhance={() => {
 									processingId = application.id;
 									return async ({ update }) => {
@@ -86,6 +89,7 @@
 									type="submit"
 									intent="danger"
 									size="sm"
+									class="w-full sm:w-auto"
 									disabled={processingId === application.id}
 								>
 									{processingId === application.id ? 'Behandler...' : 'Avslå'}

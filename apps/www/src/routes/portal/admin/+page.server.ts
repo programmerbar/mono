@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ request, locals }) => {
+	updateRole: async ({ request, locals }) => {
 		const formData = await request.formData();
 		const userId = formData.get('userId') as string;
 		const role = formData.get('role');

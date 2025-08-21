@@ -1,75 +1,224 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
-	import UserCard from '$lib/components/cards/UserCard.svelte';
-	import UserDetailModal from '$lib/components/cards/UserDetailModal.svelte';
 	import type { User } from '$lib/db/schemas';
 	import Input from '$lib/components/ui/Input.svelte';
+	import { initials } from '$lib/utils.js';
 
 	let { data } = $props();
-
 	let search = $state('');
-	let selectedUser = $state<User | null>(null);
-	let isModalOpen = $state(false);
+	let selectedRole = $state('all');
+	let sortBy = $state('name');
+	let sortOrder = $state<'asc' | 'desc'>('asc');
 
-	let boardMembers = $derived.by(() =>
-		data.users
+	let filteredUsers = $derived.by(() => {
+		const searchTerm = search.toLowerCase();
+		return data.users
 			.filter((user: User) => {
-				return user.role === 'board' && user.name.toLowerCase().includes(search.toLowerCase());
+				const matchesSearch =
+					user.name.toLowerCase().includes(searchTerm) ||
+					(user.altEmail ?? user.email).toLowerCase().includes(searchTerm);
+				return (selectedRole === 'all' || user.role === selectedRole) && matchesSearch;
 			})
-			.sort((a, b) => a.name.localeCompare(b.name))
-	);
+			.sort((a, b) => {
+				const getVal = (u: User) => (sortBy === 'name' ? u.name.toLowerCase() : u.role);
+				const comp = getVal(a).localeCompare(getVal(b));
+				return sortOrder === 'asc' ? comp : -comp;
+			});
+	});
 
-	let normalMembers = $derived.by(() =>
-		data.users
-			.filter((user: User) => {
-				return user.role === 'normal' && user.name.toLowerCase().includes(search.toLowerCase());
-			})
-			.sort((a, b) => a.name.localeCompare(b.name))
-	);
-
-	function closeModal() {
-		isModalOpen = false;
-		selectedUser = null;
+	function handleSort(column: string) {
+		sortOrder = sortBy === column ? (sortOrder === 'asc' ? 'desc' : 'asc') : 'asc';
+		sortBy = column;
 	}
 </script>
 
 <svelte:head>
-	<title>Admin - User Management</title>
+	<title>Admin</title>
 </svelte:head>
 
-{#if isModalOpen && selectedUser}
-	<UserDetailModal {selectedUser} onClose={closeModal} />
-{/if}
+<div class="space-y-6">
+	<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+		<Heading>Admin side</Heading>
+		<div class="flex items-center gap-2 text-sm text-gray-600">
+			<span class="font-medium">{filteredUsers.length}</span>
+			{filteredUsers.length === 1 ? 'bruker' : 'brukere'}
+		</div>
+	</div>
 
-<section class="space-y-6">
-	<Heading>Styret</Heading>
-	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
-		{#each boardMembers as user (user.id)}
-			<li>
-				<UserCard
-					{user}
-					onSelect={() => {
-						selectedUser = user;
-						isModalOpen = true;
-					}}
+	<div class="border-gray bg-background overflow-hidden rounded-2xl border-2 shadow-lg">
+		<div class="flex flex-col gap-2 border-b-2 bg-gray-200 p-2 sm:flex-row">
+			<div class="flex-1">
+				<Input
+					class="w-full border-2"
+					type="search"
+					placeholder="Søk etter navn eller e-post..."
+					bind:value={search}
 				/>
-			</li>
-		{/each}
-	</ul>
-</section>
+			</div>
+			<div class="sm:w-48">
+				<select
+					bind:value={selectedRole}
+					class="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+				>
+					<option value="all">Alle roller</option>
+					<option value="board">Styret</option>
+					<option value="normal">Frivillige</option>
+				</select>
+			</div>
+		</div>
+	</div>
 
-<section class="mt-12 space-y-6">
-	<Heading>Frivillige</Heading>
-	<Input class="w-full" type="search" placeholder="Søk etter frivillige" bind:value={search} />
-	<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
-		{#each normalMembers as user (user.id)}
-			<UserCard
-				{user}
-				onSelect={() => {
-					selectedUser = user;
-					isModalOpen = true;
-				}}
-			/>
+	<div class="block space-y-3 sm:hidden">
+		{#each filteredUsers as user (user.id)}
+			<div class="border-gray bg-background rounded-2xl border-2 p-4 shadow-lg">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center gap-3">
+						<div class="h-10 w-10 flex-shrink-0">
+							<div class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-300">
+								<span class="text-sm font-medium text-gray-700">
+									{initials(user.name)}
+								</span>
+							</div>
+						</div>
+						<div class="min-w-0 flex-1">
+							<div class="truncate text-sm font-medium text-gray-900">{user.name}</div>
+							<div class="max-w-32 truncate text-xs text-gray-500">
+								{user.altEmail || user.email}
+							</div>
+						</div>
+					</div>
+					<div class="flex flex-col items-end gap-2">
+						<span
+							class="inline-flex rounded-full border px-2 py-1 text-xs font-semibold {user.role ===
+							'board'
+								? 'border-purple-200 bg-purple-100 text-purple-800'
+								: 'border-blue-200 bg-blue-100 text-blue-800'}"
+						>
+							{user.role === 'board' ? 'Styret' : 'Frivillig'}
+						</span>
+						<a
+							href="./admin/user/{user.id}"
+							class="text-xs font-medium text-blue-600 hover:text-blue-900"
+						>
+							Vis detaljer →
+						</a>
+					</div>
+				</div>
+			</div>
 		{/each}
-	</ul>
-</section>
+		{#if filteredUsers.length === 0}
+			<div class="bg-background rounded-2xl border-2 border-gray-200 p-8 text-center">
+				<div class="flex flex-col items-center gap-2">
+					<div class="text-4xl">👤</div>
+					<div class="text-sm text-gray-500">Ingen brukere funnet</div>
+					{#if search}
+						<div class="text-xs text-gray-400">Prøv å endre søkekriteriene</div>
+					{/if}
+				</div>
+			</div>
+		{/if}
+	</div>
+
+	<div
+		class="border-gray bg-background hidden overflow-hidden rounded-2xl border-2 shadow-lg sm:block"
+	>
+		<div class="overflow-x-auto">
+			<table class="w-full">
+				<thead class="border-gray border-b-2 bg-gray-200">
+					<tr>
+						<th class="px-6 py-3 text-left">
+							<button
+								class="flex items-center gap-1 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700"
+								onclick={() => handleSort('name')}
+							>
+								Navn
+								{#if sortBy === 'name'}
+									<span class="text-gray-400">
+										{sortOrder === 'asc' ? '↑' : '↓'}
+									</span>
+								{/if}
+							</button>
+						</th>
+						<th
+							class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+						>
+							E-post
+						</th>
+						<th class="px-6 py-3 text-left">
+							<button
+								class="flex items-center gap-1 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700"
+								onclick={() => handleSort('role')}
+							>
+								Rolle
+								{#if sortBy === 'role'}
+									<span class="text-gray-400">
+										{sortOrder === 'asc' ? '↑' : '↓'}
+									</span>
+								{/if}
+							</button>
+						</th>
+						<th
+							class="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase"
+						>
+							Handlinger
+						</th>
+					</tr>
+				</thead>
+				<tbody class="divide-y divide-gray-200">
+					{#each filteredUsers as user (user.id)}
+						<tr class="transition-colors hover:bg-gray-50">
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div class="h-8 w-8 flex-shrink-0">
+										<div class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300">
+											<span class="text-sm font-medium text-gray-700">
+												{initials(user.name)}
+											</span>
+										</div>
+									</div>
+									<div class="ml-3">
+										<div class="text-sm font-medium text-gray-900">{user.name}</div>
+									</div>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm text-gray-900">{user.altEmail || user.email}</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="inline-flex rounded-full border px-2 py-1 text-xs font-semibold {user.role ===
+									'board'
+										? 'border-purple-200 bg-purple-100 text-purple-800'
+										: 'border-blue-200 bg-blue-100 text-blue-800'}"
+								>
+									{user.role === 'board' ? 'Styret' : 'Frivillig'}
+								</span>
+							</td>
+							<td class="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
+								<a
+									href="./admin/user/{user.id}"
+									class="font-medium text-blue-600 transition-colors hover:text-blue-900"
+								>
+									Vis detaljer
+								</a>
+							</td>
+						</tr>
+					{/each}
+					{#if filteredUsers.length === 0}
+						<tr>
+							<td colspan="4" class="px-6 py-12 text-center text-gray-500">
+								<div class="flex flex-col items-center gap-2">
+									<div class="text-4xl">👤</div>
+									<div class="text-sm">Ingen brukere funnet</div>
+									{#if search}
+										<div class="text-xs text-gray-400">Prøv å endre søkekriteriene</div>
+									{/if}
+								</div>
+							</td>
+						</tr>
+					{/if}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

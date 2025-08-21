@@ -19,6 +19,7 @@ import { UserService } from '$lib/services/user.service';
 import type { Handle } from '@sveltejs/kit';
 import { Resend } from 'resend';
 import { ImageService } from '$lib/services/image.service';
+import { ReferralService } from '$lib/services/referral.service';
 import { PendingApplicationService } from '$lib/services/pending-application.service';
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -103,6 +104,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const imageService = new ImageService(R2_BUCKET, db);
 	event.locals.imageService = imageService;
+
+	const referralService = new ReferralService(db);
+	event.locals.referralService = referralService;
 
 	const pendingApplicationService = new PendingApplicationService(db);
 	event.locals.pendingApplicationService = pendingApplicationService;

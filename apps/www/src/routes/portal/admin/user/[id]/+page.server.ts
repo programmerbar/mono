@@ -1,7 +1,52 @@
+import { error } from '@sveltejs/kit';
+import type { PageServerLoad, Actions } from './$types';
 import { fail } from '@sveltejs/kit';
-import type { Actions } from './$types';
+
+export const load: PageServerLoad = async ({ params, locals }) => {
+	const userId = params.id;
+
+	if (!locals.user || locals.user.role !== 'board') {
+		throw error(401, 'Unauthorized');
+	}
+
+	if (!userId) {
+		throw error(404, 'User ID not provided');
+	}
+
+	const user = await locals.userService.findById(userId);
+	if (!user) {
+		throw error(404, 'User not found');
+	}
+
+	const userShifts = await locals.shiftService.findCompletedShiftsByUserId(userId);
+	const unclaimedBeers = await locals.beerService.getTotalAvailableBeers(userId);
+	const referrals = await locals.referralService.getReferralStats(userId);
+	const shifts = await locals.shiftService.findUpcomingShiftsByUserId(userId);
+
+	return {
+		user,
+		timesVolunteered: userShifts.length,
+		unclaimedBeers,
+		referrals,
+		shifts
+	};
+};
 
 export const actions: Actions = {
+	updateUser: async ({ params, request, locals }) => {
+		const userId = params.id;
+		const formData = await request.formData();
+		const role = formData.get('role')?.toString() as 'board' | 'normal';
+		const phone = formData.get('phone')?.toString();
+		if (phone) {
+			await locals.userService.updatePhone(userId, phone);
+		}
+		if (role) {
+			await locals.userService.updateUserRole(userId, role);
+		}
+		return { success: true };
+	},
+
 	addBeers: async ({ params, request, locals }) => {
 		const userId = params.id;
 		if (!locals.user || locals.user.role !== 'board') {
@@ -34,7 +79,6 @@ export const actions: Actions = {
 		const confirmDelete = formData.get('confirmDelete')?.toString();
 		const formUserId = formData.get('userId')?.toString();
 
-		// Use user ID from form data or fallback to params
 		const userId = formUserId || params.id;
 
 		if (!userId) {
@@ -55,7 +99,7 @@ export const actions: Actions = {
 		if (confirmDelete !== user.name) {
 			return fail(400, {
 				success: false,
-				message: "Names dosen't match"
+				message: "Names doesn't match"
 			});
 		}
 
@@ -74,6 +118,41 @@ export const actions: Actions = {
 			});
 		}
 
-		return { success: true };
+		return { success: true, message: `${user.name} er no slettet!` };
+	},
+
+	completeTraining: async ({ params, request, locals }) => {
+		const userId = params.id;
+		const formData = await request.formData();
+		const trainingDataJson = formData.get('trainingData') as string;
+
+		if (!userId) {
+			return fail(400, { error: 'User ID is required' });
+		}
+
+		if (!locals.user || locals.user.role !== 'board') {
+			return fail(401, { error: 'Unauthorized' });
+		}
+
+		if (!trainingDataJson) {
+			return fail(400, { error: 'Training data is required' });
+		}
+
+		const trainingData = JSON.parse(trainingDataJson);
+
+		const isComplete =
+			trainingData && trainingData.every((item: { completed: boolean }) => item.completed === true);
+
+		if (!isComplete) {
+			return fail(400, { error: 'All training items must be completed' });
+		}
+
+		const updatedUser = await locals.userService.updateTrainingStatus(userId, true);
+
+		if (!updatedUser) {
+			return fail(404, { error: 'User not found' });
+		}
+
+		return { success: true, trainingCompleted: true };
 	}
 };
