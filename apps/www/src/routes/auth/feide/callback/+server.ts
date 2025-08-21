@@ -26,6 +26,14 @@ export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 	const feideUser = await getFeideUser(tokens.accessToken());
 	const existingUser = await locals.userService.findByFeideId(feideUser.id);
 
+	// Check if user was deleted
+	const deletedUser = await locals.userService.findByFeideIdIncludeDeleted(feideUser.id);
+	if (deletedUser && deletedUser.isDeleted) {
+		return new Response('Du har blitt slettet fra systemet', {
+			status: 403
+		});
+	}
+
 	const from = cookies.get(COOKIE_NAME_FROM);
 	if (from === COOKIE_VALUE_BLI_FRIVILLIG) {
 		cookies.delete(COOKIE_NAME_FROM, { path: '/' });

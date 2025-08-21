@@ -11,6 +11,12 @@ export class UserService {
 
 	async findByFeideId(feideId: string) {
 		return await this.#db.query.users.findFirst({
+			where: (row, { eq, not, and }) => and(eq(row.feideId, feideId), not(row.isDeleted))
+		});
+	}
+
+	async findByFeideIdIncludeDeleted(feideId: string) {
+		return await this.#db.query.users.findFirst({
 			where: (row, { eq }) => eq(row.feideId, feideId)
 		});
 	}
