@@ -58,7 +58,7 @@
 			<div class="sm:w-48">
 				<select
 					bind:value={selectedRole}
-					class="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+					class="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
 				>
 					<option value="all">Alle roller</option>
 					<option value="board">Styret</option>
@@ -70,7 +70,7 @@
 
 	<div class="block space-y-3 sm:hidden">
 		{#each filteredUsers as user (user.id)}
-			<div class="border-gray rounded-2xl border-2 bg-background p-4 shadow-lg">
+			<div class="border-gray bg-background rounded-2xl border-2 p-4 shadow-lg">
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
 						<div class="h-10 w-10 flex-shrink-0">
@@ -107,7 +107,7 @@
 			</div>
 		{/each}
 		{#if filteredUsers.length === 0}
-			<div class="rounded-2xl border-2 border-gray-200 bg-background p-8 text-center">
+			<div class="bg-background rounded-2xl border-2 border-gray-200 p-8 text-center">
 				<div class="flex flex-col items-center gap-2">
 					<div class="text-4xl">👤</div>
 					<div class="text-sm text-gray-500">Ingen brukere funnet</div>
@@ -120,7 +120,7 @@
 	</div>
 
 	<div
-		class="border-gray hidden overflow-hidden rounded-2xl border-2 bg-background shadow-lg sm:block"
+		class="border-gray bg-background hidden overflow-hidden rounded-2xl border-2 shadow-lg sm:block"
 	>
 		<div class="overflow-x-auto">
 			<table class="w-full">
@@ -128,7 +128,7 @@
 					<tr>
 						<th class="px-6 py-3 text-left">
 							<button
-								class="flex items-center gap-1 text-xs font-medium uppercase tracking-wider text-gray-500 transition-colors hover:text-gray-700"
+								class="flex items-center gap-1 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700"
 								onclick={() => handleSort('name')}
 							>
 								Navn
@@ -140,13 +140,13 @@
 							</button>
 						</th>
 						<th
-							class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+							class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
 						>
 							E-post
 						</th>
 						<th class="px-6 py-3 text-left">
 							<button
-								class="flex items-center gap-1 text-xs font-medium uppercase tracking-wider text-gray-500 transition-colors hover:text-gray-700"
+								class="flex items-center gap-1 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700"
 								onclick={() => handleSort('role')}
 							>
 								Rolle
@@ -158,7 +158,7 @@
 							</button>
 						</th>
 						<th
-							class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500"
+							class="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase"
 						>
 							Handlinger
 						</th>
@@ -167,7 +167,7 @@
 				<tbody class="divide-y divide-gray-200">
 					{#each filteredUsers as user (user.id)}
 						<tr class="transition-colors hover:bg-gray-50">
-							<td class="whitespace-nowrap px-6 py-4">
+							<td class="px-6 py-4 whitespace-nowrap">
 								<div class="flex items-center">
 									<div class="h-8 w-8 flex-shrink-0">
 										<div class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300">
@@ -181,10 +181,10 @@
 									</div>
 								</div>
 							</td>
-							<td class="whitespace-nowrap px-6 py-4">
+							<td class="px-6 py-4 whitespace-nowrap">
 								<div class="text-sm text-gray-900">{user.altEmail || user.email}</div>
 							</td>
-							<td class="whitespace-nowrap px-6 py-4">
+							<td class="px-6 py-4 whitespace-nowrap">
 								<span
 									class="inline-flex rounded-full border px-2 py-1 text-xs font-semibold {user.role ===
 									'board'
@@ -194,7 +194,7 @@
 									{user.role === 'board' ? 'Styret' : 'Frivillig'}
 								</span>
 							</td>
-							<td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+							<td class="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
 								<a
 									href="./admin/user/{user.id}"
 									class="font-medium text-blue-600 transition-colors hover:text-blue-900"

@@ -141,8 +141,7 @@ export const actions: Actions = {
 		const trainingData = JSON.parse(trainingDataJson);
 
 		const isComplete =
-			trainingData &&
-			trainingData.every((item: { completed: boolean }) => item.completed === true);
+			trainingData && trainingData.every((item: { completed: boolean }) => item.completed === true);
 
 		if (!isComplete) {
 			return fail(400, { error: 'All training items must be completed' });

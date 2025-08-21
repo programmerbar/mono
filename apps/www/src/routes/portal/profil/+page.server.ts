@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const unclaimedBeers = await locals.beerService.getTotalAvailableBeers(locals.user.id);
 	const referrals = await locals.referralService.getReferralStats(locals.user.id);
 	const shifts = await locals.shiftService.findUpcomingShiftsByUserId(locals.user.id);
-	
+
 	return {
 		user,
 		timesVolunteered: userShifts.length,

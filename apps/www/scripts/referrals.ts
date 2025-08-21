@@ -7,7 +7,7 @@ async function main() {
 	const { db } = await setup();
 
 	const allUsers = await db.select({ id: users.id }).from(users);
-	
+
 	if (allUsers.length < 2) {
 		console.log('Need at least 2 users to create referrals. Run users.ts first.');
 		return;
@@ -15,23 +15,22 @@ async function main() {
 
 	console.log(`Found ${allUsers.length} users to create referrals between.`);
 
-	const numberOfReferrals = Math.min(25, Math.floor(allUsers.length / 2)); 
-	
+	const numberOfReferrals = Math.min(25, Math.floor(allUsers.length / 2));
+
 	const fakeReferrals = Array.from({ length: numberOfReferrals }, () => {
 		// Pick two random different users
 		const shuffledUsers = faker.helpers.shuffle([...allUsers]);
 		const referrer = shuffledUsers[0];
 		const referred = shuffledUsers[1];
-		
+
 		const status = faker.helpers.weightedArrayElement([
 			{ weight: 3, value: 'completed' as const },
 			{ weight: 2, value: 'pending' as const }
 		]);
-		
+
 		const createdAt = faker.date.recent({ days: 90 }); // Within last 90 days
-		const completedAt = status === 'completed' 
-			? faker.date.between({ from: createdAt, to: new Date() })
-			: null;
+		const completedAt =
+			status === 'completed' ? faker.date.between({ from: createdAt, to: new Date() }) : null;
 
 		return {
 			id: nanoid(),

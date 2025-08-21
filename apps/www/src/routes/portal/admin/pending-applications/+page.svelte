@@ -30,7 +30,7 @@
 	{:else}
 		<div class="grid gap-4">
 			{#each data.pendingApplications as application (application.id)}
-				<div class="rounded-2xl border-2 bg-background p-4 shadow-lg sm:p-6">
+				<div class="bg-background rounded-2xl border-2 p-4 shadow-lg sm:p-6">
 					<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div class="space-y-2">
 							<h3 class="text-lg font-semibold">{application.name}</h3>

@@ -50,7 +50,7 @@
 	function onTrainingSave(data: { completionStatus: { isComplete: boolean } }) {
 		if (data.completionStatus.isComplete) {
 			userHasCompletedTraining = true;
-			user.isTrained = true; 
+			user.isTrained = true;
 			showTrainingChecklist = false;
 			showToast(`${user.name} har fullført opplæringen! ✅`);
 		}
@@ -69,7 +69,7 @@
 		← Tilbake til admin page
 	</a>
 
-	<div class="border-gray rounded-2xl border-2 bg-background p-4 shadow-lg sm:p-6">
+	<div class="border-gray bg-background rounded-2xl border-2 p-4 shadow-lg sm:p-6">
 		<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 			<div class="flex items-center gap-4">
 				<div class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-300">
@@ -131,7 +131,7 @@
 
 	<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 		<div class="space-y-6 lg:col-span-2">
-			<div class="border-gray rounded-2xl border-2 bg-background shadow-lg overflow-auto">
+			<div class="border-gray bg-background overflow-auto rounded-2xl border-2 shadow-lg">
 				<div class="border-b-2 border-gray-200 bg-gray-200 px-6 py-4">
 					<h3 class="text-lg font-semibold text-gray-900">Brukerinformasjon</h3>
 				</div>
@@ -177,8 +177,8 @@
 										/>
 										<span
 											class="flex items-center justify-center rounded-xl border px-2 py-px text-sm
-											  transition-colors hover:bg-gray-200 peer-checked:border-transparent
-											  peer-checked:bg-blue-600 peer-checked:text-white"
+											  transition-colors peer-checked:border-transparent peer-checked:bg-blue-600
+											  peer-checked:text-white hover:bg-gray-200"
 										>
 											Frivillig
 										</span>
@@ -194,8 +194,8 @@
 										/>
 										<span
 											class="flex items-center justify-center rounded-xl border px-2 py-px text-sm
-											  transition-colors hover:bg-gray-200 peer-checked:border-transparent
-											  peer-checked:bg-purple-600 peer-checked:text-white"
+											  transition-colors peer-checked:border-transparent peer-checked:bg-purple-600
+											  peer-checked:text-white hover:bg-gray-200"
 										>
 											Styret
 										</span>
@@ -235,7 +235,7 @@
 				</div>
 			</div>
 
-			<div class="border-gray rounded-2xl border-2 bg-background shadow-lg overflow-auto">
+			<div class="border-gray bg-background overflow-auto rounded-2xl border-2 shadow-lg">
 				<div class="border-b-2 border-gray-200 bg-gray-200 px-6 py-4">
 					<h3 class="text-lg font-semibold text-gray-900">Verv stats</h3>
 				</div>
@@ -274,7 +274,7 @@
 		</div>
 
 		<div class="space-y-6">
-			<div class="border-gray rounded-2xl border-2 bg-background shadow-lg overflow-auto">
+			<div class="border-gray bg-background overflow-auto rounded-2xl border-2 shadow-lg">
 				<div class="border-b-2 border-gray-200 bg-gray-200 px-6 py-4">
 					<h3 class="text-lg font-semibold text-gray-900">Statistikk</h3>
 				</div>
@@ -296,7 +296,7 @@
 				</div>
 			</div>
 
-			<div class="border-gray rounded-2xl border-2 bg-background shadow-lg overflow-auto">
+			<div class="border-gray bg-background overflow-auto rounded-2xl border-2 shadow-lg">
 				<div class="border-b-2 border-gray-200 bg-gray-200 px-6 py-4">
 					<h3 class="text-lg font-semibold text-gray-900">Handlinger</h3>
 				</div>
@@ -349,8 +349,8 @@
 />
 
 {#if showAddBeers}
-	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-		<div class="mx-4 w-full max-w-md rounded-2xl border-2 bg-background p-6 shadow-lg">
+	<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+		<div class="bg-background mx-4 w-full max-w-md rounded-2xl border-2 p-6 shadow-lg">
 			<h3 class="mb-2 text-lg font-semibold text-gray-900">Legg til øl</h3>
 			<p class="mb-4 text-sm text-gray-600">
 				Det du skriver her, vil endre på antall ekstra bonger <strong>{user.name}</strong> har tilgjengelig.
@@ -398,8 +398,8 @@
 {/if}
 
 {#if showDeleteConfirm}
-	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-		<div class="mx-4 w-full max-w-md rounded-2xl border-2 bg-background p-6 shadow-lg">
+	<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+		<div class="bg-background mx-4 w-full max-w-md rounded-2xl border-2 p-6 shadow-lg">
 			<h3 class="mb-2 text-lg font-semibold text-gray-900">Slett bruker</h3>
 			<p class="mb-4 text-sm text-gray-600">
 				Er du sikker på at du vil slette <strong>{user.name}</strong>? Skriv inn brukerens navn for
@@ -457,7 +457,7 @@
 
 {#if toastMessage}
 	<div
-		class="fixed bottom-4 right-4 z-50 rounded-md border border-green-400 bg-green-100 px-4 py-3 text-green-700 shadow-lg"
+		class="fixed right-4 bottom-4 z-50 rounded-md border border-green-400 bg-green-100 px-4 py-3 text-green-700 shadow-lg"
 	>
 		{toastMessage}
 	</div>

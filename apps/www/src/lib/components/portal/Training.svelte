@@ -19,10 +19,12 @@
 	let isSaving = $state(false);
 
 	let isTrainingMode = $derived(userId !== null && userId !== undefined);
-	let completedCount = $derived(trainingItems.filter(item => item.completed).length);
+	let completedCount = $derived(trainingItems.filter((item) => item.completed).length);
 	let totalCount = $derived(trainingItems.length);
 	let isComplete = $derived(completedCount === totalCount);
-	let progressPercentage = $derived(totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0);
+	let progressPercentage = $derived(
+		totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
+	);
 
 	$effect(() => {
 		if (isOpen) {
@@ -32,7 +34,7 @@
 
 	function toggleItem(itemId: number) {
 		if (!isTrainingMode) return;
-		trainingItems = trainingItems.map(item => 
+		trainingItems = trainingItems.map((item) =>
 			item.id === itemId ? { ...item, completed: !item.completed } : item
 		);
 	}
@@ -51,22 +53,27 @@
 	}
 
 	const groupedItems = $derived(
-		Object.values(TRAINING_CATEGORIES).reduce((acc, category) => {
-			acc[category] = trainingItems.filter(item => item.category === category);
-			return acc;
-		}, {} as Record<string, TrainingItem[]>)
+		Object.values(TRAINING_CATEGORIES).reduce(
+			(acc, category) => {
+				acc[category] = trainingItems.filter((item) => item.category === category);
+				return acc;
+			},
+			{} as Record<string, TrainingItem[]>
+		)
 	);
 </script>
 
 {#if isOpen}
-	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+	<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
 		<div class="mx-4 max-h-[80vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white">
 			<div class="sticky top-0 border-b border-gray-200 bg-white px-6 py-4">
 				<h3 class="text-lg font-semibold text-gray-900">
 					{isTrainingMode ? `Opplæring for ${userName}` : 'Opplæringsliste'}
 				</h3>
 				<p class="text-sm text-gray-600">
-					{isTrainingMode ? 'Marker av hvert punkt etter som opplæringen blir fullført' : 'Oversikt over alle opplæringspunkter som må gjennomgås'}
+					{isTrainingMode
+						? 'Marker av hvert punkt etter som opplæringen blir fullført'
+						: 'Oversikt over alle opplæringspunkter som må gjennomgås'}
 				</p>
 			</div>
 
@@ -80,7 +87,9 @@
 							<div class="space-y-3">
 								{#each items as item (item.id)}
 									{#if isTrainingMode}
-										<label class="flex items-start space-x-3 rounded-lg border border-gray-200 p-3 cursor-pointer hover:bg-gray-50 transition-colors">
+										<label
+											class="flex cursor-pointer items-start space-x-3 rounded-lg border border-gray-200 p-3 transition-colors hover:bg-gray-50"
+										>
 											<input
 												type="checkbox"
 												checked={item.completed}
@@ -114,8 +123,11 @@
 							<span class="text-sm font-medium text-gray-700">Fremgang</span>
 							<span class="text-sm text-gray-500">{completedCount} / {totalCount}</span>
 						</div>
-						<div class="mt-2 w-full bg-gray-200 rounded-full h-2">
-							<div class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: {progressPercentage}%"></div>
+						<div class="mt-2 h-2 w-full rounded-full bg-gray-200">
+							<div
+								class="h-2 rounded-full bg-blue-600 transition-all duration-300"
+								style="width: {progressPercentage}%"
+							></div>
 						</div>
 					</div>
 				{/if}
@@ -123,12 +135,7 @@
 
 			<div class="border-t border-gray-200 px-6 py-4">
 				<div class="flex justify-end space-x-3">
-					<Button
-						type="button"
-						onclick={handleClose}
-						intent="outline"
-						disabled={isSaving}
-					>
+					<Button type="button" onclick={handleClose} intent="outline" disabled={isSaving}>
 						{isTrainingMode ? 'Avbryt' : 'Lukk'}
 					</Button>
 					{#if isTrainingMode}
