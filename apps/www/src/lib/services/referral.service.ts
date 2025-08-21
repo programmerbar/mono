@@ -64,6 +64,14 @@ export class ReferralService {
 	}
 
 	async canUserRefer(userId: string) {
+		const user = await this.#db.query.users.findFirst({
+			where: (row, { eq }) => eq(row.id, userId)
+		});
+
+		if (!user || !user.canRefer) {
+			return false;
+		}
+
 		const existingReferral = await this.#db
 			.select()
 			.from(referrals)

@@ -15,7 +15,8 @@
 	let editForm = $state({
 		email: data.user.altEmail || data.user.email,
 		role: data.user.role,
-		phone: data.user.phone || ''
+		phone: data.user.phone || '',
+		canRefer: data.user.canRefer ?? true
 	});
 
 	let showDeleteConfirm = $state(false);
@@ -41,7 +42,8 @@
 			editForm = {
 				email: data.user.altEmail || data.user.email,
 				role: data.user.role,
-				phone: data.user.phone || ''
+				phone: data.user.phone || '',
+				canRefer: data.user.canRefer ?? true
 			};
 		}
 		isEditing = !isEditing;
@@ -119,6 +121,7 @@
 						<input type="hidden" name="email" value={editForm.email} />
 						<input type="hidden" name="role" value={editForm.role} />
 						<input type="hidden" name="phone" value={editForm.phone} />
+						<input type="hidden" name="canRefer" value={editForm.canRefer} />
 
 						<Button type="submit" intent="primary" disabled={isSubmitting} class="w-full">
 							{isSubmitting ? 'Lagrer...' : 'Lagre'}
@@ -202,6 +205,19 @@
 									</label>
 								</div>
 							</div>
+							<div>
+								<div class="mb-1 block text-sm font-medium text-gray-700">Kan referere?</div>
+								<label class="flex cursor-pointer items-center gap-2">
+									<input
+										type="checkbox"
+										bind:checked={editForm.canRefer}
+										class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+									/>
+									<span class="text-sm text-gray-900">
+										{editForm.canRefer ? 'Ja' : 'Nei'}
+									</span>
+								</label>
+							</div>
 						</div>
 					{:else}
 						<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -227,6 +243,18 @@
 											: 'border-blue-200 bg-blue-100 text-blue-800'}"
 									>
 										{user.role === 'board' ? 'Styret' : 'Frivillig'}
+									</span>
+								</dd>
+							</div>
+							<div>
+								<dt class="text-sm font-medium text-gray-500">Kan referere</dt>
+								<dd class="mt-1">
+									<span
+										class="inline-flex rounded-full border px-2 py-1 text-xs font-semibold {user.canRefer
+											? 'border-green-200 bg-green-100 text-green-800'
+											: 'border-red-200 bg-red-100 text-red-800'}"
+									>
+										{user.canRefer ? 'Ja' : 'Nei'}
 									</span>
 								</dd>
 							</div>

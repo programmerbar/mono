@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD `can_refer` integer DEFAULT true NOT NULL;
