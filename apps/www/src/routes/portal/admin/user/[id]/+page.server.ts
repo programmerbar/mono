@@ -79,7 +79,6 @@ export const actions: Actions = {
 		const confirmDelete = formData.get('confirmDelete')?.toString();
 		const formUserId = formData.get('userId')?.toString();
 
-		// Use user ID from form data or fallback to params
 		const userId = formUserId || params.id;
 
 		if (!userId) {
@@ -135,27 +134,26 @@ export const actions: Actions = {
 			return fail(401, { error: 'Unauthorized' });
 		}
 
-		try {
-			const trainingData = JSON.parse(trainingDataJson);
-
-			const isComplete =
-				trainingData &&
-				trainingData.every((item: { completed: boolean }) => item.completed === true);
-
-			if (!isComplete) {
-				return fail(400, { error: 'All training items must be completed' });
-			}
-
-			const updatedUser = await locals.userService.updateTrainingStatus(userId, true);
-
-			if (!updatedUser) {
-				return fail(404, { error: 'User not found' });
-			}
-
-			return { success: true, trainingCompleted: true };
-		} catch (err) {
-			console.error('Failed to complete training:', err);
-			return fail(500, { error: 'Failed to complete training' });
+		if (!trainingDataJson) {
+			return fail(400, { error: 'Training data is required' });
 		}
+
+		const trainingData = JSON.parse(trainingDataJson);
+
+		const isComplete =
+			trainingData &&
+			trainingData.every((item: { completed: boolean }) => item.completed === true);
+
+		if (!isComplete) {
+			return fail(400, { error: 'All training items must be completed' });
+		}
+
+		const updatedUser = await locals.userService.updateTrainingStatus(userId, true);
+
+		if (!updatedUser) {
+			return fail(404, { error: 'User not found' });
+		}
+
+		return { success: true, trainingCompleted: true };
 	}
 };

@@ -45,11 +45,11 @@
 		</div>
 	</div>
 
-	<div class="border-gray rounded-lg border bg-background p-4 shadow-sm">
-		<div class="flex flex-col gap-4 sm:flex-row">
+	<div class="border-gray bg-background overflow-hidden rounded-2xl border-2 shadow-lg">
+		<div class="flex flex-col gap-2 border-b-2 bg-gray-200 p-2 sm:flex-row">
 			<div class="flex-1">
 				<Input
-					class="w-full"
+					class="w-full border-2"
 					type="search"
 					placeholder="Søk etter navn eller e-post..."
 					bind:value={search}
@@ -58,7 +58,7 @@
 			<div class="sm:w-48">
 				<select
 					bind:value={selectedRole}
-					class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+					class="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
 				>
 					<option value="all">Alle roller</option>
 					<option value="board">Styret</option>
@@ -70,7 +70,7 @@
 
 	<div class="block space-y-3 sm:hidden">
 		{#each filteredUsers as user (user.id)}
-			<div class="border-gray rounded-lg border bg-background p-4 shadow-sm">
+			<div class="border-gray rounded-2xl border-2 bg-background p-4 shadow-lg">
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
 						<div class="h-10 w-10 flex-shrink-0">
@@ -107,7 +107,7 @@
 			</div>
 		{/each}
 		{#if filteredUsers.length === 0}
-			<div class="rounded-lg border border-gray-200 bg-background p-8 text-center">
+			<div class="rounded-2xl border-2 border-gray-200 bg-background p-8 text-center">
 				<div class="flex flex-col items-center gap-2">
 					<div class="text-4xl">👤</div>
 					<div class="text-sm text-gray-500">Ingen brukere funnet</div>
@@ -120,11 +120,11 @@
 	</div>
 
 	<div
-		class="border-gray hidden overflow-hidden rounded-lg border bg-background shadow-lg sm:block"
+		class="border-gray hidden overflow-hidden rounded-2xl border-2 bg-background shadow-lg sm:block"
 	>
 		<div class="overflow-x-auto">
 			<table class="w-full">
-				<thead class="border-gray border-b bg-gray-200">
+				<thead class="border-gray border-b-2 bg-gray-200">
 					<tr>
 						<th class="px-6 py-3 text-left">
 							<button

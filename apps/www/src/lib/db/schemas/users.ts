@@ -19,6 +19,7 @@ export const users = sqliteTable(
 		additionalBeers: integer().default(0).notNull(),
 		altEmail: text(),
 		phone: text(),
+		isTrained: integer({ mode: 'boolean' }).default(false).notNull(),
 		isDeleted: integer({ mode: 'boolean' }).default(false).notNull()
 	},
 	(t) => [uniqueIndex('email_idx').on(t.email), uniqueIndex('feide_id_idx').on(t.feideId)]

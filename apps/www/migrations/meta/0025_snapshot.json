@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "1c6b740e-385b-42e8-8966-0bcefd2e40b3",
-  "prevId": "8127fb43-ed96-43ae-99a7-c2210af270b1",
+  "id": "281b23f3-fabb-4e68-924a-6380b33653c1",
+  "prevId": "3108c400-70f1-4f7d-bf30-baac4f754b24",
   "tables": {
     "claimed_credits": {
       "name": "claimed_credits",

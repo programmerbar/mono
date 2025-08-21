@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "1c6b740e-385b-42e8-8966-0bcefd2e40b3",
-  "prevId": "8127fb43-ed96-43ae-99a7-c2210af270b1",
+  "id": "99db6b88-480c-4980-b18a-0118f7bf7447",
+  "prevId": "281b23f3-fabb-4e68-924a-6380b33653c1",
   "tables": {
     "claimed_credits": {
       "name": "claimed_credits",
@@ -936,86 +936,6 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "referral": {
-      "name": "referral",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "referred_by": {
-          "name": "referred_by",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "referred": {
-          "name": "referred",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'pending'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "completed_at": {
-          "name": "completed_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "referral_referred_by_user_id_fk": {
-          "name": "referral_referred_by_user_id_fk",
-          "tableFrom": "referral",
-          "tableTo": "user",
-          "columnsFrom": [
-            "referred_by"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "referral_referred_user_id_fk": {
-          "name": "referral_referred_user_id_fk",
-          "tableFrom": "referral",
-          "tableTo": "user",
-          "columnsFrom": [
-            "referred"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}

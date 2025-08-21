@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD `training_completed` integer DEFAULT false NOT NULL;

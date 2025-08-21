@@ -24,7 +24,7 @@
 	</div>
 
 	<!-- Product Types List -->
-	<div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+	<div class="border-gray bg-background overflow-hidden rounded-2xl border-2 shadow-lg">
 		{#if data.productTypes.length === 0}
 			<div class="p-12 text-center">
 				<Hash class="mx-auto h-12 w-12 text-gray-400" />
@@ -33,8 +33,8 @@
 			</div>
 		{:else}
 			<div class="overflow-x-auto">
-				<table class="w-full min-w-[500px] divide-y divide-gray-200">
-					<thead class="bg-gray-50">
+				<table class="w-full min-w-[500px]">
+					<thead class="border-b-2 bg-gray-200">
 						<tr>
 							<th
 								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
@@ -53,7 +53,7 @@
 							</th>
 						</tr>
 					</thead>
-					<tbody class="divide-y divide-gray-200 bg-white">
+					<tbody class="border-b border-gray-100 break-words whitespace-nowrap">
 						{#each data.productTypes as productType (productType.id)}
 							<tr class="hover:bg-gray-50">
 								<td class="px-6 py-4 whitespace-nowrap">
