@@ -29,7 +29,7 @@
 									name="referrer"
 									bind:value={selectedReferrerId}
 									items={data.users.filter((user) => user.value !== data.currentUserId)}
-									inputProps={{ placeholder: "Søk etter navn...", class: "w-full" }}
+									inputProps={{ placeholder: 'Søk etter navn...', class: 'w-full' }}
 								/>
 							</div>
 							<Button

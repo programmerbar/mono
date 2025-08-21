@@ -8,6 +8,3 @@ CREATE TABLE `referral` (
 	FOREIGN KEY (`referred_by`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`referred`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );
---> statement-breakpoint
-ALTER TABLE `user` ADD `phone` text;--> statement-breakpoint
-ALTER TABLE `user` ADD `is_trained` integer DEFAULT false NOT NULL;

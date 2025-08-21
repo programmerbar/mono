@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD `is_trained` integer DEFAULT false NOT NULL;

@@ -6,7 +6,7 @@
 	import { enhance } from '$app/forms';
 	import type { User } from '$lib/db/schemas';
 
-	let { data, form } = $props();
+	let { data } = $props();
 	let user = $state(data.user as User);
 	let isEditing = $state(false);
 
