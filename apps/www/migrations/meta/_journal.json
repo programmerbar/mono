@@ -166,50 +166,8 @@
     {
       "idx": 23,
       "version": "6",
-      "when": 1755721411799,
-      "tag": "0023_nervous_blur",
-      "breakpoints": true
-    },
-    {
-      "idx": 24,
-      "version": "6",
-      "when": 1755721612733,
-      "tag": "0024_gifted_night_thrasher",
-      "breakpoints": true
-    },
-    {
-      "idx": 25,
-      "version": "6",
-      "when": 1755721642994,
-      "tag": "0025_noisy_young_avengers",
-      "breakpoints": true
-    },
-    {
-      "idx": 26,
-      "version": "6",
-      "when": 1755721897743,
-      "tag": "0026_puzzling_shadowcat",
-      "breakpoints": true
-    },
-    {
-      "idx": 27,
-      "version": "6",
-      "when": 1755722369023,
-      "tag": "0027_nice_bushwacker",
-      "breakpoints": true
-    },
-    {
-      "idx": 28,
-      "version": "6",
-      "when": 1755773799970,
-      "tag": "0028_youthful_absorbing_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 29,
-      "version": "6",
-      "when": 1755774144261,
-      "tag": "0029_nosy_selene",
+      "when": 1755800946575,
+      "tag": "0023_good_roughhouse",
       "breakpoints": true
     }
   ]
