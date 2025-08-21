@@ -42,6 +42,11 @@ export class PendingApplicationService {
 		});
 	}
 
+	async getCount() {
+		const applications = await this.#db.query.pendingApplications.findMany();
+		return applications.length;
+	}
+
 	async delete(id: string) {
 		return await this.#db.delete(pendingApplications).where(eq(pendingApplications.id, id));
 	}

@@ -22,9 +22,10 @@
 
 	type Props = {
 		notifications: Array<DbNotification>;
+		pendingApplicationsCount: number;
 	};
 
-	let { notifications }: Props = $props();
+	let { notifications, pendingApplicationsCount }: Props = $props();
 	let user = getUser();
 	let isSidebarOpen = $state(false);
 	let isMobile = $state(true); // Start as mobile to prevent flash
@@ -77,7 +78,8 @@
 					{
 						name: 'Søknader',
 						href: '/portal/admin/pending-applications',
-						icon: UserCheck
+						icon: UserCheck,
+						count: pendingApplicationsCount
 					}
 				]
 			: []
@@ -272,7 +274,7 @@
 								<a
 									href={route.href}
 									class={cn(
-										'flex items-center rounded-lg py-2 text-sm font-medium transition-colors',
+										'relative flex items-center rounded-lg py-2 text-sm font-medium transition-colors',
 										{
 											'justify-center gap-0 px-1': !showFullLayout,
 											'justify-start gap-3 px-3': showFullLayout,
@@ -284,11 +286,24 @@
 								>
 									<route.icon class="h-5 w-5 flex-shrink-0" />
 									<span
-										class={cn('', {
+										class={cn('flex-1', {
 											hidden: !showFullLayout,
 											inline: showFullLayout
 										})}>{route.name}</span
 									>
+									{#if route.count && route.count > 0}
+										<span
+											class={cn(
+												'flex items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white',
+												{
+													'absolute -top-1 -right-1 h-4 w-4': !showFullLayout,
+													'static h-5 w-5': showFullLayout
+												}
+											)}
+										>
+											{route.count}
+										</span>
+									{/if}
 								</a>
 							</li>
 						{/each}
