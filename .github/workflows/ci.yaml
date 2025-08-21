@@ -69,6 +69,11 @@ jobs:
       - name: 🗄️ Run database migrations
         run: pnpm --filter=api run-migrations --database-url postgres://postgres:postgres@localhost:5432/programmerbar
 
+      - name: 📝 Prepare SQLx offline cache
+        run: |
+          cd apps/api
+          cargo sqlx prepare --database-url postgres://postgres:postgres@localhost:5432/programmerbar
+
       - name: 🔵 Check
         run: pnpm check
 
