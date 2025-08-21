@@ -6,7 +6,6 @@
 	import { enhance } from '$app/forms';
 
 	let { data } = $props();
-	let selectedReferrerName = $state('');
 	let selectedReferrerId = $state('');
 </script>
 
@@ -26,14 +25,11 @@
 						<div class="flex items-end gap-2">
 							<div class="flex-1">
 								<Combobox
+									type="single"
 									name="referrer"
-									bind:value={selectedReferrerName}
-									onchange={(option) => {
-										selectedReferrerId = option?.value || '';
-									}}
-									options={data.users.filter((user) => user.value !== data.currentUserId)}
-									placeholder="Søk etter navn..."
-									class="w-full"
+									bind:value={selectedReferrerId}
+									items={data.users.filter((user) => user.value !== data.currentUserId)}
+									inputProps={{ placeholder: "Søk etter navn...", class: "w-full" }}
 								/>
 							</div>
 							<Button
