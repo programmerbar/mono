@@ -24,6 +24,7 @@
     "lint:fix": {},
     "check": {},
     "format": {},
+    "format:check": {},
     "extract": {
       "cache": false
     },

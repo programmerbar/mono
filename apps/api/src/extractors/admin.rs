@@ -11,7 +11,7 @@ impl FromRequestParts<AppState> for AdminKey {
         parts: &mut Parts,
         state: &AppState,
     ) -> Result<Self, Self::Rejection> {
-        let bearer_token = get_bearer_token(&parts).ok_or_else(|| ApiError::Unauthorized)?;
+        let bearer_token = get_bearer_token(parts).ok_or(ApiError::Unauthorized)?;
         if bearer_token != state.config.admin_key {
             return Err(ApiError::Unauthorized);
         }
