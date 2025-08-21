@@ -20,18 +20,7 @@ mod state;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    tracing_subscriber::registry()
-        .with(
-            tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| {
-                format!(
-                    "{}=debug,tower_http=debug,axum::rejection=trace",
-                    env!("CARGO_CRATE_NAME")
-                )
-                .into()
-            }),
-        )
-        .with(tracing_subscriber::fmt::layer())
-        .init();
+    init_tracing();
 
     let config = Config::from_env();
     let state = AppState::from_config(config.clone()).await;
@@ -58,30 +47,14 @@ async fn main() -> anyhow::Result<()> {
         // Status endpoints
         .routes(routes![handlers::status::status])
         .routes(routes![handlers::status::set_status])
+        // Admin endpoints
+        .routes(routes![handlers::admin::test_admin])
         .split_for_parts();
 
     let app = router
         .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", api))
         // Middleware / Layers
-        .layer(
-            CorsLayer::new()
-                .allow_origin(
-                    "http://localhost:5173"
-                        .parse::<axum::http::HeaderValue>()
-                        .unwrap(),
-                ) // SvelteKit dev server
-                .allow_origin(
-                    "https://programmer.bar"
-                        .parse::<axum::http::HeaderValue>()
-                        .unwrap(),
-                ) // Production
-                .allow_methods([axum::http::Method::GET, axum::http::Method::POST])
-                .allow_headers([
-                    axum::http::header::CONTENT_TYPE,
-                    axum::http::header::AUTHORIZATION,
-                ])
-                .allow_credentials(true),
-        )
+        .layer(cors_layer())
         .layer(TraceLayer::new_for_http())
         .layer(NormalizePathLayer::trim_trailing_slash())
         // State
@@ -96,4 +69,39 @@ async fn main() -> anyhow::Result<()> {
     axum::serve(listener, app).await?;
 
     Ok(())
+}
+
+fn init_tracing() {
+    tracing_subscriber::registry()
+        .with(
+            tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| {
+                format!(
+                    "{}=debug,tower_http=debug,axum::rejection=trace",
+                    env!("CARGO_CRATE_NAME")
+                )
+                .into()
+            }),
+        )
+        .with(tracing_subscriber::fmt::layer())
+        .init();
+}
+
+fn cors_layer() -> CorsLayer {
+    CorsLayer::new()
+        .allow_origin(
+            "http://localhost:5173"
+                .parse::<axum::http::HeaderValue>()
+                .unwrap(),
+        ) // SvelteKit dev server
+        .allow_origin(
+            "https://programmer.bar"
+                .parse::<axum::http::HeaderValue>()
+                .unwrap(),
+        ) // Production
+        .allow_methods([axum::http::Method::GET, axum::http::Method::POST])
+        .allow_headers([
+            axum::http::header::CONTENT_TYPE,
+            axum::http::header::AUTHORIZATION,
+        ])
+        .allow_credentials(true)
 }

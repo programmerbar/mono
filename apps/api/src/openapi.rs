@@ -3,6 +3,8 @@ use utoipa::{
     openapi::security::{ApiKey, ApiKeyValue, HttpAuthScheme, HttpBuilder, SecurityScheme},
 };
 
+use crate::extractors::SESSION_COOKIE_NAME;
+
 #[derive(OpenApi)]
 #[openapi(
     modifiers(&SecurityAddon),
@@ -14,7 +16,8 @@ use utoipa::{
         (name = "Authentication", description = "User authentication via Feide"),
         (name = "Profile", description = "User profile management"),
         (name = "Images", description = "Image upload and retrieval"),
-        (name = "Status", description = "Status of the bar")
+        (name = "Status", description = "Status of the bar"),
+        (name = "Admin", description = "Admin endpoints for BFF operations")
     )
 )]
 pub struct ApiDoc;
@@ -26,7 +29,7 @@ impl Modify for SecurityAddon {
         if let Some(components) = openapi.components.as_mut() {
             components.add_security_scheme(
                 "session",
-                SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("session_token"))),
+                SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new(SESSION_COOKIE_NAME))),
             );
             components.add_security_scheme(
                 "admin_key",
