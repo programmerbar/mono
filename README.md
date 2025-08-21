@@ -51,3 +51,11 @@ The architecture heavliy relies on Cloudflare Pages and associated services like
 ### Deployment
 
 The website will be deployed to Cloudflare Pages automatically when a PR is merged to `main`. Any migrations will also be applied to the production database automatically.
+
+### Docker
+
+To run the api with Docker use the following command:
+
+```bash
+docker run --env-file .env --network=host -p 8000:8000 programmerbar-api
+```

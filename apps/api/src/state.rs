@@ -66,10 +66,16 @@ impl AppState {
         tracing::info!("Connected to the database at {}", config.database_url);
         tracing::info!("Using database pool with max connections: {}", 5);
 
-        sqlx::migrate!("./migrations")
-            .run(&pool)
-            .await
-            .expect("Failed to run database migrations");
+        tracing::info!("Running database migrations...");
+        match sqlx::migrate!("./migrations").run(&pool).await {
+            Ok(_) => {
+                tracing::info!("✅ Database migrations completed successfully");
+            }
+            Err(e) => {
+                tracing::error!("❌ Failed to run database migrations: {}", e);
+                std::process::exit(1);
+            }
+        }
 
         let key = Key::generate();
 
