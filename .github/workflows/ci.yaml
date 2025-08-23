@@ -60,11 +60,24 @@ jobs:
           cache: pnpm
           cache-dependency-path: ./pnpm-lock.yaml
 
+      - name: 🦀 Setup Rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          cache: true
+
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🐿️ Install sqlx
-        run: cargo install sqlx-cli
+      - name: 🐿️ Cache SQLx CLI
+        uses: actions/cache@v4
+        id: cache-sqlx
+        with:
+          path: ~/.cargo/bin/sqlx
+          key: sqlx-cli-${{ runner.os }}
+
+      - name: 🐿️ Install SQLx CLI
+        if: steps.cache-sqlx.outputs.cache-hit != 'true'
+        run: cargo install sqlx-cli --no-default-features --features postgres
 
       - name: 🗄️ Run database migrations
         run: pnpm --filter=api run-migrations --database-url postgres://postgres:postgres@localhost:5432/programmerbar
