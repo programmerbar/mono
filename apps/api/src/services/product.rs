@@ -1,11 +1,11 @@
 use crate::models::product::Product;
 use sqlx::{PgPool, query, query_as};
 
-pub struct ProductRepository {
+pub struct ProductService {
     pool: PgPool,
 }
 
-impl ProductRepository {
+impl ProductService {
     pub fn new(pool: PgPool) -> Self {
         Self { pool }
     }

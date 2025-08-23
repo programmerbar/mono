@@ -30,7 +30,7 @@ pub async fn all_events(
     _auth: AuthorizedMember,
 ) -> Result<Json<Vec<EventWithShifts>>, ApiError> {
     let events = state
-        .event_repo
+        .event_service
         .all_with_shifts()
         .await
         .map_err(|_| ApiError::InternalServerError)?;

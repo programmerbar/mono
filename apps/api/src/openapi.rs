@@ -3,7 +3,7 @@ use utoipa::{
     openapi::security::{ApiKey, ApiKeyValue, HttpAuthScheme, HttpBuilder, SecurityScheme},
 };
 
-use crate::extractors::SESSION_COOKIE_NAME;
+use crate::services::session::SESSION_COOKIE_NAME;
 
 #[derive(OpenApi)]
 #[openapi(
@@ -17,7 +17,8 @@ use crate::extractors::SESSION_COOKIE_NAME;
         (name = "Profile", description = "User profile management"),
         (name = "Images", description = "Image upload and retrieval"),
         (name = "Status", description = "Status of the bar"),
-        (name = "Admin", description = "Admin endpoints for BFF operations")
+        (name = "Admin", description = "Admin endpoints for BFF operations"),
+        (name = "Users", description = "User management endpoints")
     )
 )]
 pub struct ApiDoc;

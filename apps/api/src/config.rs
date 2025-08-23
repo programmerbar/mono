@@ -2,19 +2,34 @@ use oauth2::{ClientId, ClientSecret, RedirectUrl};
 
 #[derive(Debug, Clone)]
 pub struct Config {
+    /// Database connection URL
     pub database_url: String,
+    /// Server port to run the application on
     pub server_port: u16,
+    /// Feide OAuth2 client ID
     pub feide_client_id: ClientId,
+    /// Feide OAuth2 client secret
     pub feide_client_secret: ClientSecret,
+    /// Feide OAuth2 redirect URI
     pub feide_redirect_uri: RedirectUrl,
+    /// Flag indicating if the application is running in development mode
     pub is_dev: bool,
+    /// S3 storage configuration
     pub s3_endpoint: String,
+    /// S3 access key
     pub s3_access_key: String,
+    /// S3 secret key
     pub s3_secret_key: String,
+    /// S3 region
     pub s3_region: String,
+    /// S3 bucket name
     pub s3_bucket: String,
+    /// Redis connection URL
     pub redis_url: String,
+    /// Admin key for privileged operations
     pub admin_key: String,
+    /// Redirect URL for when logging in from the web-app
+    pub web_redirect_url: Option<String>,
 }
 
 impl Config {
@@ -63,7 +78,9 @@ impl Config {
         let admin_key =
             std::env::var("ADMIN_KEY").expect("Expected ADMIN_KEY environment variable to be set");
 
-        Config {
+        let web_redirect_url = std::env::var("WEB_REDIRECT_URL").ok();
+
+        Self {
             database_url,
             server_port,
             feide_client_id,
@@ -77,6 +94,7 @@ impl Config {
             s3_bucket,
             redis_url,
             admin_key,
+            web_redirect_url,
         }
     }
 }

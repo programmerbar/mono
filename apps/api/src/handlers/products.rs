@@ -25,7 +25,7 @@ use crate::{
 )]
 pub async fn all_products(State(state): State<AppState>) -> Json<Vec<dto::FullProduct>> {
     let products = state
-        .product_repo
+        .product_service
         .list()
         .await
         .unwrap_or_else(|_| vec![])
@@ -62,7 +62,7 @@ pub async fn get_product_by_id(
     Path(id): Path<String>,
 ) -> Result<Json<dto::FullProduct>, ApiError> {
     let product = state
-        .product_repo
+        .product_service
         .get_by_id(&id)
         .await
         .map_err(|_| ApiError::InternalServerError)?
@@ -122,7 +122,7 @@ pub async fn create_product(
     };
 
     let created_product = state
-        .product_repo
+        .product_service
         .create(&new_product)
         .await
         .map_err(|_| ApiError::InternalServerError)?;

@@ -1,29 +1,32 @@
 use crate::{
     errors::ApiError,
     models::{session::Session, user::User},
-    repositories::{session::SessionRepository, user::UserRepository},
+    services::{session::SessionService, user::UserService},
 };
 
 pub struct AuthService {
-    session_repo: SessionRepository,
-    user_repo: UserRepository,
+    session_service: SessionService,
+    user_service: UserService,
 }
 
 impl AuthService {
-    pub fn new(session_repo: SessionRepository, user_repo: UserRepository) -> Self {
+    pub fn new(session_service: SessionService, user_service: UserService) -> Self {
         Self {
-            session_repo,
-            user_repo,
+            session_service,
+            user_service,
         }
     }
 
     pub async fn validate_session(&self, session_id: &str) -> Result<(Session, User), ApiError> {
-        let session = self.session_repo.find_valid_by_id(session_id).await?;
-        let user = self.user_repo.find_active_by_id(&session.user_id).await?;
+        let session = self.session_service.find_valid_by_id(session_id).await?;
+        let user = self
+            .user_service
+            .find_active_by_id(&session.user_id)
+            .await?;
         Ok((session, user))
     }
 
     pub async fn delete_session(&self, session_id: &str) -> Result<(), ApiError> {
-        self.session_repo.delete(session_id).await
+        self.session_service.delete_session(session_id).await
     }
 }

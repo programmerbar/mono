@@ -106,10 +106,14 @@ pub async fn upload_image(
         updated_at: Utc::now(),
     };
 
-    state.image_repo.create(&image_record).await.map_err(|e| {
-        tracing::error!("Database insert failed: {}", e);
-        ApiError::InternalServerError
-    })?;
+    state
+        .image_service
+        .create(&image_record)
+        .await
+        .map_err(|e| {
+            tracing::error!("Database insert failed: {}", e);
+            ApiError::InternalServerError
+        })?;
 
     Ok(Json(dto::ImageResponse {
         id: file_id,
@@ -156,7 +160,7 @@ pub async fn get_image_by_id(
     })?;
 
     let image = state
-        .image_repo
+        .image_service
         .get_by_id(&id)
         .await
         .map_err(|_| ApiError::InternalServerError)?

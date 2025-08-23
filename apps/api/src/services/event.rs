@@ -2,11 +2,11 @@ use crate::{dto::EventWithShifts, models::event::Event};
 use sqlx::{FromRow, PgPool, query, query_as};
 use std::collections::HashMap;
 
-pub struct EventRepository {
+pub struct EventService {
     pool: PgPool,
 }
 
-impl EventRepository {
+impl EventService {
     pub fn new(pool: PgPool) -> Self {
         Self { pool }
     }
