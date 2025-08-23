@@ -7,3 +7,4 @@ pub mod products;
 pub mod profile;
 pub mod root;
 pub mod status;
+pub mod user;

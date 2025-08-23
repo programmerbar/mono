@@ -8,16 +8,10 @@ use s3::{Bucket, Region, creds::Credentials};
 use crate::{
     config::Config,
     providers::feide::FeideProvider,
-    repositories::{
-        claimed_credit::ClaimedCreditRepository, contact_submission::ContactSubmissionRepository,
-        event::EventRepository, group::GroupRepository, image::ImageRepository,
-        invitation::InvitationRepository, notification::NotificationRepository,
-        producer::ProducerRepository, product::ProductRepository,
-        product_product_type::ProductProductTypeRepository, product_type::ProductTypeRepository,
-        session::SessionRepository, shift::ShiftRepository, user::UserRepository,
-        user_shift::UserShiftRepository, users_group::UsersGroupRepository,
+    services::{
+        auth::AuthService, event::EventService, image::ImageService, invitation::InvitationService,
+        product::ProductService, session::SessionService, status::StatusService, user::UserService,
     },
-    services::{auth::AuthService, session::SessionService, status::StatusService},
 };
 
 #[derive(Clone)]
@@ -28,28 +22,15 @@ pub struct AppState {
     pub bucket: Box<Bucket>,
     pub redis: Arc<RedisClient>,
 
-    // Repositories
-    pub claimed_credit_repo: Arc<ClaimedCreditRepository>,
-    pub contact_submission_repo: Arc<ContactSubmissionRepository>,
-    pub event_repo: Arc<EventRepository>,
-    pub group_repo: Arc<GroupRepository>,
-    pub image_repo: Arc<ImageRepository>,
-    pub invitation_repo: Arc<InvitationRepository>,
-    pub notification_repo: Arc<NotificationRepository>,
-    pub producer_repo: Arc<ProducerRepository>,
-    pub product_product_type_repo: Arc<ProductProductTypeRepository>,
-    pub product_type_repo: Arc<ProductTypeRepository>,
-    pub product_repo: Arc<ProductRepository>,
-    pub session_repo: Arc<SessionRepository>,
-    pub shift_repo: Arc<ShiftRepository>,
-    pub user_shift_repo: Arc<UserShiftRepository>,
-    pub user_repo: Arc<UserRepository>,
-    pub user_group_repo: Arc<UsersGroupRepository>,
-
     // Services
     pub auth_service: Arc<AuthService>,
+    pub invitation_service: Arc<InvitationService>,
     pub session_service: Arc<SessionService>,
     pub status_service: Arc<StatusService>,
+    pub user_service: Arc<UserService>,
+    pub image_service: Arc<ImageService>,
+    pub event_service: Arc<EventService>,
+    pub product_service: Arc<ProductService>,
 
     // Providers
     pub feide_provider: Arc<FeideProvider>,
@@ -77,7 +58,11 @@ impl AppState {
             }
         }
 
-        let key = Key::generate();
+        let key = if let Ok(auth_secret) = std::env::var("AUTH_SECRET") {
+            Key::from(auth_secret.as_bytes())
+        } else {
+            Key::generate()
+        };
 
         let bucket_name = &config.s3_bucket;
         let region = Region::Custom {
@@ -108,30 +93,18 @@ impl AppState {
 
         tracing::info!("Connected to Redis at {}", config.redis_url);
 
-        let claimed_credit_repo = Arc::new(ClaimedCreditRepository::new(pool.clone()));
-        let contact_submission_repo = Arc::new(ContactSubmissionRepository::new(pool.clone()));
-        let event_repo = Arc::new(EventRepository::new(pool.clone()));
-        let group_repo = Arc::new(GroupRepository::new(pool.clone()));
-        let image_repo = Arc::new(ImageRepository::new(pool.clone()));
-        let invitation_repo = Arc::new(InvitationRepository::new(pool.clone()));
-        let notification_repo = Arc::new(NotificationRepository::new(pool.clone()));
-        let producer_repo = Arc::new(ProducerRepository::new(pool.clone()));
-        let product_product_type_repo = Arc::new(ProductProductTypeRepository::new(pool.clone()));
-        let product_type_repo = Arc::new(ProductTypeRepository::new(pool.clone()));
-        let product_repo = Arc::new(ProductRepository::new(pool.clone()));
-        let session_repo = Arc::new(SessionRepository::new(pool.clone()));
-        let shift_repo = Arc::new(ShiftRepository::new(pool.clone()));
-        let user_shift_repo = Arc::new(UserShiftRepository::new(pool.clone()));
-        let user_repo = Arc::new(UserRepository::new(pool.clone()));
-        let user_group_repo = Arc::new(UsersGroupRepository::new(pool.clone()));
-
         // Services
-        let auth_service = Arc::new(AuthService::new(
-            SessionRepository::new(pool.clone()),
-            UserRepository::new(pool.clone()),
-        ));
+        let user_service = Arc::new(UserService::new(pool.clone()));
+        let session_service = Arc::new(SessionService::new(pool.clone()));
+        let invitation_service = Arc::new(InvitationService::new(pool.clone()));
+        let image_service = Arc::new(ImageService::new(pool.clone()));
+        let event_service = Arc::new(EventService::new(pool.clone()));
+        let product_service = Arc::new(ProductService::new(pool.clone()));
 
-        let session_service = Arc::new(SessionService::new(SessionRepository::new(pool.clone())));
+        let auth_service = Arc::new(AuthService::new(
+            SessionService::new(pool.clone()),
+            UserService::new(pool.clone()),
+        ));
 
         let status_service = Arc::new(StatusService::new(redis.clone()));
 
@@ -148,28 +121,15 @@ impl AppState {
             bucket,
             redis,
 
-            // Repositories
-            claimed_credit_repo,
-            contact_submission_repo,
-            event_repo,
-            group_repo,
-            image_repo,
-            invitation_repo,
-            notification_repo,
-            producer_repo,
-            product_product_type_repo,
-            product_type_repo,
-            product_repo,
-            session_repo,
-            shift_repo,
-            user_shift_repo,
-            user_repo,
-            user_group_repo,
-
             // Services
             auth_service,
+            invitation_service,
             session_service,
             status_service,
+            user_service,
+            image_service,
+            event_service,
+            product_service,
 
             // Providers
             feide_provider,

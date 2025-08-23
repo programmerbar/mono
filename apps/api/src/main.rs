@@ -14,7 +14,6 @@ mod handlers;
 mod models;
 mod openapi;
 mod providers;
-mod repositories;
 mod services;
 mod state;
 
@@ -25,40 +24,59 @@ async fn main() -> anyhow::Result<()> {
     let config = Config::from_env();
     let state = AppState::from_config(config.clone()).await;
 
-    let (router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
-        // General endpoints
+    // General endpoints
+    let router = OpenApiRouter::with_openapi(ApiDoc::openapi())
         .routes(routes![handlers::root::root])
-        .routes(routes![handlers::health::health])
-        // Product endpoints
+        .routes(routes![handlers::health::health]);
+
+    // Product endpoints
+    let router = router
         .routes(routes![handlers::products::all_products])
         .routes(routes![handlers::products::create_product])
-        .routes(routes![handlers::products::get_product_by_id])
-        // Event endpoints
-        .routes(routes![handlers::event::all_events])
-        // Authentication endpoints
+        .routes(routes![handlers::products::get_product_by_id]);
+
+    // Event endpoints
+    let router = router.routes(routes![handlers::event::all_events]);
+
+    // Authentication endpoints
+    let router = router
         .routes(routes![handlers::auth::feide_auth])
         .routes(routes![handlers::auth::feide_callback])
-        .routes(routes![handlers::auth::logout])
-        // User endpoints
-        .routes(routes![handlers::profile::get_profile])
-        // Image endpoints
-        .routes(routes![handlers::image::upload_image])
-        .routes(routes![handlers::image::get_image_by_id])
-        // Status endpoints
-        .routes(routes![handlers::status::status])
-        .routes(routes![handlers::status::set_status])
-        // Admin endpoints
-        .routes(routes![handlers::admin::test_admin])
-        .split_for_parts();
+        .routes(routes![handlers::auth::logout]);
 
-    let app = router
-        .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", api))
-        // Middleware / Layers
+    // User endpoints
+    let router = router.routes(routes![handlers::profile::get_profile]);
+
+    // Image endpoints
+    let router = router
+        .routes(routes![handlers::image::upload_image])
+        .routes(routes![handlers::image::get_image_by_id]);
+
+    // Status endpoints
+    let router = router
+        .routes(routes![handlers::status::status])
+        .routes(routes![handlers::status::set_status]);
+
+    // Admin endpoints
+    let router = router
+        .routes(routes![handlers::admin::admin_test])
+        .routes(routes![handlers::admin::admin_get_user]);
+
+    // User endpoints
+    let router = router.routes(routes![handlers::user::list_users]);
+
+    let (router, api) = router.split_for_parts();
+
+    let app = router.merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", api));
+
+    // Middleware / Layers
+    let app = app
         .layer(cors_layer())
         .layer(TraceLayer::new_for_http())
-        .layer(NormalizePathLayer::trim_trailing_slash())
-        // State
-        .with_state(state);
+        .layer(NormalizePathLayer::trim_trailing_slash());
+
+    // State
+    let app = app.with_state(state);
 
     let port = config.server_port;
     let listener = tokio::net::TcpListener::bind(format!("127.0.0.1:{port}")).await?;
@@ -88,17 +106,16 @@ fn init_tracing() {
 
 fn cors_layer() -> CorsLayer {
     CorsLayer::new()
-        .allow_origin(
-            "http://localhost:5173"
-                .parse::<axum::http::HeaderValue>()
-                .unwrap(),
-        ) // SvelteKit dev server
-        .allow_origin(
-            "https://programmer.bar"
-                .parse::<axum::http::HeaderValue>()
-                .unwrap(),
-        ) // Production
-        .allow_methods([axum::http::Method::GET, axum::http::Method::POST])
+        .allow_origin([
+            "http://localhost:5173".parse().unwrap(),  // Dev frontend
+            "https://programmer.bar".parse().unwrap(), // Production frontend
+        ])
+        .allow_methods([
+            axum::http::Method::GET,
+            axum::http::Method::POST,
+            axum::http::Method::PUT,
+            axum::http::Method::DELETE,
+        ])
         .allow_headers([
             axum::http::header::CONTENT_TYPE,
             axum::http::header::AUTHORIZATION,

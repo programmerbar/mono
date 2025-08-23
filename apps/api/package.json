@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cargo run",
+    "dev": "cargo watch -x run",
     "build": "cargo build --release",
     "start": "cargo run --release",
     "test": "cargo test",
@@ -11,8 +11,8 @@
     "lint:fix": "cargo clippy --fix --allow-dirty -- -D warnings",
     "format": "cargo fmt",
     "format:check": "cargo fmt --check",
-    "clean": "cargo clean",
-    "add-migration": "sqlx migrate add",
-    "run-migrations": "sqlx migrate run"
+    "clean": "cargo clean && rm -rf .turbo",
+    "db:generate": "sqlx migrate add",
+    "db:migrate": "sqlx migrate run"
   }
 }

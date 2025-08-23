@@ -1,6 +1,6 @@
 use crate::{
-    errors::ApiError, models::auth::AuthorizedMember, services::session::SessionService,
-    state::AppState,
+    config::Config, errors::ApiError, models::auth::AuthorizedMember,
+    services::session::SessionService, state::AppState,
 };
 use axum::{
     extract::{Query, State},
@@ -11,6 +11,22 @@ use cookie::time::Duration;
 use oauth2::CsrfToken;
 use reqwest::StatusCode;
 use serde::Deserialize;
+
+fn determine_redirect_url(jar: &CookieJar, config: &Config) -> String {
+    if let Some(app_cookie) = jar.get("app") {
+        match app_cookie.value() {
+            "web" => config.web_redirect_url.clone().unwrap_or("/".to_string()),
+            _ => "/".to_string(),
+        }
+    } else {
+        "/".to_string()
+    }
+}
+
+#[derive(Deserialize)]
+pub struct AuthParams {
+    app: Option<String>,
+}
 
 #[derive(Deserialize)]
 pub struct CallbackParams {
@@ -36,8 +52,9 @@ pub struct CallbackParams {
 )]
 pub async fn feide_auth(
     State(state): State<AppState>,
+    Query(params): Query<AuthParams>,
     jar: CookieJar,
-) -> Result<(CookieJar, Redirect), ApiError> {
+) -> Result<impl IntoResponse, ApiError> {
     let csrf_state = CsrfToken::new_random();
 
     // Generate authorization URL with CSRF state
@@ -47,11 +64,19 @@ pub async fn feide_auth(
         .map_err(|_| ApiError::InternalServerError)?;
 
     // Store CSRF state in a regular cookie (not encrypted)
-    let c = Cookie::build(("feide_oauth_state", csrf_state.into_secret()))
+    let state_cookie = Cookie::build(("feide_oauth_state", csrf_state.into_secret()))
         .max_age(Duration::seconds(600))
         .http_only(true)
         .secure(!state.config.is_dev);
-    let jar = jar.add(c);
+
+    let app_cookie_value = params.app.unwrap_or("api".to_string());
+    let app_cookie = Cookie::build(("app", app_cookie_value))
+        .max_age(Duration::seconds(600))
+        .http_only(true)
+        .secure(!state.config.is_dev);
+
+    // Add cookies to the jar
+    let jar = jar.add(state_cookie).add(app_cookie);
 
     Ok((jar, Redirect::to(&auth_url)))
 }
@@ -114,33 +139,26 @@ pub async fn feide_callback(
         .map_err(|_| ApiError::InternalServerError)?;
 
     // Check if user exists by Feide ID
-    let existing_user = state
-        .user_repo
-        .get_by_feide_id(&feide_user.sub)
-        .await
-        .map_err(|_| ApiError::InternalServerError)?;
+    let existing_user = state.user_service.get_by_feide_id(&feide_user.sub).await?;
 
     if let Some(user) = existing_user {
         // User exists
-        // Create session and redirect to portal
-        let session = state
-            .session_service
-            .create_session(user.id)
-            .await
-            .map_err(|_| ApiError::InternalServerError)?;
+        // Create session and redirect based on app parameter
+        let session = state.session_service.create_session(user.id).await?;
 
         let session_cookie = state.session_service.create_session_cookie(&session.id);
         let updated_jar = private_jar.add(session_cookie);
 
-        return Ok((updated_jar, Redirect::to("/")));
+        // Determine redirect URL based on app parameter
+        let redirect_url = determine_redirect_url(&regular_jar, &state.config);
+        return Ok((updated_jar, Redirect::to(&redirect_url)));
     }
 
     // Check for valid invitation
     let invitation = state
-        .invitation_repo
+        .invitation_service
         .get_by_email(&feide_user.email)
-        .await
-        .map_err(|_| ApiError::InternalServerError)?;
+        .await?;
 
     let invitation = invitation.ok_or(ApiError::BadRequest(
         "No valid invitation found for this email".to_string(),
@@ -148,41 +166,28 @@ pub async fn feide_callback(
 
     // Create new user
     let user_id = uuid::Uuid::new_v4().to_string();
-    let new_user = crate::models::user::User {
-        id: user_id.clone(),
-        name: feide_user.name,
-        email: feide_user.email,
-        feide_id: Some(feide_user.sub),
-        role: "normal".to_string(),
-        additional_beers: 0,
-        alt_email: None,
-        is_deleted: false,
-    };
+    let new_user = crate::models::user::User::create(
+        user_id.clone(),
+        feide_user.name,
+        feide_user.email,
+        feide_user.sub,
+    );
 
-    state
-        .user_repo
-        .create(&new_user)
-        .await
-        .map_err(|_| ApiError::InternalServerError)?;
+    // Insert the new user
+    state.user_service.create(&new_user).await?;
 
     // Mark invitation as used
-    state
-        .invitation_repo
-        .delete(&invitation.id)
-        .await
-        .map_err(|_| ApiError::InternalServerError)?;
+    state.invitation_service.claim(&invitation.id).await?;
 
     // Create session for new user
-    let session = state
-        .session_service
-        .create_session(user_id)
-        .await
-        .map_err(|_| ApiError::InternalServerError)?;
+    let session = state.session_service.create_session(user_id).await?;
 
     let session_cookie = state.session_service.create_session_cookie(&session.id);
     let updated_jar = private_jar.add(session_cookie);
 
-    Ok((updated_jar, Redirect::to("/")))
+    // Determine redirect URL based on app parameter
+    let redirect_url = determine_redirect_url(&regular_jar, &state.config);
+    Ok((updated_jar, Redirect::to(&redirect_url)))
 }
 
 /// Log out the authenticated user.
@@ -210,13 +215,12 @@ pub async fn logout(
     State(state): State<AppState>,
     jar: PrivateCookieJar,
     auth: AuthorizedMember,
-) -> Result<(PrivateCookieJar, StatusCode), ApiError> {
+) -> Result<impl IntoResponse, ApiError> {
     // Delete session from database
     state
         .session_service
         .delete_session(&auth.session.id)
-        .await
-        .map_err(|_| ApiError::InternalServerError)?;
+        .await?;
 
     // Create logout cookie (expires immediately)
     let logout_cookie = SessionService::create_logout_cookie();

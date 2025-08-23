@@ -1,11 +1,11 @@
 use crate::models::image::Image;
 use sqlx::{PgPool, query, query_as};
 
-pub struct ImageRepository {
+pub struct ImageService {
     pool: PgPool,
 }
 
-impl ImageRepository {
+impl ImageService {
     pub fn new(pool: PgPool) -> Self {
         Self { pool }
     }

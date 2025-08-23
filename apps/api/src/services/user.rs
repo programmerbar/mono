@@ -2,11 +2,12 @@ use sqlx::{Pool, Postgres, query_as};
 
 use crate::{errors::ApiError, models::user::User};
 
-pub struct UserRepository {
-    pub pool: Pool<Postgres>,
+#[derive(Clone)]
+pub struct UserService {
+    pool: Pool<Postgres>,
 }
 
-impl UserRepository {
+impl UserService {
     pub fn new(pool: Pool<Postgres>) -> Self {
         Self { pool }
     }
@@ -26,7 +27,7 @@ impl UserRepository {
         })
     }
 
-    pub async fn get_by_feide_id(&self, feide_id: &str) -> Result<Option<User>, sqlx::Error> {
+    pub async fn get_by_feide_id(&self, feide_id: &str) -> Result<Option<User>, ApiError> {
         query_as!(
             User,
             "SELECT id, name, email, feide_id, role, additional_beers, alt_email, is_deleted
@@ -35,9 +36,10 @@ impl UserRepository {
         )
         .fetch_optional(&self.pool)
         .await
+        .map_err(|_| ApiError::InternalServerError)
     }
 
-    pub async fn create(&self, user: &User) -> Result<(), sqlx::Error> {
+    pub async fn create(&self, user: &User) -> Result<(), ApiError> {
         sqlx::query!(
             "INSERT INTO \"user\" (id, name, email, feide_id, role, additional_beers, alt_email, is_deleted)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
@@ -51,8 +53,20 @@ impl UserRepository {
             user.is_deleted
         )
         .execute(&self.pool)
-        .await?;
+        .await
+        .map_err(|_| ApiError::InternalServerError)?;
 
         Ok(())
+    }
+
+    pub async fn list_active(&self) -> Result<Vec<User>, ApiError> {
+        query_as!(
+            User,
+            "SELECT id, name, email, feide_id, role, additional_beers, alt_email, is_deleted
+             FROM \"user\" WHERE is_deleted = false"
+        )
+        .fetch_all(&self.pool)
+        .await
+        .map_err(|_| ApiError::InternalServerError)
     }
 }

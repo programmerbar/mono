@@ -14,7 +14,7 @@ impl FromRequestParts<AppState> for AuthorizedMember {
         parts: &mut Parts,
         state: &AppState,
     ) -> Result<Self, Self::Rejection> {
-        let session_id = extract_session_cookie(parts)?;
+        let session_id = extract_session_cookie(parts, state.key.clone())?;
         let (session, user) = state.auth_service.validate_session(&session_id).await?;
 
         Ok(AuthorizedMember { session, user })
@@ -28,7 +28,7 @@ impl FromRequestParts<AppState> for AuthorizedBoardMember {
         parts: &mut Parts,
         state: &AppState,
     ) -> Result<Self, Self::Rejection> {
-        let session_id = extract_session_cookie(parts)?;
+        let session_id = extract_session_cookie(parts, state.key.clone())?;
         let (session, user) = state.auth_service.validate_session(&session_id).await?;
 
         if !user.is_board_member() {

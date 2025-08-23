@@ -1,3 +1,4 @@
+pub mod admin;
 pub mod event;
 pub mod image;
 pub mod product;
@@ -5,6 +6,7 @@ pub mod root;
 pub mod status;
 pub mod user;
 
+pub use admin::*;
 pub use event::*;
 pub use image::*;
 pub use product::*;

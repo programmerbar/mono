@@ -1,15 +1,19 @@
-use crate::{errors::ApiError, models::session::Session, repositories::session::SessionRepository};
+use crate::{errors::ApiError, models::session::Session};
 use axum_extra::extract::cookie::{Cookie, SameSite};
 use chrono::{Duration, Utc};
+use sqlx::{Pool, Postgres, query, query_as};
 use uuid::Uuid;
 
+pub const SESSION_COOKIE_NAME: &str = "auth_session";
+
+#[derive(Clone)]
 pub struct SessionService {
-    session_repo: SessionRepository,
+    pool: Pool<Postgres>,
 }
 
 impl SessionService {
-    pub fn new(session_repo: SessionRepository) -> Self {
-        Self { session_repo }
+    pub fn new(pool: Pool<Postgres>) -> Self {
+        Self { pool }
     }
 
     pub async fn create_session(&self, user_id: String) -> Result<Session, ApiError> {
@@ -19,16 +23,55 @@ impl SessionService {
             expires_at: Utc::now() + Duration::hours(24),
         };
 
-        self.session_repo
-            .create(&session)
-            .await
-            .map_err(|_| ApiError::InternalServerError)?;
+        query!(
+            "INSERT INTO session (id, user_id, expires_at) VALUES ($1, $2, $3)",
+            session.id,
+            session.user_id,
+            session.expires_at
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(|_| ApiError::InternalServerError)?;
 
         Ok(session)
     }
 
+    pub async fn get_by_id(&self, session_id: &str) -> Result<Option<Session>, ApiError> {
+        query_as!(
+            Session,
+            "SELECT id, user_id, expires_at FROM session WHERE id = $1",
+            session_id
+        )
+        .fetch_optional(&self.pool)
+        .await
+        .map_err(|_| ApiError::InternalServerError)
+    }
+
+    pub async fn find_valid_by_id(&self, session_id: &str) -> Result<Session, ApiError> {
+        query_as!(
+            Session,
+            "SELECT id, user_id, expires_at FROM session WHERE id = $1 AND expires_at > $2",
+            session_id,
+            Utc::now()
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|err| match err {
+            sqlx::Error::RowNotFound => ApiError::Unauthorized,
+            _ => ApiError::InternalServerError,
+        })
+    }
+
+    pub async fn delete_session(&self, session_id: &str) -> Result<(), ApiError> {
+        query!("DELETE FROM session WHERE id = $1", session_id)
+            .execute(&self.pool)
+            .await
+            .map_err(|_| ApiError::InternalServerError)?;
+        Ok(())
+    }
+
     pub fn create_session_cookie(&self, session_id: &str) -> Cookie<'static> {
-        Cookie::build(("session_id", session_id.to_string()))
+        Cookie::build((SESSION_COOKIE_NAME, session_id.to_string()))
             .http_only(true)
             .secure(true) // Use HTTPS in production
             .same_site(SameSite::Lax)
@@ -37,15 +80,8 @@ impl SessionService {
             .build()
     }
 
-    pub async fn delete_session(&self, session_id: &str) -> Result<(), ApiError> {
-        self.session_repo
-            .delete(session_id)
-            .await
-            .map_err(|_| ApiError::InternalServerError)
-    }
-
     pub fn create_logout_cookie() -> Cookie<'static> {
-        Cookie::build(("session_id", ""))
+        Cookie::build((SESSION_COOKIE_NAME, ""))
             .http_only(true)
             .secure(true)
             .same_site(SameSite::Lax)
