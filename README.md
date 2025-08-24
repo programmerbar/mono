@@ -10,7 +10,7 @@
 1. Fill in env-variables
 
    ```bash
-   cp apps/programmerbar-web/.env.example .env
+   cp programmerbar-web/.env.example .env
    ```
 
 1. Fill in the empty variables
@@ -143,6 +143,8 @@ graph TB
 - **Database migrations**: Applied automatically to production databases during deployment
 
 ### Docker
+
+See `programmerbar-api/Dockerfile` on how to build the Docker image.
 
 To run the api with Docker use the following command:
 
