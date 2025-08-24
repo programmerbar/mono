@@ -1,6 +1,6 @@
 import { generateState } from '$lib/auth/providers/oauth2';
 import { COOKIE_NAME_FEIDE_OAUTH_STATE } from '$lib/constants';
-import type { RequestHandler } from '../$types';
+import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ locals, cookies }) => {
 	const state = generateState();
