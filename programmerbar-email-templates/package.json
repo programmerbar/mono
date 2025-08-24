@@ -15,21 +15,21 @@
     "format:check": "prettier --check templates/**/*.{ts,tsx}"
   },
   "dependencies": {
-    "@react-email/components": "0.4.0",
+    "@react-email/components": "0.5.1",
     "react": "19.1.1",
     "react-dom": "19.1.1",
-    "react-email": "4.2.7",
-    "zod": "4.0.17"
+    "react-email": "4.2.8",
+    "zod": "4.1.1"
   },
   "devDependencies": {
-    "@react-email/preview-server": "4.2.7",
-    "@types/react": "19.1.9",
+    "@react-email/preview-server": "4.2.8",
+    "@types/react": "19.1.11",
     "@types/react-dom": "19.1.7",
-    "@typescript-eslint/eslint-plugin": "^8.13.0",
-    "@typescript-eslint/parser": "^8.13.0",
-    "eslint": "^9.15.0",
+    "@typescript-eslint/eslint-plugin": "^8.40.0",
+    "@typescript-eslint/parser": "^8.40.0",
+    "eslint": "^9.34.0",
     "eslint-plugin-react": "^7.37.2",
-    "globals": "^15.12.0",
+    "globals": "^16.3.0",
     "prettier": "^3.3.3",
     "typescript": "5.8.3"
   }
