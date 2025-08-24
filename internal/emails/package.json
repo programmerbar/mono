@@ -3,8 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "exports": {
-    ".": "./emails/index.ts"
+    ".": {
+      "import": "./emails/index.ts",
+      "types": "./emails/index.ts"
+    }
   },
+  "type": "module",
   "scripts": {
     "build": "email build",
     "dev": "email dev",
@@ -14,7 +18,8 @@
     "@react-email/components": "0.4.0",
     "react": "19.1.1",
     "react-dom": "19.1.1",
-    "react-email": "4.2.7"
+    "react-email": "4.2.7",
+    "zod": "4.0.17"
   },
   "devDependencies": {
     "@react-email/preview-server": "4.2.7",

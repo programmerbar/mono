@@ -2,8 +2,8 @@ import { dev } from '$app/environment';
 import {
 	ContactUsEmail,
 	InvitationEmail,
-	ShiftEmail,
-	VoulenteerEmail
+	NewShiftEmail,
+	VoulenteerRequestEmail
 } from '@programmerbar/emails';
 import type { CreateEmailOptions, Resend } from 'resend';
 import { formatDate, normalDate } from '$lib/date';
@@ -100,7 +100,7 @@ export class EmailService {
 			from: FROM_EMAIL,
 			subject: 'Ny frivillig-søknad',
 			to: ['frivilligansvarlig@programmerbar.no'],
-			react: <VoulenteerEmail name={data.name} email={data.email} />
+			react: <VoulenteerRequestEmail name={data.name} email={data.email} />
 		});
 	}
 
@@ -111,7 +111,7 @@ export class EmailService {
 			from: FROM_EMAIL,
 			subject: 'Du har fått en vakt',
 			to: [data.user.email],
-			react: <ShiftEmail shift={data.shift} user={data.user} />,
+			react: <NewShiftEmail shift={data.shift} user={data.user} />,
 			attachments: [
 				{
 					filename: 'shift.ics',
