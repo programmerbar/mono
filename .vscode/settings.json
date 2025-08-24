@@ -1,9 +1,10 @@
 {
-  "eslint.workingDirectories": [
-    "./apps/www",
-    "./apps/cms",
-    "./internal/emails"
-  ],
-  "prettier.configPath": "./apps/www/.prettierrc",
-  "typescript.tsdk": "node_modules/typescript/lib"
+	"eslint.workingDirectories": [
+		"programmerbar-web",
+		"programmerbar-cms",
+		"programmerbar-email",
+		"programmerbar-email-templates"
+	],
+	"prettier.configPath": "./base-prettier.config.mjs",
+	"typescript.tsdk": "node_modules/typescript/lib"
 }

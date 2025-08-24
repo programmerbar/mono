@@ -1,5 +1,5 @@
-import { Body, Container, Head, Html, Text, Tailwind } from '@react-email/components';
-import { z } from 'zod';
+import { Body, Container, Head, Html, Text, Tailwind } from "@react-email/components";
+import { z } from "zod";
 
 export const NewShiftEmailSchema = z.object({
 	shift: z.object({
@@ -31,11 +31,11 @@ export function NewShiftEmail({ shift, user }: NewShiftEmailSchemaType) {
 						<Text className="mt-4">Du har blitt tildelt en vakt med følgende detaljer:</Text>
 
 						<Text className="mt-2">
-							<strong>Fra:</strong> {new Date(shift.startAt).toLocaleString('nb-NO')}
+							<strong>Fra:</strong> {new Date(shift.startAt).toLocaleString("nb-NO")}
 						</Text>
 
 						<Text className="mt-1">
-							<strong>Til:</strong> {new Date(shift.endAt).toLocaleString('nb-NO')}
+							<strong>Til:</strong> {new Date(shift.endAt).toLocaleString("nb-NO")}
 						</Text>
 
 						{shift.description && (
@@ -56,11 +56,11 @@ NewShiftEmail.PreviewProps = {
 	shift: {
 		startAt: new Date().toISOString(),
 		endAt: new Date(Date.now() + 3600000).toISOString(),
-		summary: 'Vakt for programmerbar fredagsåpent',
-		description: 'Programmerbar.'
+		summary: "Vakt for programmerbar fredagsåpent",
+		description: "Programmerbar."
 	},
 	user: {
-		name: 'Ola Nordmann',
-		email: 'ola.nordmann@example.com'
+		name: "Ola Nordmann",
+		email: "ola.nordmann@example.com"
 	}
 } as NewShiftEmailSchemaType;

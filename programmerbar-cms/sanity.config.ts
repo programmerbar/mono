@@ -7,20 +7,15 @@ import { schemaTypes } from "./schemaTypes";
 import { deskStructure as structure } from "./src/desk-structure";
 
 export default defineConfig({
-  name: "default",
-  title: "programmerbar-cms",
+	name: "default",
+	title: "programmerbar-cms",
 
-  projectId: "elfb3wn1",
-  dataset: "production",
+	projectId: "elfb3wn1",
+	dataset: "production",
 
-  plugins: [
-    structureTool({ structure }),
-    visionTool(),
-    markdownSchema(),
-    media(),
-  ],
+	plugins: [structureTool({ structure }), visionTool(), markdownSchema(), media()],
 
-  schema: {
-    types: schemaTypes,
-  },
+	schema: {
+		types: schemaTypes
+	}
 });

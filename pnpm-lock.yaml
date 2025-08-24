@@ -103,8 +103,23 @@ importers:
         version: 5.3.1(zod@4.0.17)
     devDependencies:
       '@types/node':
-        specifier: ^20.11.17
+        specifier: ^20.19.11
         version: 20.19.11
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^8.13.0
+        version: 8.39.1(@typescript-eslint/parser@8.39.1)(eslint@9.33.0)(typescript@5.8.3)
+      '@typescript-eslint/parser':
+        specifier: ^8.13.0
+        version: 8.39.1(eslint@9.33.0)(typescript@5.8.3)
+      eslint:
+        specifier: ^9.15.0
+        version: 9.33.0
+      globals:
+        specifier: ^15.12.0
+        version: 15.15.0
+      prettier:
+        specifier: ^3.3.3
+        version: 3.6.2
       tsx:
         specifier: ^4.7.1
         version: 4.20.4
@@ -139,6 +154,24 @@ importers:
       '@types/react-dom':
         specifier: 19.1.7
         version: 19.1.7(@types/react@19.1.9)
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^8.13.0
+        version: 8.39.1(@typescript-eslint/parser@8.39.1)(eslint@9.33.0)(typescript@5.8.3)
+      '@typescript-eslint/parser':
+        specifier: ^8.13.0
+        version: 8.39.1(eslint@9.33.0)(typescript@5.8.3)
+      eslint:
+        specifier: ^9.15.0
+        version: 9.33.0
+      eslint-plugin-react:
+        specifier: ^7.37.2
+        version: 7.37.5(eslint@9.33.0)
+      globals:
+        specifier: ^15.12.0
+        version: 15.15.0
+      prettier:
+        specifier: ^3.3.3
+        version: 3.6.2
       typescript:
         specifier: 5.8.3
         version: 5.8.3
@@ -11034,6 +11067,11 @@ packages:
 
   /globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
+    engines: {node: '>=18'}
+    dev: true
+
+  /globals@15.15.0:
+    resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
     engines: {node: '>=18'}
     dev: true
 

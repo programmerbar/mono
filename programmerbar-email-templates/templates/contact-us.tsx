@@ -1,10 +1,10 @@
-import { Body, Container, Head, Html, Text, Tailwind } from '@react-email/components';
-import { z } from 'zod';
+import { Body, Container, Head, Html, Text, Tailwind } from "@react-email/components";
+import { z } from "zod";
 
 export const ContactUsEmailSchema = z.object({
-	name: z.string().min(1, 'Name is required'),
-	email: z.email('Invalid email address'),
-	message: z.string().min(1, 'Message is required')
+	name: z.string().min(1, "Name is required"),
+	email: z.email("Invalid email address"),
+	message: z.string().min(1, "Message is required")
 });
 
 export type ContactUsEmailSchemaType = z.infer<typeof ContactUsEmailSchema>;
@@ -27,7 +27,7 @@ export function ContactUsEmail({ name, email, message }: ContactUsEmailSchemaTyp
 }
 
 ContactUsEmail.PreviewProps = {
-	name: 'Ola Nordmann',
-	email: 'ola.nordmann@echo.uib.no',
-	message: 'Hei, jeg vil gjerne ha kontakt med dere.'
+	name: "Ola Nordmann",
+	email: "ola.nordmann@echo.uib.no",
+	message: "Hei, jeg vil gjerne ha kontakt med dere."
 } as ContactUsEmailSchemaType;

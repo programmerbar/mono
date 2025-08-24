@@ -1,5 +1,5 @@
-import 'dotenv/config';
-import { serve } from '@hono/node-server';
+import "dotenv/config";
+import { serve } from "@hono/node-server";
 import {
 	ContactUsEmail,
 	ContactUsEmailSchema,
@@ -9,18 +9,18 @@ import {
 	NewShiftEmailSchema,
 	VoulenteerRequestEmail,
 	VoulenteerRequestEmailSchema
-} from '@programmerbar/email-templates';
-import { Hono } from 'hono';
-import { describeRoute, openAPISpecs } from 'hono-openapi';
-import { validator } from 'hono-openapi/zod';
-import { Resend } from 'resend';
-import { createIcsEvent } from './ics.js';
-import { swaggerUI } from '@hono/swagger-ui';
-import { Scalar } from '@scalar/hono-api-reference';
+} from "@programmerbar/email-templates";
+import { Hono } from "hono";
+import { describeRoute, openAPISpecs } from "hono-openapi";
+import { validator } from "hono-openapi/zod";
+import { Resend } from "resend";
+import { createIcsEvent } from "./ics.js";
+import { swaggerUI } from "@hono/swagger-ui";
+import { Scalar } from "@scalar/hono-api-reference";
 
-const PROGRAMMERBAR_EMAIL = 'styret@programmerbar.no';
-const FROM_EMAIL = 'ikkesvar@programmer.bar';
-const OPENAPI_URI = '/api-docs/openapi.json';
+const PROGRAMMERBAR_EMAIL = "styret@programmerbar.no";
+const FROM_EMAIL = "ikkesvar@programmer.bar";
+const OPENAPI_URI = "/api-docs/openapi.json";
 
 const app = new Hono();
 const resend = new Resend(process.env.RESEND_API_KEY!);
@@ -30,19 +30,22 @@ app.get(
 	openAPISpecs(app, {
 		documentation: {
 			info: {
-				title: 'Programmerbar Email API',
-				version: '1.0.0',
-				description: 'Email API'
+				title: "Programmerbar Email API",
+				version: "1.0.0",
+				description: "Email API"
 			},
 			servers: [
-				{ url: 'http://localhost:9000', description: 'Local Server' },
-				{ url: 'https://email.programmer.bar', description: 'Production Server' }
+				{ url: "http://localhost:9000", description: "Local Server" },
+				{
+					url: "https://email.programmer.bar",
+					description: "Production Server"
+				}
 			],
 			components: {
 				securitySchemes: {
 					adminKey: {
-						type: 'http',
-						scheme: 'bearer'
+						type: "http",
+						scheme: "bearer"
 					}
 				}
 			},
@@ -51,57 +54,60 @@ app.get(
 	})
 );
 
-app.get('/swagger-ui', swaggerUI({ url: OPENAPI_URI }));
-app.get('/scalar', Scalar({ url: OPENAPI_URI }));
+app.get("/swagger-ui", swaggerUI({ url: OPENAPI_URI }));
+app.get("/scalar", Scalar({ url: OPENAPI_URI }));
 
 app.get(
-	'/health',
+	"/health",
 	describeRoute({
-		description: 'Health check endpoint',
+		description: "Health check endpoint",
 		responses: {
 			200: {
-				description: 'Service is healthy'
+				description: "Service is healthy"
 			}
 		}
 	}),
 	(c) => {
-		return c.json({ status: 'ok', message: 'Programmerbar email API is healthy' });
+		return c.json({
+			status: "ok",
+			message: "Programmerbar email API is healthy"
+		});
 	}
 );
 
 app.post(
-	'/email/contact-us',
+	"/email/contact-us",
 	describeRoute({
-		description: 'Send an email for contact us',
+		description: "Send an email for contact us",
 		responses: {
 			200: {
-				description: 'Successful response'
+				description: "Successful response"
 			},
 			400: {
-				description: 'Bad request'
+				description: "Bad request"
 			},
 			401: {
-				description: 'Unauthorized'
+				description: "Unauthorized"
 			},
 			500: {
-				description: 'Internal server error'
+				description: "Internal server error"
 			}
 		}
 	}),
-	validator('json', ContactUsEmailSchema),
+	validator("json", ContactUsEmailSchema),
 	async (c) => {
-		const data = c.req.valid('json');
+		const data = c.req.valid("json");
 
 		try {
-			console.log('Sending contact us email with data:', data);
+			console.log("Sending contact us email with data:", data);
 			await resend.emails.send({
 				from: FROM_EMAIL,
-				subject: 'Kontaktskjema på hjemmesiden',
+				subject: "Kontaktskjema på hjemmesiden",
 				to: [PROGRAMMERBAR_EMAIL],
 				react: ContactUsEmail(data)
 			});
 		} catch (error) {
-			console.error('Failed to send email:', error, 'Data:', data);
+			console.error("Failed to send email:", error, "Data:", data);
 			return c.status(500);
 		}
 
@@ -110,38 +116,38 @@ app.post(
 );
 
 app.post(
-	'/email/invitation',
+	"/email/invitation",
 	describeRoute({
-		description: 'Send an invitation email',
+		description: "Send an invitation email",
 		responses: {
 			200: {
-				description: 'Successful response'
+				description: "Successful response"
 			},
 			400: {
-				description: 'Bad request'
+				description: "Bad request"
 			},
 			401: {
-				description: 'Unauthorized'
+				description: "Unauthorized"
 			},
 			500: {
-				description: 'Internal server error'
+				description: "Internal server error"
 			}
 		}
 	}),
-	validator('json', InvitationEmailSchema),
+	validator("json", InvitationEmailSchema),
 	async (c) => {
-		const data = c.req.valid('json');
+		const data = c.req.valid("json");
 
 		try {
-			console.log('Sending invitation email with data:', data);
+			console.log("Sending invitation email with data:", data);
 			await resend.emails.send({
 				from: FROM_EMAIL,
-				subject: 'Invitasjon til Programmerbar',
+				subject: "Invitasjon til Programmerbar",
 				to: [data.email],
 				react: InvitationEmail(data)
 			});
 		} catch (error) {
-			console.error('Failed to send email:', error, 'Data:', data);
+			console.error("Failed to send email:", error, "Data:", data);
 			return c.status(500);
 		}
 
@@ -150,45 +156,45 @@ app.post(
 );
 
 app.post(
-	'/email/new-shift',
+	"/email/new-shift",
 	describeRoute({
-		description: 'Send a new shift email',
+		description: "Send a new shift email",
 		responses: {
 			200: {
-				description: 'Successful response'
+				description: "Successful response"
 			},
 			400: {
-				description: 'Bad request'
+				description: "Bad request"
 			},
 			401: {
-				description: 'Unauthorized'
+				description: "Unauthorized"
 			},
 			500: {
-				description: 'Internal server error'
+				description: "Internal server error"
 			}
 		}
 	}),
-	validator('json', NewShiftEmailSchema),
+	validator("json", NewShiftEmailSchema),
 	async (c) => {
-		const data = c.req.valid('json');
+		const data = c.req.valid("json");
 
 		try {
-			console.log('Sending new shift email with data:', data);
+			console.log("Sending new shift email with data:", data);
 			await resend.emails.send({
 				from: FROM_EMAIL,
-				subject: 'Du har fått en vakt',
+				subject: "Du har fått en vakt",
 				to: [data.user.email],
 				react: NewShiftEmail(data),
 				attachments: [
 					{
-						filename: 'shift.ics',
+						filename: "shift.ics",
 						content: createIcsEvent(data.shift),
-						contentType: 'text/calendar'
+						contentType: "text/calendar"
 					}
 				]
 			});
 		} catch (error) {
-			console.error('Failed to send email:', error, 'Data:', data);
+			console.error("Failed to send email:", error, "Data:", data);
 			return c.status(500);
 		}
 
@@ -197,38 +203,38 @@ app.post(
 );
 
 app.post(
-	'/email/voulenteer-request',
+	"/email/voulenteer-request",
 	describeRoute({
-		description: 'Send a volunteer request email',
+		description: "Send a volunteer request email",
 		responses: {
 			200: {
-				description: 'Successful response'
+				description: "Successful response"
 			},
 			400: {
-				description: 'Bad request'
+				description: "Bad request"
 			},
 			401: {
-				description: 'Unauthorized'
+				description: "Unauthorized"
 			},
 			500: {
-				description: 'Internal server error'
+				description: "Internal server error"
 			}
 		}
 	}),
-	validator('json', VoulenteerRequestEmailSchema),
+	validator("json", VoulenteerRequestEmailSchema),
 	async (c) => {
-		const data = c.req.valid('json');
+		const data = c.req.valid("json");
 
 		try {
-			console.log('Sending volunteer request email with data:', data);
+			console.log("Sending volunteer request email with data:", data);
 			await resend.emails.send({
 				from: FROM_EMAIL,
-				subject: 'Ny frivillig-søknad',
-				to: ['frivilligansvarlig@programmerbar.no'],
+				subject: "Ny frivillig-søknad",
+				to: ["frivilligansvarlig@programmerbar.no"],
 				react: VoulenteerRequestEmail(data)
 			});
 		} catch (error) {
-			console.error('Failed to send email:', error, 'Data:', data);
+			console.error("Failed to send email:", error, "Data:", data);
 			return c.status(500);
 		}
 

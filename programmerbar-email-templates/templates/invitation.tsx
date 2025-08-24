@@ -1,5 +1,5 @@
-import { Body, Container, Head, Html, Text, Tailwind, Link } from '@react-email/components';
-import { z } from 'zod';
+import { Body, Container, Head, Html, Text, Tailwind, Link } from "@react-email/components";
+import { z } from "zod";
 
 export const InvitationEmailSchema = z.object({
 	email: z.email()
@@ -39,5 +39,5 @@ export function InvitationEmail({ email }: InvitationEmailSchemaType) {
 }
 
 InvitationEmail.PreviewProps = {
-	email: 'ola.nordmann@echo.uib.no'
+	email: "ola.nordmann@echo.uib.no"
 } as InvitationEmailSchemaType;

@@ -1,9 +1,9 @@
 import { defineCliConfig } from "sanity/cli";
 
 export default defineCliConfig({
-  api: {
-    projectId: "elfb3wn1",
-    dataset: "production",
-  },
-  studioHost: "programmerbar",
+	api: {
+		projectId: "elfb3wn1",
+		dataset: "production"
+	},
+	studioHost: "programmerbar"
 });

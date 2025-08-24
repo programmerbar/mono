@@ -1,9 +1,9 @@
-import { Body, Container, Head, Html, Text, Tailwind, Heading } from '@react-email/components';
-import { z } from 'zod';
+import { Body, Container, Head, Html, Text, Tailwind, Heading } from "@react-email/components";
+import { z } from "zod";
 
 export const VoulenteerRequestEmailSchema = z.object({
-	email: z.email('Invalid email address'),
-	name: z.string().min(1, 'Name is required')
+	email: z.email("Invalid email address"),
+	name: z.string().min(1, "Name is required")
 });
 
 export type VoulenteerEmailSchemaType = z.infer<typeof VoulenteerRequestEmailSchema>;
@@ -31,6 +31,6 @@ export function VoulenteerRequestEmail({ email, name }: VoulenteerEmailSchemaTyp
 }
 
 VoulenteerRequestEmail.PreviewProps = {
-	name: 'Ola Nordmann',
-	email: 'ola.nordmann@uib.no'
+	name: "Ola Nordmann",
+	email: "ola.nordmann@uib.no"
 } as VoulenteerEmailSchemaType;

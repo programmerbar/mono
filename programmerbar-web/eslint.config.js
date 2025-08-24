@@ -26,7 +26,7 @@ export default ts.config(
 	},
 	{
 		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
-		ignores: ['eslint.config.js', 'svelte.config.js', 'worker-configuration.d.ts'],
+		ignores: ['eslint.config.js', 'svelte.config.js'],
 
 		languageOptions: {
 			parserOptions: {
@@ -40,5 +40,8 @@ export default ts.config(
 			'svelte/no-at-html-tags': 'off',
 			'svelte/no-unnecessary-state-wrap': 'warn'
 		}
+	},
+	{
+		ignores: ['src/lib/api-client/**', 'src/worker-configuration.d.ts']
 	}
 );

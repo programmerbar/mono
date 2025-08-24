@@ -1,4 +1,4 @@
-import { formatDate, normalDate } from './date.js';
+import { formatDate, normalDate } from "./date.js";
 
 type IcsShiftEvent = {
 	id: string;
@@ -24,7 +24,7 @@ DTSTAMP:${dtstamp}
 DTSTART;TZID=Europe/Oslo:${dtstart}
 DTEND;TZID=Europe/Oslo:${dtend}
 SUMMARY:${shift.summary}
-DESCRIPTION:${shift.description || ''}
+DESCRIPTION:${shift.description || ""}
 END:VEVENT
 END:VCALENDAR`;
 }
