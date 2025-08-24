@@ -3,12 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "exports": {
-    ".": {
-      "import": "./emails/index.ts",
-      "types": "./emails/index.ts"
-    }
+    ".": "./emails/index.ts"
   },
-  "type": "module",
   "scripts": {
     "build": "email build",
     "dev": "email dev",
