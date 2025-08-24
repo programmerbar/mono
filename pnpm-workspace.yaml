@@ -1,3 +1,6 @@
 packages:
-  - apps/*
-  - internal/*
+  - programmerbar-api
+  - programmerbar-cms
+  - programmerbar-email
+  - programmerbar-email-templates
+  - programmerbar-web

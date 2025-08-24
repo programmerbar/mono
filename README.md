@@ -10,7 +10,7 @@
 1. Fill in env-variables
 
    ```bash
-   cp apps/www/.env.example .env
+   cp apps/programmerbar-web/.env.example .env
    ```
 
 1. Fill in the empty variables
@@ -36,13 +36,14 @@
 - Website will run on [http://localhost:5173](http://localhost:5173)
 - Sanity will run on [http://localhost:3333](http://localhost:3333)
 - API will run on [http://localhost:8000](http://localhost:8000)
+- Email API will run on [http://localhost:8001](http://localhost:8001)
 
 ### Add invitation
 
 To be able to login you need to create an invitation for yourself. You can do this by running the following command:
 
 ```bash
-pnpm dlx tsx ./apps/www/scripts/add-invitation.ts "<your-email>"
+pnpm dlx tsx ./programmerbar-web/scripts/add-invitation.ts "<your-email>"
 ```
 
 ## Architecture

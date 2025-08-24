@@ -1,5 +1,5 @@
 # Dockerfile for building the API from monorepo root
-# Build command: docker build -f Dockerfile.api --build-arg DATABASE_URL=postgres://postgres:postgres@localhost:5432/programmerbar -t programmerbar-api .
+# Build command: docker build -f programmerbar-api/Dockerfile --build-arg DATABASE_URL=postgres://postgres:postgres@localhost:5432/programmerbar -t programmerbar-api .
 
 FROM lukemathwalker/cargo-chef:latest AS chef
 WORKDIR /app
@@ -12,8 +12,8 @@ RUN apt-get update && apt-get install -y \
 
 FROM chef AS planner
 COPY Cargo.toml Cargo.lock ./
-COPY apps/api/Cargo.toml ./apps/api/Cargo.toml
-COPY apps/api/src ./apps/api/src
+COPY programmerbar-api/Cargo.toml ./programmerbar-api/Cargo.toml
+COPY programmerbar-api/src ./programmerbar-api/src
 RUN cargo chef prepare --recipe-path recipe.json --bin api
 
 FROM chef AS builder

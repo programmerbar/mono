@@ -9,7 +9,7 @@ import {
 	NewShiftEmailSchema,
 	VoulenteerRequestEmail,
 	VoulenteerRequestEmailSchema
-} from '@programmerbar/emails';
+} from '@programmerbar/email-templates';
 import { Hono } from 'hono';
 import { describeRoute, openAPISpecs } from 'hono-openapi';
 import { validator } from 'hono-openapi/zod';

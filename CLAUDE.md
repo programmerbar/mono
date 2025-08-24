@@ -10,10 +10,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Monorepo Structure
 
-- `apps/www/` - Main SvelteKit application (primary codebase)
-- `apps/cms/` - Sanity headless CMS for content management
-- `apps/api/` - Rust API backend with Axum web framework
-- `internal/emails/` - React Email templates for notifications
+- `programmerbar-web/` - Main SvelteKit application (primary codebase)
+- `programmerbar-cms/` - Sanity headless CMS for content management
+- `programmerbar-api/` - Rust API backend with Axum web framework
+- `programmerbar-email` - Email API for sending emails
+- `programmerbar-email-templates/` - React Email templates for notifications
 
 ### Technology Stack
 
@@ -46,7 +47,7 @@ The application uses a service layer pattern with dependency injection via Svelt
 
 ```bash
 # Copy environment variables
-cp apps/www/.env.example apps/www/.env
+cp programmerbar-web/.env.example programmerbar-web/.env
 # Fill in Resend API key, Feide OAuth credentials
 
 # Install dependencies (Node.js and Rust)
@@ -66,7 +67,7 @@ pnpm dev
 pnpm dev                    # Start all services (website: :5173, CMS: :3333, API: :8000)
 
 # Rust API Development
-cd apps/api
+cd programmerbar-api
 cargo run                   # Run API server directly
 cargo build                # Build API binary
 cargo test                 # Run Rust tests

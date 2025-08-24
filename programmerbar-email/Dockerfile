@@ -1,5 +1,5 @@
 # Dockerfile for building the API from monorepo root
-# Build command: docker build -f Dockerfile.email -t programmerbar-email .
+# Build command: docker build -f programmerbar-email/Dockerfile -t programmerbar-email .
 
 FROM node:22-alpine AS base
 
@@ -34,6 +34,6 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 hono
 USER hono
 
-COPY --from=installer /app/apps/email/dist ./dist
+COPY --from=installer /app/programmerbar-email/dist ./dist
 
 CMD node ./dist/index.js

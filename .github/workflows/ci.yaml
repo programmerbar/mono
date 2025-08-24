@@ -80,12 +80,12 @@ jobs:
         run: cargo install sqlx-cli --no-default-features --features postgres
 
       - name: 🗄️ Run database migrations
-        run: pnpm --filter=api db:migrate --database-url postgres://postgres:postgres@localhost:5432/programmerbar
+        run: pnpm --filter=api db:migrate --database-url $DATABASE_URL
 
       - name: 📝 Prepare SQLx offline cache
         run: |
-          cd apps/api
-          cargo sqlx prepare --database-url postgres://postgres:postgres@localhost:5432/programmerbar
+          cd programmerbar-api
+          cargo sqlx prepare --database-url $DATABASE_URL
 
       - name: 🔵 Check
         run: pnpm check

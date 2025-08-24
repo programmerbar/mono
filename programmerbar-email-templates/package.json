@@ -1,14 +1,14 @@
 {
-  "name": "@programmerbar/emails",
+  "name": "@programmerbar/email-templates",
   "version": "0.0.1",
   "private": true,
   "exports": {
-    ".": "./emails/index.ts"
+    ".": "./templates/index.ts"
   },
   "scripts": {
-    "build": "email build",
-    "dev": "email dev",
-    "export": "email export"
+    "build": "email build --dir templates",
+    "dev": "email dev --dir templates",
+    "export": "email export --dir templates"
   },
   "dependencies": {
     "@react-email/components": "0.4.0",

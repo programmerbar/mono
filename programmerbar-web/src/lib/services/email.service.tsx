@@ -4,7 +4,7 @@ import {
 	InvitationEmail,
 	NewShiftEmail,
 	VoulenteerRequestEmail
-} from '@programmerbar/emails';
+} from '@programmerbar/email-templates';
 import type { CreateEmailOptions, Resend } from 'resend';
 import { formatDate, normalDate } from '$lib/date';
 import { render } from '@react-email/render';
