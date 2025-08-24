@@ -45,13 +45,101 @@ To be able to login you need to create an invitation for yourself. You can do th
 pnpm dlx tsx ./apps/www/scripts/add-invitation.ts "<your-email>"
 ```
 
-## Technologies
+## Architecture
 
-The architecture heavliy relies on Cloudflare Pages and associated services like D1 and KV. The website is built with SvelteKit, and uses Sanity as a headless CMS.
+The architecture heavily relies on Cloudflare Pages and associated services like D1 and KV. The website is built with SvelteKit, and uses Sanity as a headless CMS.
+
+```mermaid
+graph TB
+    %% Frontend Layer
+    subgraph "Frontend"
+        WEB[SvelteKit Web App<br/>:5173]
+        CMS[Sanity CMS<br/>:3333]
+    end
+
+    %% Backend Services
+    subgraph "Backend Services"
+        API[Rust Axum API<br/>:8000]
+        EMAIL[Node.js Email Service<br/>:8001]
+    end
+
+    %% External Services
+    subgraph "External Services"
+        FEIDE[Feide OAuth<br/>Norwegian Education SSO]
+        RESEND[Resend<br/>Email Delivery]
+    end
+
+    %% Deployment
+    subgraph "Deployment"
+        CF[Cloudflare Pages<br/>SvelteKit Worker]
+        DOCKER[Docker<br/>API & Email Services]
+    end
+
+    %% Database Layer
+    subgraph "Data Layer"
+        D1[(Cloudflare D1<br/>SQLite Database)]
+        PG[(PostgreSQL<br/>Database)]
+        REDIS[(Redis<br/>Key-Value Store)]
+        R2[(Cloudflare R2<br/>Object Storage)]
+        SANITY[(Sanity Studio<br/>Content Management)]
+    end
+
+    %% User Flow
+    USER[Users] --> WEB
+    ADMIN[Content Admins] --> CMS
+
+    %% Frontend to Backend
+    WEB --> API
+    WEB --> EMAIL
+    CMS --> SANITY
+
+    %% API Connections
+    API --> PG
+    API --> REDIS
+    API --> R2
+    API --> FEIDE
+
+    %% SvelteKit Web App Connections
+    WEB --> D1
+
+    %% Email Service
+    EMAIL --> RESEND
+
+    %% Deployment
+    WEB --> CF
+    API --> DOCKER
+    EMAIL --> DOCKER
+
+    classDef frontend fill:#e1f5fe
+    classDef backend fill:#f3e5f5
+    classDef external fill:#fff3e0
+    classDef database fill:#e8f5e8
+    classDef deployment fill:#f9f9f9
+
+    class WEB,CMS frontend
+    class API,EMAIL backend
+    class FEIDE,RESEND external
+    class D1,PG,REDIS,R2,SANITY database
+    class CF,DOCKER deployment
+```
+
+### Key Components
+
+- **SvelteKit Web App**: Main user interface with portal system for students and admin panel for board members
+- **Rust Axum API**: High-performance backend handling authentication, user management, and business logic
+- **Node.js Email Service**: Dedicated service for sending transactional emails via Resend
+- **Sanity CMS**: Headless content management for products and general content
+- **Cloudflare D1**: SQLite database used by the SvelteKit web application
+- **PostgreSQL**: Primary database for the Rust API backend
+- **Redis**: Key-value store for caching and session management
+- **Cloudflare R2**: Object storage for file uploads and static assets
+- **Feide OAuth**: Norwegian education federation for secure user authentication
 
 ### Deployment
 
-The website will be deployed to Cloudflare Pages automatically when a PR is merged to `main`. Any migrations will also be applied to the production database automatically.
+- **SvelteKit Web App**: Deployed as a Cloudflare Worker via Cloudflare Pages with automatic deployments on `main` branch merges
+- **Rust API & Email Service**: Containerized with Docker for flexible hosting
+- **Database migrations**: Applied automatically to production databases during deployment
 
 ### Docker
 
