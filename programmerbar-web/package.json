@@ -11,15 +11,16 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"deploy": "pnpm run build && wrangler deploy",
 		"typegen": "wrangler types && mv worker-configuration.d.ts src/",
-		"lint": "prettier --check . && eslint src",
+		"lint": "eslint src",
 		"format": "prettier --write .",
+		"format:check": "prettier --check .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
 		"clean": "rm -rf node_modules .svelte-kit build .turbo",
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "wrangler d1 migrations apply progbar-db",
 		"db:migrate:local": "pnpm db:migrate -- --local",
-		"client:generate": "openapi-generator-cli generate -i http://localhost:8000/api-docs/openapi.json -g typescript-fetch -o ./src/lib/generate-api-client --skip-validate-spec"
+		"client:generate": "./generate-api-client.sh"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "4.20250813.0",

@@ -7,7 +7,7 @@ import {
 	ImagesApi,
 	StatusApi,
 	InvitationsApi
-} from '$lib/generate-api-client';
+} from '$lib/api-client';
 
 const config = new Configuration({
 	basePath: 'http://localhost:8000',
