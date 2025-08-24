@@ -16,15 +16,17 @@ import { validator } from 'hono-openapi/zod';
 import { Resend } from 'resend';
 import { createIcsEvent } from './ics.js';
 import { swaggerUI } from '@hono/swagger-ui';
+import { Scalar } from '@scalar/hono-api-reference';
 
 const PROGRAMMERBAR_EMAIL = 'styret@programmerbar.no';
 const FROM_EMAIL = 'ikkesvar@programmer.bar';
+const OPENAPI_URI = '/api-docs/openapi.json';
 
 const app = new Hono();
 const resend = new Resend(process.env.RESEND_API_KEY!);
 
 app.get(
-	'/api-docs/openapi.json',
+	OPENAPI_URI,
 	openAPISpecs(app, {
 		documentation: {
 			info: {
@@ -49,7 +51,8 @@ app.get(
 	})
 );
 
-app.get('/swagger-ui', swaggerUI({ url: '/api-docs/openapi.json' }));
+app.get('/swagger-ui', swaggerUI({ url: OPENAPI_URI }));
+app.get('/scalar', Scalar({ url: OPENAPI_URI }));
 
 app.get(
 	'/health',
@@ -239,6 +242,10 @@ serve(
 		port: 8001
 	},
 	(info) => {
-		console.log(`Server is running on http://localhost:${info.port}`);
+		console.log(`🚀 Server starting on http://localhost:${info.port}`);
+		console.log(
+			`🤓 Visit http://localhost:${info.port}/swagger-ui for the Swagger API documentation`
+		);
+		console.log(`🤓 Visit http://localhost:${info.port}/scalar for the Scalar API documentation`);
 	}
 );

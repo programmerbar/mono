@@ -2,6 +2,8 @@ use tower_http::{cors::CorsLayer, normalize_path::NormalizePathLayer, trace::Tra
 use tracing_subscriber::{self, layer::SubscriberExt, util::SubscriberInitExt};
 use utoipa::OpenApi;
 use utoipa_axum::router::OpenApiRouter;
+use utoipa_scalar::Scalar;
+use utoipa_scalar::Servable;
 use utoipa_swagger_ui::SwaggerUi;
 
 use crate::{
@@ -50,13 +52,17 @@ async fn main() -> anyhow::Result<()> {
     // State
     let router = router.with_state(state);
 
-    let app = router.merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", api));
+    let app = router
+        .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", api.clone()))
+        .merge(Scalar::with_url("/scalar", api));
 
     let port = config.server_port;
     let listener = tokio::net::TcpListener::bind(format!("127.0.0.1:{port}")).await?;
 
-    tracing::info!("🚀 Programmerbar API server starting on http://127.0.0.1:{port}",);
-    tracing::info!("🤓 Visit http://127.0.0.1:{port}/swagger-ui for the API documentation");
+    tracing::info!("🚀 Programmerbar API server starting on http://localhost:{port}",);
+    tracing::info!("🔗 OpenAPI JSON available at http://localhost:{port}/api-docs/openapi.json");
+    tracing::info!("🤓 Visit http://localhost:{port}/swagger-ui for the API documentation");
+    tracing::info!("🌌 Scalar API available at http://localhost:{port}/scalar");
 
     axum::serve(listener, app).await?;
 

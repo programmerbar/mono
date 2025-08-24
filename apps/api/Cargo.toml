@@ -29,3 +29,4 @@ utoipa = { version = "5.4.0", features = ["axum_extras", "chrono"] }
 utoipa-axum = "0.2.0"
 redis = { version = "0.32.5", features = ["tokio-comp"] }
 serde-email = "3.2.0"
+utoipa-scalar = { version = "0.3.0", features = ["axum"] }

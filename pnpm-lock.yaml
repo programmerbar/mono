@@ -74,6 +74,9 @@ importers:
       '@programmerbar/emails':
         specifier: '*'
         version: link:../../internal/emails
+      '@scalar/hono-api-reference':
+        specifier: ^0.9.15
+        version: 0.9.15(hono@4.9.4)
       date-fns:
         specifier: 4.1.0
         version: 4.1.0
@@ -6973,6 +6976,39 @@ packages:
     dependencies:
       '@sanity/client': 7.8.2(debug@4.4.1)
       '@sanity/types': 4.4.0(@types/react@19.1.10)(debug@4.4.1)
+    dev: false
+
+  /@scalar/core@0.3.13:
+    resolution: {integrity: sha512-lgrueSjR1eacM39Zg0jAHikGomGAF2o2/s/5EcMz/ul7VLo/IBymw8gUjcGHZ9zd8PFGdo8DvOwFMRCiXiaDHw==}
+    engines: {node: '>=20'}
+    dependencies:
+      '@scalar/types': 0.2.12
+    dev: false
+
+  /@scalar/hono-api-reference@0.9.15(hono@4.9.4):
+    resolution: {integrity: sha512-Lx/ity79xA3pdp624ikccDwvlY30M79e/1jvl/LjPDToc0byMr2tUVyHbmMhuaX8PVPlUKkdO97XGw0+M5IZJg==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      hono: ^4.0.0
+    dependencies:
+      '@scalar/core': 0.3.13
+      hono: 4.9.4
+    dev: false
+
+  /@scalar/openapi-types@0.3.7:
+    resolution: {integrity: sha512-QHSvHBVDze3+dUwAhIGq6l1iOev4jdoqdBK7QpfeN1Q4h+6qpVEw3EEqBiH0AXUSh/iWwObBv4uMgfIx0aNZ5g==}
+    engines: {node: '>=20'}
+    dependencies:
+      zod: 3.24.1
+    dev: false
+
+  /@scalar/types@0.2.12:
+    resolution: {integrity: sha512-CW7jS+gpc3lZdjf+888++I9HtsGCk6zbh4lZscY8spcg/dlXXd3ReYicxee/cx+soDjU1d/Pcqj9o/QqvTFYxQ==}
+    engines: {node: '>=20'}
+    dependencies:
+      '@scalar/openapi-types': 0.3.7
+      nanoid: 5.1.5
+      zod: 3.24.1
     dev: false
 
   /@selderee/plugin-htmlparser2@0.11.0:
@@ -17300,6 +17336,10 @@ packages:
   /zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
     dev: true
+
+  /zod@3.24.1:
+    resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
+    dev: false
 
   /zod@3.24.3:
     resolution: {integrity: sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg==}

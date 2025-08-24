@@ -12,6 +12,7 @@
     "@hono/swagger-ui": "^0.5.2",
     "@hono/zod-validator": "^0.7.2",
     "@programmerbar/emails": "*",
+    "@scalar/hono-api-reference": "^0.9.15",
     "date-fns": "4.1.0",
     "dotenv": "^17.2.1",
     "esbuild": "^0.25.9",
