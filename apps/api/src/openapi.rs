@@ -1,13 +1,16 @@
 use utoipa::{
     Modify, OpenApi,
-    openapi::security::{ApiKey, ApiKeyValue, HttpAuthScheme, HttpBuilder, SecurityScheme},
+    openapi::{
+        Server,
+        security::{ApiKey, ApiKeyValue, HttpAuthScheme, HttpBuilder, SecurityScheme},
+    },
 };
 
 use crate::services::session::SESSION_COOKIE_NAME;
 
 #[derive(OpenApi)]
 #[openapi(
-    modifiers(&SecurityAddon),
+    modifiers(&SecurityAddon, &ServerAddon),
     tags(
         (name = "Health", description = "Health check endpoints"),
         (name = "Products", description = "Product management"),
@@ -22,7 +25,7 @@ use crate::services::session::SESSION_COOKIE_NAME;
 )]
 pub struct ApiDoc;
 
-pub struct SecurityAddon;
+struct SecurityAddon;
 
 impl Modify for SecurityAddon {
     fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
@@ -36,5 +39,13 @@ impl Modify for SecurityAddon {
                 SecurityScheme::Http(HttpBuilder::new().scheme(HttpAuthScheme::Bearer).build()),
             );
         }
+    }
+}
+
+struct ServerAddon;
+
+impl Modify for ServerAddon {
+    fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
+        openapi.servers = Some(vec![Server::new("/"), Server::new("srv.programmer.bar")])
     }
 }
