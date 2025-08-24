@@ -10,8 +10,6 @@ export const actions: Actions = {
 		await locals.auth.invalidateSession(locals.session.id);
 		cookies.delete(locals.auth.sessionCookieName, {
 			path: '/',
-			httpOnly: true,
-			secure: !dev
 		});
 
 		return { success: true };

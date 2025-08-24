@@ -1,7 +1,8 @@
 <script lang="ts">
+	import '../tailwind.css';
+
 	import { setUserContext } from '$lib/context/user.context';
 	import { Toaster } from 'svelte-sonner';
-	import '../tailwind.css';
 	import { writable } from 'svelte/store';
 
 	const { data, children } = $props();

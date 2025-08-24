@@ -1,4 +1,3 @@
-import { dev } from '$app/environment';
 import { generateState } from '$lib/auth/providers/oauth2';
 import { COOKIE_NAME_FEIDE_OAUTH_STATE } from '$lib/constants';
 import type { RequestHandler } from '../$types';
@@ -9,8 +8,6 @@ export const GET: RequestHandler = ({ locals, cookies }) => {
 
 	cookies.set(COOKIE_NAME_FEIDE_OAUTH_STATE, state, {
 		path: '/',
-		httpOnly: true,
-		secure: !dev,
 		maxAge: 60 * 10
 	});
 
