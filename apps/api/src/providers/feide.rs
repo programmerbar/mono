@@ -6,7 +6,7 @@ const FEIDE_AUTHORIZATION_ENDPOINT: &str = "https://auth.dataporten.no/oauth/aut
 const FEIDE_TOKEN_ENDPOINT: &str = "https://auth.dataporten.no/oauth/token";
 const FEIDE_USERINFO_ENDPOINT: &str = "https://auth.dataporten.no/openid/userinfo";
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct FeideProvider {
     client_id: ClientId,
     client_secret: ClientSecret,

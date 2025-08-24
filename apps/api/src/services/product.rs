@@ -1,29 +1,29 @@
 use crate::models::product::Product;
-use sqlx::{PgPool, query, query_as};
 
+#[derive(Clone)]
 pub struct ProductService {
-    pool: PgPool,
+    pool: sqlx::PgPool,
 }
 
 impl ProductService {
-    pub fn new(pool: PgPool) -> Self {
+    pub fn new(pool: sqlx::PgPool) -> Self {
         Self { pool }
     }
 
     pub async fn list(&self) -> Result<Vec<Product>, sqlx::Error> {
-        query_as!(Product, "SELECT * FROM product")
+        sqlx::query_as!(Product, "SELECT * FROM product")
             .fetch_all(&self.pool)
             .await
     }
 
     pub async fn get_by_id(&self, id: &str) -> Result<Option<Product>, sqlx::Error> {
-        query_as!(Product, "SELECT * FROM product WHERE id = $1", id)
+        sqlx::query_as!(Product, "SELECT * FROM product WHERE id = $1", id)
             .fetch_optional(&self.pool)
             .await
     }
 
     pub async fn create(&self, product: &Product) -> Result<Product, sqlx::Error> {
-        let product = query_as!(Product,
+        let product = sqlx::query_as!(Product,
             "INSERT INTO product (id, sku, name, description, is_sold_out, ordinary_price, student_price, internal_price, credits, volume, alcohol_content, variants, image_id, producer_id, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *",
             product.id,
             product.sku,
@@ -49,7 +49,7 @@ impl ProductService {
     }
 
     pub async fn update(&self, product: &Product) -> Result<(), sqlx::Error> {
-        query!(
+        sqlx::query!(
             "UPDATE product SET sku = $2, name = $3, description = $4, is_sold_out = $5, ordinary_price = $6, student_price = $7, internal_price = $8, credits = $9, volume = $10, alcohol_content = $11, variants = $12, image_id = $13, producer_id = $14, created_at = $15, updated_at = $16 WHERE id = $1",
             product.id,
             product.sku,
@@ -74,7 +74,7 @@ impl ProductService {
     }
 
     pub async fn delete(&self, id: &str) -> Result<(), sqlx::Error> {
-        query!("DELETE FROM product WHERE id = $1", id)
+        sqlx::query!("DELETE FROM product WHERE id = $1", id)
             .execute(&self.pool)
             .await?;
         Ok(())

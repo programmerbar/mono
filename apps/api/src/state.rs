@@ -9,8 +9,9 @@ use crate::{
     config::Config,
     providers::feide::FeideProvider,
     services::{
-        auth::AuthService, event::EventService, image::ImageService, invitation::InvitationService,
-        product::ProductService, session::SessionService, status::StatusService, user::UserService,
+        auth::AuthService, beer::BeerService, event::EventService, image::ImageService,
+        invitation::InvitationService, notification::NotificationService, product::ProductService,
+        session::SessionService, shift::ShiftService, status::StatusService, user::UserService,
     },
 };
 
@@ -23,62 +24,39 @@ pub struct AppState {
     pub redis: Arc<RedisClient>,
 
     // Services
-    pub auth_service: Arc<AuthService>,
-    pub invitation_service: Arc<InvitationService>,
-    pub session_service: Arc<SessionService>,
-    pub status_service: Arc<StatusService>,
-    pub user_service: Arc<UserService>,
-    pub image_service: Arc<ImageService>,
-    pub event_service: Arc<EventService>,
-    pub product_service: Arc<ProductService>,
+    pub auth_service: AuthService,
+    pub invitation_service: InvitationService,
+    pub session_service: SessionService,
+    pub status_service: StatusService,
+    pub user_service: UserService,
+    pub image_service: ImageService,
+    pub event_service: EventService,
+    pub product_service: ProductService,
+    pub notification_service: NotificationService,
+    pub beer_service: BeerService,
+    pub shift_service: ShiftService,
 
     // Providers
-    pub feide_provider: Arc<FeideProvider>,
+    pub feide_provider: FeideProvider,
 }
 
 impl AppState {
     pub async fn from_config(config: Config) -> Self {
         let pool = sqlx::postgres::PgPoolOptions::new()
-            .max_connections(5)
+            .max_connections(10)
             .connect(config.database_url.as_str())
             .await
             .expect("Failed to connect to the database");
 
-        tracing::info!("Connected to the database at {}", config.database_url);
-        tracing::info!("Using database pool with max connections: {}", 5);
+        tracing::info!("Connected to postgres database");
 
-        tracing::info!("Running database migrations...");
-        match sqlx::migrate!("./migrations").run(&pool).await {
-            Ok(_) => {
-                tracing::info!("✅ Database migrations completed successfully");
-            }
-            Err(e) => {
-                tracing::error!("❌ Failed to run database migrations: {}", e);
-                std::process::exit(1);
-            }
-        }
+        sqlx::migrate!("./migrations").run(&pool).await.unwrap();
 
-        let key = if let Ok(auth_secret) = std::env::var("AUTH_SECRET") {
-            Key::from(auth_secret.as_bytes())
-        } else {
-            Key::generate()
-        };
+        tracing::info!("Database migrations applied");
 
-        let bucket_name = &config.s3_bucket;
-        let region = Region::Custom {
-            region: config.s3_region.clone(),
-            endpoint: config.s3_endpoint.clone(),
-        };
-        let credentials = Credentials::new(
-            Some(&config.s3_access_key),
-            Some(&config.s3_secret_key),
-            None,
-            None,
-            None,
-        )
-        .expect("Failed to create S3 credentials");
+        let key = generate_key();
 
-        let bucket = Bucket::new(bucket_name, region, credentials).unwrap();
+        let bucket = create_bucket(&config);
 
         // Initialize Redis client
         let redis = Arc::new(
@@ -94,27 +72,26 @@ impl AppState {
         tracing::info!("Connected to Redis at {}", config.redis_url);
 
         // Services
-        let user_service = Arc::new(UserService::new(pool.clone()));
-        let session_service = Arc::new(SessionService::new(pool.clone()));
-        let invitation_service = Arc::new(InvitationService::new(pool.clone()));
-        let image_service = Arc::new(ImageService::new(pool.clone()));
-        let event_service = Arc::new(EventService::new(pool.clone()));
-        let product_service = Arc::new(ProductService::new(pool.clone()));
+        let user_service = UserService::new(pool.clone());
+        let session_service = SessionService::new(pool.clone());
+        let invitation_service = InvitationService::new(pool.clone());
+        let image_service = ImageService::new(pool.clone());
+        let event_service = EventService::new(pool.clone());
+        let product_service = ProductService::new(pool.clone());
+        let notification_service = NotificationService::new(pool.clone());
+        let beer_service = BeerService::new(pool.clone());
+        let auth_service = AuthService::new(pool.clone());
+        let shift_service = ShiftService::new(pool.clone());
 
-        let auth_service = Arc::new(AuthService::new(
-            SessionService::new(pool.clone()),
-            UserService::new(pool.clone()),
-        ));
+        let status_service = StatusService::new(redis.clone());
 
-        let status_service = Arc::new(StatusService::new(redis.clone()));
-
-        let feide_provider = Arc::new(FeideProvider::new(
+        let feide_provider = FeideProvider::new(
             config.feide_client_id.clone(),
             config.feide_client_secret.clone(),
             config.feide_redirect_uri.clone(),
-        ));
+        );
 
-        AppState {
+        Self {
             // General
             config,
             key,
@@ -130,11 +107,44 @@ impl AppState {
             image_service,
             event_service,
             product_service,
+            notification_service,
+            beer_service,
+            shift_service,
 
             // Providers
             feide_provider,
         }
     }
+}
+
+/// Create a cookie key for session management.
+/// Use the AUTH_SECRET environment variable if available, so that
+/// cookies are not encrypted with a random key on each restart.
+fn generate_key() -> Key {
+    if let Ok(auth_secret) = std::env::var("AUTH_SECRET") {
+        Key::from(auth_secret.as_bytes())
+    } else {
+        Key::generate()
+    }
+}
+
+/// Create an S3 bucket using the configuration provided.
+fn create_bucket(config: &Config) -> Box<Bucket> {
+    let bucket_name = &config.s3_bucket;
+    let region = Region::Custom {
+        region: config.s3_region.clone(),
+        endpoint: config.s3_endpoint.clone(),
+    };
+    let credentials = Credentials::new(
+        Some(&config.s3_access_key),
+        Some(&config.s3_secret_key),
+        None,
+        None,
+        None,
+    )
+    .expect("Failed to create S3 credentials");
+
+    Bucket::new(bucket_name, region, credentials).unwrap()
 }
 
 // This allows us to extract the Key from the AppState in handlers

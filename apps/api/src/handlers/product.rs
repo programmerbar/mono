@@ -2,13 +2,21 @@ use axum::{
     Json,
     extract::{Path, State},
 };
+use utoipa_axum::{router::OpenApiRouter, routes};
 
 use crate::{
     dto::{self, CreateProductJson, FullProduct},
     errors::ApiError,
-    models::{auth::AuthorizedBoardMember, product::Product},
+    extractors::auth::AuthorizedBoardMember,
+    models::product::Product,
     state::AppState,
 };
+
+pub fn router() -> OpenApiRouter<AppState> {
+    OpenApiRouter::new()
+        .routes(routes!(all_products, create_product))
+        .routes(routes!(get_product_by_id))
+}
 
 /// Get all products available in the bar.
 ///
@@ -23,7 +31,7 @@ use crate::{
     ),
     tag = "Products"
 )]
-pub async fn all_products(State(state): State<AppState>) -> Json<Vec<dto::FullProduct>> {
+async fn all_products(State(state): State<AppState>) -> Json<Vec<dto::FullProduct>> {
     let products = state
         .product_service
         .list()
@@ -34,42 +42,6 @@ pub async fn all_products(State(state): State<AppState>) -> Json<Vec<dto::FullPr
         .collect::<Vec<_>>();
 
     Json(products)
-}
-
-/// Get a specific product by its ID.
-///
-/// Retrieves detailed information about a single product including its pricing,
-/// availability, alcohol content, and other metadata. This endpoint is public
-/// and does not require authentication.
-///
-/// # Parameters
-/// * `id` - The unique identifier of the product to retrieve
-#[utoipa::path(
-    get,
-    path = "/products/{id}",
-    params(
-        ("id" = String, Path, description = "Product ID")
-    ),
-    responses(
-        (status = 200, description = "Product found", body = dto::FullProduct),
-        (status = 404, description = "Product not found"),
-        (status = 500, description = "Internal server error")
-    ),
-    tag = "Products"
-)]
-pub async fn get_product_by_id(
-    State(state): State<AppState>,
-    Path(id): Path<String>,
-) -> Result<Json<dto::FullProduct>, ApiError> {
-    let product = state
-        .product_service
-        .get_by_id(&id)
-        .await
-        .map_err(|_| ApiError::InternalServerError)?
-        .ok_or_else(|| ApiError::NotFound(format!("Product with id '{id}' not found")))?
-        .into();
-
-    Ok(Json(product))
 }
 
 /// Create a new product in the bar inventory.
@@ -97,7 +69,7 @@ pub async fn get_product_by_id(
     ),
     tag = "Products"
 )]
-pub async fn create_product(
+async fn create_product(
     State(state): State<AppState>,
     _auth: AuthorizedBoardMember,
     Json(product): Json<CreateProductJson>,
@@ -128,4 +100,40 @@ pub async fn create_product(
         .map_err(|_| ApiError::InternalServerError)?;
 
     Ok(Json(created_product.into()))
+}
+
+/// Get a specific product by its ID.
+///
+/// Retrieves detailed information about a single product including its pricing,
+/// availability, alcohol content, and other metadata. This endpoint is public
+/// and does not require authentication.
+///
+/// # Parameters
+/// * `id` - The unique identifier of the product to retrieve
+#[utoipa::path(
+    get,
+    path = "/products/{id}",
+    params(
+        ("id" = String, Path, description = "Product ID")
+    ),
+    responses(
+        (status = 200, description = "Product found", body = dto::FullProduct),
+        (status = 404, description = "Product not found"),
+        (status = 500, description = "Internal server error")
+    ),
+    tag = "Products"
+)]
+async fn get_product_by_id(
+    State(state): State<AppState>,
+    Path(id): Path<String>,
+) -> Result<Json<dto::FullProduct>, ApiError> {
+    let product = state
+        .product_service
+        .get_by_id(&id)
+        .await
+        .map_err(|_| ApiError::InternalServerError)?
+        .ok_or_else(|| ApiError::NotFound(format!("Product with id '{id}' not found")))?
+        .into();
+
+    Ok(Json(product))
 }

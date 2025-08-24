@@ -9,16 +9,15 @@ use crate::services::session::SESSION_COOKIE_NAME;
 #[openapi(
     modifiers(&SecurityAddon),
     tags(
-        (name = "General", description = "General API endpoints"),
         (name = "Health", description = "Health check endpoints"),
         (name = "Products", description = "Product management"),
         (name = "Events", description = "Event and shift management"),
         (name = "Authentication", description = "User authentication via Feide"),
-        (name = "Profile", description = "User profile management"),
         (name = "Images", description = "Image upload and retrieval"),
         (name = "Status", description = "Status of the bar"),
         (name = "Admin", description = "Admin endpoints for BFF operations"),
-        (name = "Users", description = "User management endpoints")
+        (name = "Users", description = "User management endpoints"),
+        (name = "Invitations", description = "Invitation management endpoints")
     )
 )]
 pub struct ApiDoc;

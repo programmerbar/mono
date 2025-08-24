@@ -1,8 +1,11 @@
 pub mod auth;
+pub mod beer;
 pub mod event;
 pub mod image;
 pub mod invitation;
+pub mod notification;
 pub mod product;
 pub mod session;
+pub mod shift;
 pub mod status;
 pub mod user;

@@ -5,8 +5,15 @@ use axum::{
     http::HeaderMap,
 };
 use chrono::Utc;
+use utoipa_axum::{router::OpenApiRouter, routes};
 
-use crate::{dto, errors::ApiError, models::auth::AuthorizedMember, state::AppState};
+use crate::{dto, errors::ApiError, extractors::auth::AuthorizedMember, state::AppState};
+
+pub fn router() -> OpenApiRouter<AppState> {
+    OpenApiRouter::new()
+        .routes(routes!(upload_image))
+        .routes(routes!(get_image_by_id))
+}
 
 /// Upload an image file to the server.
 ///
@@ -40,7 +47,7 @@ use crate::{dto, errors::ApiError, models::auth::AuthorizedMember, state::AppSta
     ),
     tag = "Images"
 )]
-pub async fn upload_image(
+async fn upload_image(
     State(state): State<AppState>,
     _auth: AuthorizedMember,
     mut multipart: Multipart,
@@ -150,7 +157,7 @@ pub async fn upload_image(
     ),
     tag = "Images"
 )]
-pub async fn get_image_by_id(
+async fn get_image_by_id(
     State(state): State<AppState>,
     Path(id): Path<String>,
 ) -> Result<(HeaderMap, Body), ApiError> {

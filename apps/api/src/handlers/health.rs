@@ -1,11 +1,10 @@
 use axum::Json;
-use serde::{Deserialize, Serialize};
-use utoipa::ToSchema;
+use utoipa_axum::{router::OpenApiRouter, routes};
 
-#[derive(Serialize, Deserialize, ToSchema)]
-pub struct HealthResponse {
-    pub status: String,
-    pub message: String,
+use crate::{dto::HealthResponse, state::AppState};
+
+pub fn router() -> OpenApiRouter<AppState> {
+    OpenApiRouter::new().routes(routes!(health))
 }
 
 /// Check the health status of the API.
@@ -20,7 +19,7 @@ pub struct HealthResponse {
     ),
     tag = "Health"
 )]
-pub async fn health() -> Json<HealthResponse> {
+async fn health() -> Json<HealthResponse> {
     Json(HealthResponse {
         status: "ok".to_string(),
         message: "Programmerbar API is running".to_string(),

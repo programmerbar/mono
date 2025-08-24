@@ -61,6 +61,7 @@ impl Default for Status {
     }
 }
 
+#[derive(Clone)]
 pub struct StatusService {
     redis: Arc<RedisClient>,
 }

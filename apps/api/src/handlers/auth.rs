@@ -1,5 +1,5 @@
 use crate::{
-    config::Config, errors::ApiError, models::auth::AuthorizedMember,
+    config::Config, errors::ApiError, extractors::auth::AuthorizedMember,
     services::session::SessionService, state::AppState,
 };
 use axum::{
@@ -11,6 +11,14 @@ use cookie::time::Duration;
 use oauth2::CsrfToken;
 use reqwest::StatusCode;
 use serde::Deserialize;
+use utoipa_axum::{router::OpenApiRouter, routes};
+
+pub fn router() -> OpenApiRouter<AppState> {
+    OpenApiRouter::new()
+        .routes(routes!(feide_auth))
+        .routes(routes!(feide_callback))
+        .routes(routes!(logout))
+}
 
 fn determine_redirect_url(jar: &CookieJar, config: &Config) -> String {
     if let Some(app_cookie) = jar.get("app") {
@@ -50,7 +58,7 @@ pub struct CallbackParams {
     ),
     tag = "Authentication"
 )]
-pub async fn feide_auth(
+async fn feide_auth(
     State(state): State<AppState>,
     Query(params): Query<AuthParams>,
     jar: CookieJar,
@@ -108,7 +116,7 @@ pub async fn feide_auth(
     ),
     tag = "Authentication"
 )]
-pub async fn feide_callback(
+async fn feide_callback(
     State(state): State<AppState>,
     Query(params): Query<CallbackParams>,
     regular_jar: CookieJar,
@@ -211,7 +219,7 @@ pub async fn feide_callback(
     ),
     tag = "Authentication"
 )]
-pub async fn logout(
+async fn logout(
     State(state): State<AppState>,
     jar: PrivateCookieJar,
     auth: AuthorizedMember,

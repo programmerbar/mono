@@ -1,10 +1,15 @@
 use tower_http::{cors::CorsLayer, normalize_path::NormalizePathLayer, trace::TraceLayer};
 use tracing_subscriber::{self, layer::SubscriberExt, util::SubscriberInitExt};
 use utoipa::OpenApi;
-use utoipa_axum::{router::OpenApiRouter, routes};
+use utoipa_axum::router::OpenApiRouter;
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::{config::Config, openapi::ApiDoc, state::AppState};
+use crate::{
+    config::Config,
+    handlers::{admin, auth, event, health, image, invitation, product, status, user},
+    openapi::ApiDoc,
+    state::AppState,
+};
 
 mod config;
 mod dto;
@@ -24,59 +29,28 @@ async fn main() -> anyhow::Result<()> {
     let config = Config::from_env();
     let state = AppState::from_config(config.clone()).await;
 
-    // General endpoints
-    let router = OpenApiRouter::with_openapi(ApiDoc::openapi())
-        .routes(routes![handlers::root::root])
-        .routes(routes![handlers::health::health]);
-
-    // Product endpoints
-    let router = router
-        .routes(routes![handlers::products::all_products])
-        .routes(routes![handlers::products::create_product])
-        .routes(routes![handlers::products::get_product_by_id]);
-
-    // Event endpoints
-    let router = router.routes(routes![handlers::event::all_events]);
-
-    // Authentication endpoints
-    let router = router
-        .routes(routes![handlers::auth::feide_auth])
-        .routes(routes![handlers::auth::feide_callback])
-        .routes(routes![handlers::auth::logout]);
-
-    // User endpoints
-    let router = router.routes(routes![handlers::profile::get_profile]);
-
-    // Image endpoints
-    let router = router
-        .routes(routes![handlers::image::upload_image])
-        .routes(routes![handlers::image::get_image_by_id]);
-
-    // Status endpoints
-    let router = router
-        .routes(routes![handlers::status::status])
-        .routes(routes![handlers::status::set_status]);
-
-    // Admin endpoints
-    let router = router
-        .routes(routes![handlers::admin::admin_test])
-        .routes(routes![handlers::admin::admin_get_user]);
-
-    // User endpoints
-    let router = router.routes(routes![handlers::user::list_users]);
-
-    let (router, api) = router.split_for_parts();
-
-    let app = router.merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", api));
+    let (router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
+        .merge(health::router())
+        .merge(image::router())
+        .merge(status::router())
+        .merge(admin::router())
+        .merge(user::router())
+        .merge(invitation::router())
+        .merge(auth::router())
+        .merge(event::router())
+        .merge(product::router())
+        .split_for_parts();
 
     // Middleware / Layers
-    let app = app
+    let router = router
         .layer(cors_layer())
         .layer(TraceLayer::new_for_http())
         .layer(NormalizePathLayer::trim_trailing_slash());
 
     // State
-    let app = app.with_state(state);
+    let router = router.with_state(state);
+
+    let app = router.merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", api));
 
     let port = config.server_port;
     let listener = tokio::net::TcpListener::bind(format!("127.0.0.1:{port}")).await?;

@@ -1,30 +1,34 @@
-use crate::{dto::EventWithShifts, models::event::Event};
-use sqlx::{FromRow, PgPool, query, query_as};
+use crate::{
+    dto::{self, EventWithShifts, NewEventWithShiftsInput},
+    models::event::Event,
+};
+use sqlx::FromRow;
 use std::collections::HashMap;
 
+#[derive(Clone)]
 pub struct EventService {
-    pool: PgPool,
+    pool: sqlx::PgPool,
 }
 
 impl EventService {
-    pub fn new(pool: PgPool) -> Self {
+    pub fn new(pool: sqlx::PgPool) -> Self {
         Self { pool }
     }
 
     pub async fn all(&self) -> Result<Vec<Event>, sqlx::Error> {
-        query_as!(Event, "SELECT * FROM event")
+        sqlx::query_as!(Event, "SELECT * FROM event")
             .fetch_all(&self.pool)
             .await
     }
 
     pub async fn get_by_id(&self, id: &str) -> Result<Option<Event>, sqlx::Error> {
-        query_as!(Event, "SELECT * FROM event WHERE id = $1", id)
+        sqlx::query_as!(Event, "SELECT * FROM event WHERE id = $1", id)
             .fetch_optional(&self.pool)
             .await
     }
 
     pub async fn create(&self, event: &Event) -> Result<(), sqlx::Error> {
-        query!(
+        sqlx::query!(
             "INSERT INTO event (id, name, date) VALUES ($1, $2, $3)",
             event.id,
             event.name,
@@ -36,7 +40,7 @@ impl EventService {
     }
 
     pub async fn update(&self, event: &Event) -> Result<(), sqlx::Error> {
-        query!(
+        sqlx::query!(
             "UPDATE event SET name = $2, date = $3 WHERE id = $1",
             event.id,
             event.name,
@@ -48,7 +52,7 @@ impl EventService {
     }
 
     pub async fn delete(&self, id: &str) -> Result<(), sqlx::Error> {
-        query!("DELETE FROM event WHERE id = $1", id)
+        sqlx::query!("DELETE FROM event WHERE id = $1", id)
             .execute(&self.pool)
             .await?;
         Ok(())
@@ -68,7 +72,7 @@ impl EventService {
             user_email: Option<String>,
         }
 
-        let rows = query_as!(
+        let rows = sqlx::query_as!(
             EventShiftUserRow,
             r#"
             SELECT
@@ -97,7 +101,7 @@ impl EventService {
         for row in rows {
             let event = events_map
                 .entry(row.event_id.clone())
-                .or_insert_with(|| EventWithShifts {
+                .or_insert(EventWithShifts {
                     id: row.event_id.clone(),
                     name: row.event_name.clone(),
                     date: row.event_date,
@@ -109,14 +113,14 @@ impl EventService {
                     if let (Some(user_id), Some(user_name), Some(user_email)) =
                         (row.user_id, row.user_name, row.user_email)
                     {
-                        shift.users.push(crate::dto::User {
+                        shift.users.push(dto::EventUser {
                             id: user_id,
                             name: user_name,
                             email: user_email,
                         });
                     }
                 } else {
-                    let mut new_shift = crate::dto::Shift {
+                    let mut new_shift = dto::Shift {
                         id: shift_id,
                         start_at: row.shift_start_at.unwrap(),
                         end_at: row.shift_end_at.unwrap(),
@@ -126,7 +130,7 @@ impl EventService {
                     if let (Some(user_id), Some(user_name), Some(user_email)) =
                         (row.user_id, row.user_name, row.user_email)
                     {
-                        new_shift.users.push(crate::dto::User {
+                        new_shift.users.push(dto::EventUser {
                             id: user_id,
                             name: user_name,
                             email: user_email,
@@ -142,5 +146,51 @@ impl EventService {
         events.sort_by(|a, b| b.date.cmp(&a.date)); // Most recent first
 
         Ok(events)
+    }
+
+    /// Create a new event with associated shifts and users.
+    /// Returns the ID of the created event.
+    pub async fn create_with_shifts(
+        &self,
+        event: NewEventWithShiftsInput,
+    ) -> Result<String, sqlx::Error> {
+        let event_id = uuid::Uuid::new_v4().to_string();
+
+        // Insert the event
+        sqlx::query!(
+            "INSERT INTO event (id, name, date) VALUES ($1, $2, $3)",
+            &event_id,
+            &event.name,
+            &event.date
+        )
+        .execute(&self.pool)
+        .await?;
+
+        // Insert each shift and associate users
+        for shift in event.shifts {
+            let shift_id = uuid::Uuid::new_v4().to_string();
+
+            sqlx::query!(
+                "INSERT INTO shift (id, event_id, start_at, end_at) VALUES ($1, $2, $3, $4)",
+                &shift_id,
+                &event_id,
+                &shift.start_at,
+                &shift.end_at
+            )
+            .execute(&self.pool)
+            .await?;
+
+            for user_id in shift.user_ids {
+                sqlx::query!(
+                    "INSERT INTO user_shift (shift_id, user_id) VALUES ($1, $2)",
+                    &shift_id,
+                    &user_id
+                )
+                .execute(&self.pool)
+                .await?;
+            }
+        }
+
+        Ok(event_id)
     }
 }

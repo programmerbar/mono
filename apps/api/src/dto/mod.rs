@@ -1,15 +1,17 @@
-pub mod admin;
 pub mod event;
+pub mod health;
 pub mod image;
+pub mod invitation;
 pub mod product;
-pub mod root;
+pub mod shared;
 pub mod status;
 pub mod user;
 
-pub use admin::*;
 pub use event::*;
+pub use health::*;
 pub use image::*;
+pub use invitation::*;
 pub use product::*;
-pub use root::*;
+pub use shared::*;
 pub use status::*;
 pub use user::*;

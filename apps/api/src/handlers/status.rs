@@ -1,6 +1,11 @@
 use axum::{Json, extract::State};
+use utoipa_axum::{router::OpenApiRouter, routes};
 
 use crate::{dto, errors::ApiError, state::AppState};
+
+pub fn router() -> OpenApiRouter<AppState> {
+    OpenApiRouter::new().routes(routes!(get_status, set_status))
+}
 
 /// Get the current status of the bar to see if it is open or closed.
 #[utoipa::path(
@@ -12,7 +17,7 @@ use crate::{dto, errors::ApiError, state::AppState};
     ),
     tag = "Status"
 )]
-pub async fn status(State(state): State<AppState>) -> Result<Json<dto::StatusResponse>, ApiError> {
+async fn get_status(State(state): State<AppState>) -> Result<Json<dto::StatusResponse>, ApiError> {
     let status = state
         .status_service
         .get_status()
@@ -36,7 +41,7 @@ pub async fn status(State(state): State<AppState>) -> Result<Json<dto::StatusRes
     ),
     tag = "Status"
 )]
-pub async fn set_status(
+async fn set_status(
     State(state): State<AppState>,
     Json(request): Json<dto::StatusRequest>,
 ) -> Result<Json<dto::StatusResponse>, ApiError> {

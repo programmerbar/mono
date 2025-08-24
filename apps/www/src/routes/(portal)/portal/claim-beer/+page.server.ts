@@ -7,7 +7,7 @@ import { gte, eq, desc, lte, and } from 'drizzle-orm';
 import { formatDate } from '$lib/date';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const userId = await locals.user?.id;
+	const userId = locals.user?.id;
 	if (!userId) {
 		throw redirect(301, '/');
 	}

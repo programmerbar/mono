@@ -4,16 +4,20 @@ use crate::{
     services::{session::SessionService, user::UserService},
 };
 
+#[derive(Clone)]
 pub struct AuthService {
-    session_service: SessionService,
     user_service: UserService,
+    session_service: SessionService,
 }
 
 impl AuthService {
-    pub fn new(session_service: SessionService, user_service: UserService) -> Self {
+    pub fn new(pool: sqlx::PgPool) -> Self {
+        let session_service = SessionService::new(pool.clone());
+        let user_service = UserService::new(pool);
+
         Self {
-            session_service,
             user_service,
+            session_service,
         }
     }
 

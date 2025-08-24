@@ -1,18 +1,17 @@
 use crate::{errors::ApiError, models::session::Session};
 use axum_extra::extract::cookie::{Cookie, SameSite};
 use chrono::{Duration, Utc};
-use sqlx::{Pool, Postgres, query, query_as};
 use uuid::Uuid;
 
 pub const SESSION_COOKIE_NAME: &str = "auth_session";
 
 #[derive(Clone)]
 pub struct SessionService {
-    pool: Pool<Postgres>,
+    pool: sqlx::PgPool,
 }
 
 impl SessionService {
-    pub fn new(pool: Pool<Postgres>) -> Self {
+    pub fn new(pool: sqlx::PgPool) -> Self {
         Self { pool }
     }
 
@@ -23,7 +22,7 @@ impl SessionService {
             expires_at: Utc::now() + Duration::hours(24),
         };
 
-        query!(
+        sqlx::query!(
             "INSERT INTO session (id, user_id, expires_at) VALUES ($1, $2, $3)",
             session.id,
             session.user_id,
@@ -37,7 +36,7 @@ impl SessionService {
     }
 
     pub async fn get_by_id(&self, session_id: &str) -> Result<Option<Session>, ApiError> {
-        query_as!(
+        sqlx::query_as!(
             Session,
             "SELECT id, user_id, expires_at FROM session WHERE id = $1",
             session_id
@@ -48,7 +47,7 @@ impl SessionService {
     }
 
     pub async fn find_valid_by_id(&self, session_id: &str) -> Result<Session, ApiError> {
-        query_as!(
+        sqlx::query_as!(
             Session,
             "SELECT id, user_id, expires_at FROM session WHERE id = $1 AND expires_at > $2",
             session_id,
@@ -63,7 +62,7 @@ impl SessionService {
     }
 
     pub async fn delete_session(&self, session_id: &str) -> Result<(), ApiError> {
-        query!("DELETE FROM session WHERE id = $1", session_id)
+        sqlx::query!("DELETE FROM session WHERE id = $1", session_id)
             .execute(&self.pool)
             .await
             .map_err(|_| ApiError::InternalServerError)?;
