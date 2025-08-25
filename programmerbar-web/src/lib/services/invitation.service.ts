@@ -26,10 +26,7 @@ export class InvitationService {
 
 	async claim(id: string) {
 		await this.#db
-			.update(invitations)
-			.set({
-				claimedAt: new Date()
-			})
+			.delete(invitations)
 			.where(eq(invitations.id, id));
 	}
 
