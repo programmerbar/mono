@@ -45,7 +45,7 @@
 	{/if}
 	{#if page.url.searchParams.get('error') === ERROR_SEARCH_PARAM_ALREADY_REGISTERED}
 		<div class="rounded-md bg-red-50 p-4 text-red-700">
-			<p>Du harBLI_FRIVILLIG_ALREADY_REGISTERED_ERRORrivillig eller sendt inn søknad.</p>
+			<p>Du er allerede frivillig eller har sendt inn søknad.</p>
 		</div>
 	{/if}
 	<ButtonLink intent="primary" href="/bli-frivillig/no">Bli frivillig med Feide</ButtonLink>
