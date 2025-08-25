@@ -33,24 +33,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 };
 
 export const actions: Actions = {
-	updateUser: async ({ params, request, locals }) => {
-		const userId = params.id;
-		const formData = await request.formData();
-		const role = formData.get('role')?.toString() as 'board' | 'normal';
-		const phone = formData.get('phone')?.toString();
-		const canRefer = formData.get('canRefer') === 'true';
-
-		if (phone) {
-			await locals.userService.updatePhone(userId, phone);
-		}
-		if (role) {
-			await locals.userService.updateUserRole(userId, role);
-		}
-		await locals.userService.updateCanRefer(userId, canRefer);
-
-		return { success: true };
-	},
-
 	addBeers: async ({ params, request, locals }) => {
 		const userId = params.id;
 		if (!locals.user || locals.user.role !== 'board') {

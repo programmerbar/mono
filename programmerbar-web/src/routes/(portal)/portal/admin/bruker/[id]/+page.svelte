@@ -1,30 +1,23 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
-	import Input from '$lib/components/ui/Input.svelte';
-	import Button from '$lib/components/ui/Button.svelte';
+	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
+	import Pill from '$lib/components/ui/Pill.svelte';
 	import TrainingChecklist from '$lib/components/portal/Training.svelte';
 	import type { User } from '$lib/db/schemas';
 	import { initials, mailto } from '$lib/utils';
 	import { goto } from '$app/navigation';
 	import { enhance } from '$app/forms';
+	import { ArrowLeft, UserCog, Edit3 } from '@lucide/svelte';
+	import Input from '$lib/components/ui/Input.svelte';
 
 	let { data } = $props();
 	let user = $state(data.user as User);
-	let isEditing = $state(false);
-
-	let editForm = $state({
-		email: data.user.altEmail || data.user.email,
-		role: data.user.role,
-		phone: data.user.phone || '',
-		canRefer: data.user.canRefer ?? true
-	});
 
 	let showDeleteConfirm = $state(false);
 	let showAddBeers = $state(false);
 	let showTrainingChecklist = $state(false);
 	let additionalBeers = $state(0);
 	let deleteConfirmName = $state('');
-	let isSubmitting = $state(false);
 
 	let userHasCompletedTraining = $state(data.user.isTrained || false);
 
@@ -35,18 +28,6 @@
 		setTimeout(() => {
 			toastMessage = '';
 		}, 3000);
-	}
-
-	function toggleEdit() {
-		if (isEditing) {
-			editForm = {
-				email: data.user.altEmail || data.user.email,
-				role: data.user.role,
-				phone: data.user.phone || '',
-				canRefer: data.user.canRefer ?? true
-			};
-		}
-		isEditing = !isEditing;
 	}
 
 	function onTrainingSave(data: { completionStatus: { isComplete: boolean } }) {
@@ -64,207 +45,91 @@
 </svelte:head>
 
 <div class="space-y-6">
-	<a
-		class="flex items-center gap-4 text-gray-500 transition-colors hover:text-gray-700"
-		href="/portal/admin/"
-	>
-		← Tilbake til admin page
-	</a>
+	<!-- Header with back button -->
+	<div class="flex items-center gap-4">
+		<ButtonLink href="/portal/admin" intent="outline" size="square">
+			<ArrowLeft class="h-5 w-5" />
+		</ButtonLink>
+		<div>
+			<Heading>Brukerdetaljer</Heading>
+			<p class="mt-1 text-gray-600">Vis og administrer {user.name}s profil</p>
+		</div>
+	</div>
 
-	<div class="border-gray bg-background rounded-2xl border-2 p-4 shadow-lg sm:p-6">
-		<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+	<!-- User overview -->
+	<div class="rounded-lg border bg-white p-4 sm:p-6">
+		<div class="flex items-center justify-between">
 			<div class="flex items-center gap-4">
-				<div class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-300">
-					<span class="text-2xl font-semibold text-gray-700">
+				<div class="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
+					<span class="text-2xl font-semibold text-blue-600">
 						{initials(data.user.name)}
 					</span>
 				</div>
 				<div class="min-w-0 flex-1">
 					<Heading class="mb-1 truncate">{user.name}</Heading>
 					<div class="flex items-center gap-3">
-						<span
-							class="inline-flex rounded-full border px-3 py-1 text-sm font-semibold {user.role ===
-							'board'
-								? 'border-purple-200 bg-purple-100 text-purple-800'
-								: 'border-blue-200 bg-blue-100 text-blue-800'}"
-						>
+						<Pill variant={user.role === 'board' ? 'purple' : 'blue'}>
 							{user.role === 'board' ? 'Styret' : 'Frivillig'}
-						</span>
+						</Pill>
 					</div>
 				</div>
 			</div>
-			<div class="flex flex-col gap-2 sm:flex-row sm:gap-2">
-				{#if !isEditing}
-					<Button onclick={toggleEdit} intent="primary">Rediger</Button>
-				{:else}
-					<Button onclick={toggleEdit} intent="outline" disabled={isSubmitting}>Avbryt</Button>
-
-					<form
-						method="POST"
-						action="?/updateUser"
-						class="w-full sm:w-auto"
-						use:enhance={() => {
-							isSubmitting = true;
-							return async ({ result }) => {
-								isSubmitting = false;
-								if (result.type === 'success') {
-									user = { ...user, ...editForm };
-									isEditing = false;
-									showToast(`${user.name} oppdatert`);
-								} else {
-									console.error('Failed to save user');
-									showToast('Feil ved lagring');
-								}
-							};
-						}}
-					>
-						<input type="hidden" name="email" value={editForm.email} />
-						<input type="hidden" name="role" value={editForm.role} />
-						<input type="hidden" name="phone" value={editForm.phone} />
-						<input type="hidden" name="canRefer" value={editForm.canRefer} />
-
-						<Button type="submit" intent="primary" disabled={isSubmitting} class="w-full">
-							{isSubmitting ? 'Lagrer...' : 'Lagre'}
-						</Button>
-					</form>
-				{/if}
-			</div>
+			<ButtonLink
+				href="/portal/admin/bruker/{user.id}/rediger"
+				intent="primary"
+				class="flex items-center gap-2"
+			>
+				<Edit3 class="h-4 w-4" />
+				Rediger
+			</ButtonLink>
 		</div>
 	</div>
 
 	<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 		<div class="space-y-6 lg:col-span-2">
-			<div class="border-gray bg-background overflow-auto rounded-2xl border-2 shadow-lg">
-				<div class="border-b-2 border-gray-200 bg-gray-200 px-6 py-4">
-					<h3 class="text-lg font-semibold text-gray-900">Brukerinformasjon</h3>
+			<div class="rounded-lg border bg-white">
+				<div class="border-b px-6 py-4">
+					<div class="flex items-center gap-2">
+						<UserCog class="h-5 w-5 text-gray-600" />
+						<h3 class="text-lg font-semibold text-gray-900">Brukerinformasjon</h3>
+					</div>
 				</div>
-				<div class="space-y-4 p-6">
-					{#if isEditing}
-						<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-							<div>
-								<dt class="text-sm font-medium text-gray-500">Navn</dt>
-								<dd class="mt-1 text-sm text-gray-900">{data.user.name}</dd>
-							</div>
-							<div>
-								<label for="edit-email" class="mb-1 block text-sm font-medium text-gray-700"
-									>E-post</label
-								>
-								<Input
-									id="edit-email"
-									bind:value={editForm.email}
-									type="email"
-									placeholder="ola.nordmann@eksempel.no"
-								/>
-							</div>
-							<div>
-								<label for="edit-phone" class="mb-1 block text-sm font-medium text-gray-700"
-									>Telefon</label
-								>
-								<Input
-									id="edit-phone"
-									bind:value={editForm.phone}
-									type="tel"
-									placeholder="+47 123 45 678"
-								/>
-							</div>
-							<div>
-								<div class="mb-1 block text-sm font-medium text-gray-700">Rolle</div>
-								<div class="flex items-center gap-2">
-									<label class="relative cursor-pointer">
-										<input
-											type="radio"
-											name="role"
-											value="normal"
-											class="peer hidden"
-											bind:group={editForm.role}
-										/>
-										<span
-											class="flex items-center justify-center rounded-xl border px-2 py-px text-sm
-											  transition-colors peer-checked:border-transparent peer-checked:bg-blue-600
-											  peer-checked:text-white hover:bg-gray-200"
-										>
-											Frivillig
-										</span>
-									</label>
-
-									<label class="relative cursor-pointer">
-										<input
-											type="radio"
-											name="role"
-											value="board"
-											class="peer hidden"
-											bind:group={editForm.role}
-										/>
-										<span
-											class="flex items-center justify-center rounded-xl border px-2 py-px text-sm
-											  transition-colors peer-checked:border-transparent peer-checked:bg-purple-600
-											  peer-checked:text-white hover:bg-gray-200"
-										>
-											Styret
-										</span>
-									</label>
-								</div>
-							</div>
-							<div>
-								<div class="mb-1 block text-sm font-medium text-gray-700">Kan referere?</div>
-								<label class="flex cursor-pointer items-center gap-2">
-									<input
-										type="checkbox"
-										bind:checked={editForm.canRefer}
-										class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-									/>
-									<span class="text-sm text-gray-900">
-										{editForm.canRefer ? 'Ja' : 'Nei'}
-									</span>
-								</label>
-							</div>
+				<div class="p-6">
+					<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+						<div>
+							<dt class="text-sm font-medium text-gray-500">Navn</dt>
+							<dd class="mt-1 text-sm text-gray-900">{user.name}</dd>
 						</div>
-					{:else}
-						<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-							<div>
-								<dt class="text-sm font-medium text-gray-500">Navn</dt>
-								<dd class="mt-1 text-sm text-gray-900">{user.name}</dd>
-							</div>
-							<div>
-								<dt class="text-sm font-medium text-gray-500">E-post</dt>
-								<dd class="mt-1 text-sm text-gray-900">{user.altEmail || user.email}</dd>
-							</div>
-							<div>
-								<dt class="text-sm font-medium text-gray-500">Telefon</dt>
-								<dd class="mt-1 text-sm text-gray-900">{user.phone || 'Ikke oppgitt'}</dd>
-							</div>
-							<div>
-								<dt class="text-sm font-medium text-gray-500">Rolle</dt>
-								<dd class="mt-1">
-									<span
-										class="inline-flex rounded-full border px-2 py-1 text-xs font-semibold {user.role ===
-										'board'
-											? 'border-purple-200 bg-purple-100 text-purple-800'
-											: 'border-blue-200 bg-blue-100 text-blue-800'}"
-									>
-										{user.role === 'board' ? 'Styret' : 'Frivillig'}
-									</span>
-								</dd>
-							</div>
-							<div>
-								<dt class="text-sm font-medium text-gray-500">Kan referere</dt>
-								<dd class="mt-1">
-									<span
-										class="inline-flex rounded-full border px-2 py-1 text-xs font-semibold {user.canRefer
-											? 'border-green-200 bg-green-100 text-green-800'
-											: 'border-red-200 bg-red-100 text-red-800'}"
-									>
-										{user.canRefer ? 'Ja' : 'Nei'}
-									</span>
-								</dd>
-							</div>
+						<div>
+							<dt class="text-sm font-medium text-gray-500">E-post</dt>
+							<dd class="mt-1 text-sm text-gray-900">{user.altEmail || user.email}</dd>
 						</div>
-					{/if}
+						<div>
+							<dt class="text-sm font-medium text-gray-500">Telefon</dt>
+							<dd class="mt-1 text-sm text-gray-900">{user.phone || 'Ikke oppgitt'}</dd>
+						</div>
+						<div>
+							<dt class="text-sm font-medium text-gray-500">Rolle</dt>
+							<dd class="mt-1">
+								<Pill variant={user.role === 'board' ? 'purple' : 'blue'}>
+									{user.role === 'board' ? 'Styret' : 'Frivillig'}
+								</Pill>
+							</dd>
+						</div>
+						<div>
+							<dt class="text-sm font-medium text-gray-500">Kan referere</dt>
+							<dd class="mt-1">
+								<Pill variant={user.canRefer ? 'green' : 'red'}>
+									{user.canRefer ? 'Ja' : 'Nei'}
+								</Pill>
+							</dd>
+						</div>
+					</div>
 				</div>
 			</div>
 
-			<div class="border-gray bg-background overflow-auto rounded-2xl border-2 shadow-lg">
-				<div class="border-b-2 border-gray-200 bg-gray-200 px-6 py-4">
+			<div class="rounded-lg border bg-white">
+				<div class="border-b px-6 py-4">
 					<h3 class="text-lg font-semibold text-gray-900">Verv stats</h3>
 				</div>
 				<div class="p-6">
@@ -302,8 +167,8 @@
 		</div>
 
 		<div class="space-y-6">
-			<div class="border-gray bg-background overflow-auto rounded-2xl border-2 shadow-lg">
-				<div class="border-b-2 border-gray-200 bg-gray-200 px-6 py-4">
+			<div class="rounded-lg border bg-white">
+				<div class="border-b px-6 py-4">
 					<h3 class="text-lg font-semibold text-gray-900">Statistikk</h3>
 				</div>
 				<div class="space-y-4 p-6">
@@ -324,11 +189,11 @@
 				</div>
 			</div>
 
-			<div class="border-gray bg-background overflow-auto rounded-2xl border-2 shadow-lg">
-				<div class="border-b-2 border-gray-200 bg-gray-200 px-6 py-4">
+			<div class="rounded-lg border bg-white">
+				<div class="border-b px-6 py-4">
 					<h3 class="text-lg font-semibold text-gray-900">Handlinger</h3>
 				</div>
-				<div class="space-y-2 p-6">
+				<div class="flex flex-col gap-2 p-6">
 					<a
 						class="w-full rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50"
 						href={mailto(data.user.altEmail || data.user.email)}
@@ -377,8 +242,8 @@
 />
 
 {#if showAddBeers}
-	<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
-		<div class="bg-background mx-4 w-full max-w-md rounded-2xl border-2 p-6 shadow-lg">
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs">
+		<div class="mx-4 w-full max-w-md rounded-lg border bg-white p-6 shadow-lg">
 			<h3 class="mb-2 text-lg font-semibold text-gray-900">Legg til øl</h3>
 			<p class="mb-4 text-sm text-gray-600">
 				Det du skriver her, vil endre på antall ekstra bonger <strong>{user.name}</strong> har tilgjengelig.
@@ -426,8 +291,8 @@
 {/if}
 
 {#if showDeleteConfirm}
-	<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
-		<div class="bg-background mx-4 w-full max-w-md rounded-2xl border-2 p-6 shadow-lg">
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs">
+		<div class="mx-4 w-full max-w-md rounded-lg border bg-white p-6 shadow-lg">
 			<h3 class="mb-2 text-lg font-semibold text-gray-900">Slett bruker</h3>
 			<p class="mb-4 text-sm text-gray-600">
 				Er du sikker på at du vil slette <strong>{user.name}</strong>? Skriv inn brukerens navn for

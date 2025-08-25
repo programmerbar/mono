@@ -23,7 +23,7 @@
 	let deleteText = $state('');
 
 	onMount(async () => {
-		const response = await fetch(`/portal/admin/user/${selectedUser.id}`);
+		const response = await fetch(`/portal/admin/bruker/${selectedUser.id}`);
 		unclaimedBeersState = 'loading';
 
 		if (response.ok) {
@@ -114,7 +114,7 @@
 
 		<form
 			method="post"
-			action="/portal/admin/user/{selectedUser.id}?/addBeers"
+			action="/portal/admin/bruker/{selectedUser.id}?/addBeers"
 			use:enhance={() => {
 				return () => {
 					onClose();
@@ -141,7 +141,7 @@
 				<div class="bg-white">
 					<form
 						method="post"
-						action="/portal/admin/user/{selectedUser.id}?/deleteUser"
+						action="/portal/admin/bruker/{selectedUser.id}?/deleteUser"
 						use:enhance={() => {
 							return async ({ result }) => {
 								if (result.type === 'success') {
