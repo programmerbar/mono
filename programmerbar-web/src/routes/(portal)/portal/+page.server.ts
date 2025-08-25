@@ -21,23 +21,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 			locals.referralService.getReferralStats(locals.user.id)
 		]);
 
-	// Cheks if an referred user has had it first shift.
-	try {
-		const allUsers = await locals.userService.findAll();
-
-		for (const user of allUsers) {
-			const completedShifts = await locals.shiftService.findCompletedShiftsByUserId(user.id);
-
-			if (completedShifts.length > 0) {
-				const referral = await locals.referralService.completeReferral(user.id);
-				if (referral) {
-					await locals.referralService.awardReferralCredit(referral.referredBy);
-				}
-			}
-		}
-	} catch (error) {
-		console.error('Referral check failed:', error);
-	}
+	await locals.referralService.checkAndCompleteMyReferees(locals.user.id, locals.shiftService);
 
 	return {
 		shiftsCompleted: userShifts.length,

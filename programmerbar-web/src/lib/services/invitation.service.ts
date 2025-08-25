@@ -25,9 +25,7 @@ export class InvitationService {
 	}
 
 	async claim(id: string) {
-		await this.#db
-			.delete(invitations)
-			.where(eq(invitations.id, id));
+		await this.#db.delete(invitations).where(eq(invitations.id, id));
 	}
 
 	async findByEmail(email: string) {

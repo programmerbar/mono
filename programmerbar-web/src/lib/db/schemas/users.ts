@@ -21,7 +21,7 @@ export const users = sqliteTable(
 		isDeleted: integer({ mode: 'boolean' }).default(false).notNull(),
 		phone: text(),
 		isTrained: integer({ mode: 'boolean' }).default(false).notNull(),
-		canRefer: integer({ mode: 'boolean' }).default(true).notNull(),
+		canRefer: integer({ mode: 'boolean' }).default(true).notNull()
 	},
 	(t) => [uniqueIndex('email_idx').on(t.email), uniqueIndex('feide_id_idx').on(t.feideId)]
 );

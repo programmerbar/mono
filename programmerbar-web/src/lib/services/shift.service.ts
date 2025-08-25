@@ -1,6 +1,6 @@
 import type { Database } from '$lib/db/drizzle';
 import { events, shifts, userShifts } from '$lib/db/schemas';
-import { eq, and, lte, gte } from 'drizzle-orm';
+import { eq, and, lte, gte, inArray } from 'drizzle-orm';
 
 export class ShiftService {
 	#db: Database;
@@ -23,6 +23,25 @@ export class ShiftService {
 			);
 
 		return completedShifts.map((shifts) => shifts.shift);
+	}
+
+	async findUsersWithCompletedShiftsByUserIds(userIds: string[]) {
+		if (userIds.length === 0) return [];
+
+		const usersWithCompletedShifts = await this.#db
+			.select({ userId: userShifts.userId })
+			.from(shifts)
+			.leftJoin(userShifts, eq(shifts.id, userShifts.shiftId))
+			.where(
+				and(
+					inArray(userShifts.userId, userIds),
+					eq(userShifts.status, 'accepted'),
+					lte(shifts.endAt, new Date())
+				)
+			)
+			.groupBy(userShifts.userId);
+
+		return usersWithCompletedShifts.map((row) => row.userId);
 	}
 
 	async findUpcomingShiftsByUserId(userId: string) {

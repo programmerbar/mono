@@ -2,6 +2,7 @@ import type { Database } from '$lib/db/drizzle';
 import { eq, and } from 'drizzle-orm';
 import { referrals, users, type ReferralInsert } from '$lib/db/schemas';
 import { nanoid } from 'nanoid';
+import type { ShiftService } from './shift.service';
 
 export class ReferralService {
 	#db: Database;
@@ -113,6 +114,38 @@ export class ReferralService {
 		}
 
 		return null;
+	}
+
+	async checkAndCompleteMyReferees(userId: string, shiftService: ShiftService) {
+		const user = await this.#db.query.users.findFirst({
+			where: (row, { eq }) => eq(row.id, userId),
+			with: {
+				referralsGiven: {
+					where: (row, { eq }) => eq(row.status, 'pending')
+				}
+			}
+		});
+
+		if (!user?.referralsGiven || user.referralsGiven.length === 0) return [];
+
+		const referredUserIds = user.referralsGiven.map((r) => r.referred);
+
+		const usersWithCompletedShifts =
+			await shiftService.findUsersWithCompletedShiftsByUserIds(referredUserIds);
+
+		const completedReferrals = [];
+
+		for (const userIdWithShifts of usersWithCompletedShifts) {
+			if (userIdWithShifts) {
+				const completed = await this.completeReferral(userIdWithShifts);
+				if (completed) {
+					await this.awardReferralCredit(userId);
+					completedReferrals.push(completed);
+				}
+			}
+		}
+
+		return completedReferrals;
 	}
 
 	async getReferralStats(userId: string) {
