@@ -8,9 +8,9 @@ interface Env {
 
 export async function setup() {
 	const { env } = await getPlatformProxy<Env>({
-		configPath: './apps/www/wrangler.jsonc',
+		configPath: './programmerbar-web/wrangler.jsonc',
 		persist: {
-			path: './apps/www/.wrangler/state/v3'
+			path: './programmerbar-web/.wrangler/state/v3'
 		}
 	});
 	const db = createDatabase(env.DB);

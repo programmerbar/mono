@@ -85,7 +85,7 @@ pnpm format                # Auto-format code
 pnpm check                 # TypeScript + Svelte checks
 
 # Testing
-pnpm test:unit             # Vitest unit tests (apps/www)
+pnpm test:unit             # Vitest unit tests (programmerbar-web)
 pnpm test:integration      # Playwright e2e tests
 
 # Build & Deploy
@@ -97,10 +97,10 @@ pnpm preview               # Local production preview
 
 ```bash
 # Create user invitation (required for first login)
-pnpm dlx tsx ./apps/www/scripts/add-invitation.ts "user@email.com"
+pnpm dlx tsx ./programmerbar-web/scripts/add-invitation.ts "user@email.com"
 
 # Generate fake users for development
-pnpm dlx tsx ./apps/www/scripts/users.ts
+pnpm dlx tsx ./programmerbar-web/scripts/users.ts
 ```
 
 ## Database Schema (Drizzle ORM)
