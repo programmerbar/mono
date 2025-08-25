@@ -1,9 +1,0 @@
-pub mod admin;
-pub mod auth;
-pub mod event;
-pub mod health;
-pub mod image;
-pub mod invitation;
-pub mod product;
-pub mod status;
-pub mod user;

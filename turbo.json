@@ -16,8 +16,7 @@
         "build/**",
         ".svelte-kit/**",
         "dist/**",
-        ".react-email/**",
-        "target/**"
+        ".react-email/**"
       ]
     },
     "lint": {},
