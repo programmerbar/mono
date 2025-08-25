@@ -64,7 +64,9 @@ async fn main() -> anyhow::Result<()> {
     tracing::info!("🤓 Visit http://localhost:{port}/swagger-ui for the API documentation");
     tracing::info!("🌌 Scalar API available at http://localhost:{port}/scalar");
 
-    axum::serve(listener, app).await?;
+    let _ = axum::serve(listener, app)
+        .with_graceful_shutdown(shutdown_signal())
+        .await;
 
     Ok(())
 }
@@ -101,4 +103,10 @@ fn cors_layer() -> CorsLayer {
             axum::http::header::AUTHORIZATION,
         ])
         .allow_credentials(true)
+}
+
+async fn shutdown_signal() {
+    tokio::signal::ctrl_c()
+        .await
+        .expect("failed to install Ctrl+C handler");
 }
