@@ -19,7 +19,7 @@
 		description = 'Norges beste studentbar for IT-studenter. Arrangementer, øl og koding i perfekt harmoni.',
 		keywords = 'programmerbar, IT, studenter, bar, arrangementer, programmering, koding, øl, norge',
 		canonical,
-		image = '/images/og-default.jpg',
+		image = '/og.png',
 		type = 'website',
 		siteName = 'Programmerbar',
 		author = 'Programmerbar',
