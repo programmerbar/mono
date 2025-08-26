@@ -6,13 +6,14 @@
 	import { extractPriceRange } from '$lib/extract-price-range';
 	import { filterProducts } from '$lib/filter-products';
 	import { FilterState } from '$lib/states/filter-state.svelte';
+	import SEO from '$lib/components/SEO.svelte';
 
 	let { data } = $props();
 
 	let types = extractTypes(data.products);
 	let breweries = extractBreweries(data.products);
 	let filterState = new FilterState();
-	let priceRange = $derived(extractPriceRange(data.products, filterState.showStudentPrice)!); // Fix the bang operator
+	let priceRange = $derived(extractPriceRange(data.products, filterState.showStudentPrice));
 	let filteredProducts = $derived(filterProducts(data.products, filterState));
 
 	// Initialize price range when component mounts
@@ -23,9 +24,13 @@
 	});
 </script>
 
-<svelte:head>
-	<title>Meny</title>
-</svelte:head>
+<SEO
+	title="Meny"
+	description="Utforsk vår meny med øl, snacks, cider og andre drikker. Studentpriser tilgjengelig for alle produkter."
+	keywords="meny, øl, cider, drikker, studentpriser, programmerbar, priser"
+	canonical="/meny"
+	type="website"
+/>
 
 <div class="flex w-full flex-col gap-8 sm:mx-auto sm:max-w-screen-sm md:max-w-full md:flex-row">
 	<ProductSidebar {types} {breweries} {priceRange} {filterState} />

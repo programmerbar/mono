@@ -2,11 +2,20 @@
 	import { page } from '$app/state';
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 	import { ERROR_SEARCH_PARAM_ALREADY_REGISTERED } from '$lib/constants';
+	import SEO from '$lib/components/SEO.svelte';
 
 	let { form } = $props();
 
 	let error = $derived(form?.error);
 </script>
+
+<SEO
+	title="Bli frivillig"
+	description="Bli frivillig i Programmerbar og få muligheten til å være med på å skape en fantastisk studentpub-miljø for informatikkstudenter. Få bonger for hver vakt og møt andre studenter."
+	keywords="frivillig, volunteer, programmerbar, informatikkstudenter, studentpub, bonger, vakter"
+	canonical="/bli-frivillig"
+	type="website"
+/>
 
 <div class="bg-background mx-auto max-w-[600px] space-y-8 rounded-xl border-2 p-8">
 	<div class="space-y-4">

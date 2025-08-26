@@ -5,6 +5,7 @@
 	import { Calendar, Share2, ExternalLink } from '@lucide/svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
+	import SEO from '$lib/components/SEO.svelte';
 
 	let { data } = $props();
 
@@ -24,14 +25,21 @@
 			}, 2000);
 		}
 	}
+
+	// SEO data
+	const eventDescription =
+		data.event.body?.slice(0, 160) ||
+		`${data.event.title} - Arrangement hos Programmerbar den ${formatDate(data.event.date)}`;
 </script>
 
-<svelte:head>
-	<title>{data.event.title}</title>
-	<meta property="og:title" content={data.event.title} />
-	<meta property="og:type" content="article" />
-	<meta property="og:locale" content="nb_NO" />
-</svelte:head>
+<SEO
+	title={data.event.title}
+	description={eventDescription}
+	keywords={`${data.event.title}, arrangement, event, programmerbar, ${formatDate(data.event.date)}`}
+	canonical={`/arrangement/${data.event.slug}`}
+	type="event"
+	publishedTime={data.event._createdAt}
+/>
 
 <h1 class="mb-6 text-3xl font-bold text-gray-900 md:text-4xl">
 	{data.event.title}

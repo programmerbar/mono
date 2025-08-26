@@ -21,7 +21,7 @@
 	let loading = $state(false);
 	let types = extractTypes(data.products);
 	let breweries = extractBreweries(data.products);
-	let priceRange = $derived(extractPriceRange(data.products, filterState.showStudentPrice)!);
+	let priceRange = $derived(extractPriceRange(data.products, filterState.showStudentPrice));
 	let selectedProduct = $state<null | Product>(null);
 	let claimedProduct = $state<null | Product>(null);
 	let timerSeconds = $state(30);

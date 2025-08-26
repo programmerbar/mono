@@ -5,6 +5,7 @@
 	import ProductDetailsCard from '$lib/components/app/product/ProductDetailsCard.svelte';
 	import { Image } from '@lucide/svelte';
 	import { cn } from '$lib/cn';
+	import SEO from '$lib/components/SEO.svelte';
 
 	let { data } = $props();
 
@@ -36,11 +37,22 @@
 	];
 
 	let imageLoaded = $state(false);
+
+	// SEO data
+	const productImage = data.product.image ? urlFor(data.product.image).width(800).url() : undefined;
+	const productDescription =
+		data.product.description ||
+		`${data.product.name} - ${data.product.producer || 'Ukjent produsent'} - Pris fra ${data.product.priceList.student} kr`;
 </script>
 
-<svelte:head>
-	<title>{data.product.name}</title>
-</svelte:head>
+<SEO
+	title={data.product.name}
+	description={productDescription}
+	keywords={`${data.product.name}, ${data.product.producer || ''}, øl, drikke, studentpris, programmerbar`}
+	canonical={`/produkt/${data.product._id}`}
+	image={productImage}
+	type="product"
+/>
 
 <div class="mx-auto max-w-6xl">
 	<!-- Mobile Header - Only visible on mobile -->

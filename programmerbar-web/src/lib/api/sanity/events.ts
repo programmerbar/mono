@@ -6,6 +6,7 @@ export type Happening = {
 	title: string;
 	slug: string;
 	date: string;
+	_createdAt: string;
 	registrationStart: string | null;
 	body: string | null;
 };
@@ -21,6 +22,7 @@ const getEventsQuery = groq`*[
 	"slug": slug.current,
 	date,
 	registrationStart,
+	_createdAt,
 	body
 }[0...6]`;
 
@@ -39,6 +41,7 @@ const getUpcomingEventsQuery = groq`*[
 	"slug": slug.current,
 	date,
 	registrationStart,
+	_createdAt,
 	body
 }`;
 
@@ -57,6 +60,7 @@ export const getEventBySlugQuery = groq`*[
 	"slug": slug.current,
 	date,
 	registrationStart,
+	_createdAt,
 	body
 }[0]`;
 
@@ -75,6 +79,7 @@ export type RepeatingEvent = {
 	ignoredDates: Array<string> | null;
 	interval: 'daily' | 'weekly' | 'bi-weekly' | 'monthly';
 	slug: string;
+	_createdAt: string;
 	body: string | null;
 };
 
@@ -92,6 +97,7 @@ export const getRepeatingEventsQuery = groq`*[
 	ignoredDates,
 	endDate,
 	interval,
+	_createdAt,
 	"slug": slug.current,
 	body
 }`;
@@ -115,6 +121,7 @@ export const getRepeatingEventBySlugQuery = groq`*[
 	ignoredDates,
 	endDate,
 	interval,
+	_createdAt,
 	"slug": slug.current,
 	body
 }[0]`;

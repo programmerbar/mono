@@ -22,7 +22,8 @@ export const load: PageLoad = async ({ params }) => {
 				date: next.toISOString(),
 				slug: repeatingEvent.slug,
 				title: repeatingEvent.title,
-				registrationStart: null
+				registrationStart: null,
+				_createdAt: repeatingEvent._createdAt
 			} satisfies Happening
 		};
 	}
