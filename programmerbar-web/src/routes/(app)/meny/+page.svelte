@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ProductPreview from '$lib/components/app/meny/ProductPreview.svelte';
-	import Sidebar from '$lib/components/app/meny/Sidebar.svelte';
+	import ProductSidebar from '$lib/components/app/meny/ProductSidebar.svelte';
 	import { extractTypes } from '$lib/extract-types';
 	import { extractBreweries } from '$lib/extract-breweries';
 	import { extractPriceRange } from '$lib/extract-price-range';
@@ -28,7 +28,7 @@
 </svelte:head>
 
 <div class="flex w-full flex-col gap-8 sm:mx-auto sm:max-w-screen-sm md:max-w-full md:flex-row">
-	<Sidebar {types} {breweries} {priceRange} {filterState} />
+	<ProductSidebar {types} {breweries} {priceRange} {filterState} />
 
 	<div class="flex-1">
 		{#if filteredProducts.length > 0}

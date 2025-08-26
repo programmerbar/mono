@@ -76,7 +76,7 @@
 		isSoldOut: product.isSoldOut || false
 	});
 
-	let selectedProductTypes = $state(new SvelteSet<string>(product.productTypeIds || []));
+	let selectedProductTypes = new SvelteSet<string>(product.productTypeIds || []);
 
 	const handleSubmit: SubmitFunction = () => {
 		return async ({ update }) => {
@@ -105,7 +105,11 @@
 				formData.imageId = product.imageId || null;
 			}
 			formData.isSoldOut = product.isSoldOut || false;
-			selectedProductTypes = new SvelteSet<string>(product.productTypeIds || []);
+
+			selectedProductTypes.clear();
+			for (const typeId of product.productTypeIds || []) {
+				selectedProductTypes.add(typeId);
+			}
 		}
 	});
 
@@ -390,7 +394,7 @@
 							Produkttyper
 						</label>
 						<MultipleSelect
-							bind:selected={selectedProductTypes}
+							selected={Array.from(selectedProductTypes)}
 							onToggle={toggleProductType}
 							options={productTypeOptions}
 							placeholder="Velg produkttyper"

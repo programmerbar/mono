@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { toast } from 'svelte-sonner';
 	import ProductPreview from '$lib/components/app/meny/ProductPreview.svelte';
-	import Sidebar from '$lib/components/app/meny/Sidebar.svelte';
+	import ProductSidebar from '$lib/components/app/meny/ProductSidebar.svelte';
 	import ClaimModal from '$lib/components/cards/ClaimModal.svelte';
 	import ClaimedCredit from '$lib/components/downloads/ClaimedCredits.svelte';
 	import { extractTypes } from '$lib/extract-types';
@@ -213,7 +213,7 @@
 				</div>
 			</div>
 
-			<Sidebar
+			<ProductSidebar
 				{types}
 				{breweries}
 				{priceRange}

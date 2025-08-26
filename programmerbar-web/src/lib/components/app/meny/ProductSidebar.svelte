@@ -5,7 +5,6 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import MultipleSelect from '$lib/components/ui/MultipleSelect.svelte';
 	import PriceRangeSlider from '$lib/components/ui/PriceRangeSlider.svelte';
-	import { SvelteSet } from 'svelte/reactivity';
 
 	type Props = {
 		filterState: FilterState;
@@ -25,32 +24,11 @@
 		disableSticky = false
 	}: Props = $props();
 
-	function toggleBrewery(brewery: string) {
-		const newBreweries = new SvelteSet<string>(filterState.breweries);
-		if (newBreweries.has(brewery)) {
-			newBreweries.delete(brewery);
-		} else {
-			newBreweries.add(brewery);
-		}
-		filterState.breweries = newBreweries;
-	}
-
-	function toggleType(typeId: string) {
-		const newTypes = new SvelteSet<string>(filterState.types);
-		if (newTypes.has(typeId)) {
-			newTypes.delete(typeId);
-		} else {
-			newTypes.add(typeId);
-		}
-		filterState.types = newTypes;
-	}
+	const typeOptions = $derived(types.map((type) => ({ id: type._id, label: type.title })));
 
 	function updatePriceRange(newRange: { min: number; max: number }) {
 		filterState.priceRange = newRange;
 	}
-
-	// Create a map of type IDs to titles for the MultipleSelect component
-	const typeOptions = types.map((type) => ({ id: type._id, label: type.title }));
 </script>
 
 <div
@@ -87,8 +65,8 @@
 
 	<MultipleSelect
 		options={typeOptions}
-		selected={filterState.types}
-		onToggle={toggleType}
+		selected={Array.from(filterState.types)}
+		onToggle={(type) => filterState.toggleType(type)}
 		placeholder="Alle typer"
 		label="Type"
 	/>
@@ -99,8 +77,8 @@
 				? { id: '__no_brewery__', label: 'Uten bryggeri' }
 				: { id: brewery, label: brewery }
 		)}
-		selected={filterState.breweries}
-		onToggle={toggleBrewery}
+		selected={Array.from(filterState.breweries)}
+		onToggle={(brewery) => filterState.toggleBrewery(brewery)}
 		placeholder="Alle bryggerier"
 		label="Bryggeri"
 	/>

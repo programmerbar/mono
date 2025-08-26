@@ -86,7 +86,23 @@ export class FilterState {
 		this.#showCreditPrice = value;
 	}
 
-	reset() {
+	toggleType = (value: string) => {
+		if (this.#types.has(value)) {
+			this.#types.delete(value);
+		} else {
+			this.#types.add(value);
+		}
+	};
+
+	toggleBrewery = (value: string) => {
+		if (this.#breweries.has(value)) {
+			this.#breweries.delete(value);
+		} else {
+			this.#breweries.add(value);
+		}
+	};
+
+	reset = () => {
 		this.#search = '';
 		this.#sort = 'name-asc';
 		this.#types = new SvelteSet<string>();
@@ -95,9 +111,9 @@ export class FilterState {
 		this.#hideSoldOut = true;
 		this.#showStudentPrice = true;
 		this.#showCreditPrice = false;
-	}
+	};
 
-	initializePriceRange(minPrice: number, maxPrice: number) {
+	initializePriceRange = (minPrice: number, maxPrice: number) => {
 		this.#priceRange = { min: minPrice, max: maxPrice };
-	}
+	};
 }
