@@ -38,18 +38,18 @@ export class InvitationService {
 		const invitation = await this.findByEmail(email);
 
 		if (!invitation) {
-			return [null, 'No invitation found'] as const;
+			return { success: false, error: 'No invitation found' } as const;
 		}
 
 		if (invitation.claimedAt !== null) {
-			return [null, 'Invitation already used'] as const;
+			return { success: false, error: 'Invitation already claimed' } as const;
 		}
 
 		if (isPast(invitation.expiresAt)) {
-			return [null, 'Invitation expired'] as const;
+			return { success: false, error: 'Invitation expired' } as const;
 		}
 
-		return [invitation, null] as const;
+		return { success: true, invitation } as const;
 	}
 
 	async findAllUnused() {

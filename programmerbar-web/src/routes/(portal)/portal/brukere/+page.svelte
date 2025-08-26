@@ -5,7 +5,7 @@
 	import AddUserModal from '$lib/components/portal/AddUserModal.svelte';
 	import { mailto } from '$lib/utils';
 	import { formatDate } from '$lib/date';
-	import UserCard from '$lib/components/cards/UserCard.svelte';
+	import UserCard from '$lib/components/portal/UserCard.svelte';
 	import { enhance } from '$app/forms';
 
 	let { data } = $props();

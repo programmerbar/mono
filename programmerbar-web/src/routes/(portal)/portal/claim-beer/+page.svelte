@@ -3,8 +3,8 @@
 	import { toast } from 'svelte-sonner';
 	import ProductPreview from '$lib/components/app/meny/ProductPreview.svelte';
 	import ProductSidebar from '$lib/components/app/meny/ProductSidebar.svelte';
-	import ClaimModal from '$lib/components/cards/ClaimModal.svelte';
-	import ClaimedCredit from '$lib/components/downloads/ClaimedCredits.svelte';
+	import ClaimModal from '$lib/components/portal/ClaimModal.svelte';
+	import ClaimedCredit from '$lib/components/portal/ClaimedCredits.svelte';
 	import { extractTypes } from '$lib/extract-types';
 	import { filterProducts } from '$lib/filter-products';
 	import { FilterState } from '$lib/states/filter-state.svelte';

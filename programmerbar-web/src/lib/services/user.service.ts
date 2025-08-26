@@ -1,5 +1,5 @@
 import type { Database } from '$lib/db/drizzle';
-import { eq, and, not } from 'drizzle-orm';
+import { eq, and, not, inArray } from 'drizzle-orm';
 import { users, type UserInsert } from '$lib/db/schemas';
 
 export class UserService {
@@ -89,6 +89,14 @@ export class UserService {
 
 		return user;
 	}
+
+	async findManyById(userIds: Array<string>) {
+		return await this.#db
+			.select()
+			.from(users)
+			.where(and(inArray(users.id, userIds), not(users.isDeleted)));
+	}
+
 	async deleteUser(userId: string) {
 		return await this.#db
 			.update(users)

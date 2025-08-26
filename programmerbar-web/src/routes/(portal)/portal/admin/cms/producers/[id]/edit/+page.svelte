@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
-	import ProducerForm from '$lib/components/cms/ProducerForm.svelte';
+	import ProducerForm from '$lib/components/portal/cms/ProducerForm.svelte';
 	import { ArrowLeft, Factory } from '@lucide/svelte';
 
 	let { data } = $props();
