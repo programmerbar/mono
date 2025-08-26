@@ -35,8 +35,6 @@
 
 - Website will run on [http://localhost:5173](http://localhost:5173)
 - Sanity will run on [http://localhost:3333](http://localhost:3333)
-- API will run on [http://localhost:8000](http://localhost:8000)
-- Email API will run on [http://localhost:8001](http://localhost:8001)
 
 ### Add invitation
 
