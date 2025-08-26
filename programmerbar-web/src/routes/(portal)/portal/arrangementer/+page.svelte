@@ -86,7 +86,7 @@
 	</div>
 
 	<!-- Tabs and Search -->
-	<div class="rounded-lg border bg-white">
+	<div class="overflow-hidden rounded-lg border bg-white">
 		<!-- Tab Navigation -->
 		<div class="flex border-b">
 			<button
@@ -115,12 +115,12 @@
 				type="search"
 				placeholder="Søk etter arrangementer..."
 				bind:value={search}
-				class="w-full border-1"
+				class="border-1 w-full"
 			/>
 		</div>
 
 		<!-- Events List -->
-		<div class="divide-y">
+		<div class="divide-y overflow-hidden">
 			{#if filteredEvents.length === 0}
 				<div class="px-6 py-12 text-center">
 					<Calendar class="mx-auto mb-4 h-12 w-12 text-gray-300" />
@@ -136,7 +136,7 @@
 			{:else}
 				{#each filteredEvents as event (event.id)}
 					{@const status = getEventStatus(event)}
-					<div class="p-4 transition-colors hover:bg-gray-50">
+					<div class="bg-white p-4 transition-colors hover:bg-gray-50">
 						<div class="flex items-start justify-between">
 							<div class="min-w-0 flex-1">
 								<div class="mb-2 flex items-center gap-3">
