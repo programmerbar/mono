@@ -7,10 +7,12 @@ export const load: PageServerLoad = async ({ locals }) => {
 	}
 
 	const users = await locals.userService.findAll();
+	const tags = await locals.tagService.getAllTags();
 
 	return {
 		user: locals.user,
-		users
+		users,
+		showInitializeTags: tags.length === 0
 	};
 };
 
@@ -35,5 +37,26 @@ export const actions: Actions = {
 		} else {
 			return fail(500, { error: 'Failed to update user role' });
 		}
+	},
+
+	initializeTags: async ({ locals }) => {
+		if (!locals.user || locals.user.role !== 'board') {
+			return fail(401, { message: 'Unauthorized' });
+		}
+
+		const success = await locals.tagService.initializeDefaultTags();
+		if (!success) {
+			return fail(400, { message: 'Failed to initialize tags' });
+		}
+
+		// Auto-assign Dev tag to the user who initialized
+		const tags = await locals.tagService.getAllTags();
+		const devTag = tags.find((tag) => tag.name === 'Dev');
+
+		if (devTag) {
+			await locals.tagService.assignTagToUser(devTag.id, locals.user.id, locals.user.id);
+		}
+
+		return { success: true, message: 'Tags initialized successfully' };
 	}
 };

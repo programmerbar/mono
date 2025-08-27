@@ -30,6 +30,12 @@ export const actions: Actions = {
 			ipAddress: ip
 		});
 
+		await locals.notificationService.notifyContactSubmission(
+			data.namekjkj,
+			data.emailkjkj,
+			data.messagekjkj
+		);
+
 		try {
 			// Still send email notification
 			await locals.emailService.sendContactUsEmail({

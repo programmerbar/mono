@@ -14,6 +14,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		return new Response(null, { status: 500 });
 	}
 
+	await locals.notificationService.notifyEventCreated(name, date, locals.user.id);
+
 	const shiftsToInsert = jshifts.map((shift) => ({
 		eventId: event.id,
 		startAt: shift.startAt,
@@ -28,6 +30,27 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		}));
 	});
 	await locals.eventService.createUserShifts(userShiftsToInsert ?? []);
+
+	if (userShiftsToInsert && userShiftsToInsert.length > 0 && createdShifts) {
+		for (const userShift of userShiftsToInsert) {
+			const shift = createdShifts.find((s) => s.id === userShift.shiftId);
+			const shiftTime = shift
+				? `${new Date(shift.startAt).toLocaleString('nb-NO')} - ${new Date(shift.endAt).toLocaleString('nb-NO')}`
+				: 'Unknown time';
+			await locals.notificationService.notifyShiftAssigned(
+				name,
+				shiftTime,
+				userShift.userId,
+				locals.user.id
+			);
+
+			// Check if assigned user needs training and notify if so
+			const assignedUser = await locals.userService.findById(userShift.userId);
+			if (assignedUser && !assignedUser.isTrained) {
+				await locals.notificationService.notifyOpplaering(userShift.userId, assignedUser.email);
+			}
+		}
+	}
 
 	const emailPromises = [];
 

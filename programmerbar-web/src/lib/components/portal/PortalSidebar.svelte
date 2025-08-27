@@ -12,7 +12,8 @@
 		X,
 		Shield,
 		Database,
-		UserCheck
+		UserCheck,
+		Tags
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { getUser } from '$lib/context/user.context';
@@ -23,9 +24,10 @@
 	type Props = {
 		notifications: Array<DbNotification>;
 		pendingApplicationsCount: number;
+		canManageTagOptions: boolean;
 	};
 
-	let { notifications, pendingApplicationsCount }: Props = $props();
+	let { notifications, pendingApplicationsCount, canManageTagOptions }: Props = $props();
 	let user = getUser();
 	let isSidebarOpen = $state(false);
 	let isMobile = $state(true); // Start as mobile to prevent flash
@@ -62,28 +64,39 @@
 	];
 
 	// Admin routes (only visible to board members)
-	const adminRoutes = $derived(
-		$user?.role === 'board'
-			? [
-					{
-						name: 'Status',
-						href: '/portal/status',
-						icon: Settings
-					},
-					{
-						name: 'Admin Panel',
-						href: '/portal/admin',
-						icon: Shield
-					},
-					{
-						name: 'Søknader',
-						href: '/portal/admin/pending-applications',
-						icon: UserCheck,
-						count: pendingApplicationsCount
-					}
-				]
-			: []
-	);
+	const adminRoutes = $derived.by(() => {
+		if ($user?.role !== 'board') return [];
+
+		const routes = [
+			{
+				name: 'Status',
+				href: '/portal/status',
+				icon: Settings
+			},
+			{
+				name: 'Admin Panel',
+				href: '/portal/admin',
+				icon: Shield
+			},
+			{
+				name: 'Søknader',
+				href: '/portal/admin/pending-applications',
+				icon: UserCheck,
+				count: pendingApplicationsCount
+			}
+		];
+
+		// Only show Tags if user has canManageTagOptions permission
+		if (canManageTagOptions) {
+			routes.splice(2, 0, {
+				name: 'Tags',
+				href: '/portal/admin/tags',
+				icon: Tags
+			});
+		}
+
+		return routes;
+	});
 
 	// CMS routes (only visible to board members)
 	const cmsRoutes = $derived(

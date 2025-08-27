@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="no">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>$ ./programmerbar --help</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Consolas', monospace;
+				background: #0d1117;
+				color: #c9d1d9;
+				line-height: 1.6;
+				overflow-x: hidden;
+			}
+
+			.terminal {
+				min-height: 100vh;
+				padding: 20px;
+				background:
+					radial-gradient(circle at 50% 50%, rgba(21, 255, 150, 0.1) 0%, transparent 50%),
+					linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+			}
+
+			.terminal-header {
+				display: flex;
+				align-items: center;
+				margin-bottom: 30px;
+				padding: 10px 0;
+				border-bottom: 1px solid #30363d;
+			}
+
+			.terminal-buttons {
+				display: flex;
+				gap: 8px;
+				margin-right: 20px;
+			}
+
+			.btn {
+				width: 12px;
+				height: 12px;
+				border-radius: 50%;
+			}
+
+			.btn.close {
+				background: #ff5f56;
+			}
+			.btn.minimize {
+				background: #ffbd2e;
+			}
+			.btn.maximize {
+				background: #27ca3f;
+			}
+
+			.terminal-title {
+				font-size: 14px;
+				color: #8b949e;
+			}
+
+			.prompt {
+				color: #58a6ff;
+				margin-right: 8px;
+			}
+
+			.command {
+				color: #f85149;
+			}
+
+			.output {
+				margin: 10px 0;
+				padding-left: 20px;
+			}
+
+			.logo {
+				font-size: 24px;
+				color: #39d353;
+				font-weight: bold;
+				margin: 20px 0;
+				text-shadow: 0 0 10px rgba(57, 211, 83, 0.3);
+			}
+
+			.menu-item {
+				margin: 8px 0;
+				padding: 8px 12px;
+				background: rgba(48, 54, 61, 0.3);
+				border-left: 3px solid #21262d;
+				transition: all 0.3s ease;
+				cursor: pointer;
+			}
+
+			.menu-item:hover {
+				background: rgba(88, 166, 255, 0.1);
+				border-left-color: #58a6ff;
+				transform: translateX(10px);
+			}
+
+			.events {
+				margin-top: 30px;
+			}
+
+			.event {
+				display: flex;
+				align-items: center;
+				margin: 10px 0;
+				padding: 10px;
+				background: rgba(33, 38, 45, 0.5);
+				border-radius: 6px;
+			}
+
+			.event-date {
+				color: #ffa657;
+				margin-right: 15px;
+				font-weight: bold;
+			}
+
+			.event-title {
+				color: #f0f6fc;
+			}
+
+			.typing-effect {
+				border-right: 2px solid #58a6ff;
+				animation: blink 1s infinite;
+			}
+
+			@keyframes blink {
+				0%,
+				50% {
+					border-color: #58a6ff;
+				}
+				51%,
+				100% {
+					border-color: transparent;
+				}
+			}
+
+			.stats {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+				gap: 15px;
+				margin: 30px 0;
+			}
+
+			.stat {
+				background: rgba(33, 38, 45, 0.7);
+				padding: 15px;
+				border-radius: 8px;
+				border: 1px solid #30363d;
+				text-align: center;
+			}
+
+			.stat-value {
+				font-size: 24px;
+				color: #39d353;
+				font-weight: bold;
+			}
+
+			.stat-label {
+				color: #8b949e;
+				font-size: 12px;
+				text-transform: uppercase;
+			}
+
+			.footer {
+				margin-top: 50px;
+				padding: 20px 0;
+				border-top: 1px solid #30363d;
+				text-align: center;
+				color: #6e7681;
+				font-size: 12px;
+			}
+
+			.login-btn {
+				background: linear-gradient(45deg, #39d353, #28a745);
+				color: #000;
+				border: none;
+				padding: 12px 24px;
+				font-family: inherit;
+				font-weight: bold;
+				border-radius: 6px;
+				cursor: pointer;
+				margin: 20px 10px;
+				transition: all 0.3s ease;
+			}
+
+			.login-btn:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 5px 15px rgba(57, 211, 83, 0.4);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="terminal">
+			<div class="terminal-header">
+				<div class="terminal-buttons">
+					<div class="btn close"></div>
+					<div class="btn minimize"></div>
+					<div class="btn maximize"></div>
+				</div>
+				<div class="terminal-title">bash — 80x24</div>
+			</div>
+
+			<div class="content">
+				<div>
+					<span class="prompt">user@programmerbar:~$</span>
+					<span class="command">./programmerbar --help</span>
+				</div>
+
+				<div class="output">
+					<div class="logo">
+						██████╗ ██████╗ ██████╗ ██████╗ ██████╗ █████╗ ███╗ ███╗███╗ ███╗███████╗██████╗
+						██╔══██╗██╔══██╗██╔═══██╗██╔════╝ ██╔══██╗██╔══██╗████╗ ████║████╗ ████║██╔════╝██╔══██╗
+						██████╔╝██████╔╝██║ ██║██║ ███╗██████╔╝███████║██╔████╔██║██╔████╔██║█████╗ ██████╔╝
+						██╔═══╝ ██╔══██╗██║ ██║██║ ██║██╔══██╗██╔══██║██║╚██╔╝██║██║╚██╔╝██║██╔══╝ ██╔══██╗ ██║
+						██║ ██║╚██████╔╝╚██████╔╝██║ ██║██║ ██║██║ ╚═╝ ██║██║ ╚═╝ ██║███████╗██║ ██║ ╚═╝ ╚═╝ ╚═╝
+						╚═════╝ ╚═════╝ ╚═╝ ╚═╝╚═╝ ╚═╝╚═╝ ╚═╝╚═╝ ╚═╝╚══════╝╚═╝ ╚═╝
+					</div>
+					<div style="color: #8b949e; margin: 20px 0">
+						USAGE: Den ultimate baren for informatikk-studenter ved UIB
+					</div>
+
+					<div style="color: #ffa657; margin: 20px 0">OPTIONS:</div>
+
+					<div class="menu-item" onclick="window.location='/portal'">
+						<span style="color: #58a6ff">--events</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Se
+						kommende arrangementer og meld deg på vakter
+					</div>
+
+					<div class="menu-item" onclick="window.location='/portal/claim-beer'">
+						<span style="color: #58a6ff">--beer</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						Krev øl og administrer kreditt-systemet
+					</div>
+
+					<div class="menu-item" onclick="window.location='/portal'">
+						<span style="color: #58a6ff">--volunteer</span> &nbsp;&nbsp;&nbsp; Meld deg på
+						frivillige vakter og bidra
+					</div>
+
+					<div class="menu-item" onclick="window.location='/kontakt-oss'">
+						<span style="color: #58a6ff">--contact</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Kontakt
+						styret eller rapporter problemer
+					</div>
+
+					<div class="menu-item" onclick="window.location='/portal/admin'">
+						<span style="color: #58a6ff">--admin</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						Administrere brukere og arrangementer (krever tilgang)
+					</div>
+
+					<div class="stats">
+						<div class="stat">
+							<div class="stat-value">42</div>
+							<div class="stat-label">Aktive medlemmer</div>
+						</div>
+						<div class="stat">
+							<div class="stat-value">1337</div>
+							<div class="stat-label">Øl konsumert</div>
+						</div>
+						<div class="stat">
+							<div class="stat-value">404</div>
+							<div class="stat-label">Bug reports løst</div>
+						</div>
+						<div class="stat">
+							<div class="stat-value">∞</div>
+							<div class="stat-label">Lines of code diskutert</div>
+						</div>
+					</div>
+
+					<div class="events">
+						<div style="color: #ffa657; margin: 20px 0">UPCOMING EVENTS:</div>
+						<div class="event">
+							<span class="event-date">2025-01-15</span>
+							<span class="event-title">Git Workshop: "Hvordan unngå merge conflicts"</span>
+						</div>
+						<div class="event">
+							<span class="event-date">2025-01-20</span>
+							<span class="event-title">Øl og Algoritmer: NP-komplette problemer</span>
+						</div>
+						<div class="event">
+							<span class="event-date">2025-01-25</span>
+							<span class="event-title">Hackathon: 48 timer med kaffe og kode</span>
+						</div>
+					</div>
+
+					<div style="margin: 30px 0; text-align: center">
+						<button class="login-btn" onclick="window.location='/portal/auth/feide'">
+							#!/bin/bash && login_with_feide()
+						</button>
+					</div>
+
+					<div style="color: #8b949e; margin: 30px 0">
+						<div>EXAMPLES:</div>
+						<div style="margin-left: 20px">
+							<div>curl -X POST /api/volunteer --data "shift_id=nextjs_workshop"</div>
+							<div>git clone https://github.com/programmerbar/good-times.git</div>
+							<div>npm install @programmerbar/social-skills@latest</div>
+						</div>
+					</div>
+				</div>
+
+				<div style="margin-top: 30px">
+					<span class="prompt">user@programmerbar:~$</span>
+					<span class="typing-effect"> </span>
+				</div>
+			</div>
+
+			<div class="footer">
+				<div>
+					MIT License | Powered by SvelteKit, Rust & ☕ | Made with ❤️ by informatikk-studenter
+				</div>
+				<div>Feide OAuth • D1 Database • Cloudflare Pages • Rust API</div>
+			</div>
+		</div>
+
+		<script>
+			// Add some terminal-like effects
+			document.addEventListener('DOMContentLoaded', function () {
+				const cursor = document.querySelector('.typing-effect');
+
+				// Simulate typing effect
+				const commands = ['help', 'ls -la', 'git status', 'npm run dev', 'cargo build'];
+				let commandIndex = 0;
+				let charIndex = 0;
+
+				function typeCommand() {
+					if (charIndex < commands[commandIndex].length) {
+						cursor.textContent = commands[commandIndex].substring(0, charIndex + 1);
+						charIndex++;
+						setTimeout(typeCommand, 100);
+					} else {
+						setTimeout(() => {
+							charIndex = 0;
+							commandIndex = (commandIndex + 1) % commands.length;
+							typeCommand();
+						}, 2000);
+					}
+				}
+
+				setTimeout(typeCommand, 1000);
+			});
+		</script>
+	</body>
+</html>

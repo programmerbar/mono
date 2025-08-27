@@ -65,6 +65,14 @@ export const actions: Actions = {
 
 		try {
 			await locals.referralService.createReferral(referrerId, locals.user.id);
+
+			// Get referrer info for notification
+			const referrer = await locals.userService.findById(referrerId);
+			if (referrer) {
+				// Send referral notification
+				await locals.notificationService.notifyReferral(referrer.email, locals.user.email);
+			}
+
 			return { success: true };
 		} catch (error) {
 			console.error('Referral creation failed:', error);

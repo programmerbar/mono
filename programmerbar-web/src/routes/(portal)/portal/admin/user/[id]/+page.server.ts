@@ -44,7 +44,13 @@ export const actions: Actions = {
 			await locals.userService.updatePhone(userId, phone);
 		}
 		if (role) {
+			const user = await locals.userService.findById(userId);
+			const oldRole = user?.role;
 			await locals.userService.updateUserRole(userId, role);
+
+			if (oldRole && oldRole !== role && user) {
+				await locals.notificationService.notifyUserRoleChange(userId, role, locals.user!.id);
+			}
 		}
 		await locals.userService.updateCanRefer(userId, canRefer);
 
@@ -68,6 +74,16 @@ export const actions: Actions = {
 				message: 'Failed to update beers'
 			});
 		}
+
+		// Send bong notification if beers were added (positive number)
+		if (additionalBeers > 0) {
+			await locals.notificationService.notifyBong(
+				locals.user.id, // giver (admin who added beers)
+				userId, // receiver
+				additionalBeers // quantity
+			);
+		}
+
 		return { success: true };
 	},
 
@@ -122,6 +138,9 @@ export const actions: Actions = {
 			});
 		}
 
+		// Send notification about user deletion
+		await locals.notificationService.notifyUserDeleted(user.name, locals.user.id);
+
 		return { success: true, message: `${user.name} er no slettet!` };
 	},
 
@@ -157,6 +176,62 @@ export const actions: Actions = {
 			return fail(404, { error: 'User not found' });
 		}
 
+		await locals.notificationService.notifyTrainingComplete(userId, locals.user!.id);
+
 		return { success: true, trainingCompleted: true };
+	},
+
+	assignTag: async ({ params, request, locals }) => {
+		if (!locals.user || locals.user.role !== 'board') {
+			return fail(401, { message: 'Unauthorized' });
+		}
+
+		const userId = params.id;
+		const formData = await request.formData();
+		const tagId = formData.get('tagId') as string;
+
+		if (!userId || !tagId) {
+			return fail(400, { message: 'User ID and Tag ID are required' });
+		}
+
+		try {
+			await locals.tagService.assignTagToUser(tagId, userId, locals.user.id);
+			const tag = await locals.tagService.getTagById(tagId);
+			await locals.notificationService.notifyTagAssigned(
+				tag?.name || 'Unknown Tag',
+				userId,
+				locals.user.name || 'Admin'
+			);
+			return { success: true, message: 'Tag assigned successfully' };
+		} catch {
+			return fail(500, { message: 'Failed to assign tag' });
+		}
+	},
+
+	removeTag: async ({ params, request, locals }) => {
+		if (!locals.user || locals.user.role !== 'board') {
+			return fail(401, { message: 'Unauthorized' });
+		}
+
+		const userId = params.id;
+		const formData = await request.formData();
+		const tagId = formData.get('tagId') as string;
+
+		if (!userId || !tagId) {
+			return fail(400, { message: 'User ID and Tag ID are required' });
+		}
+
+		try {
+			const tag = await locals.tagService.getTagById(tagId);
+			await locals.tagService.removeTagFromUser(tagId, userId);
+			await locals.notificationService.notifyTagRemoved(
+				tag?.name || 'Unknown Tag',
+				userId,
+				locals.user.name || 'Admin'
+			);
+			return { success: true, message: 'Tag removed successfully' };
+		} catch {
+			return fail(500, { message: 'Failed to remove tag' });
+		}
 	}
 };

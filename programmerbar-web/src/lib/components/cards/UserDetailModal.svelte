@@ -4,7 +4,6 @@
 	import { cubicInOut } from 'svelte/easing';
 	import Button from '../ui/Button.svelte';
 	import Input from '../ui/Input.svelte';
-	import { outsideClick } from '$lib/actions/outside-click';
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import { onMount } from 'svelte';
@@ -44,7 +43,6 @@
 	<div
 		in:fly={{ easing: cubicInOut, y: 20, duration: 300 }}
 		out:fly={{ easing: cubicInOut, y: 20, duration: 300 }}
-		use:outsideClick={() => onClose()}
 		class="relative w-full max-w-md rounded-lg bg-white p-6"
 	>
 		<h2 class="mb-4 text-xl font-bold">{selectedUser.name}'s Detaljer</h2>

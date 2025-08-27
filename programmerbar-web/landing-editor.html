@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="no">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>programmerbar.rs - The Social Code Editor</title>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				font-family: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Consolas', monospace;
+				background: #1e1e1e;
+				color: #d4d4d4;
+				line-height: 1.6;
+				overflow-x: hidden;
+			}
+
+			.editor-container {
+				min-height: 100vh;
+				background: #1e1e1e;
+				display: flex;
+				flex-direction: column;
+			}
+
+			/* VS Code style title bar */
+			.title-bar {
+				background: #323233;
+				height: 30px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 12px;
+				border-bottom: 1px solid #2d2d30;
+			}
+
+			.window-controls {
+				display: flex;
+				gap: 8px;
+			}
+
+			.control-btn {
+				width: 12px;
+				height: 12px;
+				border-radius: 50%;
+			}
+
+			.control-btn.close {
+				background: #ff5f57;
+			}
+			.control-btn.minimize {
+				background: #ffbd2e;
+			}
+			.control-btn.maximize {
+				background: #28ca42;
+			}
+
+			.title-text {
+				color: #cccccc;
+				font-size: 13px;
+				font-weight: 400;
+			}
+
+			/* Activity bar */
+			.activity-bar {
+				width: 48px;
+				background: #333333;
+				border-right: 1px solid #2d2d30;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				padding: 8px 0;
+			}
+
+			.activity-icon {
+				width: 32px;
+				height: 32px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-bottom: 8px;
+				cursor: pointer;
+				border-radius: 4px;
+				transition: background 0.2s;
+				color: #858585;
+			}
+
+			.activity-icon:hover,
+			.activity-icon.active {
+				background: #2a2d2e;
+				color: #ffffff;
+			}
+
+			/* Main layout */
+			.main-area {
+				display: flex;
+				flex: 1;
+			}
+
+			.sidebar {
+				width: 250px;
+				background: #252526;
+				border-right: 1px solid #2d2d30;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.sidebar-title {
+				padding: 8px 16px;
+				background: #2d2d30;
+				font-size: 11px;
+				text-transform: uppercase;
+				color: #cccccc;
+				font-weight: 500;
+				letter-spacing: 0.5px;
+			}
+
+			.file-explorer {
+				flex: 1;
+				padding: 8px;
+			}
+
+			.file-item {
+				display: flex;
+				align-items: center;
+				padding: 4px 8px;
+				cursor: pointer;
+				border-radius: 3px;
+				font-size: 13px;
+				transition: background 0.2s;
+			}
+
+			.file-item:hover {
+				background: #2a2d2e;
+			}
+
+			.file-item.active {
+				background: #094771;
+				color: #ffffff;
+			}
+
+			.file-icon {
+				width: 16px;
+				height: 16px;
+				margin-right: 8px;
+				flex-shrink: 0;
+			}
+
+			/* Editor area */
+			.editor-area {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.tabs {
+				display: flex;
+				background: #2d2d30;
+				border-bottom: 1px solid #2d2d30;
+				min-height: 35px;
+			}
+
+			.tab {
+				display: flex;
+				align-items: center;
+				padding: 0 16px;
+				background: #2d2d30;
+				border-right: 1px solid #2d2d30;
+				cursor: pointer;
+				font-size: 13px;
+				color: #969696;
+				min-width: 120px;
+				justify-content: space-between;
+			}
+
+			.tab.active {
+				background: #1e1e1e;
+				color: #ffffff;
+			}
+
+			.tab-close {
+				margin-left: 8px;
+				opacity: 0;
+				transition: opacity 0.2s;
+			}
+
+			.tab:hover .tab-close {
+				opacity: 1;
+			}
+
+			.editor-content {
+				flex: 1;
+				background: #1e1e1e;
+				padding: 0;
+				display: flex;
+				flex-direction: column;
+				position: relative;
+			}
+
+			.line-numbers {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 60px;
+				background: #1e1e1e;
+				color: #858585;
+				font-size: 13px;
+				line-height: 20px;
+				text-align: right;
+				padding-right: 16px;
+				padding-top: 16px;
+				user-select: none;
+				border-right: 1px solid #2d2d30;
+			}
+
+			.code-area {
+				margin-left: 60px;
+				padding: 16px;
+				font-size: 14px;
+				line-height: 20px;
+				white-space: pre;
+				overflow: auto;
+				flex: 1;
+			}
+
+			/* Syntax highlighting */
+			.keyword {
+				color: #569cd6;
+			}
+			.string {
+				color: #ce9178;
+			}
+			.comment {
+				color: #6a9955;
+				font-style: italic;
+			}
+			.number {
+				color: #b5cea8;
+			}
+			.function {
+				color: #dcdcaa;
+			}
+			.type {
+				color: #4ec9b0;
+			}
+			.property {
+				color: #9cdcfe;
+			}
+			.operator {
+				color: #d4d4d4;
+			}
+
+			/* Status bar */
+			.status-bar {
+				height: 22px;
+				background: #007acc;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 12px;
+				font-size: 12px;
+				color: #ffffff;
+			}
+
+			.status-left,
+			.status-right {
+				display: flex;
+				align-items: center;
+				gap: 16px;
+			}
+
+			/* Welcome content */
+			.welcome-content {
+				padding: 40px;
+				max-width: 800px;
+				margin: 0 auto;
+			}
+
+			.logo-code {
+				font-size: 24px;
+				color: #569cd6;
+				margin-bottom: 30px;
+			}
+
+			.feature-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+				gap: 20px;
+				margin: 30px 0;
+			}
+
+			.feature-card {
+				background: #252526;
+				border: 1px solid #2d2d30;
+				border-radius: 6px;
+				padding: 20px;
+				transition: border-color 0.2s;
+			}
+
+			.feature-card:hover {
+				border-color: #007acc;
+			}
+
+			.feature-title {
+				color: #4ec9b0;
+				font-weight: 500;
+				margin-bottom: 8px;
+			}
+
+			.feature-desc {
+				color: #cccccc;
+				font-size: 13px;
+				line-height: 1.5;
+			}
+
+			.cta-section {
+				background: #252526;
+				border: 1px solid #2d2d30;
+				border-radius: 6px;
+				padding: 30px;
+				text-align: center;
+				margin: 30px 0;
+			}
+
+			.cta-button {
+				background: #0e639c;
+				color: #ffffff;
+				border: none;
+				padding: 12px 24px;
+				border-radius: 4px;
+				font-family: inherit;
+				font-size: 14px;
+				cursor: pointer;
+				transition: background 0.2s;
+				font-weight: 500;
+			}
+
+			.cta-button:hover {
+				background: #1177bb;
+			}
+
+			.stats-row {
+				display: flex;
+				justify-content: space-around;
+				margin: 40px 0;
+				text-align: center;
+			}
+
+			.stat-item {
+				flex: 1;
+			}
+
+			.stat-number {
+				font-size: 32px;
+				color: #4ec9b0;
+				font-weight: 500;
+			}
+
+			.stat-label {
+				color: #858585;
+				font-size: 12px;
+				text-transform: uppercase;
+			}
+
+			.events-section {
+				margin: 40px 0;
+			}
+
+			.section-title {
+				color: #4ec9b0;
+				font-size: 18px;
+				margin-bottom: 20px;
+				border-bottom: 1px solid #2d2d30;
+				padding-bottom: 8px;
+			}
+
+			.event-item {
+				display: flex;
+				align-items: center;
+				padding: 12px 0;
+				border-bottom: 1px solid #2d2d30;
+			}
+
+			.event-date {
+				color: #ce9178;
+				width: 100px;
+				flex-shrink: 0;
+				font-size: 12px;
+			}
+
+			.event-title {
+				color: #d4d4d4;
+				font-size: 14px;
+			}
+
+			/* Responsive */
+			@media (max-width: 768px) {
+				.sidebar {
+					width: 200px;
+				}
+
+				.welcome-content {
+					padding: 20px;
+				}
+
+				.feature-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			.cursor {
+				animation: blink 1s infinite;
+			}
+
+			@keyframes blink {
+				0%,
+				50% {
+					opacity: 1;
+				}
+				51%,
+				100% {
+					opacity: 0;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="editor-container">
+			<!-- Title Bar -->
+			<div class="title-bar">
+				<div class="window-controls">
+					<div class="control-btn close"></div>
+					<div class="control-btn minimize"></div>
+					<div class="control-btn maximize"></div>
+				</div>
+				<div class="title-text">programmerbar.rs — Visual Studio Code</div>
+				<div></div>
+			</div>
+
+			<!-- Main Area -->
+			<div class="main-area">
+				<!-- Activity Bar -->
+				<div class="activity-bar">
+					<div class="activity-icon active" title="Explorer">📁</div>
+					<div class="activity-icon" title="Search">🔍</div>
+					<div class="activity-icon" title="Source Control">🌿</div>
+					<div class="activity-icon" title="Run and Debug">🐞</div>
+					<div class="activity-icon" title="Extensions">⬜</div>
+					<div class="activity-icon" title="Beer">🍺</div>
+				</div>
+
+				<!-- Sidebar -->
+				<div class="sidebar">
+					<div class="sidebar-title">Explorer</div>
+					<div class="file-explorer">
+						<div class="file-item active">
+							<span class="file-icon">📄</span>
+							welcome.rs
+						</div>
+						<div class="file-item">
+							<span class="file-icon">⚙️</span>
+							events.config.json
+						</div>
+						<div class="file-item">
+							<span class="file-icon">🍺</span>
+							beer_system.rs
+						</div>
+						<div class="file-item">
+							<span class="file-icon">👥</span>
+							volunteers.md
+						</div>
+						<div class="file-item">
+							<span class="file-icon">📊</span>
+							stats.sql
+						</div>
+						<div class="file-item">
+							<span class="file-icon">🔐</span>
+							auth.feide.ts
+						</div>
+					</div>
+				</div>
+
+				<!-- Editor Area -->
+				<div class="editor-area">
+					<!-- Tabs -->
+					<div class="tabs">
+						<div class="tab active">
+							welcome.rs
+							<span class="tab-close">×</span>
+						</div>
+					</div>
+
+					<!-- Editor Content -->
+					<div class="editor-content">
+						<div class="line-numbers">
+							<div>1</div>
+							<div>2</div>
+							<div>3</div>
+							<div>4</div>
+							<div>5</div>
+							<div>6</div>
+							<div>7</div>
+							<div>8</div>
+							<div>9</div>
+							<div>10</div>
+							<div>11</div>
+							<div>12</div>
+							<div>13</div>
+							<div>14</div>
+							<div>15</div>
+							<div>16</div>
+							<div>17</div>
+							<div>18</div>
+							<div>19</div>
+							<div>20</div>
+							<div>21</div>
+							<div>22</div>
+							<div>23</div>
+							<div>24</div>
+							<div>25</div>
+							<div>26</div>
+							<div>27</div>
+							<div>28</div>
+							<div>29</div>
+							<div>30</div>
+						</div>
+
+						<div class="code-area">
+							<span class="comment"
+								>// Programmerbar - Den ultimate baren for informatikk-studenter</span
+							>
+							<span class="keyword">use</span> <span class="type">std</span>::<span class="property"
+								>collections</span
+							>::<span class="type">HashMap</span>; <span class="keyword">use</span>
+							<span class="type">serde</span>::{<span class="type">Deserialize</span>,
+							<span class="type">Serialize</span>};
+
+							<span class="keyword">struct</span> <span class="type">ProgrammerBar</span> {
+							<span class="property">members</span>: <span class="type">Vec</span>&lt;<span
+								class="type"
+								>Student</span
+							>&gt;, <span class="property">beer_inventory</span>:
+							<span class="type">HashMap</span>&lt;<span class="type">String</span>,
+							<span class="type">u32</span>&gt;, <span class="property">events</span>:
+							<span class="type">Vec</span>&lt;<span class="type">Event</span>&gt;, }
+
+							<span class="keyword">impl</span> <span class="type">ProgrammerBar</span> {
+							<span class="keyword">pub fn</span> <span class="function">new</span>()
+							<span class="operator">-></span> <span class="type">Self</span> {
+							<span class="type">Self</span> { <span class="property">members</span>:
+							<span class="function">Vec::new</span>(),
+							<span class="property">beer_inventory</span>:
+							<span class="function">HashMap::new</span>(), <span class="property">events</span>:
+							<span class="function">Vec::new</span>(), } }
+
+							<span class="comment">// Authenticate student via Feide</span>
+							<span class="keyword">pub async fn</span>
+							<span class="function">authenticate_student</span>(&<span class="keyword">mut</span>
+							<span class="keyword">self</span>, <span class="property">feide_token</span>:
+							<span class="type">String</span>) <span class="operator">-></span>
+							<span class="type">Result</span>&lt;<span class="type">Student</span>,
+							<span class="type">AuthError</span>&gt; { <span class="keyword">let</span>
+							<span class="property">student</span> = <span class="function">feide_auth</span>(<span
+								class="property"
+								>feide_token</span
+							>).<span class="keyword">await</span>?; <span class="keyword">self</span>.<span
+								class="property"
+								>members</span
+							>.<span class="function">push</span>(<span class="property">student</span>.<span
+								class="function"
+								>clone</span
+							>()); <span class="type">Ok</span>(<span class="property">student</span>) }
+
+							<span class="comment">// Join volunteer shift - because someone has to work!</span>
+							<span class="keyword">pub fn</span> <span class="function">join_shift</span>(&<span
+								class="keyword"
+								>mut</span
+							>
+							<span class="keyword">self</span>, <span class="property">student_id</span>:
+							<span class="type">u32</span>, <span class="property">event_id</span>:
+							<span class="type">u32</span>) <span class="operator">-></span>
+							<span class="type">bool</span> {
+							<span class="comment">// Implementation here...</span>
+							<span class="keyword">true</span>
+							}
+
+							<span class="comment">// Claim your well-deserved beer 🍺</span>
+							<span class="keyword">pub fn</span> <span class="function">claim_beer</span>(&<span
+								class="keyword"
+								>mut</span
+							>
+							<span class="keyword">self</span>, <span class="property">student_id</span>:
+							<span class="type">u32</span>, <span class="property">beer_type</span>:
+							<span class="type">String</span>) <span class="operator">-></span>
+							<span class="type">Result</span>&lt;(), <span class="type">BeerError</span>&gt; {
+							<span class="keyword">if</span> <span class="keyword">self</span>.<span
+								class="function"
+								>has_enough_credits</span
+							>(<span class="property">student_id</span>) {
+							<span class="function">println!</span>(<span class="string"
+								>"🍺 Skål! Enjoy your {}!"</span
+							>, <span class="property">beer_type</span>); <span class="type">Ok</span>(()) }
+							<span class="keyword">else</span> { <span class="type">Err</span>(<span class="type"
+								>BeerError</span
+							>::<span class="property">InsufficientCredits</span>) } } }<span class="cursor"
+								>|</span
+							>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Status Bar -->
+			<div class="status-bar">
+				<div class="status-left">
+					<span>🌿 main</span>
+					<span>0 ✗</span>
+					<span>0 ⚠</span>
+				</div>
+				<div class="status-right">
+					<span>Rust</span>
+					<span>UTF-8</span>
+					<span>LF</span>
+					<span>Ln 30, Col 1</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Hidden welcome content that appears when code is clicked -->
+		<div id="welcomeContent" style="display: none">
+			<div class="welcome-content">
+				<div class="logo-code">
+					<span class="comment">// Welcome to</span><br />
+					<span class="type">ProgrammerBar</span><span class="operator">::</span
+					><span class="function">init</span>();
+				</div>
+
+				<p style="color: #cccccc; margin-bottom: 30px">
+					Den ultimate baren for informatikk-studenter ved NTNU. Her koder vi sammen, drikker øl
+					sammen, og debugger livet sammen.
+				</p>
+
+				<div class="feature-grid">
+					<div class="feature-card" onclick="window.location='/portal'">
+						<div class="feature-title">fn events() -> Vec&lt;Event&gt;</div>
+						<div class="feature-desc">
+							Sjekk ut kommende workshops, hackathons og sosiale arrangementer. Perfect for
+							networking og læring.
+						</div>
+					</div>
+
+					<div class="feature-card" onclick="window.location='/portal/claim-beer'">
+						<div class="feature-title">impl BeerSystem&lt;T&gt;</div>
+						<div class="feature-desc">
+							Krev øl med vårt avanserte kreditt-system. Type-safe beer claiming siden 2025.
+						</div>
+					</div>
+
+					<div class="feature-card" onclick="window.location='/portal'">
+						<div class="feature-title">trait Volunteer</div>
+						<div class="feature-desc">
+							Bli frivillig og bygg erfaring mens du hjelper til med å drive den beste baren på
+							campus.
+						</div>
+					</div>
+
+					<div class="feature-card" onclick="window.location='/kontakt-oss'">
+						<div class="feature-title">async fn contact_us()</div>
+						<div class="feature-desc">
+							Har du spørsmål, forslag, eller fant du en bug? Send oss en melding!
+						</div>
+					</div>
+				</div>
+
+				<div class="stats-row">
+					<div class="stat-item">
+						<div class="stat-number">42</div>
+						<div class="stat-label">Active Coders</div>
+					</div>
+					<div class="stat-item">
+						<div class="stat-number">1337</div>
+						<div class="stat-label">Beers Served</div>
+					</div>
+					<div class="stat-item">
+						<div class="stat-number">∞</div>
+						<div class="stat-label">Lines Debugged</div>
+					</div>
+					<div class="stat-item">
+						<div class="stat-number">0</div>
+						<div class="stat-label">Bugs in Production</div>
+					</div>
+				</div>
+
+				<div class="events-section">
+					<div class="section-title">upcoming_events.schedule()</div>
+					<div class="event-item">
+						<div class="event-date">2025-01-15</div>
+						<div class="event-title">Git Workshop: Merge Conflicts & Solutions</div>
+					</div>
+					<div class="event-item">
+						<div class="event-date">2025-01-20</div>
+						<div class="event-title">Beer & Algorithms: Optimizing Social Networks</div>
+					</div>
+					<div class="event-item">
+						<div class="event-date">2025-01-25</div>
+						<div class="event-title">48h Hackathon: "Build the Future"</div>
+					</div>
+				</div>
+
+				<div class="cta-section">
+					<h3 style="color: #4ec9b0; margin-bottom: 16px">Ready to compile?</h3>
+					<p style="color: #cccccc; margin-bottom: 20px">
+						Logg inn med din FEIDE-konto og bli en del av det beste developer-miljøet på NTNU.
+					</p>
+					<button class="cta-button" onclick="window.location='/portal/auth/feide'">
+						auth.login_with_feide().await
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			// Show welcome content when code area is clicked
+			document.querySelector('.code-area').addEventListener('click', function () {
+				const welcomeContent = document.getElementById('welcomeContent');
+				const editorContent = document.querySelector('.editor-content');
+
+				if (welcomeContent.style.display === 'none') {
+					welcomeContent.style.display = 'block';
+					editorContent.style.display = 'none';
+				} else {
+					welcomeContent.style.display = 'none';
+					editorContent.style.display = 'flex';
+				}
+			});
+
+			// File explorer interactions
+			document.querySelectorAll('.file-item').forEach((item) => {
+				item.addEventListener('click', function () {
+					// Remove active class from all items
+					document.querySelectorAll('.file-item').forEach((i) => i.classList.remove('active'));
+					// Add active class to clicked item
+					this.classList.add('active');
+
+					// Show welcome content for welcome.rs
+					if (this.textContent.includes('welcome.rs')) {
+						document.getElementById('welcomeContent').style.display = 'block';
+						document.querySelector('.editor-content').style.display = 'none';
+					} else {
+						document.getElementById('welcomeContent').style.display = 'none';
+						document.querySelector('.editor-content').style.display = 'flex';
+					}
+				});
+			});
+
+			// Activity bar interactions
+			document.querySelectorAll('.activity-icon').forEach((icon) => {
+				icon.addEventListener('click', function () {
+					document.querySelectorAll('.activity-icon').forEach((i) => i.classList.remove('active'));
+					this.classList.add('active');
+				});
+			});
+
+			// Auto-type effect for cursor
+			let cursorVisible = true;
+			setInterval(() => {
+				const cursor = document.querySelector('.cursor');
+				if (cursor) {
+					cursor.style.opacity = cursorVisible ? '1' : '0';
+					cursorVisible = !cursorVisible;
+				}
+			}, 530);
+
+			// Simulate some coding activity
+			setInterval(() => {
+				const lineCount = document.querySelector('.line-numbers').children.length;
+				const randomLine = Math.floor(Math.random() * lineCount) + 1;
+				const statusBar = document.querySelector('.status-right span:last-child');
+				statusBar.textContent = `Ln ${randomLine}, Col ${Math.floor(Math.random() * 50) + 1}`;
+			}, 3000);
+		</script>
+	</body>
+</html>

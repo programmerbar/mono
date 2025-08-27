@@ -1,0 +1,1 @@
+ALTER TABLE `tags` ADD `can_see_newcomers` integer DEFAULT false NOT NULL;

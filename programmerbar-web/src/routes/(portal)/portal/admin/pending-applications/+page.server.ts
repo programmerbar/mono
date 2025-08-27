@@ -34,6 +34,7 @@ export const actions: Actions = {
 			feideId
 		});
 
+		await locals.notificationService.notifyNewcomer(name, email, locals.user.id);
 		await locals.pendingApplicationService.delete(applicationId);
 
 		return { success: true, message: 'Application approved and user created' };
@@ -54,6 +55,8 @@ export const actions: Actions = {
 		const existingUser = await locals.userService.findByFeideId(feideId);
 		if (existingUser) {
 			await locals.userService.deleteUser(existingUser.id);
+			// Send notification about user deletion
+			await locals.notificationService.notifyUserDeleted(existingUser.name, locals.user.id);
 		}
 
 		const existingInvitation = await locals.invitationService.findByEmail(email);

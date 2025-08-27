@@ -15,6 +15,7 @@ import { ProductService } from '$lib/services/product.service';
 import { ProductTypeService } from '$lib/services/product-type.service';
 import { ShiftService } from '$lib/services/shift.service';
 import { StatusService } from '$lib/services/status.service';
+import { TagService } from '$lib/services/tag.service';
 import { UserService } from '$lib/services/user.service';
 import type { Handle } from '@sveltejs/kit';
 import { Resend } from 'resend';
@@ -89,6 +90,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const groupsService = new GroupsService(db);
 	event.locals.groupsService = groupsService;
+
+	const tagService = new TagService(db);
+	event.locals.tagService = tagService;
 
 	const contactSubmissionService = new ContactSubmissionService(db);
 	event.locals.contactSubmissionService = contactSubmissionService;

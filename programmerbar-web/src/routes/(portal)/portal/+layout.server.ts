@@ -11,8 +11,14 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 	const pendingApplicationsCount =
 		locals.user.role === 'board' ? await locals.pendingApplicationService.getCount() : 0;
 
+	const canManageTagOptions =
+		locals.user.role === 'board'
+			? await locals.tagService.canManageTagOptions(locals.user.id)
+			: false;
+
 	return {
 		notifications,
-		pendingApplicationsCount
+		pendingApplicationsCount,
+		canManageTagOptions
 	};
 };

@@ -3,6 +3,7 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import TrainingChecklist from '$lib/components/portal/Training.svelte';
+	import StatusBadge from '$lib/components/ui/StatusBadge.svelte';
 	import type { User } from '$lib/db/schemas';
 	import { initials, mailto } from '$lib/utils';
 	import { goto } from '$app/navigation';
@@ -82,14 +83,10 @@
 				<div class="min-w-0 flex-1">
 					<Heading class="mb-1 truncate">{user.name}</Heading>
 					<div class="flex items-center gap-3">
-						<span
-							class="inline-flex rounded-full border px-3 py-1 text-sm font-semibold {user.role ===
-							'board'
-								? 'border-purple-200 bg-purple-100 text-purple-800'
-								: 'border-blue-200 bg-blue-100 text-blue-800'}"
-						>
-							{user.role === 'board' ? 'Styret' : 'Frivillig'}
-						</span>
+						<StatusBadge
+							status={user.role === 'board' ? 'board' : 'normal'}
+							text={user.role === 'board' ? 'Styret' : 'Frivillig'}
+						/>
 					</div>
 				</div>
 			</div>
@@ -236,26 +233,21 @@
 							<div>
 								<dt class="text-sm font-medium text-gray-500">Rolle</dt>
 								<dd class="mt-1">
-									<span
-										class="inline-flex rounded-full border px-2 py-1 text-xs font-semibold {user.role ===
-										'board'
-											? 'border-purple-200 bg-purple-100 text-purple-800'
-											: 'border-blue-200 bg-blue-100 text-blue-800'}"
-									>
-										{user.role === 'board' ? 'Styret' : 'Frivillig'}
-									</span>
+									<StatusBadge
+										status={user.role === 'board' ? 'board' : 'normal'}
+										text={user.role === 'board' ? 'Styret' : 'Frivillig'}
+										size="sm"
+									/>
 								</dd>
 							</div>
 							<div>
 								<dt class="text-sm font-medium text-gray-500">Kan referere</dt>
 								<dd class="mt-1">
-									<span
-										class="inline-flex rounded-full border px-2 py-1 text-xs font-semibold {user.canRefer
-											? 'border-green-200 bg-green-100 text-green-800'
-											: 'border-red-200 bg-red-100 text-red-800'}"
-									>
-										{user.canRefer ? 'Ja' : 'Nei'}
-									</span>
+									<StatusBadge
+										status={user.canRefer ? 'approved' : 'rejected'}
+										text={user.canRefer ? 'Ja' : 'Nei'}
+										size="sm"
+									/>
 								</dd>
 							</div>
 						</div>
@@ -367,7 +359,6 @@
 	</div>
 </div>
 
-<!-- Training Checklist Component -->
 <TrainingChecklist
 	userId={user.id}
 	userName={user.name}
@@ -377,8 +368,12 @@
 />
 
 {#if showAddBeers}
-	<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
-		<div class="bg-background mx-4 w-full max-w-md rounded-2xl border-2 p-6 shadow-lg">
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md"
+	>
+		<div
+			class="bg-background mx-4 w-full max-w-md rounded-2xl border-2 p-6 shadow-lg"
+		>
 			<h3 class="mb-2 text-lg font-semibold text-gray-900">Legg til øl</h3>
 			<p class="mb-4 text-sm text-gray-600">
 				Det du skriver her, vil endre på antall ekstra bonger <strong>{user.name}</strong> har tilgjengelig.
@@ -426,8 +421,12 @@
 {/if}
 
 {#if showDeleteConfirm}
-	<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
-		<div class="bg-background mx-4 w-full max-w-md rounded-2xl border-2 p-6 shadow-lg">
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md"
+	>
+		<div
+			class="bg-background mx-4 w-full max-w-md rounded-2xl border-2 p-6 shadow-lg"
+		>
 			<h3 class="mb-2 text-lg font-semibold text-gray-900">Slett bruker</h3>
 			<p class="mb-4 text-sm text-gray-600">
 				Er du sikker på at du vil slette <strong>{user.name}</strong>? Skriv inn brukerens navn for

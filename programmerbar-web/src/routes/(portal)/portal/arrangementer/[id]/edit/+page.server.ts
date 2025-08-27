@@ -38,10 +38,15 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const eventId = params.id;
 
+		const eventName = String(formData.get('name') || '');
+		const eventDate = new Date(String(formData.get('date') || ''));
+
 		await locals.eventService.updateEvent(params.id, {
-			name: String(formData.get('name') || ''),
-			date: new Date(String(formData.get('date') || ''))
+			name: eventName,
+			date: eventDate
 		});
+
+		await locals.notificationService.notifyEventUpdated(eventName, locals.user!.id);
 
 		const deletedShiftIds = formData.getAll('deletedShiftIds').map((id) => String(id));
 		for (const shiftId of deletedShiftIds) {
@@ -121,6 +126,21 @@ export const actions: Actions = {
 					userId
 				}));
 				await locals.eventService.createUserShifts(userShiftsToCreate);
+
+				for (const userId of usersToAdd) {
+					await locals.notificationService.notifyShiftAssigned(
+						eventName,
+						'Updated shift',
+						userId,
+						locals.user!.id
+					);
+
+					// Check if assigned user needs training and notify if so
+					const assignedUser = await locals.userService.findById(userId);
+					if (assignedUser && !assignedUser.isTrained) {
+						await locals.notificationService.notifyOpplaering(userId, assignedUser.email);
+					}
+				}
 			}
 
 			for (const userId of usersToRemove) {

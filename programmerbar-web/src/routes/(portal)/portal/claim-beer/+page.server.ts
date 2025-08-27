@@ -78,15 +78,12 @@ export const actions: Actions = {
 			});
 
 			if (success) {
-				const users = await locals.groupsService.getUsersById('board');
-				await Promise.all(
-					users.map((user) => {
-						return locals.notificationService.create(
-							user.userId,
-							'Produkt claimet',
-							`${locals.user?.name} har claimed produktet ${productName} for ${creditCost} credits.`
-						);
-					})
+				// Send notification to users who can see beer claim notifications
+				await locals.notificationService.notifyBeerClaim(
+					userId,
+					productName || 'Unknown Product',
+					creditCost,
+					new Date()
 				);
 			}
 

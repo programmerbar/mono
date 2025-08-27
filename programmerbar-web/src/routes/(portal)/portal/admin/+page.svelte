@@ -2,6 +2,7 @@
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import type { User } from '$lib/db/schemas';
 	import Input from '$lib/components/ui/Input.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
 	import { initials } from '$lib/utils.js';
 
 	let { data } = $props();
@@ -39,9 +40,21 @@
 <div class="space-y-6">
 	<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 		<Heading>Admin side</Heading>
-		<div class="flex items-center gap-2 text-sm text-gray-600">
-			<span class="font-medium">{filteredUsers.length}</span>
-			{filteredUsers.length === 1 ? 'bruker' : 'brukere'}
+		<div class="flex items-center gap-4">
+			{#if data.showInitializeTags}
+				<form method="post" action="?/initializeTags">
+					<Button
+						type="submit"
+						class="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
+					>
+						Initialiser system tags
+					</Button>
+				</form>
+			{/if}
+			<div class="flex items-center gap-2 text-sm text-gray-600">
+				<span class="font-medium">{filteredUsers.length}</span>
+				{filteredUsers.length === 1 ? 'bruker' : 'brukere'}
+			</div>
 		</div>
 	</div>
 
