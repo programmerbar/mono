@@ -8,14 +8,13 @@
 	import { extractTypes } from '$lib/extract-types';
 	import { filterProducts } from '$lib/filter-products';
 	import { FilterState } from '$lib/states/filter-state.svelte';
-	import { urlFor } from '$lib/api/sanity/image';
+	import ProductDisplay from '$lib/components/app/meny/ProductDisplay.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import { normalDate } from '$lib/date';
 	import { extractBreweries } from '$lib/extract-breweries.js';
 	import { extractPriceRange } from '$lib/extract-price-range.js';
 
 	let { data } = $props();
-	let { unclaimedBeers } = $derived(data);
 
 	let filterState = new FilterState();
 	let loading = $state(false);
@@ -28,13 +27,6 @@
 	let timerInterval = $state<ReturnType<typeof setInterval> | null>(null);
 
 	let userRole = $derived(data.user?.role);
-	let isLoading = $state(true);
-
-	$effect(() => {
-		if (data && data.products) {
-			isLoading = false;
-		}
-	});
 
 	$effect(() => {
 		filterState.showCreditPrice = true;
@@ -52,10 +44,6 @@
 		selectedProduct = product;
 	}
 
-	function canClaimProduct(product: Product | null) {
-		if (!product || !product.priceList.credits) return false;
-		return unclaimedBeers >= product.priceList.credits;
-	}
 
 	function handleKeyDown(event: KeyboardEvent, product: Product) {
 		if (event.key === 'Enter' || event.key === ' ') {
@@ -94,79 +82,56 @@
 		}
 		claimedProduct = null;
 	}
+
+	function handleClaimSubmit() {
+		loading = true;
+		return async ({ result, update }: { result: any; update: any }) => {
+			await update();
+			loading = false;
+
+			if (result.type === 'success' && result.data) {
+				toast.success(`${selectedProduct?.name} claimed!`);
+				if (typeof result.data.updatedBeerCount === 'number') {
+					data.unclaimedBeers = result.data.updatedBeerCount;
+				} else if (selectedProduct && selectedProduct.priceList.credits) {
+					data.unclaimedBeers -= selectedProduct.priceList.credits;
+				}
+
+				if (selectedProduct) {
+					startClaimTimer(selectedProduct);
+				}
+
+				selectedProduct = null;
+			} else {
+				const errorMessage =
+					result.type === 'failure' && result.data?.message
+						? String(result.data?.message)
+						: 'Det oppstod ein feil';
+
+				toast.error(errorMessage);
+			}
+		};
+	}
 </script>
 
 <svelte:head>
 	<title>Cash Out</title>
 </svelte:head>
 
-{#if isLoading}
-	<div class="flex min-h-screen items-center justify-center">
-		<p>Loading...</p>
-	</div>
-{:else}
-	<ClaimModal {claimedProduct} {timerSeconds} onClose={closeClaimPopup} />
+<ClaimModal {claimedProduct} {timerSeconds} onClose={closeClaimPopup} />
 
 	{#if selectedProduct}
 		<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md">
 			<div class="w-[400px] rounded-lg bg-white p-6 shadow-lg">
 				<h2 class="mb-4 text-center text-2xl font-bold">Claim produkt</h2>
 
-				<div class="mb-6 flex items-center justify-center">
-					{#if selectedProduct.image}
-						<img
-							src={urlFor(selectedProduct.image).width(200).height(200).url()}
-							alt={selectedProduct.name}
-							class="h-40 w-40 object-contain"
-						/>
-					{:else}
-						<div class="flex h-40 w-40 items-center justify-center rounded-lg bg-gray-100">
-							<span class="text-gray-400">Ingen bilde</span>
-						</div>
-					{/if}
-				</div>
+				<ProductDisplay product={selectedProduct} />
 
-				<div class="mb-6 text-center">
-					<p class="text-xl font-semibold">{selectedProduct.name}</p>
-					<p class="text-gray-600">
-						Pris: {selectedProduct.priceList.credits}
-						{selectedProduct.priceList.credits === 1 ? 'bong' : 'bonger'}
-					</p>
-				</div>
-
-				{#if canClaimProduct(selectedProduct)}
+				{#if selectedProduct?.priceList.credits && data.unclaimedBeers >= selectedProduct.priceList.credits}
 					<form
 						method="post"
 						action="?/claimProduct"
-						use:enhance={() => {
-							loading = true;
-							return async ({ result, update }) => {
-								await update();
-								loading = false;
-
-								if (result.type === 'success' && result.data) {
-									toast.success(`${selectedProduct?.name} claimed!`);
-									if (typeof result.data.updatedBeerCount === 'number') {
-										unclaimedBeers = result.data.updatedBeerCount;
-									} else if (selectedProduct && selectedProduct.priceList.credits) {
-										unclaimedBeers -= selectedProduct.priceList.credits;
-									}
-
-									if (selectedProduct) {
-										startClaimTimer(selectedProduct);
-									}
-
-									selectedProduct = null;
-								} else {
-									const errorMessage =
-										result.type === 'failure' && result.data?.message
-											? String(result.data?.message)
-											: 'Det oppstod ein feil';
-
-									toast.error(errorMessage);
-								}
-							};
-						}}
+						use:enhance={handleClaimSubmit}
 					>
 						<input type="hidden" name="productId" value={selectedProduct._id} />
 						<input type="hidden" name="productName" value={selectedProduct.name} />
@@ -191,7 +156,7 @@
 					</form>
 				{:else}
 					<p class="mb-4 text-center text-red-500">
-						Du har ikkje nokk bonger. Du trenger {selectedProduct.priceList.credits}, og du har: {unclaimedBeers}.
+						Du har ikkje nokk bonger. Du trenger {selectedProduct.priceList.credits}, og du har: {data.unclaimedBeers}.
 					</p>
 					<button
 						class="w-full rounded-md border border-gray-300 px-5 py-2 text-center text-lg font-medium transition-colors hover:bg-gray-100"
@@ -208,8 +173,8 @@
 		<div>
 			<div class="bg-background mb-4 items-center justify-center rounded-xl border-2 p-4 shadow-md">
 				<div class="bg-backg text-2xl font-bold text-gray-900">
-					{unclaimedBeers}
-					{unclaimedBeers === 1 ? 'bong' : 'bonger'}
+					{data.unclaimedBeers}
+					{data.unclaimedBeers === 1 ? 'bong' : 'bonger'}
 				</div>
 			</div>
 
@@ -255,9 +220,8 @@
 		</div>
 	</div>
 
-	{#if data.lastClaimed}
-		<p class="mt-8 text-center text-lg text-gray-600">
-			Historikk: {data.lastClaimed.productName} - {normalDate(data.lastClaimed.claimedAt)}
-		</p>
-	{/if}
+{#if data.lastClaimed}
+	<p class="mt-8 text-center text-lg text-gray-600">
+		Historikk: {data.lastClaimed.productName} - {normalDate(data.lastClaimed.claimedAt)}
+	</p>
 {/if}

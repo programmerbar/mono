@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { urlFor } from '$lib/api/sanity/image';
+	import ProductDisplay from '$lib/components/app/meny/ProductDisplay.svelte';
 	import type { filterProducts } from '$lib/filter-products';
 	type Product = ReturnType<typeof filterProducts>[number];
 	type Props = {
@@ -13,26 +13,10 @@
 </script>
 
 {#if claimedProduct}
-	<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+	<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md">
 		<div class="w-[400px] rounded-lg bg-white p-6 shadow-lg">
 			<h2 class="mb-4 text-center text-2xl font-bold">Produkt claimet!</h2>
-			<div class="mb-6 flex items-center justify-center">
-				{#if claimedProduct.image}
-					<img
-						src={urlFor(claimedProduct.image).width(200).height(200).url()}
-						alt={claimedProduct.name}
-						class="h-40 w-40 object-contain"
-					/>
-				{:else}
-					<div class="flex h-40 w-40 items-center justify-center rounded-lg bg-gray-100">
-						<span class="text-gray-400">Ingen bilde</span>
-					</div>
-				{/if}
-			</div>
-			<div class="mb-6 text-center">
-				<p class="text-xl font-semibold">{claimedProduct.name}</p>
-				<p class="text-gray-600">Pris: {claimedProduct.priceList.credits} bonger</p>
-			</div>
+			<ProductDisplay product={claimedProduct} />
 			<div class="mb-6 flex items-center justify-center">
 				<div class="relative h-40 w-40">
 					<div class="absolute inset-0 flex items-center justify-center">
