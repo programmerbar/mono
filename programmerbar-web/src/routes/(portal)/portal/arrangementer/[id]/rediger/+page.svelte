@@ -214,7 +214,7 @@
 							<input type="hidden" name={`shift[${i}].userCount`} value={shift.users.length} />
 
 							{#if shift.users.length === 0}
-								<p class="py-2 text-sm italic text-gray-500">Ingen ansvarlige</p>
+								<p class="py-2 text-sm text-gray-500 italic">Ingen ansvarlige</p>
 							{:else}
 								<div class="space-y-2">
 									{#each shift.users as user, j (user.id)}
