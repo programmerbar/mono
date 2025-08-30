@@ -9,6 +9,7 @@
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
 	import { ISOStandard } from '$lib/date';
 	import { beforeNavigate } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	let { data, form } = $props();
 
@@ -16,7 +17,7 @@
 
 	const eventState = new CreateEventState();
 
-	$effect(() => {
+	onMount(() => {
 		eventState.name = data.event.name;
 		eventState.date = ISOStandard(data.event.date);
 		eventState.description = data.event.description || '';
@@ -213,7 +214,7 @@
 							<input type="hidden" name={`shift[${i}].userCount`} value={shift.users.length} />
 
 							{#if shift.users.length === 0}
-								<p class="py-2 text-sm text-gray-500 italic">Ingen ansvarlige</p>
+								<p class="py-2 text-sm italic text-gray-500">Ingen ansvarlige</p>
 							{:else}
 								<div class="space-y-2">
 									{#each shift.users as user, j (user.id)}
