@@ -9,3 +9,12 @@ export const initials = (str: string) =>
 		.toUpperCase();
 
 export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
+export const slugify = (str: string): string =>
+	str
+		.toLowerCase()
+		.trim()
+		.replace(/[^a-z0-9\s-]/g, '')
+		.replace(/\s+/g, '-')
+		.replace(/-+/g, '-')
+		.replace(/^-|-$/g, '');

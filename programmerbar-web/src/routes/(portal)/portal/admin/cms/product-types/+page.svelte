@@ -65,7 +65,7 @@
 								<td class="px-6 py-4 text-right whitespace-nowrap">
 									<div class="flex items-center justify-end gap-2">
 										<ButtonLink
-											href="/portal/admin/cms/product-types/{productType.id}/edit"
+											href="/portal/admin/cms/product-types/{productType.id}/rediger"
 											intent="outline"
 										>
 											<Edit class="h-4 w-4" />

@@ -73,7 +73,10 @@ export class EventService {
 		return event;
 	}
 
-	async updateEvent(id: string, eventData: { name: string; date: Date }) {
+	async updateEvent(
+		id: string,
+		eventData: { name: string; date: Date; description: string | null; slug: string | null }
+	) {
 		const event = await this.#db
 			.insert(events)
 			.values({
@@ -153,5 +156,43 @@ export class EventService {
 	async deleteShift(id: string) {
 		await this.#db.delete(userShifts).where(eq(userShifts.shiftId, id));
 		await this.#db.delete(shifts).where(eq(shifts.id, id));
+	}
+
+	async getUpcomingPublicEvents() {
+		return await this.#db.query.events
+			.findMany({
+				where: (row, { gte, and, isNotNull }) => and(gte(row.date, new Date()), isNotNull(row.slug))
+			})
+			.then((events) =>
+				events.map((event) => ({
+					_id: event.id,
+					title: event.name,
+					slug: event.slug!,
+					date: event.date.toISOString(),
+					_createdAt: null,
+					registrationStart: null,
+					body: event.description
+				}))
+			);
+	}
+
+	async getPublicEventBySlug(slug: string) {
+		const event = await this.#db.query.events.findFirst({
+			where: (row, { eq, isNotNull }) => and(eq(row.slug, slug), isNotNull(row.slug))
+		});
+
+		if (!event) {
+			return null;
+		}
+
+		return {
+			_id: event.id,
+			title: event.name,
+			slug: event.slug!,
+			date: event.date.toISOString(),
+			_createdAt: null,
+			registrationStart: null,
+			body: event.description
+		};
 	}
 }

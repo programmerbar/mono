@@ -204,7 +204,7 @@
 									<td class="p-4">
 										{#if $user?.role === 'board'}
 											<a
-												href="arrangementer/{event.id}/edit"
+												href="arrangementer/{event.id}/rediger"
 												class="relative z-10 inline-flex text-gray-400 opacity-70 transition-all duration-200 ease-in-out hover:text-blue-500 hover:opacity-100"
 												aria-label="Rediger arrangement"
 											>

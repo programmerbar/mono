@@ -165,7 +165,7 @@
 
 							{#if $user?.role === 'board'}
 								<a
-									href="arrangementer/{event.id}/edit"
+									href="arrangementer/{event.id}/rediger"
 									class="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-600"
 									aria-label="Rediger arrangement"
 								>

@@ -1,9 +1,9 @@
 import { getEventBySlug, getRepeatingEventBySlug, type Happening } from '$lib/api/sanity/events';
 import { error } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 import { getNextOccurrence } from '$lib/repeating-events';
 
-export const load: PageLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
 	const event = await getEventBySlug(params.slug);
 
 	if (event) {
@@ -25,6 +25,13 @@ export const load: PageLoad = async ({ params }) => {
 				registrationStart: null,
 				_createdAt: repeatingEvent._createdAt
 			} satisfies Happening
+		};
+	}
+
+	const dbEvent = await locals.eventService.getPublicEventBySlug(params.slug);
+	if (dbEvent) {
+		return {
+			event: dbEvent
 		};
 	}
 

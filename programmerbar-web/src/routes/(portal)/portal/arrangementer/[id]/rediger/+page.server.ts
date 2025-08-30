@@ -38,9 +38,13 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const eventId = params.id;
 
+		const shouldBePublic = formData.get('shouldBePublic') === 'true';
+
 		await locals.eventService.updateEvent(params.id, {
 			name: String(formData.get('name') || ''),
-			date: new Date(String(formData.get('date') || ''))
+			date: new Date(String(formData.get('date') || '')),
+			description: shouldBePublic ? String(formData.get('description') || '') || null : null,
+			slug: shouldBePublic ? String(formData.get('slug') || '') || null : null
 		});
 
 		const deletedShiftIds = formData.getAll('deletedShiftIds').map((id) => String(id));

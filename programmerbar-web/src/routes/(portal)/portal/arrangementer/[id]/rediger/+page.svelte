@@ -3,6 +3,8 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import FormInput from '$lib/components/ui/form/FormInput.svelte';
 	import Combobox from '$lib/components/ui/Combobox.svelte';
+	import Textarea from '$lib/components/ui/Textarea.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import { enhance } from '$app/forms';
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
 	import { ISOStandard } from '$lib/date';
@@ -14,23 +16,27 @@
 
 	const eventState = new CreateEventState();
 
-	eventState.name = data.event.name;
-	eventState.date = ISOStandard(data.event.date);
+	$effect(() => {
+		eventState.name = data.event.name;
+		eventState.date = ISOStandard(data.event.date);
+		eventState.description = data.event.description || '';
+		eventState.shouldBePublic = !!(data.event.description || data.event.slug);
 
-	data.event.shifts.forEach((shift) => {
-		eventState.shifts.push({
-			startAt: ISOStandard(shift.startAt),
-			endAt: ISOStandard(shift.endAt),
-			users: shift.members.map((member) => ({
-				id: member.user.id,
-				name: member.user.name
-			}))
+		data.event.shifts.forEach((shift) => {
+			eventState.shifts.push({
+				startAt: ISOStandard(shift.startAt),
+				endAt: ISOStandard(shift.endAt),
+				users: shift.members.map((member) => ({
+					id: member.user.id,
+					name: member.user.name
+				}))
+			});
 		});
 	});
 
 	let originalShifts = $state(data.event.shifts.map((shift) => ({ id: shift.id })));
-	let deletedShiftIds = $state([] as string[]);
-	let removedUserShifts = $state([] as string[]);
+	let deletedShiftIds = $state<Array<string>>([]);
+	let removedUserShifts = $state<Array<string>>([]);
 
 	beforeNavigate(({ cancel }) => {
 		if (deletedShiftIds.length > 0 || removedUserShifts.length > 0) {
@@ -96,6 +102,8 @@
 
 		<form method="POST" action="?/save" use:enhance>
 			<input type="hidden" name="shiftsCount" value={eventState.shifts.length} />
+			<input type="hidden" name="shouldBePublic" value={eventState.shouldBePublic} />
+			<input type="hidden" name="slug" value={eventState.shouldBePublic ? eventState.slug : ''} />
 			{#each deletedShiftIds as id (id)}
 				<input type="hidden" name="deletedShiftIds" value={id} />
 			{/each}
@@ -113,6 +121,26 @@
 						type="datetime-local"
 						required
 					/>
+					<Checkbox
+						id="shouldBePublic"
+						bind:checked={eventState.shouldBePublic}
+						label="Skal være offentlig"
+					/>
+					{#if eventState.shouldBePublic}
+						<div class="space-y-2">
+							<label for="description" class="block text-sm font-medium text-gray-700">
+								Beskrivelse
+							</label>
+							<p class="text-sm text-gray-500">Beskrivelse av arrangementet (valgfritt)</p>
+							<Textarea
+								id="description"
+								name="description"
+								bind:value={eventState.description}
+								placeholder="Skriv en beskrivelse av arrangementet..."
+								class="min-h-24"
+							/>
+						</div>
+					{/if}
 				</div>
 			</div>
 

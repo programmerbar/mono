@@ -6,7 +6,7 @@ export type Happening = {
 	title: string;
 	slug: string;
 	date: string;
-	_createdAt: string;
+	_createdAt: string | null;
 	registrationStart: string | null;
 	body: string | null;
 };

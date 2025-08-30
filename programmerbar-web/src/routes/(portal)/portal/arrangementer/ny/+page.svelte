@@ -4,6 +4,8 @@
 	import FormInput from '$lib/components/ui/form/FormInput.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Combobox from '$lib/components/ui/Combobox.svelte';
+	import Textarea from '$lib/components/ui/Textarea.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
 	import { differenceInHours } from 'date-fns';
 	import { createEvent } from '$lib/remotes/events.remote.js';
@@ -82,6 +84,25 @@
 						type="datetime-local"
 						required
 					/>
+					<Checkbox
+						id="shouldBePublic"
+						bind:checked={createEventState.shouldBePublic}
+						label="Skal være offentlig"
+					/>
+					{#if createEventState.shouldBePublic}
+						<div class="space-y-2">
+							<label for="description" class="block text-sm font-medium text-gray-700">
+								Beskrivelse
+							</label>
+							<p class="text-sm text-gray-500">Beskrivelse av arrangementet (valgfritt)</p>
+							<Textarea
+								id="description"
+								bind:value={createEventState.description}
+								placeholder="Skriv en beskrivelse av arrangementet..."
+								class="min-h-24"
+							/>
+						</div>
+					{/if}
 				</div>
 			</div>
 

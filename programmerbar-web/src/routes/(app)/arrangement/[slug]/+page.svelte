@@ -38,7 +38,7 @@
 	keywords={`${data.event.title}, arrangement, event, programmerbar, ${formatDate(data.event.date)}`}
 	canonical={`/arrangement/${data.event.slug}`}
 	type="event"
-	publishedTime={data.event._createdAt}
+	publishedTime={data.event._createdAt ?? undefined}
 />
 
 <h1 class="mb-6 text-3xl font-bold text-gray-900 md:text-4xl">
