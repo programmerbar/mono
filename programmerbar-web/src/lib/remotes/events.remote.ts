@@ -1,42 +1,41 @@
 import { CreateEventSchema } from '$lib/validators';
-import type { RequestHandler } from './$types';
 import type { ShiftEmailProps } from '$lib/services/email.service';
 import { z } from 'zod';
+import { command, getRequestEvent } from '$app/server';
 
-export const POST: RequestHandler = async ({ request, locals }) => {
-	// Check if the user is authenticated
+export const createEvent = command(CreateEventSchema, async (event) => {
+	const { locals } = getRequestEvent();
+
 	if (!locals.user) {
-		return Response.json({ message: 'Unauthorized' }, { status: 401 });
+		return {
+			success: false,
+			message: 'Unauthorized'
+		};
 	}
 
-	// Get the JSON body
-	const json = await request.json().catch(() => null);
-	if (!json) {
-		return Response.json({ message: 'Invalid JSON' }, { status: 400 });
+	const { name, date, shifts } = event;
+
+	const createdEvent = await locals.eventService.create(name, date);
+	if (!createdEvent) {
+		return {
+			success: false,
+			message: 'Failed to create event'
+		};
 	}
 
-	// Parse the json body to the correct schema
-	const { name, date, shifts } = CreateEventSchema.parse(json);
-	const event = await locals.eventService.create(name, date);
-
-	if (!event) {
-		return Response.json({ message: 'Failed to create event' }, { status: 500 });
-	}
-
-	// Create shifts
 	const mappedShifts = shifts.map((shift) => ({
-		eventId: event.id,
+		eventId: createdEvent.id,
 		startAt: new Date(shift.startAt),
 		endAt: new Date(shift.endAt)
 	}));
-
 	const createdShifts = await locals.eventService.createShifts(mappedShifts);
-
 	if (!createdShifts) {
-		return Response.json({ message: 'Failed to create shifts' }, { status: 500 });
+		return {
+			success: false,
+			message: 'Failed to create shifts'
+		};
 	}
 
-	// Create user shifts
 	const mappedUserShifts = createdShifts.flatMap((shift, i) => {
 		return shifts[i].users.map((user) => ({
 			shiftId: shift.id,
@@ -45,12 +44,14 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	});
 	await locals.eventService.createUserShifts(mappedUserShifts);
 
-	// Send notification emails to users
 	const userIds = Array.from(new Set(mappedUserShifts.flatMap((shift) => shift.userId)));
-	await sendShiftEmails(locals, userIds, event.name, createdShifts, shifts);
+	await sendShiftEmails(locals, userIds, createdEvent.name, createdShifts, shifts);
 
-	return Response.json({ eventId: event.id }, { status: 201 });
-};
+	return {
+		success: true,
+		eventId: createdEvent.id
+	};
+});
 
 async function sendShiftEmails(
 	locals: App.Locals,

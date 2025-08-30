@@ -6,6 +6,7 @@
 	import Combobox from '$lib/components/ui/Combobox.svelte';
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
 	import { differenceInHours } from 'date-fns';
+	import { createEvent } from '$lib/remotes/events.remote.js';
 
 	let { data } = $props();
 	let error = $state('');
@@ -26,15 +27,9 @@
 		successMessage = '';
 
 		try {
-			const response = await fetch('/api/events', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(createEventState.json())
-			});
+			const { success } = await createEvent(createEventState.json());
 
-			if (response.status === 201) {
+			if (success) {
 				successMessage = 'Arrangement opprettet! E-post er sendt.';
 				createEventState.reset();
 			} else {
