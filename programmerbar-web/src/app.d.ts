@@ -31,7 +31,6 @@ declare global {
 			beerService: import('$lib/services/beer.service').BeerService;
 			banService: import('$lib/services/ban.service').BanService;
 			notificationService: import('$lib/services/notification.service').NotificationService;
-			groupsService: import('$lib/services/groups.service').GroupsService;
 			tagService: import('$lib/services/tag.service').TagService;
 			contactSubmissionService: import('$lib/services/contact-submission.service').ContactSubmissionService;
 			producerService: import('$lib/services/producer.service').ProducerService;

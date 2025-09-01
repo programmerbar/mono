@@ -38,7 +38,7 @@ The application uses a service layer pattern with dependency injection via Svelt
 - `invitationService` - User invitation system
 - `statusService` - KV-based status tracking
 - `notificationService` - User notifications
-- `groupsService` - User group management
+- `tagService` - User tag management
 - `banService` - IP banning for abuse prevention
 
 ## Development Commands
@@ -111,7 +111,7 @@ pnpm dlx tsx ./programmerbar-web/scripts/users.ts
 - **sessions** - Lucia auth sessions
 - **events** - Event management with dates
 - **shifts** - Volunteer shifts with user assignments and event relationships
-- **groups** - User groups and memberships
+- **tags** - User tags and assignments
 - **invitations** - User invitation system with expiration
 - **notifications** - User notification delivery
 - **claimedCredits** - Beer credit transaction tracking
@@ -120,7 +120,7 @@ pnpm dlx tsx ./programmerbar-web/scripts/users.ts
 
 - Users → Shifts (many-to-many via assignments)
 - Events → Shifts (one-to-many)
-- Users → Groups (many-to-many via memberships)
+- Users → Tags (many-to-many via assignments)
 - Users ↔ Invitations (email-based matching)
 
 ## Authentication & Authorization
