@@ -35,10 +35,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const tags = await locals.tagService.getAllTags();
 
 	const allUsers = await locals.userService.findAll();
-
-	const userTagsMap = await locals.tagService.getUserTagsForUsers(allUsers.map((u) => u.id));
-
-	const usersWithTags = allUsers.filter((user) => userTagsMap.has(user.id));
+	const usersWithTags = await locals.tagService.getUsersWithTags(tags.map(t => t.name));
+	const userTagsMap = await locals.tagService.getUserTagsForUsers(usersWithTags.map((u) => u.id));
 
 	return {
 		tags,
