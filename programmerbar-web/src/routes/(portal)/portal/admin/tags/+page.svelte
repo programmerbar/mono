@@ -79,12 +79,12 @@
 	}
 </script>
 
-<div class="flex flex-col gap-6">
-	<div class="flex items-center justify-between">
+<div class="flex flex-col gap-4 p-4 sm:gap-6 sm:p-0">
+	<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 		<h1 class="text-2xl font-bold">Tag-administrasjon</h1>
 		<button
 			onclick={() => (showCreateForm = !showCreateForm)}
-			class="flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+			class="flex items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-white hover:bg-green-700 sm:justify-start"
 		>
 			<Plus class="size-4" />
 			Opprett tag
@@ -102,7 +102,7 @@
 	{/if}
 
 	{#if showCreateForm}
-		<div class="rounded-lg border bg-white p-6">
+		<div class="rounded-lg border bg-white p-4 sm:p-6">
 			<div class="mb-4 flex items-center justify-between">
 				<h2 class="text-lg font-semibold">Opprett ny tag</h2>
 				<button onclick={() => (showCreateForm = false)}>
@@ -152,7 +152,7 @@
 				{#if data.canManageOptions}
 					<div class="border-t pt-4">
 						<h4 class="mb-3 font-medium text-gray-900">Tag-tillatelser</h4>
-						<div class="grid grid-cols-2 gap-4">
+						<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
 							{#each Object.keys(data.tags[0] || {}).filter( (key) => key.startsWith('can') ) as permission (permission)}
 								<div class="flex items-center">
 									<input
@@ -199,8 +199,8 @@
 		{/if}
 
 		{#each data.tags as tag (tag.id)}
-			<div class="rounded-lg border bg-white p-4">
-				<div class="flex items-center justify-between">
+			<div class="rounded-lg border bg-white p-4 sm:p-6">
+				<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
 					<div class="flex items-center gap-3">
 						{#if tag.color}
 							<div class="h-4 w-4 rounded-full" style="background-color: {tag.color}"></div>
@@ -213,7 +213,7 @@
 						</div>
 					</div>
 
-					<div class="flex items-center gap-2">
+					<div class="flex items-center gap-2 self-end sm:self-auto">
 						<button
 							onclick={() => (editingTag = editingTag === tag.id ? null : tag.id)}
 							class="p-2 text-gray-500 hover:text-gray-700"
@@ -287,7 +287,7 @@
 							{#if data.canManageOptions}
 								<div class="border-t pt-4">
 									<h4 class="mb-3 font-medium text-gray-900">Tag-tillatelser</h4>
-									<div class="grid grid-cols-2 gap-4">
+									<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
 										{#each Object.keys(tag).filter( (key) => key.startsWith('can') ) as permission (permission)}
 											<div class="flex items-center">
 												<input
@@ -328,20 +328,20 @@
 		{/each}
 	</div>
 
-	<div class="rounded-lg border bg-white p-6">
+	<div class="rounded-lg border bg-white p-4 sm:p-6">
 		<h2 class="mb-4 text-xl font-semibold">Tildel tags til brukere</h2>
 
-		<div class="mb-6 flex gap-4">
-			<div class="flex-1">
+		<div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start">
+			<div class="relative w-full flex-1 min-w-0">
 				<label for="userSearch" class="block text-sm font-medium text-gray-700">Søk bruker</label>
 				<Input
 					id="userSearch"
 					bind:value={userSearch}
 					placeholder="Søk på navn eller e-post..."
-					class="mt-1"
+					class="mt-1 w-full"
 				/>
 				{#if userSearch && filteredUsers.length > 0}
-					<div class="mt-2 max-h-40 overflow-y-auto rounded-md border bg-white">
+					<div class="absolute z-10 mt-2 max-h-40 w-full overflow-y-auto rounded-md border bg-white shadow-lg">
 						{#each filteredUsers.slice(0, 5) as user (user.id)}
 							<button
 								type="button"
@@ -358,7 +358,7 @@
 				{/if}
 			</div>
 
-			<div class="flex-1">
+			<div class="w-full flex-1 min-w-0">
 				<label for="tagSelect" class="block text-sm font-medium text-gray-700">Velg tag</label>
 				<select
 					id="tagSelect"
@@ -382,23 +382,25 @@
 		</form>
 	</div>
 
-	<div class="rounded-lg border bg-white p-6">
+	<div class="rounded-lg border bg-white p-4 sm:p-6">
 		<h2 class="mb-4 text-xl font-semibold">Bruker tag-tildelinger</h2>
 
 		<div class="space-y-4">
 			{#each data.users as user (user.id)}
-				<div class="border-b pb-2">
-					<div class="flex items-center justify-between">
+				<div class="border-b pb-4">
+					<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
 						<div>
 							<h3 class="font-medium">{user.name}</h3>
 							<p class="text-sm text-gray-600">{user.email}</p>
 						</div>
-						<TagList
-							tags={getUserTags(user.id)}
-							size="sm"
-							removable={true}
-							onRemove={(tagId) => handleRemoveTag(user.id, tagId)}
-						/>
+						<div class="flex-shrink-0">
+							<TagList
+								tags={getUserTags(user.id)}
+								size="sm"
+								removable={true}
+								onRemove={(tagId) => handleRemoveTag(user.id, tagId)}
+							/>
+						</div>
 					</div>
 				</div>
 			{/each}
