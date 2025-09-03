@@ -135,8 +135,7 @@ export const actions: Actions = {
 						locals.user!.id
 					);
 
-					// Check if assigned user needs training and notify if so
-					const assignedUser = await locals.userService.findById(userId);
+						const assignedUser = await locals.userService.findById(userId);
 					if (assignedUser && !assignedUser.isTrained) {
 						await locals.notificationService.notifyOpplaering(userId, assignedUser.email);
 					}

@@ -109,7 +109,6 @@ export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 		feideId: feideUser.id
 	});
 
-	// Notify users who can see opplæring that a new user needs training
 	await locals.notificationService.notifyOpplaering(userId, feideUser.email);
 
 	const session = await locals.auth.createSession(userId, {});

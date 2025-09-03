@@ -17,28 +17,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-	updateRole: async ({ request, locals }) => {
-		const formData = await request.formData();
-		const userId = formData.get('userId') as string;
-		const role = formData.get('role');
-
-		if (typeof role !== 'string' || (role !== 'board' && role !== 'normal')) {
-			return fail(400, { error: 'Invalid role specified' });
-		}
-
-		if (!locals.user || locals.user.role !== 'board') {
-			return fail(401, { error: 'Unauthorized' });
-		}
-
-		const success = await locals.userService.updateUserRole(userId, role);
-
-		if (success) {
-			return { success: true };
-		} else {
-			return fail(500, { error: 'Failed to update user role' });
-		}
-	},
-
 	initializeTags: async ({ locals }) => {
 		if (!locals.user || locals.user.role !== 'board') {
 			return fail(401, { message: 'Unauthorized' });
@@ -49,7 +27,6 @@ export const actions: Actions = {
 			return fail(400, { message: 'Failed to initialize tags' });
 		}
 
-		// Auto-assign Dev tag to the user who initialized
 		const tags = await locals.tagService.getAllTags();
 		const devTag = tags.find((tag) => tag.name === 'Dev');
 

@@ -87,7 +87,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const notificationService = new NotificationService(db);
 	event.locals.notificationService = notificationService;
 
-
 	const tagService = new TagService(db);
 	event.locals.tagService = tagService;
 

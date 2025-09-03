@@ -2,6 +2,7 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { shifts } from '$lib/db/schemas';
 import { eq } from 'drizzle-orm';
+import { normalDate } from '$lib/date';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const event = await locals.eventService.findFullEventById(params.id);
@@ -47,7 +48,6 @@ export const actions: Actions = {
 			status: 'accepted'
 		});
 
-		// Check if user needs training and notify if so
 		if (!locals.user.isTrained) {
 			await locals.notificationService.notifyOpplaering(locals.user.id, locals.user.email);
 		}
@@ -69,7 +69,6 @@ export const actions: Actions = {
 			});
 		}
 
-		// Get shift and event info before deleting for notification
 		const shift = await locals.db.select().from(shifts).where(eq(shifts.id, shiftId)).limit(1);
 		const shiftData = shift[0];
 		const event = shiftData ? await locals.eventService.findFullEventById(shiftData.eventId) : null;
@@ -79,9 +78,8 @@ export const actions: Actions = {
 			userId: locals.user.id
 		});
 
-		// Send event departure notification
 		if (event && shiftData) {
-			const shiftTime = `${shiftData.startAt.toLocaleString('nb-NO')} - ${shiftData.endAt.toLocaleString('nb-NO')}`;
+			const shiftTime = `${normalDate(shiftData.startAt)} - ${normalDate(shiftData.endAt)}`;
 			await locals.notificationService.notifyEventDeparture(locals.user.id, event.name, shiftTime);
 		}
 

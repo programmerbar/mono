@@ -35,15 +35,16 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const tags = await locals.tagService.getAllTags();
 
 	const allUsers = await locals.userService.findAll();
-	const usersWithTags = await locals.tagService.getUsersWithTags(tags.map(t => t.name));
-	const userTagsMap = await locals.tagService.getUserTagsForUsers(usersWithTags.map((u) => u.id));
+	const usersWithTags = await locals.tagService.getUsersWithTags(tags.map((t) => t.name));
+	const userTags = await locals.tagService.getUserTagsForUsers(usersWithTags.map((u) => u.id));
 
 	return {
 		tags,
 		allUsers,
 		users: usersWithTags,
-		userTags: Object.fromEntries(userTagsMap),
-		canManageOptions
+		userTags,
+		canManageOptions,
+		permissions: locals.tagService.getAvailablePermissions()
 	};
 };
 
@@ -109,7 +110,7 @@ export const actions: Actions = {
 	deleteTag: async ({ locals, request }) => {
 		const { authorized, canManage } = await checkTagPermissions(locals);
 		if (!authorized) return fail(401, { message: 'Unauthorized' });
-		if (!canManage) return fail(403, { message: 'Insufficient permissions' });
+		if (!canManage) return fail(403, { message: 'You dont have permissions' });
 
 		const formData = await request.formData();
 		const tagId = formData.get('tagId') as string;
@@ -142,7 +143,6 @@ export const actions: Actions = {
 			return fail(400, { message: 'Failed to assign tag' });
 		}
 
-		// Send notification about tag assignment
 		const tag = await locals.tagService.getTagById(tagId);
 		if (tag) {
 			await locals.notificationService.notifyTagAssigned(tag.name, userId, locals.user!.id);
@@ -154,7 +154,7 @@ export const actions: Actions = {
 	removeTag: async ({ locals, request }) => {
 		const { authorized, canManage } = await checkTagPermissions(locals);
 		if (!authorized) return fail(401, { message: 'Unauthorized' });
-		if (!canManage) return fail(403, { message: 'Insufficient permissions' });
+		if (!canManage) return fail(403, { message: 'You dont have premission' });
 
 		const formData = await request.formData();
 		const tagId = formData.get('tagId') as string;
@@ -164,7 +164,6 @@ export const actions: Actions = {
 			return fail(400, { message: 'Tag ID and User ID are required' });
 		}
 
-		// Get tag info before removing for notification
 		const tag = await locals.tagService.getTagById(tagId);
 
 		const success = await locals.tagService.removeTagFromUser(tagId, userId);
@@ -172,7 +171,6 @@ export const actions: Actions = {
 			return fail(400, { message: 'Failed to remove tag' });
 		}
 
-		// Send notification about tag removal
 		if (tag) {
 			await locals.notificationService.notifyTagRemoved(tag.name, userId, locals.user!.id);
 		}

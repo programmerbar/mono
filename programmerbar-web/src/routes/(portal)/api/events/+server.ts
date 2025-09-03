@@ -44,7 +44,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 				locals.user.id
 			);
 
-			// Check if assigned user needs training and notify if so
 			const assignedUser = await locals.userService.findById(userShift.userId);
 			if (assignedUser && !assignedUser.isTrained) {
 				await locals.notificationService.notifyOpplaering(userShift.userId, assignedUser.email);

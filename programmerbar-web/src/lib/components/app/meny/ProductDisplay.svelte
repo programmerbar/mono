@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { urlFor } from '$lib/api/sanity/image';
 	import type { filterProducts } from '$lib/filter-products';
-	
+
 	type Product = ReturnType<typeof filterProducts>[number];
 	type Props = {
 		product: Product;
 		showCredits?: boolean;
 	};
-	
+
 	let { product, showCredits = true }: Props = $props();
 </script>
 

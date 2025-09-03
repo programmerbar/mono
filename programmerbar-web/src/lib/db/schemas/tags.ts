@@ -11,7 +11,7 @@ export const tags = sqliteTable(
 		description: text(),
 		color: text(),
 		// Tag options for notifications and permissions
-		canSeeOpplearing: integer({ mode: 'boolean' }).notNull().default(false),
+		canSeeTraining: integer({ mode: 'boolean' }).notNull().default(false),
 		canSeeBeerClaims: integer({ mode: 'boolean' }).notNull().default(false),
 		canSeeEventDepartures: integer({ mode: 'boolean' }).notNull().default(false),
 		canSeeReferrals: integer({ mode: 'boolean' }).notNull().default(false),

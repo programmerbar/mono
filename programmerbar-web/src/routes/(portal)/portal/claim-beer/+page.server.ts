@@ -78,8 +78,7 @@ export const actions: Actions = {
 			});
 
 			if (success) {
-				// Send notification to users who can see beer claim notifications
-				await locals.notificationService.notifyBeerClaim(
+					await locals.notificationService.notifyBeerClaim(
 					userId,
 					productName || 'Unknown Product',
 					creditCost,

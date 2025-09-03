@@ -44,7 +44,6 @@
 		selectedProduct = product;
 	}
 
-
 	function handleKeyDown(event: KeyboardEvent, product: Product) {
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault();
@@ -120,105 +119,94 @@
 
 <ClaimModal {claimedProduct} {timerSeconds} onClose={closeClaimPopup} />
 
-	{#if selectedProduct}
-		<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md">
-			<div class="w-[400px] rounded-lg bg-white p-6 shadow-lg">
-				<h2 class="mb-4 text-center text-2xl font-bold">Claim produkt</h2>
+{#if selectedProduct}
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md">
+		<div class="w-[400px] rounded-lg bg-white p-6 shadow-lg">
+			<h2 class="mb-4 text-center text-2xl font-bold">Claim produkt</h2>
 
-				<ProductDisplay product={selectedProduct} />
+			<ProductDisplay product={selectedProduct} />
 
-				{#if selectedProduct?.priceList.credits && data.unclaimedBeers >= selectedProduct.priceList.credits}
-					<form
-						method="post"
-						action="?/claimProduct"
-						use:enhance={handleClaimSubmit}
-					>
-						<input type="hidden" name="productId" value={selectedProduct._id} />
-						<input type="hidden" name="productName" value={selectedProduct.name} />
-						<input
-							type="hidden"
-							name="productType"
-							value={selectedProduct.productTypes?.[0]?.title || ''}
-						/>
-						<input type="hidden" name="creditCost" value={selectedProduct.priceList.credits} />
+			{#if selectedProduct?.priceList.credits && data.unclaimedBeers >= selectedProduct.priceList.credits}
+				<form method="post" action="?/claimProduct" use:enhance={handleClaimSubmit}>
+					<input type="hidden" name="productId" value={selectedProduct._id} />
+					<input type="hidden" name="productName" value={selectedProduct.name} />
+					<input
+						type="hidden"
+						name="productType"
+						value={selectedProduct.productTypes?.[0]?.title || ''}
+					/>
+					<input type="hidden" name="creditCost" value={selectedProduct.priceList.credits} />
 
-						<div class="flex gap-4">
-							<Button type="submit" class="w-full" disabled={loading}>
-								{loading ? 'Laster...' : 'Claim'}
-							</Button>
-							<Button
-								type="button"
-								class="w-full"
-								intent="danger"
-								onclick={() => (selectedProduct = null)}>Avbryt</Button
-							>
-						</div>
-					</form>
-				{:else}
-					<p class="mb-4 text-center text-red-500">
-						Du har ikkje nokk bonger. Du trenger {selectedProduct.priceList.credits}, og du har: {data.unclaimedBeers}.
-					</p>
-					<button
-						class="w-full rounded-md border border-gray-300 px-5 py-2 text-center text-lg font-medium transition-colors hover:bg-gray-100"
-						onclick={() => (selectedProduct = null)}
-					>
-						Lukk
-					</button>
-				{/if}
-			</div>
-		</div>
-	{/if}
-
-	<div class="flex w-full flex-col gap-8 sm:mx-auto sm:max-w-screen-sm md:max-w-full md:flex-row">
-		<div>
-			<div class="bg-background mb-4 items-center justify-center rounded-xl border-2 p-4 shadow-md">
-				<div class="bg-backg text-2xl font-bold text-gray-900">
-					{data.unclaimedBeers}
-					{data.unclaimedBeers === 1 ? 'bong' : 'bonger'}
-				</div>
-			</div>
-
-			<Sidebar
-				{types}
-				{breweries}
-				{priceRange}
-				{filterState}
-				alwaysFilteredByCredits
-				disableSticky
-			/>
-
-			{#if userRole === 'board'}
-				<ClaimedCredit />
-			{/if}
-		</div>
-
-		<div class="flex-1">
-			{#if filteredProducts && filteredProducts.length > 0}
-				<p class="mb-2 text-sm text-gray-800">Viser {filteredProducts.length} resultater</p>
-				<ul class="grid w-full grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
-					{#each filteredProducts as product (product._id)}
-						<li>
-							<button
-								class="block h-full w-full text-left"
-								onclick={() => handleProductSelect(product)}
-								onkeydown={(e) => handleKeyDown(e, product)}
-							>
-								<ProductPreview
-									{product}
-									{filterState}
-									alwaysShowCreditPrice
-									disableLink
-									disableWishlist
-								/>
-							</button>
-						</li>
-					{/each}
-				</ul>
+					<div class="flex gap-4">
+						<Button type="submit" class="w-full" disabled={loading}>
+							{loading ? 'Laster...' : 'Claim'}
+						</Button>
+						<Button
+							type="button"
+							class="w-full"
+							intent="danger"
+							onclick={() => (selectedProduct = null)}>Avbryt</Button
+						>
+					</div>
+				</form>
 			{:else}
-				<p class="text-lg text-gray-800">Ingen produkter funnet</p>
+				<p class="mb-4 text-center text-red-500">
+					Du har ikkje nokk bonger. Du trenger {selectedProduct.priceList.credits}, og du har: {data.unclaimedBeers}.
+				</p>
+				<button
+					class="w-full rounded-md border border-gray-300 px-5 py-2 text-center text-lg font-medium transition-colors hover:bg-gray-100"
+					onclick={() => (selectedProduct = null)}
+				>
+					Lukk
+				</button>
 			{/if}
 		</div>
 	</div>
+{/if}
+
+<div class="flex w-full flex-col gap-8 sm:mx-auto sm:max-w-screen-sm md:max-w-full md:flex-row">
+	<div>
+		<div class="bg-background mb-4 items-center justify-center rounded-xl border-2 p-4 shadow-md">
+			<div class="bg-backg text-2xl font-bold text-gray-900">
+				{data.unclaimedBeers}
+				{data.unclaimedBeers === 1 ? 'bong' : 'bonger'}
+			</div>
+		</div>
+
+		<Sidebar {types} {breweries} {priceRange} {filterState} alwaysFilteredByCredits disableSticky />
+
+		{#if userRole === 'board'}
+			<ClaimedCredit />
+		{/if}
+	</div>
+
+	<div class="flex-1">
+		{#if filteredProducts && filteredProducts.length > 0}
+			<p class="mb-2 text-sm text-gray-800">Viser {filteredProducts.length} resultater</p>
+			<ul class="grid w-full grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
+				{#each filteredProducts as product (product._id)}
+					<li>
+						<button
+							class="block h-full w-full text-left"
+							onclick={() => handleProductSelect(product)}
+							onkeydown={(e) => handleKeyDown(e, product)}
+						>
+							<ProductPreview
+								{product}
+								{filterState}
+								alwaysShowCreditPrice
+								disableLink
+								disableWishlist
+							/>
+						</button>
+					</li>
+				{/each}
+			</ul>
+		{:else}
+			<p class="text-lg text-gray-800">Ingen produkter funnet</p>
+		{/if}
+	</div>
+</div>
 
 {#if data.lastClaimed}
 	<p class="mt-8 text-center text-lg text-gray-600">

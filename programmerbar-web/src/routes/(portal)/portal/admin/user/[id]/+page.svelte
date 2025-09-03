@@ -368,12 +368,8 @@
 />
 
 {#if showAddBeers}
-	<div
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md"
-	>
-		<div
-			class="bg-background mx-4 w-full max-w-md rounded-2xl border-2 p-6 shadow-lg"
-		>
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md">
+		<div class="bg-background mx-4 w-full max-w-md rounded-2xl border-2 p-6 shadow-lg">
 			<h3 class="mb-2 text-lg font-semibold text-gray-900">Legg til øl</h3>
 			<p class="mb-4 text-sm text-gray-600">
 				Det du skriver her, vil endre på antall ekstra bonger <strong>{user.name}</strong> har tilgjengelig.
@@ -421,12 +417,8 @@
 {/if}
 
 {#if showDeleteConfirm}
-	<div
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md"
-	>
-		<div
-			class="bg-background mx-4 w-full max-w-md rounded-2xl border-2 p-6 shadow-lg"
-		>
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md">
+		<div class="bg-background mx-4 w-full max-w-md rounded-2xl border-2 p-6 shadow-lg">
 			<h3 class="mb-2 text-lg font-semibold text-gray-900">Slett bruker</h3>
 			<p class="mb-4 text-sm text-gray-600">
 				Er du sikker på at du vil slette <strong>{user.name}</strong>? Skriv inn brukerens navn for

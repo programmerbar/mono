@@ -46,37 +46,6 @@
 				user.email.toLowerCase().includes(userSearch.toLowerCase())
 		)
 	);
-
-	function getPermissionLabel(permission: string): string {
-		switch (permission) {
-			case 'canSeeOpplearing':
-				return 'Kan se opplæring';
-			case 'canSeeBeerClaims':
-				return 'Kan se drikke cash-in';
-			case 'canSeeReferrals':
-				return 'Kan se henvisninger';
-			case 'canSeeBongs':
-				return 'Kan se bongs';
-			case 'canSeeUserChanges':
-				return 'Kan se brukerendringer';
-			case 'canSeeEventDepartures':
-				return 'Kan se arrangement-avgang';
-			case 'canSeeEventUpdates':
-				return 'Kan se arrangement-oppdateringer';
-			case 'canSeeShiftUpdates':
-				return 'Kan se vakt-oppdateringer';
-			case 'canManageTagOptions':
-				return 'Kan administrere tag-alternativer';
-			case 'canSeeTagChanges':
-				return 'Kan se tag-endringer';
-			case 'canSeeContactSubmissions':
-				return 'Kan se kontakt-skjema';
-			case 'canSeeNewcomers':
-				return 'Kan se nykommere';
-			default:
-				return permission;
-		}
-	}
 </script>
 
 <div class="flex flex-col gap-4 p-4 sm:gap-6 sm:p-0">
@@ -153,16 +122,16 @@
 					<div class="border-t pt-4">
 						<h4 class="mb-3 font-medium text-gray-900">Tag-tillatelser</h4>
 						<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
-							{#each Object.keys(data.tags[0] || {}).filter( (key) => key.startsWith('can') ) as permission (permission)}
+							{#each data.permissions as permission (permission.key)}
 								<div class="flex items-center">
 									<input
 										type="checkbox"
-										id={permission}
-										name={permission}
+										id={permission.key}
+										name={permission.key}
 										class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
 									/>
-									<label for={permission} class="ml-2 block text-sm text-gray-900">
-										{getPermissionLabel(permission)}
+									<label for={permission.key} class="ml-2 block text-sm text-gray-900">
+										{permission.label}
 									</label>
 								</div>
 							{/each}
@@ -288,17 +257,20 @@
 								<div class="border-t pt-4">
 									<h4 class="mb-3 font-medium text-gray-900">Tag-tillatelser</h4>
 									<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
-										{#each Object.keys(tag).filter( (key) => key.startsWith('can') ) as permission (permission)}
+										{#each data.permissions as permission (permission.key)}
 											<div class="flex items-center">
 												<input
 													type="checkbox"
-													id="{permission}-{tag.id}"
-													name={permission}
-													checked={Boolean(tag[permission as keyof typeof tag])}
+													id="{permission.key}-{tag.id}"
+													name={permission.key}
+													checked={Boolean(tag[permission.key as keyof typeof tag])}
 													class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
 												/>
-												<label for="{permission}-{tag.id}" class="ml-2 block text-sm text-gray-900">
-													{getPermissionLabel(permission)}
+												<label
+													for="{permission.key}-{tag.id}"
+													class="ml-2 block text-sm text-gray-900"
+												>
+													{permission.label}
 												</label>
 											</div>
 										{/each}
@@ -332,7 +304,7 @@
 		<h2 class="mb-4 text-xl font-semibold">Tildel tags til brukere</h2>
 
 		<div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start">
-			<div class="relative w-full flex-1 min-w-0">
+			<div class="relative w-full min-w-0 flex-1">
 				<label for="userSearch" class="block text-sm font-medium text-gray-700">Søk bruker</label>
 				<Input
 					id="userSearch"
@@ -341,7 +313,9 @@
 					class="mt-1 w-full"
 				/>
 				{#if userSearch && filteredUsers.length > 0}
-					<div class="absolute z-10 mt-2 max-h-40 w-full overflow-y-auto rounded-md border bg-white shadow-lg">
+					<div
+						class="absolute z-10 mt-2 max-h-40 w-full overflow-y-auto rounded-md border bg-white shadow-lg"
+					>
 						{#each filteredUsers.slice(0, 5) as user (user.id)}
 							<button
 								type="button"
@@ -358,7 +332,7 @@
 				{/if}
 			</div>
 
-			<div class="w-full flex-1 min-w-0">
+			<div class="w-full min-w-0 flex-1">
 				<label for="tagSelect" class="block text-sm font-medium text-gray-700">Velg tag</label>
 				<select
 					id="tagSelect"
