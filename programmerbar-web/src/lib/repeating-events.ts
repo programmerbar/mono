@@ -28,6 +28,7 @@ export const flattenRepeatingEvents = (repeatingEvents: Array<RepeatingEvent>) =
 						body: event.body,
 						date: date.toISOString(),
 						registrationStart: null,
+						_createdAt: event._createdAt,
 						slug: event.slug,
 						title: event.title
 					}) satisfies Happening

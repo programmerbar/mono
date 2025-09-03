@@ -4,22 +4,19 @@
 	import Hero from '$lib/components/app/landing/Hero.svelte';
 	import Map from '$lib/components/app/landing/Map.svelte';
 	import MenuList from '$lib/components/app/landing/MenuList.svelte';
+	import SEO from '$lib/components/SEO.svelte';
 
 	let { data } = $props();
 	let { products, events } = $derived(data);
 </script>
 
-<svelte:head>
-	<title>Programmerbar</title>
-	<meta
-		name="description"
-		content="Programmerbar er en studentbar for teknologistudenter på Universitet i Bergen."
-	/>
-	<meta
-		name="keywords"
-		content="studentbar, programmerbar, universitet i bergen, teknologistudenter"
-	/>
-</svelte:head>
+<SEO
+	title="Programmerbar"
+	description="Programmerbar er en studentbar for teknologistudenter på Universitet i Bergen. Arrangementer, øl og koding i perfekt harmoni."
+	keywords="studentbar, programmerbar, universitet i bergen, teknologistudenter, IT-studenter, bar, arrangementer"
+	canonical="/"
+	type="website"
+/>
 
 <Hero />
 

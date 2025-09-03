@@ -1,14 +1,14 @@
-import { generateState } from '$lib/auth/providers/oauth2';
 import {
 	COOKIE_NAME_FEIDE_OAUTH_STATE,
 	COOKIE_NAME_FROM,
 	COOKIE_VALUE_BLI_FRIVILLIG
 } from '$lib/constants';
+import { generateState } from 'arctic';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ locals, cookies }) => {
 	const state = generateState();
-	const url = locals.feideProvider.createAuthorizationURL(state, []);
+	const url = locals.feideProvider.createAuthorizationURL(state);
 
 	cookies.set(COOKIE_NAME_FEIDE_OAUTH_STATE, state, {
 		path: '/',

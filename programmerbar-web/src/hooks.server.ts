@@ -1,6 +1,6 @@
 import { dev } from '$app/environment';
 import { createAuth } from '$lib/auth/lucia';
-import { createFeideProvider } from '$lib/auth/providers/feide';
+import { FeideProvider } from '$lib/auth/feide';
 import { createDatabase } from '$lib/db/drizzle';
 import { BanService } from '$lib/services/ban.service';
 import { BeerService } from '$lib/services/beer.service';
@@ -55,7 +55,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.auth = auth;
 
 	// Setup feide provider
-	const feideProvider = createFeideProvider(
+	const feideProvider = new FeideProvider(
 		event.platform!.env.FEIDE_CLIENT_ID,
 		event.platform!.env.FEIDE_CLIENT_SECRET,
 		event.platform!.env.FEIDE_REDIRECT_URI

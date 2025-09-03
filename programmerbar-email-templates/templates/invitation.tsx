@@ -25,7 +25,7 @@ export function InvitationEmail({ email }: InvitationEmailSchemaType) {
 							className="mx-auto w-full rounded-lg bg-blue-500 p-2 text-center text-white"
 							href="https://programmer.bar/logg-inn"
 						>
-							Registrer deg her
+							Logg inn her
 						</Link>
 
 						<Text className="text-sm text-gray-500">

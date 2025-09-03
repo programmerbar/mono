@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Footer from '$lib/components/footer/Footer.svelte';
+	import Footer from '$lib/components/app/Footer.svelte';
 	import Header from '$lib/components/app/header/Header.svelte';
 	import StatusBanner from '$lib/components/app/landing/StatusBanner.svelte';
 

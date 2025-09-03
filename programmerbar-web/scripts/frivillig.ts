@@ -21,7 +21,7 @@ async function main() {
 
 	console.log(`Added ${fakeApplications.length} pending volunteer applications.`);
 	console.log(
-		`You can now view and approve/deny these applications in the admin panel at /portal/admin/pending-applications`
+		`You can now view and approve/deny these applications in the admin panel at /portal/admin/soknader`
 	);
 }
 

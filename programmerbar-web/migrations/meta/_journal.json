@@ -166,29 +166,8 @@
     {
       "idx": 23,
       "version": "6",
-      "when": 1756122237736,
-      "tag": "0023_fixed_dreaming_celestial",
-      "breakpoints": true
-    },
-    {
-      "idx": 24,
-      "version": "6",
-      "when": 1756137936688,
-      "tag": "0024_purple_brood",
-      "breakpoints": true
-    },
-    {
-      "idx": 25,
-      "version": "6",
-      "when": 1756317356351,
-      "tag": "0025_nebulous_vivisector",
-      "breakpoints": true
-    },
-    {
-      "idx": 26,
-      "version": "6",
-      "when": 1756903495828,
-      "tag": "0026_lonely_maelstrom",
+      "when": 1756555507753,
+      "tag": "0023_lively_killmonger",
       "breakpoints": true
     }
   ]

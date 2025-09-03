@@ -14,7 +14,11 @@ async function main() {
 			Record<string, never>,
 			ExtractTablesWithRelations<Record<string, never>>
 		>,
-		schema
+		schema,
+		{
+			count: 5,
+			seed: Math.floor(Math.random() * 1000) + 1
+		}
 	);
 }
 

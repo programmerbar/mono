@@ -3,15 +3,20 @@
 	import { Smile, Beer, Wine, Wifi, UserCircle } from '@lucide/svelte';
 	import { marked } from 'marked';
 	import Heading from '$lib/components/ui/Heading.svelte';
+	import SEO from '$lib/components/SEO.svelte';
 
 	let { data } = $props();
 
 	const html = marked.parse(data.programmerbar.description);
 </script>
 
-<svelte:head>
-	<title>Om oss</title>
-</svelte:head>
+<SEO
+	title="Om oss"
+	description="Lær mer om Programmerbar - studentbaren for teknologistudenter på Universitet i Bergen."
+	keywords="om oss, programmerbar, styremedlemmer, historie, studentbar, teknologistudenter"
+	canonical="/om-oss"
+	type="website"
+/>
 
 <div class="bg-background mx-auto w-full max-w-screen-lg rounded-xl border-2 p-8 shadow-lg">
 	<Heading class="mb-4 text-4xl">Om oss</Heading>

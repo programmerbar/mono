@@ -2,9 +2,9 @@
 	import { enhance } from '$app/forms';
 	import { toast } from 'svelte-sonner';
 	import ProductPreview from '$lib/components/app/meny/ProductPreview.svelte';
-	import Sidebar from '$lib/components/app/meny/Sidebar.svelte';
-	import ClaimModal from '$lib/components/cards/ClaimModal.svelte';
-	import ClaimedCredit from '$lib/components/downloads/ClaimedCredits.svelte';
+	import ProductSidebar from '$lib/components/app/meny/ProductSidebar.svelte';
+	import ClaimModal from '$lib/components/portal/ClaimModal.svelte';
+	import ClaimedCredit from '$lib/components/portal/ClaimedCredits.svelte';
 	import { extractTypes } from '$lib/extract-types';
 	import { filterProducts } from '$lib/filter-products';
 	import { FilterState } from '$lib/states/filter-state.svelte';
@@ -20,7 +20,7 @@
 	let loading = $state(false);
 	let types = extractTypes(data.products);
 	let breweries = extractBreweries(data.products);
-	let priceRange = $derived(extractPriceRange(data.products, filterState.showStudentPrice)!);
+	let priceRange = $derived(extractPriceRange(data.products, filterState.showStudentPrice));
 	let selectedProduct = $state<null | Product>(null);
 	let claimedProduct = $state<null | Product>(null);
 	let timerSeconds = $state(30);
@@ -163,50 +163,6 @@
 		</div>
 	</div>
 {/if}
-
-<div class="flex w-full flex-col gap-8 sm:mx-auto sm:max-w-screen-sm md:max-w-full md:flex-row">
-	<div>
-		<div class="bg-background mb-4 items-center justify-center rounded-xl border-2 p-4 shadow-md">
-			<div class="bg-backg text-2xl font-bold text-gray-900">
-				{data.unclaimedBeers}
-				{data.unclaimedBeers === 1 ? 'bong' : 'bonger'}
-			</div>
-		</div>
-
-		<Sidebar {types} {breweries} {priceRange} {filterState} alwaysFilteredByCredits disableSticky />
-
-		{#if userRole === 'board'}
-			<ClaimedCredit />
-		{/if}
-	</div>
-
-	<div class="flex-1">
-		{#if filteredProducts && filteredProducts.length > 0}
-			<p class="mb-2 text-sm text-gray-800">Viser {filteredProducts.length} resultater</p>
-			<ul class="grid w-full grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
-				{#each filteredProducts as product (product._id)}
-					<li>
-						<button
-							class="block h-full w-full text-left"
-							onclick={() => handleProductSelect(product)}
-							onkeydown={(e) => handleKeyDown(e, product)}
-						>
-							<ProductPreview
-								{product}
-								{filterState}
-								alwaysShowCreditPrice
-								disableLink
-								disableWishlist
-							/>
-						</button>
-					</li>
-				{/each}
-			</ul>
-		{:else}
-			<p class="text-lg text-gray-800">Ingen produkter funnet</p>
-		{/if}
-	</div>
-</div>
 
 {#if data.lastClaimed}
 	<p class="mt-8 text-center text-lg text-gray-600">

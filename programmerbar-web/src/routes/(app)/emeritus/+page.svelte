@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SEO from '$lib/components/SEO.svelte';
+
 	const groupLogo = '/android-chrome-192x192.png';
 	const groupName = 'Programmerbar';
 	const estYear = '2020';
@@ -47,6 +49,14 @@
 		'Lars Bysheim'
 	];
 </script>
+
+<SEO
+	title="Tidligere Styremedlemmer"
+	description="Lær mer om tidligere og nåværende styremedlemmer i Programmerbar."
+	keywords="styremedlemmer, tidligere styremedlemmer, programmerbar, studentbar, teknologistudenter"
+	canonical="/emeritus"
+	type="website"
+/>
 
 <div class="container py-10 text-center">
 	<img class="mx-auto h-32 w-auto" src={groupLogo} alt="Programmerbar logo" />

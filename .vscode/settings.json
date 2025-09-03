@@ -5,6 +5,6 @@
 		"programmerbar-email",
 		"programmerbar-email-templates"
 	],
-	"prettier.configPath": "./base-prettier.config.mjs",
+	"prettier.configPath": "./programmerbar-web/prettier.config.mjs",
 	"typescript.tsdk": "node_modules/typescript/lib"
 }

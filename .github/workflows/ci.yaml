@@ -10,8 +10,6 @@ on:
 
 env:
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/programmerbar
-  REDIS_URL: redis://localhost:6379
-  S3_BUCKET: test-bucket
   FEIDE_CLIENT_ID: test
   FEIDE_CLIENT_SECRET: test
   FEIDE_REDIRECT_URI: http://localhost:8000/auth/feide/callback
@@ -21,30 +19,6 @@ jobs:
   ci:
     name: 💚 Run CI
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: programmerbar
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-      redis:
-        image: redis:7-alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
       - name: 🔍 Checkout
@@ -60,32 +34,8 @@ jobs:
           cache: pnpm
           cache-dependency-path: ./pnpm-lock.yaml
 
-      - name: 🦀 Setup Rust toolchain
-        uses: actions-rust-lang/setup-rust-toolchain@v1
-        with:
-          cache: true
-
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: 🐿️ Cache SQLx CLI
-        uses: actions/cache@v4
-        id: cache-sqlx
-        with:
-          path: ~/.cargo/bin/sqlx
-          key: sqlx-cli-${{ runner.os }}
-
-      - name: 🐿️ Install SQLx CLI
-        if: steps.cache-sqlx.outputs.cache-hit != 'true'
-        run: cargo install sqlx-cli --no-default-features --features postgres
-
-      - name: 🗄️ Run database migrations
-        run: pnpm --filter=api db:migrate --database-url $DATABASE_URL
-
-      - name: 📝 Prepare SQLx offline cache
-        run: |
-          cd programmerbar-api
-          cargo sqlx prepare --database-url $DATABASE_URL
 
       - name: 🔵 Check
         run: pnpm check

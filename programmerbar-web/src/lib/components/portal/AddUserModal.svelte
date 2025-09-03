@@ -4,6 +4,7 @@
 	import Button from '../ui/Button.svelte';
 	import Input from '../ui/Input.svelte';
 	import { toast } from 'svelte-sonner';
+	import { sendInvitationEmail } from '$lib/remotes/invitations.remote';
 
 	let open = $state(false);
 	let email = $state('');
@@ -11,14 +12,13 @@
 	const handleSendInvitation = async () => {
 		if (!email) return;
 
-		const response = await fetch('/api/invitations', {
-			method: 'POST',
-			body: JSON.stringify({ email })
-		});
+		const success = await sendInvitationEmail(email);
 
-		if (response.status === 201) {
+		if (success) {
 			email = '';
 			toast.info('Invitasjonen ble sendt');
+		} else {
+			toast.error('Noe gikk galt ved sending av invitasjon');
 		}
 	};
 </script>

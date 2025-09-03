@@ -1,3 +1,4 @@
+import { slugify } from '$lib/utils';
 import { CreateEventSchema } from '$lib/validators';
 
 type CreateEventShiftUser = {
@@ -14,6 +15,9 @@ type CreateEventShift = {
 export class CreateEventState {
 	name = $state('');
 	date = $state<string>();
+	slug = $derived(slugify(this.name));
+	description = $state('');
+	shouldBePublic = $state(false);
 	shifts = $state<Array<CreateEventShift>>([]);
 
 	addShift() {
@@ -44,6 +48,8 @@ export class CreateEventState {
 		return {
 			name: this.name,
 			date: this.date,
+			slug: this.shouldBePublic ? this.slug : null,
+			description: this.shouldBePublic ? this.description || null : null,
 			shifts: this.shifts.map((shift) => {
 				return {
 					startAt: shift.startAt,
@@ -62,6 +68,8 @@ export class CreateEventState {
 	reset() {
 		this.name = '';
 		this.date = '';
+		this.description = '';
+		this.shouldBePublic = false;
 		this.shifts = [];
 	}
 }

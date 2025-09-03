@@ -80,7 +80,7 @@
 			},
 			{
 				name: 'Søknader',
-				href: '/portal/admin/pending-applications',
+				href: '/portal/admin/soknader',
 				icon: UserCheck,
 				count: pendingApplicationsCount
 			}

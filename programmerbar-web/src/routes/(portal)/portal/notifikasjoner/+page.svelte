@@ -1,30 +1,76 @@
 <script lang="ts">
+	import Heading from '$lib/components/ui/Heading.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
 	import { enhance } from '$app/forms';
-	import { Check } from '@lucide/svelte';
+	import { Bell, Check, BellOff } from '@lucide/svelte';
 
 	let { data } = $props();
 </script>
 
-<div class="flex flex-col gap-4">
-	<h1 class="text-2xl font-bold">Notifikasjoner</h1>
+<svelte:head>
+	<title>Notifikasjoner</title>
+</svelte:head>
 
-	<div class="flex flex-col gap-4">
-		{#each data.notifications as notification (notification.id)}
-			<div class="flex items-center justify-between rounded-lg border bg-white p-4">
-				<div>
-					<h2 class="text-lg font-bold">{notification.title}</h2>
-					<p>{notification.body}</p>
-				</div>
-
-				<form action="?/archive" method="post" use:enhance>
-					<input type="hidden" name="notificationId" value={notification.id} />
-					<button>
-						<Check class="hover:bg-background size-9 rounded-lg p-2 text-green-600" />
-					</button>
-				</form>
-			</div>
-		{:else}
-			<p>Her er ingen notifikasjoner</p>
-		{/each}
+<div class="space-y-6">
+	<!-- Header -->
+	<div class="flex items-center gap-3">
+		<Bell class="h-6 w-6 text-gray-600" />
+		<div>
+			<Heading>Notifikasjoner</Heading>
+			<p class="mt-1 text-gray-600">
+				{#if data.notifications.length > 0}
+					Du har {data.notifications.length} uleste notifikasjoner
+				{:else}
+					Ingen nye notifikasjoner
+				{/if}
+			</p>
+		</div>
 	</div>
+
+	<!-- Notifications List -->
+	{#if data.notifications.length === 0}
+		<div class="rounded-lg border bg-white">
+			<div class="p-12 text-center">
+				<BellOff class="mx-auto mb-4 h-12 w-12 text-gray-300" />
+				<h3 class="mb-2 text-lg font-medium text-gray-500">Ingen notifikasjoner</h3>
+				<p class="text-sm text-gray-400">Du har ingen uleste notifikasjoner akkurat nå</p>
+			</div>
+		</div>
+	{:else}
+		<div class="divide-y rounded-lg border bg-white">
+			{#each data.notifications as notification (notification.id)}
+				<div class="p-4 transition-colors hover:bg-gray-50">
+					<div class="flex items-start justify-between gap-4">
+						<div class="min-w-0 flex-1">
+							<div class="flex items-start gap-3">
+								<div class="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-blue-100">
+									<Bell class="h-4 w-4 text-blue-600" />
+								</div>
+								<div class="flex-1">
+									<h3 class="mb-1 text-lg font-semibold text-gray-900">
+										{notification.title}
+									</h3>
+									<p class="leading-relaxed text-gray-700">
+										{notification.body}
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<form action="?/archive" method="post" use:enhance class="flex-shrink-0">
+							<input type="hidden" name="notificationId" value={notification.id} />
+							<Button
+								type="submit"
+								size="square"
+								intent="outline"
+								class="text-green-600 hover:bg-green-50 hover:text-green-700"
+							>
+								<Check class="h-4 w-4" />
+							</Button>
+						</form>
+					</div>
+				</div>
+			{/each}
+		</div>
+	{/if}
 </div>

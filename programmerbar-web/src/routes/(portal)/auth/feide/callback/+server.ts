@@ -1,7 +1,6 @@
-import { getFeideUser } from '$lib/auth/providers/feide';
+import { getFeideUser } from '$lib/auth/feide';
 import { nanoid } from 'nanoid';
 import type { RequestHandler } from './$types';
-import { setSessionCookie } from '$lib/auth/cookies';
 import {
 	COOKIE_NAME_FEIDE_OAUTH_STATE,
 	COOKIE_NAME_FROM,
@@ -26,14 +25,7 @@ export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 	const feideUser = await getFeideUser(tokens.accessToken());
 	const existingUser = await locals.userService.findByFeideId(feideUser.id);
 
-	// Check if user was deleted
-	const deletedUser = await locals.userService.findByFeideIdIncludeDeleted(feideUser.id);
-	if (deletedUser && deletedUser.isDeleted) {
-		return new Response('Du har blitt slettet fra systemet', {
-			status: 403
-		});
-	}
-
+	// If the user came from the "bli frivillig" flow
 	const from = cookies.get(COOKIE_NAME_FROM);
 	if (from === COOKIE_VALUE_BLI_FRIVILLIG) {
 		cookies.delete(COOKIE_NAME_FROM, { path: '/' });
@@ -76,10 +68,21 @@ export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 		});
 	}
 
+	// Check if user was deleted
+	if (existingUser?.isDeleted) {
+		return new Response('Du har blitt slettet fra systemet', {
+			status: 403
+		});
+	}
+
+	// If the user already exists, log them in
 	if (existingUser) {
 		const session = await locals.auth.createSession(existingUser.id, {});
 		const sessionCookie = locals.auth.createSessionCookie(session.id);
-		setSessionCookie(cookies, locals.auth.sessionCookieName, sessionCookie);
+		cookies.set(sessionCookie.name, sessionCookie.value, {
+			...sessionCookie.attributes,
+			path: '/'
+		});
 
 		return new Response(null, {
 			status: 302,
@@ -89,11 +92,13 @@ export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 		});
 	}
 
-	const [invitation, error] = await locals.invitationService.findValidInvitationByEmail(
+	// New user flow
+
+	const { success, invitation, error } = await locals.invitationService.findValidInvitationByEmail(
 		feideUser.email.toLowerCase()
 	);
 
-	if (error !== null) {
+	if (!success) {
 		return new Response(error, {
 			status: 403
 		});
@@ -113,7 +118,10 @@ export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 
 	const session = await locals.auth.createSession(userId, {});
 	const sessionCookie = locals.auth.createSessionCookie(session.id);
-	setSessionCookie(cookies, locals.auth.sessionCookieName, sessionCookie);
+	cookies.set(sessionCookie.name, sessionCookie.value, {
+		...sessionCookie.attributes,
+		path: '/'
+	});
 
 	return new Response(null, {
 		status: 302,

@@ -5,7 +5,7 @@
 	import AddUserModal from '$lib/components/portal/AddUserModal.svelte';
 	import { mailto } from '$lib/utils';
 	import { formatDate } from '$lib/date';
-	import UserCard from '$lib/components/cards/UserCard.svelte';
+	import UserCard from '$lib/components/portal/UserCard.svelte';
 	import { enhance } from '$app/forms';
 
 	let { data } = $props();
@@ -29,7 +29,12 @@
 	<Heading>Brukere</Heading>
 
 	<div class="flex items-center gap-2">
-		<Input type="search" class="w-full flex-1" placeholder="Søk etter bruker" bind:value={search} />
+		<Input
+			type="search"
+			class="w-full flex-1 border-1"
+			placeholder="Søk etter bruker"
+			bind:value={search}
+		/>
 		<AddUserModal />
 	</div>
 

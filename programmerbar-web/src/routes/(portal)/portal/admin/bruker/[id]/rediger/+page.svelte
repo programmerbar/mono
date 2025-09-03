@@ -1,0 +1,192 @@
+<script lang="ts">
+	import Heading from '$lib/components/ui/Heading.svelte';
+	import Input from '$lib/components/ui/Input.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
+	import Pill from '$lib/components/ui/Pill.svelte';
+	import { initials } from '$lib/utils';
+	import { enhance } from '$app/forms';
+	import { ArrowLeft, UserCog } from '@lucide/svelte';
+	import type { User } from '$lib/db/schemas';
+	import type { SubmitFunction } from './$types.js';
+
+	let { data } = $props();
+	let user = data.user as User;
+
+	let editForm = $state({
+		role: user.role,
+		phone: user.phone || '',
+		canRefer: user.canRefer ?? true
+	});
+
+	let isSubmitting = $state(false);
+
+	const handleSave: SubmitFunction = () => {
+		isSubmitting = true;
+		return async ({ result, update }) => {
+			isSubmitting = false;
+			if (result.type === 'failure') {
+				console.error('Failed to save user');
+			}
+			await update();
+		};
+	};
+</script>
+
+<svelte:head>
+	<title>Rediger {user.name} - Admin</title>
+</svelte:head>
+
+<div class="space-y-6">
+	<!-- Header with back button -->
+	<div class="flex items-center gap-4">
+		<ButtonLink href="/portal/admin/bruker/{user.id}" intent="outline" size="square">
+			<ArrowLeft class="h-5 w-5" />
+		</ButtonLink>
+		<div>
+			<Heading>Rediger bruker</Heading>
+			<p class="mt-1 text-gray-600">Administrer {user.name}s profil og tillatelser</p>
+		</div>
+	</div>
+
+	<!-- User overview (read-only) -->
+	<div class="rounded-lg border bg-white p-4 sm:p-6">
+		<div class="flex items-center gap-4">
+			<div class="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
+				<span class="text-2xl font-semibold text-blue-600">
+					{initials(user.name)}
+				</span>
+			</div>
+			<div class="min-w-0 flex-1">
+				<Heading class="mb-1 truncate">{user.name}</Heading>
+				<div class="flex items-center gap-3">
+					<Pill variant={user.role === 'board' ? 'purple' : 'blue'}>
+						{user.role === 'board' ? 'Styret' : 'Frivillig'}
+					</Pill>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Edit form -->
+	<div class="rounded-lg border bg-white">
+		<div class="border-b px-6 py-4">
+			<div class="flex items-center gap-2">
+				<UserCog class="h-5 w-5 text-gray-600" />
+				<h3 class="text-lg font-semibold text-gray-900">Rediger brukerdetaljer</h3>
+			</div>
+		</div>
+
+		<form method="POST" action="?/save" use:enhance={handleSave} class="space-y-6 p-6">
+			<div class="space-y-6">
+				<!-- Read-only fields -->
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+					<div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+						<span class="mb-1 block text-sm font-medium text-gray-500">Navn</span>
+						<p class="text-sm text-gray-900">{user.name}</p>
+						<p class="mt-1 text-xs text-gray-500">Kan ikke endres</p>
+					</div>
+					<div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+						<span class="mb-1 block text-sm font-medium text-gray-500">E-post</span>
+						<p class="text-sm text-gray-900">{user.altEmail || user.email}</p>
+						<p class="mt-1 text-xs text-gray-500">Kan ikke endres</p>
+					</div>
+				</div>
+
+				<!-- Editable fields -->
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+					<div class="rounded-lg border border-gray-200 bg-white p-4">
+						<label for="edit-phone" class="mb-2 block text-sm font-medium text-gray-700">
+							Telefon
+						</label>
+						<Input
+							id="edit-phone"
+							name="phone"
+							bind:value={editForm.phone}
+							type="tel"
+							placeholder="+47 123 45 678"
+							class="w-full border-1"
+						/>
+					</div>
+
+					<div class="rounded-lg border border-gray-200 bg-white p-4">
+						<div class="mb-2 block text-sm font-medium text-gray-700">Rolle</div>
+						<div class="flex items-center gap-3">
+							<label class="flex cursor-pointer items-center">
+								<input
+									type="radio"
+									name="role"
+									value="normal"
+									class="peer sr-only"
+									bind:group={editForm.role}
+								/>
+								<div
+									class="flex items-center justify-center rounded-lg border px-4 py-2 text-sm transition-colors peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-50"
+								>
+									Frivillig
+								</div>
+							</label>
+
+							<label class="flex cursor-pointer items-center">
+								<input
+									type="radio"
+									name="role"
+									value="board"
+									class="peer sr-only"
+									bind:group={editForm.role}
+								/>
+								<div
+									class="flex items-center justify-center rounded-lg border px-4 py-2 text-sm transition-colors peer-checked:border-purple-500 peer-checked:bg-purple-50 peer-checked:text-purple-700 hover:bg-gray-50"
+								>
+									Styret
+								</div>
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<!-- Can Refer Setting -->
+				<div class="rounded-lg border border-gray-200 bg-white p-4">
+					<div class="flex items-center justify-between">
+						<div>
+							<div class="mb-1 text-sm font-medium text-gray-700">Kan referere nye brukere</div>
+							<p class="text-xs text-gray-500">
+								Tillater brukeren å referere nye frivillige til Programmerbar
+							</p>
+						</div>
+						<label class="flex cursor-pointer items-center gap-2">
+							<input
+								type="checkbox"
+								name="canRefer"
+								bind:checked={editForm.canRefer}
+								class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+							/>
+							<span class="text-sm font-medium text-gray-900">
+								{editForm.canRefer ? 'Ja' : 'Nei'}
+							</span>
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<!-- Action buttons -->
+			<div class="flex flex-col gap-2 sm:flex-row sm:justify-end">
+				<ButtonLink
+					intent="outline"
+					href="/portal/admin/bruker/{user.id}"
+					class="w-full sm:order-1 sm:w-auto"
+				>
+					Avbryt
+				</ButtonLink>
+				<Button
+					type="submit"
+					intent="primary"
+					disabled={isSubmitting}
+					class="w-full sm:order-2 sm:w-auto"
+				>
+					{isSubmitting ? 'Lagrer...' : 'Lagre endringer'}
+				</Button>
+			</div>
+		</form>
+	</div>
+</div>

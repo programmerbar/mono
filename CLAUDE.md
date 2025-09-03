@@ -12,8 +12,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - `programmerbar-web/` - Main SvelteKit application (primary codebase)
 - `programmerbar-cms/` - Sanity headless CMS for content management
-- `programmerbar-api/` - Rust API backend with Axum web framework
-- `programmerbar-email` - Email API for sending emails
 - `programmerbar-email-templates/` - React Email templates for notifications
 
 ### Technology Stack

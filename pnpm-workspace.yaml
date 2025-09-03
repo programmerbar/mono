@@ -1,6 +1,4 @@
 packages:
-  - programmerbar-api
   - programmerbar-cms
-  - programmerbar-email
   - programmerbar-email-templates
   - programmerbar-web

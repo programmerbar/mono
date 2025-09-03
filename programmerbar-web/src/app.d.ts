@@ -19,7 +19,7 @@ declare global {
 			session: import('lucia').Session | null;
 
 			// Auth providers
-			feideProvider: import('$lib/auth/providers/feide').Feide;
+			feideProvider: import('$lib/auth/feide').FeideProvider;
 
 			// Serivces
 			emailService: import('$lib/services/email.service').EmailService;

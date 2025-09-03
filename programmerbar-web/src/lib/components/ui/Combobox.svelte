@@ -46,7 +46,7 @@
 	<Combobox.Input
 		{...mergedInputProps}
 		class={cn(
-			'placeholder:text-foreground-alt/50 border-border focus:ring-foreground focus:ring-offset-background inline-flex h-10 w-full truncate rounded-[9px] border bg-white px-4 transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none',
+			'placeholder:text-foreground-alt/50 border-border focus:border-border focus:outline-primary inline-flex h-10 w-full truncate rounded-lg border bg-white px-4 transition-colors focus:ring-0',
 			mergedInputProps.class
 		)}
 	/>

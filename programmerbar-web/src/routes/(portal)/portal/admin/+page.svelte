@@ -1,9 +1,12 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
-	import type { User } from '$lib/db/schemas';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import Select from '$lib/components/ui/Select.svelte';
+	import Pill from '$lib/components/ui/Pill.svelte';
+	import type { User } from '$lib/db/schemas';
 	import { initials } from '$lib/utils.js';
+	import { Users, Search, ChevronUp, ChevronDown, Eye, UserCog } from '@lucide/svelte';
 
 	let { data } = $props();
 	let search = $state('');
@@ -38,57 +41,70 @@
 </svelte:head>
 
 <div class="space-y-6">
-	<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-		<Heading>Admin side</Heading>
-		<div class="flex items-center gap-4">
-			{#if data.showInitializeTags}
-				<form method="post" action="?/initializeTags">
-					<Button
-						type="submit"
-						class="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
-					>
-						Initialiser system tags
-					</Button>
-				</form>
-			{/if}
-			<div class="flex items-center gap-2 text-sm text-gray-600">
-				<span class="font-medium">{filteredUsers.length}</span>
-				{filteredUsers.length === 1 ? 'bruker' : 'brukere'}
-			</div>
+	<!-- Header -->
+	<div class="flex items-center gap-3">
+		<UserCog class="h-6 w-6 text-gray-600" />
+		<div>
+			<Heading>Brukerhåndtering</Heading>
+			<p class="mt-1 text-gray-600">
+				Administrer alle {data.users.length} registrerte brukere
+			</p>
 		</div>
+		{#if data.showInitializeTags}
+			<form method="post" action="?/initializeTags" class="ml-auto">
+				<Button
+					type="submit"
+					class="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
+				>
+					Initialiser system tags
+				</Button>
+			</form>
+		{/if}
+		{#if filteredUsers.length !== data.users.length}
+			<div class="ml-auto">
+				<Pill variant="blue">{filteredUsers.length} av {data.users.length}</Pill>
+			</div>
+		{/if}
 	</div>
 
-	<div class="border-gray bg-background overflow-hidden rounded-2xl border-2 shadow-lg">
-		<div class="flex flex-col gap-2 border-b-2 bg-gray-200 p-2 sm:flex-row">
+	<!-- Search and Filters -->
+	<div class="rounded-lg border bg-white p-4">
+		<div class="flex flex-col gap-3 sm:flex-row">
 			<div class="flex-1">
-				<Input
-					class="w-full border-2"
-					type="search"
-					placeholder="Søk etter navn eller e-post..."
-					bind:value={search}
+				<div class="relative">
+					<Search
+						class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400"
+					/>
+					<Input
+						class="w-full border-1 pl-10"
+						type="search"
+						placeholder="Søk etter navn eller e-post..."
+						bind:value={search}
+					/>
+				</div>
+			</div>
+			<div>
+				<Select
+					bind:value={selectedRole}
+					options={[
+						{ label: 'Alle roller', value: 'all' },
+						{ label: 'Styret', value: 'board' },
+						{ label: 'Frivillige', value: 'normal' }
+					]}
 				/>
 			</div>
-			<div class="sm:w-48">
-				<select
-					bind:value={selectedRole}
-					class="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
-				>
-					<option value="all">Alle roller</option>
-					<option value="board">Styret</option>
-					<option value="normal">Frivillige</option>
-				</select>
-			</div>
 		</div>
 	</div>
 
+	<!-- Mobile View -->
 	<div class="block space-y-3 sm:hidden">
 		{#each filteredUsers as user (user.id)}
-			<div class="border-gray bg-background rounded-2xl border-2 p-4 shadow-lg">
+			<div class="rounded-lg border bg-white p-4">
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
 						<div class="h-10 w-10 flex-shrink-0">
-							<div class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-300">
-								<span class="text-sm font-medium text-gray-700">
+							<div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
+								<span class="text-sm font-medium text-blue-600">
 									{initials(user.name)}
 								</span>
 							</div>
@@ -101,54 +117,51 @@
 						</div>
 					</div>
 					<div class="flex flex-col items-end gap-2">
-						<span
-							class="inline-flex rounded-full border px-2 py-1 text-xs font-semibold {user.role ===
-							'board'
-								? 'border-purple-200 bg-purple-100 text-purple-800'
-								: 'border-blue-200 bg-blue-100 text-blue-800'}"
-						>
+						<Pill variant={user.role === 'board' ? 'purple' : 'blue'}>
 							{user.role === 'board' ? 'Styret' : 'Frivillig'}
-						</span>
+						</Pill>
 						<a
-							href="./admin/user/{user.id}"
-							class="text-xs font-medium text-blue-600 hover:text-blue-900"
+							href="./admin/bruker/{user.id}"
+							class="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-900"
 						>
-							Vis detaljer →
+							<Eye class="h-3 w-3" />
+							Vis detaljer
 						</a>
 					</div>
 				</div>
 			</div>
 		{/each}
 		{#if filteredUsers.length === 0}
-			<div class="bg-background rounded-2xl border-2 border-gray-200 p-8 text-center">
+			<div class="rounded-lg border bg-white p-8 text-center">
 				<div class="flex flex-col items-center gap-2">
-					<div class="text-4xl">👤</div>
-					<div class="text-sm text-gray-500">Ingen brukere funnet</div>
+					<Users class="h-12 w-12 text-gray-300" />
+					<div class="text-lg font-medium text-gray-500">Ingen brukere funnet</div>
 					{#if search}
-						<div class="text-xs text-gray-400">Prøv å endre søkekriteriene</div>
+						<div class="text-sm text-gray-400">Prøv å endre søkekriteriene</div>
 					{/if}
 				</div>
 			</div>
 		{/if}
 	</div>
 
-	<div
-		class="border-gray bg-background hidden overflow-hidden rounded-2xl border-2 shadow-lg sm:block"
-	>
+	<!-- Desktop Table View -->
+	<div class="hidden overflow-hidden rounded-lg border bg-white sm:block">
 		<div class="overflow-x-auto">
 			<table class="w-full">
-				<thead class="border-gray border-b-2 bg-gray-200">
+				<thead class="border-b bg-gray-50">
 					<tr>
 						<th class="px-6 py-3 text-left">
 							<button
-								class="flex items-center gap-1 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700"
+								class="flex items-center gap-2 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700"
 								onclick={() => handleSort('name')}
 							>
 								Navn
 								{#if sortBy === 'name'}
-									<span class="text-gray-400">
-										{sortOrder === 'asc' ? '↑' : '↓'}
-									</span>
+									{#if sortOrder === 'asc'}
+										<ChevronUp class="h-3 w-3" />
+									{:else}
+										<ChevronDown class="h-3 w-3" />
+									{/if}
 								{/if}
 							</button>
 						</th>
@@ -159,14 +172,16 @@
 						</th>
 						<th class="px-6 py-3 text-left">
 							<button
-								class="flex items-center gap-1 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700"
+								class="flex items-center gap-2 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700"
 								onclick={() => handleSort('role')}
 							>
 								Rolle
 								{#if sortBy === 'role'}
-									<span class="text-gray-400">
-										{sortOrder === 'asc' ? '↑' : '↓'}
-									</span>
+									{#if sortOrder === 'asc'}
+										<ChevronUp class="h-3 w-3" />
+									{:else}
+										<ChevronDown class="h-3 w-3" />
+									{/if}
 								{/if}
 							</button>
 						</th>
@@ -182,36 +197,34 @@
 						<tr class="transition-colors hover:bg-gray-50">
 							<td class="px-6 py-4 whitespace-nowrap">
 								<div class="flex items-center">
-									<div class="h-8 w-8 flex-shrink-0">
-										<div class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300">
-											<span class="text-sm font-medium text-gray-700">
+									<div class="h-10 w-10 flex-shrink-0">
+										<div
+											class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100"
+										>
+											<span class="text-sm font-medium text-blue-600">
 												{initials(user.name)}
 											</span>
 										</div>
 									</div>
-									<div class="ml-3">
+									<div class="ml-4">
 										<div class="text-sm font-medium text-gray-900">{user.name}</div>
 									</div>
 								</div>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap">
-								<div class="text-sm text-gray-900">{user.altEmail || user.email}</div>
+								<div class="text-sm text-gray-600">{user.altEmail || user.email}</div>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap">
-								<span
-									class="inline-flex rounded-full border px-2 py-1 text-xs font-semibold {user.role ===
-									'board'
-										? 'border-purple-200 bg-purple-100 text-purple-800'
-										: 'border-blue-200 bg-blue-100 text-blue-800'}"
-								>
+								<Pill variant={user.role === 'board' ? 'purple' : 'blue'}>
 									{user.role === 'board' ? 'Styret' : 'Frivillig'}
-								</span>
+								</Pill>
 							</td>
-							<td class="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
+							<td class="px-6 py-4 text-right text-sm whitespace-nowrap">
 								<a
-									href="./admin/user/{user.id}"
-									class="font-medium text-blue-600 transition-colors hover:text-blue-900"
+									href="./admin/bruker/{user.id}"
+									class="inline-flex items-center gap-2 font-medium text-blue-600 transition-colors hover:text-blue-900"
 								>
+									<Eye class="h-4 w-4" />
 									Vis detaljer
 								</a>
 							</td>
@@ -220,12 +233,14 @@
 					{#if filteredUsers.length === 0}
 						<tr>
 							<td colspan="4" class="px-6 py-12 text-center text-gray-500">
-								<div class="flex flex-col items-center gap-2">
-									<div class="text-4xl">👤</div>
-									<div class="text-sm">Ingen brukere funnet</div>
-									{#if search}
-										<div class="text-xs text-gray-400">Prøv å endre søkekriteriene</div>
-									{/if}
+								<div class="flex flex-col items-center gap-4">
+									<Users class="h-12 w-12 text-gray-300" />
+									<div>
+										<div class="text-lg font-medium text-gray-500">Ingen brukere funnet</div>
+										{#if search}
+											<div class="mt-1 text-sm text-gray-400">Prøv å endre søkekriteriene</div>
+										{/if}
+									</div>
 								</div>
 							</td>
 						</tr>

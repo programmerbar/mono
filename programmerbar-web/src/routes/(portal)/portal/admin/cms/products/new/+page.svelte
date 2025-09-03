@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
-	import ProductForm from '$lib/components/cms/ProductForm.svelte';
+	import ProductForm from '$lib/components/portal/cms/ProductForm.svelte';
 	import { ArrowLeft, Package } from '@lucide/svelte';
 
 	let { data } = $props();
