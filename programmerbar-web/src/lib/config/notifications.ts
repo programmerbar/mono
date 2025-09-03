@@ -1,6 +1,6 @@
-import { normalDate, time } from '$lib/date';
+import { normalDate } from '$lib/date';
 
-export type NotificationTemplate<T = Record<string, any>> = {
+export type NotificationTemplate<T = Record<string, unknown>> = {
 	permission: keyof typeof import('$lib/db/schemas').tags.$inferSelect;
 	title: string;
 	body: (data: T) => string;

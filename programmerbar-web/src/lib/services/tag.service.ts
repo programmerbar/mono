@@ -35,10 +35,7 @@ export class TagService {
 		return tag[0] ? true : false;
 	}
 
-	async updateTag(
-		tagId: string,
-		updates: Record<string, string | boolean | undefined>
-	) {
+	async updateTag(tagId: string, updates: Record<string, string | boolean | undefined>) {
 		const tag = await this.#db
 			.update(table.tags)
 			.set(updates)

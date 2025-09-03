@@ -66,9 +66,9 @@ export const actions: Actions = {
 		try {
 			await locals.referralService.createReferral(referrerId, locals.user.id);
 
-				const referrer = await locals.userService.findById(referrerId);
+			const referrer = await locals.userService.findById(referrerId);
 			if (referrer) {
-					await locals.notificationService.notifyReferral(referrer.email, locals.user.email);
+				await locals.notificationService.notifyReferral(referrer.email, locals.user.email);
 			}
 
 			return { success: true };

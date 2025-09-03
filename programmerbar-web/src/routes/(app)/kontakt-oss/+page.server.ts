@@ -37,7 +37,7 @@ export const actions: Actions = {
 		);
 
 		try {
-				await locals.emailService.sendContactUsEmail({
+			await locals.emailService.sendContactUsEmail({
 				name: data.namekjkj,
 				email: data.emailkjkj,
 				message: data.messagekjkj

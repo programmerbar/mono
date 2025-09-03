@@ -78,7 +78,7 @@ export const actions: Actions = {
 			});
 
 			if (success) {
-					await locals.notificationService.notifyBeerClaim(
+				await locals.notificationService.notifyBeerClaim(
 					userId,
 					productName || 'Unknown Product',
 					creditCost,

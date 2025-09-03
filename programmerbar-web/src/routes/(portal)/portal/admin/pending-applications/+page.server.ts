@@ -55,7 +55,7 @@ export const actions: Actions = {
 		const existingUser = await locals.userService.findByFeideId(feideId);
 		if (existingUser) {
 			await locals.userService.deleteUser(existingUser.id);
-				await locals.notificationService.notifyUserDeleted(existingUser.name, locals.user.id);
+			await locals.notificationService.notifyUserDeleted(existingUser.name, locals.user.id);
 		}
 
 		const existingInvitation = await locals.invitationService.findByEmail(email);

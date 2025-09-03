@@ -78,7 +78,7 @@ export class NotificationService {
 		return uniqueUserIds;
 	}
 
-	async notify(templateKey: keyof typeof NOTIFICATION_TEMPLATES, data: any) {
+	async notify(templateKey: keyof typeof NOTIFICATION_TEMPLATES, data: Record<string, unknown>) {
 		const template = NOTIFICATION_TEMPLATES[templateKey];
 		const uniqueUserIds = await this.#getUsersWithPermission(template.permission);
 
