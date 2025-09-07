@@ -17,12 +17,14 @@ import { ShiftService } from '$lib/services/shift.service';
 import { StatusService } from '$lib/services/status.service';
 import { UserService } from '$lib/services/user.service';
 import type { Handle } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
 import { Resend } from 'resend';
 import { ImageService } from '$lib/services/image.service';
 import { ReferralService } from '$lib/services/referral.service';
 import { PendingApplicationService } from '$lib/services/pending-application.service';
+import { csrf } from '$lib/hooks/csrf';
 
-export const handle: Handle = async ({ event, resolve }) => {
+const main: Handle = async ({ event, resolve }) => {
 	const STATUS_KV = event.platform!.env.STATUS_KV;
 	const R2_BUCKET = event.platform!.env.BUCKET;
 	const DB = event.platform!.env.DB;
@@ -152,3 +154,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	return await resolve(event);
 };
+
+// Allow Slack webhook endpoint to bypass CSRF protection
+export const handle = sequence(csrf(['/slack-command']), main);
