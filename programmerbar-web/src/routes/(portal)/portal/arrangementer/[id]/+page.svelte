@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { subHours } from 'date-fns';
 	import { formatDate, time } from '$lib/date';
 	import { capitalize } from '$lib/utils';
 	import { enhance } from '$app/forms';
@@ -111,7 +110,7 @@
 									<div>
 										<p class="text-sm text-gray-500">Tid</p>
 										<p class="font-medium">
-											{time(subHours(shift.startAt, 4))} - {time(subHours(shift.endAt, 4))}
+											{time(shift.startAt)} - {time(shift.endAt)}
 										</p>
 									</div>
 								</div>
