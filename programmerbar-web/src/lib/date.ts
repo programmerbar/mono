@@ -1,4 +1,4 @@
-import { toZonedTime, fromZonedTime } from 'date-fns-tz';
+import { toZonedTime } from 'date-fns-tz';
 import { format } from 'date-fns';
 
 export type Dateish = string | Date | number;
@@ -43,4 +43,3 @@ export const toUtcISOStringFromLocal = (value: string) => {
 export const ISOStandard = (date: Dateish) => {
 	return toLocalDateTimeString(date);
 };
-
