@@ -111,7 +111,7 @@
 									<div>
 										<p class="text-sm text-gray-500">Tid</p>
 										<p class="font-medium">
-											{time(subHours(shift.startAt, 2))} - {time(subHours(shift.endAt, 2))}
+											{time(subHours(shift.startAt, 4))} - {time(subHours(shift.endAt, 4))}
 										</p>
 									</div>
 								</div>

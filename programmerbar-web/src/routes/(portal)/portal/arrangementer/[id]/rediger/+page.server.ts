@@ -1,5 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import { parseDateTimeLocal } from '$lib/date';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const event = await locals.eventService.findFullEventById(params.id);
@@ -42,7 +43,7 @@ export const actions: Actions = {
 
 		await locals.eventService.updateEvent(params.id, {
 			name: String(formData.get('name') || ''),
-			date: new Date(String(formData.get('date') || '')),
+			date: parseDateTimeLocal(String(formData.get('date') || '')),
 			description: shouldBePublic ? String(formData.get('description') || '') || null : null,
 			slug: shouldBePublic ? String(formData.get('slug') || '') || null : null
 		});
@@ -70,8 +71,10 @@ export const actions: Actions = {
 
 		for (let i = 0; i < shiftsCount; i++) {
 			const shiftId = formData.get(`shift[${i}].id`)?.toString();
-			const startAt = new Date(String(formData.get(`shift[${i}].startAt`)));
-			const endAt = new Date(String(formData.get(`shift[${i}].endAt`)));
+			const startRaw = String(formData.get(`shift[${i}].startAt`) ?? '');
+			const endRaw = String(formData.get(`shift[${i}].endAt`) ?? '');
+			const startAt = parseDateTimeLocal(startRaw);
+			const endAt = parseDateTimeLocal(endRaw);
 
 			let shift;
 

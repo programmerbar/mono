@@ -4,7 +4,7 @@ import { fail } from '@sveltejs/kit';
 import { getProducts } from '$lib/api/sanity/products';
 import { claimedCredits, users } from '$lib/db/schemas';
 import { gte, eq, desc, lte, and } from 'drizzle-orm';
-import { formatDate } from '$lib/date';
+import { formatDate, parseDateTimeLocal } from '$lib/date';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const userId = locals.user?.id;
@@ -132,12 +132,12 @@ export const actions: Actions = {
 			const whereConditions = [];
 
 			if (startDateStr) {
-				const startDate = new Date(startDateStr);
+				const startDate = parseDateTimeLocal(startDateStr);
 				whereConditions.push(gte(claimedCredits.createdAt, startDate));
 			}
 
 			if (endDateStr) {
-				const endDate = new Date(endDateStr);
+				const endDate = parseDateTimeLocal(endDateStr);
 				whereConditions.push(lte(claimedCredits.createdAt, endDate));
 			}
 

@@ -1,5 +1,6 @@
 import { slugify } from '$lib/utils';
 import { CreateEventSchema } from '$lib/validators';
+import { toUtcISOStringFromLocal } from '$lib/date';
 
 type CreateEventShiftUser = {
 	id: string;
@@ -47,13 +48,13 @@ export class CreateEventState {
 	json() {
 		return {
 			name: this.name,
-			date: this.date,
+			date: this.date ? toUtcISOStringFromLocal(this.date) : this.date,
 			slug: this.shouldBePublic ? this.slug : null,
 			description: this.shouldBePublic ? this.description || null : null,
 			shifts: this.shifts.map((shift) => {
 				return {
-					startAt: shift.startAt,
-					endAt: shift.endAt,
+					startAt: shift.startAt ? toUtcISOStringFromLocal(shift.startAt) : shift.startAt,
+					endAt: shift.endAt ? toUtcISOStringFromLocal(shift.endAt) : shift.endAt,
 					users: shift.users.map((user) => user.id).filter(Boolean)
 				};
 			})
