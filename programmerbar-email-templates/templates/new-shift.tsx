@@ -6,6 +6,8 @@ export const NewShiftEmailSchema = z.object({
 		id: z.string(), // Not used in the email, but can be useful for ICS generation
 		startAt: z.string(),
 		endAt: z.string(),
+		startAtFormatted: z.string(),
+		endAtFormatted: z.string(),
 		summary: z.string(),
 		description: z.string().optional()
 	}),
@@ -31,11 +33,11 @@ export function NewShiftEmail({ shift, user }: NewShiftEmailSchemaType) {
 						<Text className="mt-4">Du har blitt tildelt en vakt med følgende detaljer:</Text>
 
 						<Text className="mt-2">
-							<strong>Fra:</strong> {new Date(shift.startAt).toLocaleString("nb-NO")}
+							<strong>Fra:</strong> {shift.startAtFormatted}
 						</Text>
 
 						<Text className="mt-1">
-							<strong>Til:</strong> {new Date(shift.endAt).toLocaleString("nb-NO")}
+							<strong>Til:</strong> {shift.endAtFormatted}
 						</Text>
 
 						{shift.description && (

@@ -1,5 +1,6 @@
 import { CreateEventSchema } from '$lib/validators';
 import type { ShiftEmailProps } from '$lib/services/email.service';
+import { normalDate } from '$lib/date';
 import { z } from 'zod';
 import { command, getRequestEvent } from '$app/server';
 
@@ -91,6 +92,8 @@ async function sendShiftEmails(
 					id: shift.id,
 					startAt: new Date(shift.startAt).toISOString(),
 					endAt: new Date(shift.endAt).toISOString(),
+					startAtFormatted: normalDate(shift.startAt),
+					endAtFormatted: normalDate(shift.endAt),
 					summary: `Vakt: ${eventName}`,
 					description: `Du har fått en vakt på "${eventName}".`
 				}

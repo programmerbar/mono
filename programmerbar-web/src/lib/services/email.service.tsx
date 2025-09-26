@@ -32,6 +32,8 @@ export type ShiftEmailProps = {
 		id: string;
 		startAt: string;
 		endAt: string;
+		startAtFormatted: string;
+		endAtFormatted: string;
 		summary: string;
 		description?: string;
 	};
