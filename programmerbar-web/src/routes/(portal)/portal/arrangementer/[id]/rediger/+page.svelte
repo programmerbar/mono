@@ -7,7 +7,7 @@
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import { enhance } from '$app/forms';
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
-	import { ISOStandard } from '$lib/date';
+	import { toDateTimeLocalInput } from '$lib/date';
 	import { beforeNavigate } from '$app/navigation';
 	import { onMount } from 'svelte';
 
@@ -19,14 +19,14 @@
 
 	onMount(() => {
 		eventState.name = data.event.name;
-		eventState.date = ISOStandard(data.event.date);
+		eventState.date = toDateTimeLocalInput(data.event.date);
 		eventState.description = data.event.description || '';
 		eventState.shouldBePublic = !!(data.event.description || data.event.slug);
 
 		data.event.shifts.forEach((shift) => {
 			eventState.shifts.push({
-				startAt: ISOStandard(shift.startAt),
-				endAt: ISOStandard(shift.endAt),
+				startAt: toDateTimeLocalInput(shift.startAt),
+				endAt: toDateTimeLocalInput(shift.endAt),
 				users: shift.members.map((member) => ({
 					id: member.user.id,
 					name: member.user.name
