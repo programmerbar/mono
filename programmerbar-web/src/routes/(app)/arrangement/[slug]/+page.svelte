@@ -80,7 +80,7 @@
 
 					<div class="flex flex-col gap-4 border-t pt-6">
 						<ButtonLink
-							href="https://echo.uib.no/arrangement/{data.event.slug}"
+							href={`https://echo.uib.no/arrangement/${data.event.slug}`}
 							class="w-full gap-2"
 						>
 							{#if data.event.registrationStart}

@@ -2,6 +2,7 @@
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import ProductForm from '$lib/components/portal/cms/ProductForm.svelte';
 	import { ArrowLeft, Package } from '@lucide/svelte';
+	import { resolve } from '$app/paths';
 
 	let { data } = $props();
 </script>
@@ -10,7 +11,7 @@
 	<!-- Breadcrumb -->
 	<div class="flex items-center gap-2 text-sm">
 		<a
-			href="/portal/admin/cms/products"
+			href={resolve('/portal/admin/cms/products')}
 			class="flex items-center gap-1 text-blue-600 hover:text-blue-700"
 		>
 			<ArrowLeft class="h-4 w-4" />

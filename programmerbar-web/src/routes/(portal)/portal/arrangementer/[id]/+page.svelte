@@ -4,6 +4,7 @@
 	import { enhance } from '$app/forms';
 	import { getUser } from '$lib/context/user.context.js';
 	import { X, Plus, Calendar, Clock, Users, ArrowLeft } from '@lucide/svelte';
+	import { resolve } from '$app/paths';
 
 	let { data } = $props();
 	let user = getUser();
@@ -17,7 +18,7 @@
 
 <section>
 	<a
-		href="/portal/arrangementer/"
+		href={resolve('/portal/arrangementer')}
 		class="inline-flex items-center text-sm font-medium text-blue-500 hover:text-blue-600"
 	>
 		<ArrowLeft size={16} />

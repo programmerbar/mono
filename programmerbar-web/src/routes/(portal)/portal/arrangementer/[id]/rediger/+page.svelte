@@ -10,6 +10,7 @@
 	import { toDateTimeLocalInput } from '$lib/date';
 	import { beforeNavigate } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
 
 	let { data, form } = $props();
 
@@ -266,7 +267,7 @@
 
 			<div class="flex justify-end gap-4 border-t pt-6">
 				<div class="flex gap-2">
-					<a href="/portal/arrangementer/">
+					<a href={resolve('/portal/arrangementer')}>
 						<Button type="button" intent="warning">Avbryt</Button>
 					</a>
 					<Button type="submit" intent="primary" disabled={!eventState.isValid()}>

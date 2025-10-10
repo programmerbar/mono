@@ -16,9 +16,18 @@
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { getUser } from '$lib/context/user.context';
+	import { resolve } from '$app/paths';
 	import type { Notification as DbNotification } from '$lib/db/schemas';
 	import { cn } from '$lib/cn';
 	import { onNavigate } from '$app/navigation';
+	import type { RouteId } from '$app/types';
+
+	type NavRoute = {
+		name: string;
+		routeId: RouteId;
+		icon: typeof Home;
+		count?: number;
+	};
 
 	type Props = {
 		notifications: Array<DbNotification>;
@@ -36,77 +45,80 @@
 	const portalRoutes = [
 		{
 			name: 'Hjem',
-			href: '/portal',
+			routeId: '/(portal)/portal',
 			icon: Home
 		},
 		{
 			name: 'Arrangementer',
-			href: '/portal/arrangementer',
+			routeId: '/(portal)/portal/arrangementer',
 			icon: Calendar
 		},
 		{
 			name: 'Brukere',
-			href: '/portal/brukere',
+			routeId: '/(portal)/portal/brukere',
 			icon: Users
 		},
 		{
 			name: 'Cash Out',
-			href: '/portal/claim-beer',
+			routeId: '/(portal)/portal/claim-beer',
 			icon: Beer
 		},
 		{
 			name: 'Min Profil',
-			href: '/portal/profil',
+			routeId: '/(portal)/portal/profil',
 			icon: User
 		}
-	];
+	] satisfies Array<NavRoute>;
 
 	// Admin routes (only visible to board members)
 	const adminRoutes = $derived(
 		$user?.role === 'board'
-			? [
+			? ([
 					{
 						name: 'Status',
-						href: '/portal/status',
+						routeId: '/(portal)/portal/status',
 						icon: Settings
 					},
 					{
 						name: 'Admin Panel',
-						href: '/portal/admin',
+						routeId: '/(portal)/portal/admin',
 						icon: Shield
 					},
 					{
 						name: 'Søknader',
-						href: '/portal/admin/soknader',
+						routeId: '/(portal)/portal/admin/soknader',
 						icon: UserCheck,
 						count: pendingApplicationsCount
 					}
-				]
+				] satisfies Array<NavRoute>)
 			: []
 	);
 
 	// CMS routes (only visible to board members)
 	const cmsRoutes = $derived(
 		$user?.role === 'board'
-			? [
+			? ([
 					{
 						name: 'Produsenter',
-						href: '/portal/admin/cms/producers',
+						routeId: '/(portal)/portal/admin/cms/producers',
 						icon: Database
 					},
 					{
 						name: 'Produkttyper',
-						href: '/portal/admin/cms/product-types',
+						routeId: '/(portal)/portal/admin/cms/product-types',
 						icon: Database
 					},
 					{
 						name: 'Produkter',
-						href: '/portal/admin/cms/products',
+						routeId: '/(portal)/portal/admin/cms/products',
 						icon: Database
 					}
-				]
+				] satisfies Array<NavRoute>)
 			: []
 	);
+
+	const notificationsRoute = '/(portal)/portal/notifikasjoner';
+	const notificationsHref = resolve(notificationsRoute);
 
 	const handleResize = () => {
 		if (typeof window === 'undefined') return;
@@ -227,11 +239,12 @@
 					Portal
 				</h2>
 				<ul class="space-y-1">
-					{#each portalRoutes as route (route.href)}
-						{@const isActive = page.url.pathname === route.href}
+					{#each portalRoutes as route (route.routeId)}
+						{@const href = resolve(route.routeId)}
+						{@const isActive = page.url.pathname === href}
 						<li>
 							<a
-								href={route.href}
+								{href}
 								class={cn(
 									'flex items-center rounded-lg py-2 text-sm font-medium transition-colors',
 									{
@@ -268,11 +281,12 @@
 						Administrator
 					</h2>
 					<ul class="space-y-1">
-						{#each adminRoutes as route (route.href)}
-							{@const isActive = page.url.pathname === route.href}
+						{#each adminRoutes as route (route.routeId)}
+							{@const href = resolve(route.routeId)}
+							{@const isActive = page.url.pathname === href}
 							<li>
 								<a
-									href={route.href}
+									{href}
 									class={cn(
 										'relative flex items-center rounded-lg py-2 text-sm font-medium transition-colors',
 										{
@@ -323,11 +337,12 @@
 						CMS
 					</h2>
 					<ul class="space-y-1">
-						{#each cmsRoutes as route (route.href)}
-							{@const isActive = page.url.pathname === route.href}
+						{#each cmsRoutes as route (route.routeId)}
+							{@const href = resolve(route.routeId)}
+							{@const isActive = page.url.pathname === href}
 							<li>
 								<a
-									href={route.href}
+									{href}
 									class={cn(
 										'flex items-center rounded-lg py-2 text-sm font-medium transition-colors',
 										{
@@ -358,15 +373,15 @@
 				<ul class="space-y-1">
 					<li>
 						<a
-							href="/portal/notifikasjoner"
+							href={notificationsHref}
 							class={cn(
 								'relative flex items-center rounded-lg py-2 text-sm font-medium transition-colors',
 								{
 									'justify-center gap-0 px-1': !showFullLayout,
 									'justify-start gap-3 px-3': showFullLayout,
-									'bg-gray-100 text-gray-900': page.url.pathname === '/portal/notifikasjoner',
+									'bg-gray-100 text-gray-900': page.url.pathname === notificationsHref,
 									'text-gray-600 hover:bg-gray-50 hover:text-gray-900':
-										page.url.pathname !== '/portal/notifikasjoner'
+										page.url.pathname !== notificationsHref
 								}
 							)}
 							title="Notifikasjoner"
@@ -429,7 +444,7 @@
 			</div>
 
 			<a
-				href="/"
+				href={resolve('/')}
 				class={cn(
 					'flex w-full items-center rounded-lg py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900',
 					{

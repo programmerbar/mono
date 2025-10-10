@@ -7,6 +7,7 @@
 	import { initials } from '$lib/utils';
 	import { enhance } from '$app/forms';
 	import { ArrowLeft, UserCog } from '@lucide/svelte';
+	import { resolve } from '$app/paths';
 	import type { User } from '$lib/db/schemas';
 	import type { SubmitFunction } from './$types.js';
 
@@ -40,7 +41,11 @@
 <div class="space-y-6">
 	<!-- Header with back button -->
 	<div class="flex items-center gap-4">
-		<ButtonLink href="/portal/admin/bruker/{user.id}" intent="outline" size="square">
+		<ButtonLink
+			href={resolve('/(portal)/portal/admin/bruker/[id]', { id: user.id })}
+			intent="outline"
+			size="square"
+		>
 			<ArrowLeft class="h-5 w-5" />
 		</ButtonLink>
 		<div>
@@ -173,7 +178,7 @@
 			<div class="flex flex-col gap-2 sm:flex-row sm:justify-end">
 				<ButtonLink
 					intent="outline"
-					href="/portal/admin/bruker/{user.id}"
+					href={resolve('/(portal)/portal/admin/bruker/[id]', { id: user.id })}
 					class="w-full sm:order-1 sm:w-auto"
 				>
 					Avbryt

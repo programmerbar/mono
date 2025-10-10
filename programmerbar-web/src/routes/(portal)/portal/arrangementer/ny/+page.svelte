@@ -9,6 +9,7 @@
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
 	import { differenceInHours } from 'date-fns';
 	import { createEvent } from '$lib/remotes/events.remote.js';
+	import { resolve } from '$app/paths';
 
 	let { data } = $props();
 	let error = $state('');
@@ -216,7 +217,7 @@
 			</div>
 
 			<div class="flex justify-end gap-4 border-t pt-6">
-				<a href="/portal/arrangementer/">
+				<a href={resolve('/portal/arrangementer')}>
 					<Button type="button" intent="warning">Avbryt</Button>
 				</a>
 				<Button

@@ -9,6 +9,7 @@
 	import { Menu, X } from '@lucide/svelte';
 	import MenuSignOut from './MenuSignOut.svelte';
 	import { getUser } from '$lib/context/user.context';
+	import { resolve } from '$app/paths';
 
 	let isOpen = $state(false);
 	let user = getUser();
@@ -46,19 +47,19 @@
 	<ProgressBar />
 
 	<header class="mx-auto flex w-full max-w-screen-lg justify-between px-4 py-8">
-		<a href="/">
+		<a href={resolve('/')}>
 			<img src={logo} class="h-20 w-20" alt="ProgrammerBar Logo" />
 		</a>
 
 		<ul class="hidden items-center gap-4 md:flex">
-			<HeaderItem to="/" name="/hjem" />
-			<HeaderItem to="/meny" name="/meny" />
+			<HeaderItem to={resolve('/')} name="/hjem" />
+			<HeaderItem to={resolve('/meny')} name="/meny" />
 			<HeaderItem to="https://forms.gle/BLdygdoRJgjMbQZj6" name="/booking" />
-			<HeaderItem to="/om-oss" name="/om_oss" />
+			<HeaderItem to={resolve('/om-oss')} name="/om_oss" />
 			{#if !!$user}
 				<HeaderSignOut />
 			{:else}
-				<HeaderItem to="/bli-frivillig" name="/bli_frivillig" />
+				<HeaderItem to={resolve('/bli-frivillig')} name="/bli_frivillig" />
 			{/if}
 		</ul>
 
@@ -73,14 +74,14 @@
 
 	{#if isOpen}
 		<ul class="flex flex-col items-center">
-			<MenuItem to="/" name="/hjem" />
-			<MenuItem to="/meny" name="/meny" />
+			<MenuItem to={resolve('/')} name="/hjem" />
+			<MenuItem to={resolve('/meny')} name="/meny" />
 			<MenuItem to="https://forms.gle/BLdygdoRJgjMbQZj6" name="/booking" />
-			<MenuItem to="/om-oss" name="/om_oss" />
+			<MenuItem to={resolve('/om-oss')} name="/om_oss" />
 			{#if !!$user}
 				<MenuSignOut />
 			{:else}
-				<MenuItem to="/bli-frivillig" name="/bli_frivillig" />
+				<MenuItem to={resolve('/bli-frivillig')} name="/bli_frivillig" />
 			{/if}
 		</ul>
 	{/if}

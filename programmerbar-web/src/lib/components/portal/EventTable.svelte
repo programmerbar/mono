@@ -5,6 +5,7 @@
 	import Button from '../ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import type { Event, Shift } from '$lib/db/schemas';
+	import { resolve } from '$app/paths';
 
 	type EventWithShifts = Event & {
 		shifts: Array<Shift>;
@@ -125,7 +126,10 @@
 
 	<div class="flex {isMobile ? 'flex-col' : 'flex-row items-center'} gap-1 p-2">
 		{#if $user?.role === 'board'}
-			<a href="arrangementer/ny" class={isMobile ? 'order-first w-full' : 'order-last'}>
+			<a
+				href={resolve('/portal/arrangementer/ny')}
+				class={isMobile ? 'order-first w-full' : 'order-last'}
+			>
 				<Button type="button" intent="primary" class={isMobile ? 'w-full' : ''}>
 					Nytt arrangement
 				</Button>
@@ -180,7 +184,7 @@
 						<tr class="hover:bg-gray-50">
 							<td class="overflow-hidden p-4 overflow-ellipsis">
 								<a
-									href="arrangementer/{event.id}"
+									href={resolve('/(portal)/portal/arrangementer/[id]', { id: event.id })}
 									class="text-blue-600 hover:text-blue-800 hover:underline"
 								>
 									{event.name}
@@ -204,7 +208,9 @@
 									<td class="p-4">
 										{#if $user?.role === 'board'}
 											<a
-												href="arrangementer/{event.id}/rediger"
+												href={resolve('/(portal)/portal/arrangementer/[id]/rediger', {
+													id: event.id
+												})}
 												class="relative z-10 inline-flex text-gray-400 opacity-70 transition-all duration-200 ease-in-out hover:text-blue-500 hover:opacity-100"
 												aria-label="Rediger arrangement"
 											>

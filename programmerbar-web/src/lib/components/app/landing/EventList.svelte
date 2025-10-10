@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Happening } from '$lib/api/sanity/events';
 	import { formatDate } from '$lib/date';
+	import { resolve } from '$app/paths';
 
 	type Props = {
 		events: Array<Happening>;
@@ -15,7 +16,7 @@
 	<ul class="flex flex-col gap-3 overflow-hidden">
 		{#each events as { title, date, slug } (slug)}
 			<li class="group">
-				<a href={`/arrangement/${slug}`} class="block">
+				<a href={resolve('/(app)/arrangement/[slug]', { slug })} class="block">
 					<div
 						class="relative overflow-hidden rounded-xl border border-gray-200 bg-gray-50 p-4 transition-all duration-300"
 					>

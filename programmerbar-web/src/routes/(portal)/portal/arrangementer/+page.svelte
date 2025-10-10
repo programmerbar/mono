@@ -6,6 +6,7 @@
 	import { formatDate } from '$lib/date';
 	import { SquarePen, Calendar, Users } from '@lucide/svelte';
 	import { getUser } from '$lib/context/user.context';
+	import { resolve } from '$app/paths';
 	import type { Event, Shift } from '$lib/db/schemas';
 
 	type EventWithShifts = Event & {
@@ -79,7 +80,7 @@
 	<div class="flex items-center justify-between">
 		<Heading>Arrangementer</Heading>
 		{#if $user?.role === 'board'}
-			<a href="arrangementer/ny">
+			<a href={resolve('/portal/arrangementer/ny')}>
 				<Button intent="primary">Nytt arrangement</Button>
 			</a>
 		{/if}
@@ -141,7 +142,7 @@
 							<div class="min-w-0 flex-1">
 								<div class="mb-2 flex items-center gap-3">
 									<a
-										href="arrangementer/{event.id}"
+										href={resolve('/(portal)/portal/arrangementer/[id]', { id: event.id })}
 										class="text-lg font-medium text-gray-900 transition-colors hover:text-blue-600"
 									>
 										{event.name}
@@ -165,7 +166,7 @@
 
 							{#if $user?.role === 'board'}
 								<a
-									href="arrangementer/{event.id}/rediger"
+									href={resolve('/(portal)/portal/arrangementer/[id]/rediger', { id: event.id })}
 									class="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-600"
 									aria-label="Rediger arrangement"
 								>

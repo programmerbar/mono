@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { GetProductsQueryResult } from '../../../../../sanity.types';
+	import { resolve } from '$app/paths';
 
 	type Props = {
 		products: GetProductsQueryResult;
@@ -26,13 +27,13 @@
 
 <div class="bg-background rounded-2xl border-2 p-6 shadow-lg">
 	<h2 class="mb-6 text-center font-mono text-3xl font-medium md:text-4xl">
-		<a href="/meny" class="hover:underline">Meny</a>
+		<a href={resolve('/meny')} class="hover:underline">Meny</a>
 	</h2>
 
 	<ul class="flex flex-col gap-3 overflow-hidden">
 		{#each products.slice(start, end) as { _id, name, producer, priceList } (_id)}
 			<li class="group">
-				<a href="/produkt/{_id}" class="block">
+				<a href={resolve('/(app)/produkt/[id]', { id: _id })} class="block">
 					<div
 						class="relative overflow-hidden rounded-xl border border-gray-200 bg-gray-50 p-4 transition-all duration-300"
 					>

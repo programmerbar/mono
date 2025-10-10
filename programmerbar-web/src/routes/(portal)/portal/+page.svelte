@@ -5,6 +5,7 @@
 	import Pill from '$lib/components/ui/Pill.svelte';
 	import { formatDate } from '$lib/date';
 	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
 	import {
 		CheckCircle,
 		Beer,
@@ -142,8 +143,11 @@
 
 		<div class="divide-y">
 			{#each data.upcomingShifts as shift (shift.shift.id)}
+				<!-- eslint-disable svelte/no-navigation-without-resolve -->
 				<a
-					href="/portal/arrangementer/{shift.event?.id}"
+					href={shift.event?.id
+						? resolve('/(portal)/portal/arrangementer/[id]', { id: shift.event.id })
+						: resolve('/portal/arrangementer')}
 					class="block p-4 transition-colors hover:bg-gray-50"
 				>
 					<div class="flex items-center justify-between">
@@ -169,7 +173,9 @@
 					<p class="text-lg font-medium text-gray-500">Ingen kommende vakter</p>
 					<p class="text-sm text-gray-400 mt-1">
 						Du har ingen vakter å jobbe. Sjekk
-						<a href="/portal/arrangementer" class="text-blue-600 hover:underline">arrangementer</a>
+						<a href={resolve('/portal/arrangementer')} class="text-blue-600 hover:underline"
+							>arrangementer</a
+						>
 						for å melde deg på nye vakter.
 					</p>
 				</div>

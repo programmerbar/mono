@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { urlFor } from '$lib/api/sanity/image';
 	import { Heart } from '@lucide/svelte';
+	import { resolve } from '$app/paths';
 	import type { filterProducts } from '$lib/filter-products';
 	import type { FilterState } from '$lib/states/filter-state.svelte';
 	import { WishlistState } from '$lib/states/wishlist-state.svelte';
@@ -67,7 +68,7 @@
 		{/if}
 		{#if product.image}
 			{#if !disableLink}
-				<a href="/produkt/{product._id}" class="block">
+				<a href={resolve('/(app)/produkt/[id]', { id: product._id })} class="block">
 					<img
 						src={urlFor(product.image).width(500).url()}
 						alt={product.name}
@@ -126,7 +127,10 @@
 				</div>
 			</div>
 		{:else}
-			<a class="group-content flex flex-1 flex-col" href="/produkt/{product._id}">
+			<a
+				class="group-content flex flex-1 flex-col"
+				href={resolve('/(app)/produkt/[id]', { id: product._id })}
+			>
 				<h2
 					class="group-hover:text-primary mb-1 text-lg leading-tight font-semibold transition-colors"
 				>

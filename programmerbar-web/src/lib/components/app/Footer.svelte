@@ -1,6 +1,7 @@
 <script lang="ts">
 	import lervigLogo from '$lib/assets/lervig-logo-black.png';
 	import { getUser } from '$lib/context/user.context';
+	import { resolve } from '$app/paths';
 
 	let user = getUser();
 </script>
@@ -64,21 +65,21 @@
 					>
 				</li>
 				<li>
-					<a class="hover:underline" href="/beer-pong">Beer Pong</a>
+					<a class="hover:underline" href={resolve('/beer-pong')}>Beer Pong</a>
 				</li>
 				{#if $user}
 					<li>
-						<a class="hover:underline" href="/portal">Portal</a>
+						<a class="hover:underline" href={resolve('/portal')}>Portal</a>
 					</li>
 				{/if}
 				{#if $user}
 					<li>
-						<a class="hover:underline" href="/emeritus">Emeritus</a>
+						<a class="hover:underline" href={resolve('/emeritus')}>Emeritus</a>
 					</li>
 				{/if}
 				{#if !$user}
 					<li>
-						<a class="hover:underline" href="/logg-inn">Logg inn</a>
+						<a class="hover:underline" href={resolve('/logg-inn')}>Logg inn</a>
 					</li>
 				{/if}
 			</ul>

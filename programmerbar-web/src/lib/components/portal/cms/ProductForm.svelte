@@ -9,6 +9,7 @@
 	import { Package, Calculator, Tag, Droplets, AlertTriangle } from '@lucide/svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { SvelteSet } from 'svelte/reactivity';
+	import { resolve } from '$app/paths';
 	import type { ProductUpdate } from '$lib/db/schemas';
 
 	interface Producer {
@@ -214,7 +215,7 @@
 							/>
 							{#if producerOptions.length === 0}
 								<p class="mt-1 text-sm text-amber-600">
-									<a href="/portal/admin/cms/producers/new" class="underline">
+									<a href={resolve('/portal/admin/cms/producers/new')} class="underline">
 										Legg til produsent først
 									</a>
 								</p>
@@ -404,7 +405,7 @@
 						{/each}
 						{#if productTypeOptions.length === 0}
 							<p class="mt-1 text-sm text-amber-600">
-								<a href="/portal/admin/cms/product-types/new" class="underline">
+								<a href={resolve('/portal/admin/cms/product-types/new')} class="underline">
 									Legg til produkttyper først
 								</a>
 							</p>

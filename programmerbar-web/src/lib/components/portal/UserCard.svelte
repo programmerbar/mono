@@ -51,6 +51,7 @@
 			{/if}
 		</p>
 		<p class="mt-1 text-center text-sm">
+			<!-- eslint-disable svelte/no-navigation-without-resolve -->
 			<a
 				class="block max-w-full truncate hover:underline"
 				href={mailto(user.altEmail || user.email)}

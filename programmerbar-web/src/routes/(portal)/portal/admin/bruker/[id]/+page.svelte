@@ -6,6 +6,7 @@
 	import type { User } from '$lib/db/schemas';
 	import { initials, mailto } from '$lib/utils';
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { enhance } from '$app/forms';
 	import { ArrowLeft, UserCog, Edit3 } from '@lucide/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
@@ -75,7 +76,7 @@
 				</div>
 			</div>
 			<ButtonLink
-				href="/portal/admin/bruker/{user.id}/rediger"
+				href={`/portal/admin/bruker/${user.id}/rediger`}
 				intent="primary"
 				class="flex items-center gap-2"
 			>
@@ -194,6 +195,7 @@
 					<h3 class="text-lg font-semibold text-gray-900">Handlinger</h3>
 				</div>
 				<div class="flex flex-col gap-2 p-6">
+					<!-- eslint-disable svelte/no-navigation-without-resolve -->
 					<a
 						class="w-full rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50"
 						href={mailto(data.user.altEmail || data.user.email)}
@@ -308,7 +310,7 @@
 							deleteConfirmName = '';
 							showToast((result.data as { message: string }).message);
 							setTimeout(() => {
-								goto('/portal/admin');
+								goto(resolve('/portal/admin'));
 							}, 2000);
 						} else {
 							console.error('Failed to delete user');

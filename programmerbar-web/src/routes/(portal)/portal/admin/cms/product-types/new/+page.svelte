@@ -2,13 +2,14 @@
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import ProductTypeForm from '$lib/components/portal/cms/ProductTypeForm.svelte';
 	import { ArrowLeft, Hash } from '@lucide/svelte';
+	import { resolve } from '$app/paths';
 </script>
 
 <div class="space-y-6">
 	<!-- Breadcrumb -->
 	<div class="flex items-center gap-2 text-sm">
 		<a
-			href="/portal/admin/cms/product-types"
+			href={resolve('/portal/admin/cms/product-types')}
 			class="flex items-center gap-1 text-blue-600 hover:text-blue-700"
 		>
 			<ArrowLeft class="h-4 w-4" />

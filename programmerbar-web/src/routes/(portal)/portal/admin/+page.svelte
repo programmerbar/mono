@@ -6,6 +6,7 @@
 	import type { User } from '$lib/db/schemas';
 	import { initials } from '$lib/utils.js';
 	import { Users, Search, ChevronUp, ChevronDown, Eye, UserCog } from '@lucide/svelte';
+	import { resolve } from '$app/paths';
 
 	let { data } = $props();
 	let search = $state('');
@@ -110,7 +111,7 @@
 							{user.role === 'board' ? 'Styret' : 'Frivillig'}
 						</Pill>
 						<a
-							href="./admin/bruker/{user.id}"
+							href={resolve('/(portal)/portal/admin/bruker/[id]', { id: user.id })}
 							class="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-900"
 						>
 							<Eye class="h-3 w-3" />
@@ -210,7 +211,7 @@
 							</td>
 							<td class="px-6 py-4 text-right text-sm whitespace-nowrap">
 								<a
-									href="./admin/bruker/{user.id}"
+									href={resolve('/(portal)/portal/admin/bruker/[id]', { id: user.id })}
 									class="inline-flex items-center gap-2 font-medium text-blue-600 transition-colors hover:text-blue-900"
 								>
 									<Eye class="h-4 w-4" />

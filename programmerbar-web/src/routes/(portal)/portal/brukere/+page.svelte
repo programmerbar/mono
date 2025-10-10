@@ -68,6 +68,7 @@
 
 					<p class="text-sm">
 						<span class="font-medium">E-post:</span>
+						<!-- eslint-disable svelte/no-navigation-without-resolve -->
 						<a class="hover:underline" href={mailto(invitation.email)}>{invitation.email}</a>
 					</p>
 					<p class="text-sm">

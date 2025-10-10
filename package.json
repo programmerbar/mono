@@ -8,6 +8,7 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "check": "turbo run check",
+    "typecheck": "turbo run check",
     "format": "turbo run format",
     "format:check": "turbo run format:check",
     "db:generate": "turbo run db:generate",
@@ -18,5 +19,8 @@
   },
   "dependencies": {
     "turbo": "2.5.8"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
   }
 }

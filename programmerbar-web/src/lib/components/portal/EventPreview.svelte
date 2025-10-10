@@ -3,6 +3,7 @@
 	import { capitalize } from '$lib/utils';
 	import type { Event } from '$lib/db/schemas';
 	import { ArrowRight } from '@lucide/svelte';
+	import { resolve } from '$app/paths';
 
 	type Props = {
 		event: Event;
@@ -11,7 +12,7 @@
 	let { event }: Props = $props();
 </script>
 
-<a class="group" href="/portal/arrangementer/{event.id}">
+<a class="group" href={resolve('/(portal)/portal/arrangementer/[id]', { id: event.id })}>
 	<div class="flex items-center justify-between rounded-lg border bg-white p-4">
 		<div>
 			<h2 class="text-2xl font-medium group-hover:underline">{event.name}</h2>

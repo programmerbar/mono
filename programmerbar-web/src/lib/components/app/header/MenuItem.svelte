@@ -1,6 +1,8 @@
 <script lang="ts">
+	import type { ResolvedPathname } from '$app/types';
+
 	type Props = {
-		to: string;
+		to: ResolvedPathname | string;
 		name: string;
 	};
 
@@ -8,6 +10,8 @@
 </script>
 
 <li class="flex w-full text-left font-mono hover:bg-gray-100">
-	<a class="w-full px-4 py-2 text-3xl font-medium text-gray-700 hover:underline" href={to}>{name}</a
-	>
+	<!-- eslint-disable svelte/no-navigation-without-resolve -->
+	<a class="w-full px-4 py-2 text-3xl font-medium text-gray-700 hover:underline" href={to}>
+		{name}
+	</a>
 </li>

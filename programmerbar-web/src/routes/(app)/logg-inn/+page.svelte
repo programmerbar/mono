@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/components/SEO.svelte';
+	import { resolve } from '$app/paths';
 </script>
 
 <SEO title="Logg inn" description="Logg inn for å få tilgang til alle funksjoner" />
@@ -12,7 +13,7 @@
 	<div class="flex flex-col gap-2 p-4">
 		<a
 			class="rounded-lg border p-1 text-center font-medium transition-all hover:border-gray-300 hover:bg-gray-200"
-			href="/auth/feide">Fortsett med Feide</a
+			href={resolve('/auth/feide')}>Fortsett med Feide</a
 		>
 	</div>
 </div>

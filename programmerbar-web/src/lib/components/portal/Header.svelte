@@ -2,8 +2,10 @@
 	import logo from '$lib/assets/programmerbar-modern.svg';
 	import { Bell, Menu, X } from '@lucide/svelte';
 	import { getUser } from '$lib/context/user.context';
+	import { resolve } from '$app/paths';
 	import { onNavigate } from '$app/navigation';
 	import type { Notification as DbNotification } from '$lib/db/schemas';
+	import type { RouteId } from '$app/types';
 
 	type Props = {
 		notifications: Array<DbNotification>;
@@ -14,37 +16,43 @@
 	let user = getUser();
 	let isOpen = $state(false);
 
+	type RouteLink = {
+		name: string;
+		routeId: RouteId;
+		visible?: boolean;
+	};
+
 	const routes = $derived([
 		{
 			name: 'Hjem',
-			href: '/portal'
+			routeId: '/(portal)/portal'
 		},
 		{
 			name: 'Status',
-			href: '/portal/status'
+			routeId: '/(portal)/portal/status'
 		},
 		{
 			name: 'Cash Out',
-			href: '/portal/claim-beer'
+			routeId: '/(portal)/portal/claim-beer'
 		},
 		{
 			name: 'Arrangement',
-			href: '/portal/arrangementer'
+			routeId: '/(portal)/portal/arrangementer'
 		},
 		{
 			name: 'Brukere',
-			href: '/portal/brukere'
+			routeId: '/(portal)/portal/brukere'
 		},
 		{
 			name: 'Min Profil',
-			href: '/portal/profil'
+			routeId: '/(portal)/portal/profil'
 		},
 		{
 			name: 'Admin',
-			href: '/portal/admin',
+			routeId: '/(portal)/portal/admin',
 			visible: $user?.role === 'board'
 		}
-	]);
+	] satisfies Array<RouteLink>);
 
 	onNavigate(() => {
 		isOpen = false;
@@ -72,15 +80,18 @@
 <svelte:window onresize={handleResize} />
 <div class="bg-background sticky top-0 z-10 px-4">
 	<header class="flex items-center justify-between">
-		<a href="/" class="mr-10">
+		<a href={resolve('/')} class="mr-10">
 			<img src={logo} alt="Logo" class="h-12 w-12" />
 		</a>
 		<nav class="flex items-center">
 			<ul class="hidden items-center gap-2 md:flex">
-				{#each routes as route (route.href)}
+				{#each routes as route (route.routeId)}
 					{#if route.visible !== false}
 						<li>
-							<a class="px-1 text-gray-500 transition hover:text-gray-900" href={route.href}>
+							<a
+								class="px-1 text-gray-500 transition hover:text-gray-900"
+								href={resolve(route.routeId)}
+							>
 								{route.name}
 							</a>
 						</li>
@@ -89,7 +100,7 @@
 				<li>
 					<a
 						class="relative px-1 text-gray-500 transition hover:text-gray-900"
-						href="/portal/notifikasjoner"
+						href={resolve('/(portal)/portal/notifikasjoner')}
 					>
 						<Bell class="size-5" />
 						{#if notifications.length > 0}
@@ -104,7 +115,7 @@
 			</ul>
 			<a
 				class="relative mr-4 block px-1 text-gray-500 transition hover:text-gray-900 md:hidden"
-				href="/portal/notifikasjoner"
+				href={resolve('/(portal)/portal/notifikasjoner')}
 			>
 				<Bell class="size-5" />
 				{#if notifications.length > 0}
@@ -126,10 +137,13 @@
 	</header>
 	{#if isOpen}
 		<ul class="mt-4 flex flex-col gap-2">
-			{#each routes as route (route.href)}
+			{#each routes as route (route.routeId)}
 				{#if route.visible !== false}
 					<li>
-						<a class="px-1 text-gray-500 transition hover:text-gray-900" href={route.href}>
+						<a
+							class="px-1 text-gray-500 transition hover:text-gray-900"
+							href={resolve(route.routeId)}
+						>
 							{route.name}
 						</a>
 					</li>
