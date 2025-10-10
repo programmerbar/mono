@@ -6,7 +6,6 @@ dist
 .turbo
 .wrangler
 .idea
-
-# Rust
+.pnpm-store
 /target
 apps/*/target/
