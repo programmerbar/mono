@@ -53,14 +53,13 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 		}
 	});
 
-	const headerRow = ['Dato', 'Bruker', 'E-post', 'Produkt-ID', 'Credits'];
+	const headerRow = ['Dato', 'Bruker', 'Produkt-ID', 'Credits'];
 	const csvRows = [headerRow.map(escapeCsvField)];
 
 	for (const entry of entries) {
 		csvRows.push([
 			escapeCsvField(formatter.format(new Date(entry.createdAt))),
 			escapeCsvField(entry.user?.name ?? 'Ukjent bruker'),
-			escapeCsvField(entry.user?.altEmail ?? entry.user?.email ?? 'Ukjent'),
 			escapeCsvField(entry.productId),
 			escapeCsvField(entry.creditCost)
 		]);

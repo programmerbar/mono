@@ -112,7 +112,7 @@
 						type="datetime-local"
 						name="startDate"
 						value={data.filters?.startDate ?? ''}
-						class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+						class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
 					/>
 				</div>
 				<div class="flex flex-col gap-2">
@@ -122,7 +122,7 @@
 						type="datetime-local"
 						name="endDate"
 						value={data.filters?.endDate ?? ''}
-						class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+						class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
 					/>
 				</div>
 				<input type="hidden" name="page" value="1" />
@@ -152,10 +152,9 @@
 			<div class="overflow-x-auto">
 				<table class="w-full min-w-[720px] divide-y divide-gray-200">
 					<thead class="bg-gray-50">
-						<tr class="text-xs font-semibold uppercase tracking-wide text-gray-500">
+						<tr class="text-xs font-semibold tracking-wide text-gray-500 uppercase">
 							<th class="px-6 py-3 text-left">Dato</th>
 							<th class="px-6 py-3 text-left">Bruker</th>
-							<th class="px-6 py-3 text-left">E-post</th>
 							<th class="px-6 py-3 text-left">Produkt-ID</th>
 							<th class="px-6 py-3 text-right">Credits</th>
 						</tr>
@@ -163,19 +162,16 @@
 					<tbody class="divide-y divide-gray-200 text-sm text-gray-700">
 						{#each data.claimedCredits as entry (entry.id)}
 							<tr class="transition-colors hover:bg-gray-50">
-								<td class="whitespace-nowrap px-6 py-4">
+								<td class="px-6 py-4 whitespace-nowrap">
 									{formatTimestamp(entry.createdAt)}
 								</td>
-								<td class="whitespace-nowrap px-6 py-4">
+								<td class="px-6 py-4 whitespace-nowrap">
 									{entry.user?.name ?? 'Ukjent bruker'}
 								</td>
-								<td class="whitespace-nowrap px-6 py-4 text-gray-500">
-									{entry.user?.altEmail ?? entry.user?.email ?? 'Ukjent'}
-								</td>
-								<td class="whitespace-nowrap px-6 py-4 font-mono text-xs text-gray-500">
+								<td class="px-6 py-4 font-mono text-xs whitespace-nowrap text-gray-500">
 									{entry.productId}
 								</td>
-								<td class="whitespace-nowrap px-6 py-4 text-right text-gray-900">
+								<td class="px-6 py-4 text-right whitespace-nowrap text-gray-900">
 									{entry.creditCost}
 								</td>
 							</tr>

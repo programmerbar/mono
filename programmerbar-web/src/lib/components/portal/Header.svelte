@@ -101,7 +101,7 @@
 						<Bell class="size-5" />
 						{#if notifications.length > 0}
 							<span
-								class="absolute left-4 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white"
+								class="absolute top-2 left-4 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white"
 							>
 								{notifications.length}
 							</span>
@@ -116,7 +116,7 @@
 				<Bell class="size-5" />
 				{#if notifications.length > 0}
 					<span
-						class="absolute left-4 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white"
+						class="absolute top-2 left-4 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white"
 					>
 						{notifications.length}
 					</span>
