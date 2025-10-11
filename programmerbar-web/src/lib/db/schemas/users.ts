@@ -5,6 +5,7 @@ import { shifts } from './shifts';
 import { usersGroups } from './users-groups';
 import { notifications } from './notifications';
 import { referrals } from './referrals';
+import { claimedCredits } from './claimed-credit';
 
 export const users = sqliteTable(
 	'user',
@@ -32,7 +33,8 @@ export const usersRelations = relations(users, ({ many }) => ({
 	memberships: many(usersGroups),
 	notifications: many(notifications),
 	referralsGiven: many(referrals, { relationName: 'referrer' }),
-	referralsReceived: many(referrals, { relationName: 'referred' })
+	referralsReceived: many(referrals, { relationName: 'referred' }),
+	claimedCredits: many(claimedCredits)
 }));
 
 export type User = InferSelectModel<typeof users>;

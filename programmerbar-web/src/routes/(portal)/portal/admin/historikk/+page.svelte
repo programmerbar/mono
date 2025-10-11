@@ -4,6 +4,7 @@
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import { ArrowLeft, ChevronLeft, ChevronRight } from '@lucide/svelte';
 	import type { PageData } from './$types';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	const formatter = new Intl.DateTimeFormat('no-NO', {
 		dateStyle: 'short',
@@ -18,7 +19,7 @@
 	}
 
 	function buildQuery(params: Record<string, string | number | null | undefined>) {
-		const search = new URLSearchParams();
+		const search = new SvelteURLSearchParams();
 
 		if (data.filters?.startDate) {
 			search.set('startDate', data.filters.startDate);
@@ -38,7 +39,7 @@
 	}
 
 	function buildDownloadUrl() {
-		const search = new URLSearchParams();
+		const search = new SvelteURLSearchParams();
 
 		if (data.filters?.startDate) {
 			search.set('startDate', data.filters.startDate);

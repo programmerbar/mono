@@ -1,6 +1,6 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { users } from './users';
-import type { InferSelectModel, InferInsertModel } from 'drizzle-orm';
+import { type InferSelectModel, type InferInsertModel, relations } from 'drizzle-orm';
 
 export const claimedCredits = sqliteTable('claimed_credits', {
 	id: text().primaryKey(),
@@ -13,6 +13,13 @@ export const claimedCredits = sqliteTable('claimed_credits', {
 		.notNull()
 		.$defaultFn(() => new Date())
 });
+
+export const claimedCreditsRelations = relations(claimedCredits, ({ one }) => ({
+	user: one(users, {
+		fields: [claimedCredits.userId],
+		references: [users.id]
+	})
+}));
 
 export type ClaimedCredit = InferSelectModel<typeof claimedCredits>;
 export type ClaimedCreditInsert = InferInsertModel<typeof claimedCredits>;

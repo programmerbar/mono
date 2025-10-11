@@ -1,16 +1,25 @@
 <script lang="ts">
-	import { urlFor } from '$lib/api/sanity/image';
-	import { marked } from 'marked';
+	import { enhance } from '$app/forms';
 	import { page } from '$app/state';
-	import ProductDetailsCard from '$lib/components/app/product/ProductDetailsCard.svelte';
-	import { Image } from '@lucide/svelte';
+	import { urlFor } from '$lib/api/sanity/image';
 	import { cn } from '$lib/cn';
+	import ProductDetailsCard from '$lib/components/app/product/ProductDetailsCard.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
 	import SEO from '$lib/components/SEO.svelte';
+	import { Image } from '@lucide/svelte';
+	import { marked } from 'marked';
+	import { toast } from 'svelte-sonner';
+	import { onDestroy } from 'svelte';
+	import ClaimConfirmationModal from './_components/ClaimConfirmationModal.svelte';
+	import ClaimVerificationScreen from './_components/ClaimVerificationScreen.svelte';
 
 	let { data } = $props();
 
 	const html = marked(data.product.description ?? '');
 	const isAuthenticated = $derived(page.data.user);
+	const canClaimProduct = $derived.by(
+		() => isAuthenticated && data.product.priceList.credits && data.product.priceList.credits > 0
+	);
 
 	const variants = data.product.variants?.map((variant) => variant) ?? [];
 
@@ -36,6 +45,21 @@
 			: [])
 	];
 
+	type ClaimFeedback = {
+		type: 'success' | 'error';
+		message: string;
+	};
+
+	const creditCost = data.product.priceList.credits ?? 0;
+
+	let claimLoading = $state(false);
+	let claimFeedback = $state<ClaimFeedback | null>(null);
+	let showConfirmation = $state(false);
+	let showVerification = $state(false);
+	let timerSeconds = $state(30);
+	let timerInterval = $state<ReturnType<typeof setInterval> | null>(null);
+	let remainingCredits = $state<number | null>(null);
+	let claimForm = $state<HTMLFormElement | null>(null);
 	let imageLoaded = $state(false);
 
 	// SEO data
@@ -43,6 +67,53 @@
 	const productDescription =
 		data.product.description ||
 		`${data.product.name} - ${data.product.producer || 'Ukjent produsent'} - Pris fra ${data.product.priceList.student} kr`;
+
+	function openConfirmation() {
+		claimFeedback = null;
+		remainingCredits = null;
+		showConfirmation = true;
+	}
+
+	function cancelConfirmation() {
+		showConfirmation = false;
+	}
+
+	function submitClaimFromModal() {
+		if (!claimForm) return;
+		claimLoading = true;
+		showConfirmation = false;
+		claimForm.requestSubmit();
+	}
+
+	function startVerificationTimer() {
+		timerSeconds = 30;
+		if (timerInterval) {
+			clearInterval(timerInterval);
+		}
+		timerInterval = setInterval(() => {
+			timerSeconds -= 1;
+			if (timerSeconds <= 0 && timerInterval) {
+				clearInterval(timerInterval);
+				timerInterval = null;
+			}
+		}, 1000);
+	}
+
+	function closeVerification() {
+		if (timerInterval) {
+			clearInterval(timerInterval);
+			timerInterval = null;
+		}
+		showVerification = false;
+		timerSeconds = 30;
+	}
+
+	onDestroy(() => {
+		if (timerInterval) {
+			clearInterval(timerInterval);
+			timerInterval = null;
+		}
+	});
 </script>
 
 <SEO
@@ -113,17 +184,13 @@
 			</div>
 
 			<!-- Pricing -->
-			<div class="rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-6">
+			<div
+				class="space-y-4 rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-6"
+			>
 				<div
 					class={cn('grid grid-cols-1 gap-4', {
-						'sm:grid-cols-3':
-							isAuthenticated &&
-							data.product.priceList.credits &&
-							data.product.priceList.credits > 0,
-						'sm:grid-cols-2':
-							!isAuthenticated ||
-							!data.product.priceList.credits ||
-							data.product.priceList.credits <= 0
+						'sm:grid-cols-3': canClaimProduct,
+						'sm:grid-cols-2': !canClaimProduct
 					})}
 				>
 					<div class="text-center">
@@ -142,7 +209,7 @@
 								: `${data.product.priceList.student} kr`}
 						</p>
 					</div>
-					{#if isAuthenticated && data.product.priceList.credits && data.product.priceList.credits > 0}
+					{#if canClaimProduct}
 						<div class="text-center">
 							<p class="text-sm font-medium text-gray-600">Bong pris</p>
 							<p class="text-2xl font-bold text-indigo-600">
@@ -156,6 +223,106 @@
 						</div>
 					{/if}
 				</div>
+
+				{#if canClaimProduct}
+					<form
+						bind:this={claimForm}
+						method="post"
+						action="?/claimProduct"
+						use:enhance={() => {
+							claimLoading = true;
+							claimFeedback = null;
+
+							return async ({ result }) => {
+								claimLoading = false;
+
+								const fallbackMessage = 'Det oppstod ein feil';
+								const extractMessage = (payload: unknown) =>
+									typeof payload === 'object' && payload && 'message' in payload
+										? String((payload as { message?: unknown }).message ?? fallbackMessage)
+										: fallbackMessage;
+
+								if (result.type === 'success' && result.data) {
+									const payload = result.data as {
+										success?: boolean;
+										message?: string;
+										updatedBeerCount?: number;
+									};
+
+									if (payload.success) {
+										const remaining =
+											typeof payload.updatedBeerCount === 'number'
+												? payload.updatedBeerCount
+												: undefined;
+
+										const baseMessage =
+											payload.message ??
+											`Produkt claimet for ${creditCost} ${creditCost === 1 ? 'bong' : 'bonger'}.`;
+
+										const remainingMessage =
+											remaining !== undefined
+												? ` Du har ${remaining} ${remaining === 1 ? 'bong' : 'bonger'} igjen.`
+												: '';
+
+										toast.success(
+											`${data.product.name} claimed!${remainingMessage ? ' ' + remainingMessage : ''}`
+										);
+
+										remainingCredits = remaining ?? null;
+										showVerification = true;
+										startVerificationTimer();
+
+										claimFeedback = {
+											type: 'success',
+											message: `${baseMessage}${remainingMessage}`
+										};
+
+										return;
+									}
+								}
+
+								const message =
+									result.type === 'failure' ? extractMessage(result.data) : fallbackMessage;
+
+								toast.error(message);
+								claimFeedback = {
+									type: 'error',
+									message
+								};
+							};
+						}}
+						class="flex flex-col gap-3 rounded-lg bg-white/60 p-4 sm:flex-row sm:items-center sm:justify-between"
+					>
+						<input type="hidden" name="productId" value={data.product._id} />
+						<input type="hidden" name="productName" value={data.product.name} />
+						<p class="text-sm font-medium text-gray-700">
+							Du kan claime dette produktet for {creditCost}
+							{creditCost === 1 ? 'bong' : 'bonger'}.
+						</p>
+						<Button
+							type="button"
+							class="w-full sm:w-auto"
+							disabled={claimLoading}
+							onclick={openConfirmation}
+						>
+							{claimLoading ? 'Laster...' : 'Claim produkt'}
+						</Button>
+					</form>
+
+					{#if claimFeedback}
+						<p
+							class="text-sm"
+							class:text-green-700={claimFeedback.type === 'success'}
+							class:text-red-600={claimFeedback.type === 'error'}
+						>
+							{claimFeedback.message}
+						</p>
+					{/if}
+				{:else if data.product.priceList.credits && data.product.priceList.credits > 0}
+					<p class="rounded-lg bg-white/60 p-4 text-sm text-gray-700">
+						Logg inn for å claime dette produktet med bonger.
+					</p>
+				{/if}
 			</div>
 
 			<!-- Desktop Product Details - Only visible on desktop, under pricing -->
@@ -166,3 +333,19 @@
 	<!-- Mobile Product Details - Only visible on mobile, at the bottom -->
 	<ProductDetailsCard details={metadata.slice(0, 4)} class="mt-8 lg:hidden" />
 </div>
+
+<ClaimConfirmationModal
+	open={showConfirmation}
+	productName={data.product.name}
+	{creditCost}
+	onCancel={cancelConfirmation}
+	onConfirm={submitClaimFromModal}
+/>
+
+<ClaimVerificationScreen
+	open={showVerification}
+	product={data.product}
+	{timerSeconds}
+	{remainingCredits}
+	onClose={closeVerification}
+/>

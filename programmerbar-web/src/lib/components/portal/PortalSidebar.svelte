@@ -11,7 +11,6 @@
 		Menu,
 		X,
 		Shield,
-		Database,
 		UserCheck
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
@@ -93,31 +92,6 @@
 				] satisfies Array<NavRoute>)
 			: []
 	);
-
-	// CMS routes (only visible to board members)
-	const cmsRoutes: string | any[] | null | undefined = [];
-	// TODO When I have time
-	// const cmsRoutes = $derived(
-	// 	$user?.role === 'board'
-	// 		? ([
-	// 				{
-	// 					name: 'Produsenter',
-	// 					routeId: '/(portal)/portal/admin/cms/producers',
-	// 					icon: Database
-	// 				},
-	// 				{
-	// 					name: 'Produkttyper',
-	// 					routeId: '/(portal)/portal/admin/cms/product-types',
-	// 					icon: Database
-	// 				},
-	// 				{
-	// 					name: 'Produkter',
-	// 					routeId: '/(portal)/portal/admin/cms/products',
-	// 					icon: Database
-	// 				}
-	// 			] satisfies Array<NavRoute>)
-	// 		: []
-	// );
 
 	const notificationsRoute = '/(portal)/portal/notifikasjoner';
 	const notificationsHref = resolve(notificationsRoute);
@@ -320,49 +294,6 @@
 											{route.count}
 										</span>
 									{/if}
-								</a>
-							</li>
-						{/each}
-					</ul>
-				</div>
-			{/if}
-
-			<!-- CMS Section (only for board members) -->
-			{#if cmsRoutes.length > 0}
-				<div>
-					<h2
-						class={cn('mb-3 px-2 text-xs font-semibold uppercase tracking-wide text-gray-500', {
-							hidden: !showFullLayout,
-							block: showFullLayout
-						})}
-					>
-						CMS
-					</h2>
-					<ul class="space-y-1">
-						{#each cmsRoutes as route (route.routeId)}
-							{@const href = resolve(route.routeId)}
-							{@const isActive = page.url.pathname === href}
-							<li>
-								<a
-									{href}
-									class={cn(
-										'flex items-center rounded-lg py-2 text-sm font-medium transition-colors',
-										{
-											'justify-center gap-0 px-1': !showFullLayout,
-											'justify-start gap-3 px-3': showFullLayout,
-											'bg-blue-50 text-blue-700': isActive,
-											'text-gray-600 hover:bg-gray-50 hover:text-gray-900': !isActive
-										}
-									)}
-									title={route.name}
-								>
-									<route.icon class="h-5 w-5 flex-shrink-0" />
-									<span
-										class={cn('', {
-											hidden: !showFullLayout,
-											inline: showFullLayout
-										})}>{route.name}</span
-									>
 								</a>
 							</li>
 						{/each}
