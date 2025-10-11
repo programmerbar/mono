@@ -4,7 +4,7 @@
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import { ArrowLeft, ChevronLeft, ChevronRight } from '@lucide/svelte';
 	import type { PageData } from './$types';
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import { SvelteSet, SvelteURLSearchParams } from 'svelte/reactivity';
 
 	const formatter = new Intl.DateTimeFormat('no-NO', {
 		dateStyle: 'short',
@@ -53,9 +53,50 @@
 		return `/portal/admin/historikk/download.csv${query ? `?${query}` : ''}`;
 	}
 
-	const pageNumbers = $derived.by(() =>
-		Array.from({ length: data.pagination.pageCount }, (_, index) => index + 1)
-	);
+	type PaginationItem = { type: 'page'; value: number } | { type: 'ellipsis'; key: string };
+
+	const paginationItems = $derived.by(() => {
+		const { currentPage, pageCount } = data.pagination;
+		if (pageCount <= 0) {
+			return [];
+		}
+
+		const pages = new SvelteSet<number>();
+
+		pages.add(1);
+		if (pageCount > 1) {
+			pages.add(pageCount);
+		}
+		if (pageCount > 2) {
+			pages.add(pageCount - 1);
+		}
+
+		for (let offset = -2; offset <= 2; offset += 1) {
+			const candidate = currentPage + offset;
+			if (candidate > 1 && candidate < pageCount) {
+				pages.add(candidate);
+			}
+		}
+
+		const sortedPages = Array.from(pages)
+			.filter((page) => page >= 1 && page <= pageCount)
+			.sort((a, b) => a - b);
+
+		const items: Array<PaginationItem> = [];
+
+		for (let index = 0; index < sortedPages.length; index += 1) {
+			const page = sortedPages[index];
+			const previous = sortedPages[index - 1];
+
+			if (index > 0 && page - previous > 1) {
+				items.push({ type: 'ellipsis', key: `ellipsis-${previous}-${page}` });
+			}
+
+			items.push({ type: 'page', value: page });
+		}
+
+		return items;
+	});
 
 	const pageStart = $derived.by(() => {
 		if (data.pagination.totalCount === 0) {
@@ -209,16 +250,18 @@
 						</span>
 					{/if}
 
-					{#each pageNumbers as page (page)}
-						{#if page === data.pagination.currentPage}
+					{#each paginationItems as item (item.type === 'page' ? item.value : item.key)}
+						{#if item.type === 'ellipsis'}
+							<span class="px-2 text-sm text-gray-400">…</span>
+						{:else if item.value === data.pagination.currentPage}
 							<span
 								class="border-primary-dark bg-primary rounded-lg border px-3 py-1.5 text-sm font-medium text-white"
 							>
-								{page}
+								{item.value}
 							</span>
 						{:else}
-							<ButtonLink href={buildQuery({ page })} intent="outline" size="sm">
-								{page}
+							<ButtonLink href={buildQuery({ page: item.value })} intent="outline" size="sm">
+								{item.value}
 							</ButtonLink>
 						{/if}
 					{/each}
