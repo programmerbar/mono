@@ -459,7 +459,7 @@
 					class={cn('', {
 						hidden: !showFullLayout,
 						inline: showFullLayout
-					})}>Hjem</span
+					})}>Til forsiden</span
 				>
 			</a>
 		</div>

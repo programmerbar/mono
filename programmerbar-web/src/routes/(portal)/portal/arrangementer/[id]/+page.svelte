@@ -93,7 +93,7 @@
 								<Calendar class="h-5 w-5" />
 							</div>
 							<div>
-								<p class="text-xs uppercase tracking-wide text-gray-500">Dato</p>
+								<p class="text-xs tracking-wide text-gray-500 uppercase">Dato</p>
 								<p class="text-sm font-semibold text-gray-900">{formatDate(data.event.date)}</p>
 							</div>
 						</div>
@@ -107,7 +107,7 @@
 								<Clock class="h-5 w-5" />
 							</div>
 							<div>
-								<p class="text-xs uppercase tracking-wide text-gray-500">Antall vakter</p>
+								<p class="text-xs tracking-wide text-gray-500 uppercase">Antall vakter</p>
 								<p class="text-sm font-semibold text-gray-900">
 									{data.event.shifts.length}
 									{data.event.shifts.length === 1 ? ' vakt' : ' vakter'}
@@ -124,7 +124,7 @@
 								<Users class="h-5 w-5" />
 							</div>
 							<div>
-								<p class="text-xs uppercase tracking-wide text-gray-500">Ansvarlige</p>
+								<p class="text-xs tracking-wide text-gray-500 uppercase">Ansvarlige</p>
 								<p class="text-sm font-semibold text-gray-900">
 									{totalResponsibles}
 									{totalResponsibles === 1 ? ' person' : ' personer'}
@@ -150,7 +150,7 @@
 							<div class="rounded-lg border border-gray-200 bg-white p-4">
 								<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 									<div class="space-y-1">
-										<p class="text-xs uppercase tracking-wide text-gray-500">
+										<p class="text-xs tracking-wide text-gray-500 uppercase">
 											Vakt {i + 1}
 										</p>
 										<div class="flex flex-wrap gap-3 text-sm text-gray-600">

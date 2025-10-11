@@ -166,7 +166,7 @@
 							name="description"
 							bind:value={eventState.description}
 							placeholder="Oppdater beskrivelsen som vises offentlig…"
-							class="border-1 min-h-28"
+							class="min-h-28 border-1"
 						/>
 						{#if eventState.slug}
 							<p class="text-xs text-gray-500">
@@ -292,7 +292,7 @@
 							<input type="hidden" name={`shift[${i}].userCount`} value={shift.users.length} />
 
 							{#if shift.users.length === 0}
-								<p class="py-2 text-sm italic text-gray-500">
+								<p class="py-2 text-sm text-gray-500 italic">
 									Ingen ansvarlige lagt til ennå. Husk å invitere minst én.
 								</p>
 							{:else}

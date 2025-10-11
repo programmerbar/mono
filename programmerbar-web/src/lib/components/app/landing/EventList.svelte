@@ -23,7 +23,7 @@
 						<div class="flex items-center justify-between">
 							<div class="min-w-0 flex-1">
 								<h3
-									class="group-hover:text-primary mb-1 text-lg font-semibold leading-tight text-gray-900 transition-colors duration-200"
+									class="group-hover:text-primary mb-1 text-lg leading-tight font-semibold text-gray-900 transition-colors duration-200"
 								>
 									{title}
 								</h3>
