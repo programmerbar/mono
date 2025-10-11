@@ -87,7 +87,12 @@ export class EventService {
 			})
 			.onConflictDoUpdate({
 				target: events.id,
-				set: eventData
+				set: {
+					name: eventData.name,
+					date: eventData.date,
+					description: eventData.description ?? null,
+					slug: eventData.slug ?? null
+				}
 			})
 			.returning()
 			.then((rows) => rows[0]);
