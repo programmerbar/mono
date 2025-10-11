@@ -14,7 +14,7 @@
 	<h2 class="mb-6 text-center font-mono text-3xl font-medium md:text-4xl">Arrangementer</h2>
 
 	<ul class="flex flex-col gap-3 overflow-hidden">
-		{#each events as { title, date, slug } (slug)}
+		{#each events as { title, date, slug } (`${slug}${date}`)}
 			<li class="group">
 				<a href={resolve('/(app)/arrangement/[slug]', { slug })} class="block">
 					<div
@@ -23,7 +23,7 @@
 						<div class="flex items-center justify-between">
 							<div class="min-w-0 flex-1">
 								<h3
-									class="group-hover:text-primary mb-1 text-lg leading-tight font-semibold text-gray-900 transition-colors duration-200"
+									class="group-hover:text-primary mb-1 text-lg font-semibold leading-tight text-gray-900 transition-colors duration-200"
 								>
 									{title}
 								</h3>
