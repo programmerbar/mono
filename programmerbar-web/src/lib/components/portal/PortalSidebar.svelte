@@ -59,11 +59,6 @@
 			icon: Users
 		},
 		{
-			name: 'Cash Out',
-			routeId: '/(portal)/portal/claim-beer',
-			icon: Beer
-		},
-		{
 			name: 'Min Profil',
 			routeId: '/(portal)/portal/profil',
 			icon: User
@@ -85,6 +80,11 @@
 						icon: Shield
 					},
 					{
+						name: 'Bonghistorikk',
+						routeId: '/(portal)/portal/admin/historikk',
+						icon: Beer
+					},
+					{
 						name: 'Søknader',
 						routeId: '/(portal)/portal/admin/soknader',
 						icon: UserCheck,
@@ -95,27 +95,29 @@
 	);
 
 	// CMS routes (only visible to board members)
-	const cmsRoutes = $derived(
-		$user?.role === 'board'
-			? ([
-					{
-						name: 'Produsenter',
-						routeId: '/(portal)/portal/admin/cms/producers',
-						icon: Database
-					},
-					{
-						name: 'Produkttyper',
-						routeId: '/(portal)/portal/admin/cms/product-types',
-						icon: Database
-					},
-					{
-						name: 'Produkter',
-						routeId: '/(portal)/portal/admin/cms/products',
-						icon: Database
-					}
-				] satisfies Array<NavRoute>)
-			: []
-	);
+	const cmsRoutes: string | any[] | null | undefined = [];
+	// TODO When I have time
+	// const cmsRoutes = $derived(
+	// 	$user?.role === 'board'
+	// 		? ([
+	// 				{
+	// 					name: 'Produsenter',
+	// 					routeId: '/(portal)/portal/admin/cms/producers',
+	// 					icon: Database
+	// 				},
+	// 				{
+	// 					name: 'Produkttyper',
+	// 					routeId: '/(portal)/portal/admin/cms/product-types',
+	// 					icon: Database
+	// 				},
+	// 				{
+	// 					name: 'Produkter',
+	// 					routeId: '/(portal)/portal/admin/cms/products',
+	// 					icon: Database
+	// 				}
+	// 			] satisfies Array<NavRoute>)
+	// 		: []
+	// );
 
 	const notificationsRoute = '/(portal)/portal/notifikasjoner';
 	const notificationsHref = resolve(notificationsRoute);
@@ -158,7 +160,7 @@
 <svelte:window onresize={handleResize} />
 
 <!-- Mobile toggle button - floating action button -->
-<div class="fixed right-6 bottom-6 z-60 lg:hidden">
+<div class="z-60 fixed bottom-6 right-6 lg:hidden">
 	<button
 		onclick={toggleSidebar}
 		class="flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-all duration-200 hover:bg-blue-700 hover:shadow-xl active:scale-95"
@@ -176,7 +178,7 @@
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div
-		class="fixed inset-0 z-40 bg-black/20 backdrop-blur-xs lg:hidden"
+		class="backdrop-blur-xs fixed inset-0 z-40 bg-black/20 lg:hidden"
 		onclick={toggleSidebar}
 	></div>
 {/if}
@@ -184,7 +186,7 @@
 <!-- Sidebar -->
 <aside
 	class={cn(
-		'fixed top-0 left-0 z-50 h-[100svh] transform border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out',
+		'fixed left-0 top-0 z-50 h-[100svh] transform border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out',
 		{
 			'w-80': isSidebarOpen && isMobile, // Large width when opened on mobile
 			'w-16 sm:w-20': !isSidebarOpen || !isMobile, // Narrow when closed or not mobile
@@ -231,12 +233,12 @@
 			<!-- Main Portal Section -->
 			<div>
 				<h2
-					class={cn('mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase', {
+					class={cn('mb-3 px-2 text-xs font-semibold uppercase tracking-wide text-gray-500', {
 						hidden: !showFullLayout,
 						block: showFullLayout
 					})}
 				>
-					Portal
+					Generelt
 				</h2>
 				<ul class="space-y-1">
 					{#each portalRoutes as route (route.routeId)}
@@ -273,7 +275,7 @@
 			{#if adminRoutes.length > 0}
 				<div>
 					<h2
-						class={cn('mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase', {
+						class={cn('mb-3 px-2 text-xs font-semibold uppercase tracking-wide text-gray-500', {
 							hidden: !showFullLayout,
 							block: showFullLayout
 						})}
@@ -310,7 +312,7 @@
 											class={cn(
 												'flex items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white',
 												{
-													'absolute -top-1 -right-1 h-4 w-4': !showFullLayout,
+													'absolute -right-1 -top-1 h-4 w-4': !showFullLayout,
 													'static h-5 w-5': showFullLayout
 												}
 											)}
@@ -329,7 +331,7 @@
 			{#if cmsRoutes.length > 0}
 				<div>
 					<h2
-						class={cn('mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase', {
+						class={cn('mb-3 px-2 text-xs font-semibold uppercase tracking-wide text-gray-500', {
 							hidden: !showFullLayout,
 							block: showFullLayout
 						})}
@@ -398,7 +400,7 @@
 									class={cn(
 										'flex items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white',
 										{
-											'absolute -top-1 -right-1 h-4 w-4': !showFullLayout,
+											'absolute -right-1 -top-1 h-4 w-4': !showFullLayout,
 											'static h-5 w-5': showFullLayout
 										}
 									)}

@@ -6,10 +6,10 @@
 	type Props = Omit<HTMLAnchorAttributes, 'href'> &
 		ButtonVariantProps & { href: string | ResolvedPathname };
 
-	let { class: className, intent, children, ...rest }: Props = $props();
+	let { class: className, intent, size, children, ...rest }: Props = $props();
 </script>
 
 <!-- eslint-disable svelte/no-navigation-without-resolve -->
-<a class={buttonVariant({ intent, className })} {...rest}>
+<a class={buttonVariant({ intent, size, className })} {...rest}>
 	{@render children?.()}
 </a>
