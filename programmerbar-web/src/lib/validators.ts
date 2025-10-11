@@ -4,6 +4,8 @@ import { zfd } from 'zod-form-data';
 export const CreateEventSchema = z.object({
 	name: z.string(),
 	date: z.coerce.date(),
+	slug: z.string().nullable(),
+	description: z.string().nullable(),
 	shifts: z
 		.object({
 			startAt: z.coerce.date(),

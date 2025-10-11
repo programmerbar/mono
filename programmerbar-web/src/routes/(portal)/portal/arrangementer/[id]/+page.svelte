@@ -1,49 +1,81 @@
 <script lang="ts">
+	import Heading from '$lib/components/ui/Heading.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import Pill from '$lib/components/ui/Pill.svelte';
 	import { formatDate, time } from '$lib/date';
-	import { capitalize } from '$lib/utils';
 	import { enhance } from '$app/forms';
 	import { getUser } from '$lib/context/user.context.js';
 	import { X, Plus, Calendar, Clock, Users, ArrowLeft } from '@lucide/svelte';
 	import { resolve } from '$app/paths';
+	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 
 	let { data } = $props();
 	let user = getUser();
 	let activeTab = $state('details');
 	let isPastEvent = $derived(new Date() > new Date(data.event.date));
+	let totalResponsibles = $derived(
+		data.event.shifts.reduce((acc, shift) => acc + shift.members.length, 0)
+	);
 </script>
 
 <svelte:head>
 	<title>{data.event.name}</title>
 </svelte:head>
 
-<section>
-	<a
-		href={resolve('/portal/arrangementer')}
-		class="inline-flex items-center text-sm font-medium text-blue-500 hover:text-blue-600"
-	>
-		<ArrowLeft size={16} />
-		Tilbake
-	</a>
-</section>
+<section class="space-y-6">
+	<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+		<div class="space-y-2">
+			<ButtonLink
+				type="button"
+				intent="outline"
+				size="sm"
+				href={resolve('/portal/arrangementer')}
+				class="inline-flex items-center gap-2"
+			>
+				<ArrowLeft class="h-4 w-4" />
+				Til arrangementer
+			</ButtonLink>
 
-<section class="mt-8">
-	<div class="bg-background mx-auto max-w-4xl overflow-hidden rounded-xl border-2 shadow-lg">
-		<div class="border-b-2 bg-gray-200 px-6 py-4">
-			<div>
-				<h1 class="text-xl font-semibold break-words">{data.event.name}</h1>
+			<Heading level={1} class="break-words">{data.event.name}</Heading>
+			<div class="flex flex-wrap gap-2 text-xs text-gray-500">
+				<span>{formatDate(data.event.date)}</span>
+				<span aria-hidden="true">•</span>
+				<span>
+					{data.event.shifts.length}
+					{data.event.shifts.length === 1 ? 'vakt' : 'vakter'}
+				</span>
+				<span aria-hidden="true">•</span>
+				<span>
+					{totalResponsibles} ansvarlig{totalResponsibles === 1 ? '' : 'e'}
+				</span>
 			</div>
 		</div>
-		<div class="border-b px-6 pt-4">
-			<div class="flex gap-2">
+
+		{#if $user?.role === 'board'}
+			<ButtonLink
+				intent="primary"
+				class="w-full sm:w-auto"
+				href={resolve('/(portal)/portal/arrangementer/[id]/rediger', { id: data.event.id })}
+			>
+				Rediger arrangement
+			</ButtonLink>
+		{/if}
+	</div>
+
+	<div class="rounded-lg border border-gray-200 bg-white">
+		<div class="border-b border-gray-200 px-6 pt-4">
+			<div class="flex flex-wrap gap-2">
 				<button
-					class={`rounded-t-lg px-4 py-2 font-medium transition-colors ${activeTab === 'details' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+					class={`rounded-t-lg px-4 py-2 text-sm font-medium transition-colors ${activeTab === 'details' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
 					onclick={() => (activeTab = 'details')}
+					type="button"
 				>
 					Detaljer
 				</button>
 				<button
-					class={`rounded-t-lg px-4 py-2 font-medium transition-colors ${activeTab === 'shifts' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+					class={`rounded-t-lg px-4 py-2 text-sm font-medium transition-colors ${activeTab === 'shifts' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
 					onclick={() => (activeTab = 'shifts')}
+					type="button"
 				>
 					Vakter
 				</button>
@@ -52,103 +84,155 @@
 
 		<div class="p-6">
 			{#if activeTab === 'details'}
-				<div class="space-y-4">
-					<div class="flex items-start gap-2">
-						<div class="rounded-lg bg-blue-50 p-2">
-							<Calendar size={20} class="text-blue-500" />
-						</div>
-						<div>
-							<h3 class="font-medium">Dato</h3>
-							<p>{formatDate(data.event.date)}</p>
-						</div>
-					</div>
-
-					<div class="flex items-start gap-2">
-						<div class="rounded-lg bg-blue-50 p-2">
-							<Clock size={20} class="text-blue-500" />
-						</div>
-						<div>
-							<h3 class="font-medium">Antall vakter</h3>
-							<p>
-								{data.event.shifts.length}
-								{data.event.shifts.length === 1 ? 'vakt' : 'vakter'}
-							</p>
+				<div class="grid gap-6 md:grid-cols-3">
+					<div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+						<div class="flex items-center gap-3">
+							<div
+								class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600"
+							>
+								<Calendar class="h-5 w-5" />
+							</div>
+							<div>
+								<p class="text-xs uppercase tracking-wide text-gray-500">Dato</p>
+								<p class="text-sm font-semibold text-gray-900">{formatDate(data.event.date)}</p>
+							</div>
 						</div>
 					</div>
 
-					<div class="flex items-start gap-2">
-						<div class="rounded-lg bg-blue-50 p-2">
-							<Users size={20} class="text-blue-500" />
+					<div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+						<div class="flex items-center gap-3">
+							<div
+								class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600"
+							>
+								<Clock class="h-5 w-5" />
+							</div>
+							<div>
+								<p class="text-xs uppercase tracking-wide text-gray-500">Antall vakter</p>
+								<p class="text-sm font-semibold text-gray-900">
+									{data.event.shifts.length}
+									{data.event.shifts.length === 1 ? ' vakt' : ' vakter'}
+								</p>
+							</div>
 						</div>
-						<div>
-							<h3 class="font-medium">Ansvarlige</h3>
-							<ul class="text-sm">
-								{#each data.event.shifts as shift, i (shift.id)}
-									<li>
-										<strong>Vakt {i + 1}:</strong>
+					</div>
+
+					<div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+						<div class="flex items-center gap-3">
+							<div
+								class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600"
+							>
+								<Users class="h-5 w-5" />
+							</div>
+							<div>
+								<p class="text-xs uppercase tracking-wide text-gray-500">Ansvarlige</p>
+								<p class="text-sm font-semibold text-gray-900">
+									{totalResponsibles}
+									{totalResponsibles === 1 ? ' person' : ' personer'}
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="mt-6 space-y-4">
+					<h2 class="text-sm font-semibold text-gray-900">Vaktoversikt</h2>
+					<div class="space-y-3">
+						{#each data.event.shifts as shift, i (shift.id)}
+							<div class="rounded-lg border border-gray-200 bg-white p-4">
+								<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+									<div class="space-y-1">
+										<p class="text-xs uppercase tracking-wide text-gray-500">
+											Vakt {i + 1}
+										</p>
+										<div class="flex flex-wrap gap-3 text-sm text-gray-600">
+											<span>{formatDate(shift.startAt)}</span>
+											<span aria-hidden="true">•</span>
+											<span>
+												{time(shift.startAt)} – {time(shift.endAt)}
+											</span>
+										</div>
+									</div>
+									<Pill variant={isPastEvent && shift.members.length === 0 ? 'gray' : 'blue'}>
+										{shift.members.length} ansvarlig{shift.members.length === 1 ? '' : 'e'}
+									</Pill>
+								</div>
+								<div class="mt-4 text-sm text-gray-700">
+									<p class="font-medium text-gray-900">Ansvarlige</p>
+									<p>
 										{shift.members.map((member) => member.user.name).join(', ') ||
-											'Ingen ansvarlige'}
-									</li>
-								{/each}
-							</ul>
-						</div>
+											'Ingen registrerte ansvarlige'}
+									</p>
+								</div>
+							</div>
+						{/each}
 					</div>
 				</div>
 			{:else if activeTab === 'shifts'}
-				<div class="space-y-4">
-					{#each data.event.shifts as shift, i (shift.id)}
-						{@const isInShift = shift.members.some((member) => member.userId === $user?.id)}
-						<div class="overflow-hidden rounded-lg border">
-							<div class="border-b bg-gray-200 px-4 py-2">
-								<h3 class="font-medium">Vakt {i + 1}</h3>
-							</div>
-							<div class="space-y-2 p-4">
-								<div class="grid grid-cols-2 gap-2">
+				{#if data.event.shifts.length === 0}
+					<div
+						class="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-8 text-center text-sm text-gray-500"
+					>
+						Ingen vakter er opprettet for dette arrangementet ennå.
+					</div>
+				{:else}
+					<div class="space-y-4">
+						{#each data.event.shifts as shift, i (shift.id)}
+							{@const isInShift = shift.members.some((member) => member.userId === $user?.id)}
+							<div class="rounded-lg border border-gray-200 bg-white p-5">
+								<div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
 									<div>
-										<p class="text-sm text-gray-500">Dato</p>
-										<p class="font-medium">{capitalize(formatDate(shift.startAt))}</p>
+										<h3 class="text-sm font-semibold text-gray-900">Vakt {i + 1}</h3>
+										<div class="mt-1 flex flex-wrap gap-3 text-sm text-gray-600">
+											<span>{formatDate(shift.startAt)}</span>
+											<span aria-hidden="true">•</span>
+											<span>
+												{time(shift.startAt)} – {time(shift.endAt)}
+											</span>
+										</div>
 									</div>
-									<div>
-										<p class="text-sm text-gray-500">Tid</p>
-										<p class="font-medium">
-											{time(shift.startAt)} - {time(shift.endAt)}
-										</p>
-									</div>
+									<Pill
+										variant={isInShift ? 'green' : shift.members.length ? 'blue' : 'gray'}
+										class="w-fit"
+									>
+										{isInShift
+											? 'Du er ansvarlig'
+											: `${shift.members.length} ansvarlig${shift.members.length === 1 ? '' : 'e'}`}
+									</Pill>
 								</div>
-								<div>
-									<p class="text-sm text-gray-500">Ansvarlige</p>
-									<p class="font-medium">
+
+								<div class="mt-4 text-sm text-gray-700">
+									<p class="font-medium text-gray-900">Ansvarlige</p>
+									<p>
 										{shift.members.map((member) => member.user.name).join(', ') ||
-											'Ingen ansvarlige'}
+											'Ingen registrerte ansvarlige'}
 									</p>
 								</div>
+
 								{#if !isPastEvent}
-									{#if !isInShift}
-										<form action="?/join" method="post" use:enhance>
-											<input type="hidden" name="shiftId" value={shift.id} />
-											<button
-												class="inline-flex items-center text-sm font-medium text-blue-500 hover:text-blue-700"
-											>
-												<Plus size={16} />
-												Bli med på vakten
-											</button>
-										</form>
-									{:else}
-										<form action="?/leave" method="post" use:enhance>
-											<input type="hidden" name="shiftId" value={shift.id} />
-											<button
-												class="inline-flex items-center text-sm font-medium text-red-500 hover:text-red-700"
-											>
-												<X size={16} />
-												Forlat vakten
-											</button>
-										</form>
-									{/if}
+									<div class="mt-4 flex flex-wrap gap-2">
+										{#if !isInShift}
+											<form action="?/join" method="post" use:enhance>
+												<input type="hidden" name="shiftId" value={shift.id} />
+												<Button type="submit" intent="outline" size="sm" class="gap-2">
+													<Plus class="h-4 w-4" />
+													Bli med på vakten
+												</Button>
+											</form>
+										{:else}
+											<form action="?/leave" method="post" use:enhance>
+												<input type="hidden" name="shiftId" value={shift.id} />
+												<Button type="submit" intent="danger" size="sm" class="gap-2">
+													<X class="h-4 w-4" />
+													Forlat vakten
+												</Button>
+											</form>
+										{/if}
+									</div>
 								{/if}
 							</div>
-						</div>
-					{/each}
-				</div>
+						{/each}
+					</div>
+				{/if}
 			{/if}
 		</div>
 	</div>

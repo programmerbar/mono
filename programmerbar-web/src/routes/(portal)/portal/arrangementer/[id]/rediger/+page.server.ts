@@ -135,6 +135,6 @@ export const actions: Actions = {
 			}
 		}
 
-		return { success: true, message: 'Vakten har blitt oppdatert' };
+		redirect(303, `/portal/arrangementer/${eventId}`);
 	}
 };

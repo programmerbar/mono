@@ -14,9 +14,9 @@ export const createEvent = command(CreateEventSchema, async (event) => {
 		};
 	}
 
-	const { name, date, shifts } = event;
+	const { name, date, slug, description, shifts } = event;
 
-	const createdEvent = await locals.eventService.create(name, date);
+	const createdEvent = await locals.eventService.create(name, date, slug, description);
 	if (!createdEvent) {
 		return {
 			success: false,

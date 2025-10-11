@@ -15,12 +15,14 @@ export class EventService {
 		this.#db = db;
 	}
 
-	async create(name: string, date: Date) {
+	async create(name: string, date: Date, slug: string | null, description: string | null) {
 		const event = await this.#db
 			.insert(events)
 			.values({
 				name: name,
-				date: date
+				date: date,
+				slug: slug,
+				description: description
 			})
 			.returning()
 			.then((rows) => rows[0]);
@@ -194,5 +196,16 @@ export class EventService {
 			registrationStart: null,
 			body: event.description
 		};
+	}
+
+	async allSlugs() {
+		return this.#db.query.events
+			.findMany({
+				where: (row, { isNotNull }) => isNotNull(row.slug),
+				columns: {
+					slug: true
+				}
+			})
+			.then((events) => events.map((event) => event.slug!));
 	}
 }

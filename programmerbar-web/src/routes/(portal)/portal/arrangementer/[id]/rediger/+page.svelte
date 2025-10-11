@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { X, Plus, Save, Trash2 } from '@lucide/svelte';
+	import { X, Plus, Save, Trash2, Clock } from '@lucide/svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import FormInput from '$lib/components/ui/form/FormInput.svelte';
 	import Combobox from '$lib/components/ui/Combobox.svelte';
@@ -11,8 +11,10 @@
 	import { beforeNavigate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
+	import Heading from '$lib/components/ui/Heading.svelte';
+	import { differenceInHours } from 'date-fns';
 
-	let { data, form } = $props();
+	let { data } = $props();
 
 	let showDeleteConfirm = $state(false);
 
@@ -23,6 +25,9 @@
 		eventState.date = toDateTimeLocalInput(data.event.date);
 		eventState.description = data.event.description || '';
 		eventState.shouldBePublic = !!(data.event.description || data.event.slug);
+
+		console.log(data.event);
+		console.log(eventState.shouldBePublic);
 
 		data.event.shifts.forEach((shift) => {
 			eventState.shifts.push({
@@ -53,13 +58,20 @@
 	<title>Rediger arrangement: {eventState.name}</title>
 </svelte:head>
 
-<div class="bg-background mx-auto max-w-4xl overflow-hidden rounded-xl border-2 shadow-lg">
-	<div class="items-centter flex justify-between border-b-2 bg-gray-200 px-6 py-4">
-		<h2 class="text-lg font-semibold">Arrangement detaljer</h2>
+<div class="space-y-8">
+	<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+		<div class="space-y-2">
+			<Heading level={1}>Rediger arrangementet</Heading>
+			<p class="text-sm text-gray-600">
+				Oppdater detaljer, bemanning og publiseringsstatus for arrangementet. Endringene lagres ikke
+				automatisk.
+			</p>
+		</div>
 		<form method="POST" action="?/delete" use:enhance>
 			<Button
 				type="submit"
 				intent="danger"
+				class="w-full sm:w-auto"
 				onclick={(e) => {
 					if (!showDeleteConfirm) {
 						e.preventDefault();
@@ -68,105 +80,150 @@
 				}}
 			>
 				<Trash2 class="mr-1 h-4 w-4" />
-				{showDeleteConfirm ? 'Er du sikker?' : 'Slett arrangement'}
+				{showDeleteConfirm ? 'Er du sikker?' : 'Slett'}
 			</Button>
 		</form>
 	</div>
 
-	<div class="p-6">
-		{#if form?.message}
-			<div
-				class="mb-4 rounded-md p-4 {form.success
-					? 'bg-green-50 text-green-700'
-					: 'bg-red-50 text-red-700'}"
-			>
-				<p>{form.message}</p>
+	{#if deletedShiftIds.length > 0 || removedUserShifts.length > 0}
+		<div class="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-700">
+			<p class="font-medium">Ulagrede endringer</p>
+			<ul class="mt-1 space-y-1">
+				{#if deletedShiftIds.length > 0}
+					<li>
+						• {deletedShiftIds.length} vakt{deletedShiftIds.length > 1 ? 'er' : ''} blir slettet ved
+						lagring
+					</li>
+				{/if}
+				{#if removedUserShifts.length > 0}
+					<li>
+						• {removedUserShifts.length} ansvarlig{removedUserShifts.length > 1 ? 'e' : ''}
+						fjernes fra vakter
+					</li>
+				{/if}
+			</ul>
+		</div>
+	{/if}
+
+	<form method="post" action="?/save" use:enhance class="space-y-8">
+		<input type="hidden" name="shiftsCount" value={eventState.shifts.length} />
+		<input type="hidden" name="shouldBePublic" value={eventState.shouldBePublic} />
+		<input type="hidden" name="slug" value={eventState.shouldBePublic ? eventState.slug : ''} />
+		{#each deletedShiftIds as id (id)}
+			<input type="hidden" name="deletedShiftIds" value={id} />
+		{/each}
+		{#each removedUserShifts as keyValue (keyValue)}
+			<input type="hidden" name="removedUserShifts" value={keyValue} />
+		{/each}
+
+		<section class="space-y-6 rounded-lg border border-gray-200 bg-white p-6">
+			<div>
+				<h2 class="text-lg font-semibold text-gray-900">Arrangementsdetaljer</h2>
+				<p class="mt-1 text-sm text-gray-500">
+					Oppdater navn, tidspunkt og offentlig informasjon for arrangementet.
+				</p>
 			</div>
-		{/if}
 
-		{#if deletedShiftIds.length > 0 || removedUserShifts.length > 0}
-			<div class="mb-4 rounded-md bg-yellow-50 p-4 text-yellow-700">
-				<p class="font-medium">Ulagrede endringer:</p>
-				<ul class="mt-1 text-sm">
-					{#if deletedShiftIds.length > 0}
-						<li>
-							• {deletedShiftIds.length} vakt{deletedShiftIds.length > 1 ? 'er' : ''} vil bli slettet
-						</li>
-					{/if}
-					{#if removedUserShifts.length > 0}
-						<li>
-							• {removedUserShifts.length} bruker{removedUserShifts.length > 1 ? 'e' : ''} vil bli fjernet
-						</li>
-					{/if}
-				</ul>
+			<div class="grid gap-4 md:grid-cols-2">
+				<FormInput
+					label="Navn"
+					name="name"
+					class="border-1"
+					bind:value={eventState.name}
+					required
+				/>
+				<FormInput
+					label="Dato"
+					name="date"
+					bind:value={eventState.date}
+					type="datetime-local"
+					class="border-1"
+					required
+				/>
 			</div>
-		{/if}
 
-		<form method="POST" action="?/save" use:enhance>
-			<input type="hidden" name="shiftsCount" value={eventState.shifts.length} />
-			<input type="hidden" name="shouldBePublic" value={eventState.shouldBePublic} />
-			<input type="hidden" name="slug" value={eventState.shouldBePublic ? eventState.slug : ''} />
-			{#each deletedShiftIds as id (id)}
-				<input type="hidden" name="deletedShiftIds" value={id} />
-			{/each}
-			{#each removedUserShifts as keyValue (keyValue)}
-				<input type="hidden" name="removedUserShifts" value={keyValue} />
-			{/each}
+			<div class="rounded-lg border border-gray-100 bg-gray-50 p-4">
+				<Checkbox
+					id="shouldBePublic"
+					bind:checked={eventState.shouldBePublic}
+					label="Vis arrangementet offentlig"
+				/>
+				<p class="mt-1 text-xs text-gray-500">
+					Når arrangementet er offentlig synlig på nettsiden, trenger det en beskrivelse og slug.
+				</p>
 
-			<div class="bg-background mb-6 rounded-lg border-2 p-4 shadow-lg">
-				<div class="space-y-4">
-					<FormInput label="Navn" name="name" bind:value={eventState.name} required />
-					<FormInput
-						label="Dato"
-						name="date"
-						bind:value={eventState.date}
-						type="datetime-local"
-						required
-					/>
-					<Checkbox
-						id="shouldBePublic"
-						bind:checked={eventState.shouldBePublic}
-						label="Skal være offentlig"
-					/>
-					{#if eventState.shouldBePublic}
-						<div class="space-y-2">
-							<label for="description" class="block text-sm font-medium text-gray-700">
-								Beskrivelse
-							</label>
-							<p class="text-sm text-gray-500">Beskrivelse av arrangementet (valgfritt)</p>
-							<Textarea
-								id="description"
-								name="description"
-								bind:value={eventState.description}
-								placeholder="Skriv en beskrivelse av arrangementet..."
-								class="min-h-24"
-							/>
-						</div>
-					{/if}
+				{#if eventState.shouldBePublic}
+					<div class="mt-4 space-y-2">
+						<label for="description" class="block text-sm font-medium text-gray-700">
+							Beskrivelse
+						</label>
+						<p class="text-xs text-gray-500">
+							Beskriv hva som skjer – teksten vises offentlig. Slug foreslås automatisk fra navnet,
+							men kan endres senere ved behov.
+						</p>
+						<Textarea
+							id="description"
+							name="description"
+							bind:value={eventState.description}
+							placeholder="Oppdater beskrivelsen som vises offentlig…"
+							class="border-1 min-h-28"
+						/>
+						{#if eventState.slug}
+							<p class="text-xs text-gray-500">
+								Lenke: programmer.bar/arrangementer/{eventState.slug}
+							</p>
+						{/if}
+					</div>
+				{/if}
+			</div>
+		</section>
+
+		<section class="space-y-6 rounded-lg border border-gray-200 bg-white p-6">
+			<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+				<div>
+					<h2 class="text-lg font-semibold text-gray-900">Vakter</h2>
+					<p class="mt-1 text-sm text-gray-500">
+						Legg til, fjern eller oppdater vakter og ansvarlige. Kalenderinvitasjoner sendes
+						automatisk.
+					</p>
 				</div>
+				<Button
+					type="button"
+					intent="primary"
+					size="sm"
+					class="w-full sm:w-auto"
+					onclick={() => eventState.addShift()}
+				>
+					<Plus class="mr-1 h-4 w-4" />
+					Legg til vakt
+				</Button>
 			</div>
 
-			<div class="mb-6">
-				<div class="mb-4 flex items-center justify-between">
-					<h2 class="text-lg font-medium">Vakter</h2>
-					<Button
-						type="button"
-						intent="primary"
-						class="text-sm"
-						onclick={() => eventState.addShift()}
-					>
-						<Plus class="mr-1 h-4 w-4" />
-						Legg til vakt
-					</Button>
-				</div>
-
+			<div class="space-y-4">
 				{#each eventState.shifts as shift, i (shift.startAt.toString() + shift.endAt.toString())}
-					<div class="bg-background mb-4 rounded-lg border-2 p-4 shadow-lg transition-opacity">
-						<div class="flex items-center justify-between">
-							<h3 class="font-medium">Vakt {i + 1}</h3>
+					{@const hasTimes = Boolean(shift.startAt && shift.endAt)}
+					{@const shiftLength = hasTimes
+						? differenceInHours(new Date(shift.endAt), new Date(shift.startAt))
+						: 0}
+
+					<article class="rounded-lg border border-gray-200 bg-gray-50 p-5">
+						<div class="flex items-start justify-between gap-3">
+							<div class="flex items-center gap-3">
+								<div
+									class="flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-semibold text-gray-600"
+								>
+									{i + 1}
+								</div>
+								<div>
+									<h3 class="text-base font-semibold text-gray-900">Vakt {i + 1}</h3>
+									<p class="text-xs text-gray-500">
+										Oppdater start- og sluttid, og hvem som har ansvar.
+									</p>
+								</div>
+							</div>
 							<button
 								type="button"
-								class="rounded-full p-1 text-red-400 hover:text-red-600"
+								class="rounded-full p-2 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
 								onclick={() => {
 									if (i < originalShifts.length) {
 										deletedShiftIds.push(originalShifts[i].id);
@@ -186,7 +243,7 @@
 							<input type="hidden" name={`shift[${i}].id`} value={originalShifts[i].id} />
 						{/if}
 
-						<div class="mt-4 grid gap-4 md:grid-cols-2">
+						<div class="mt-4 grid gap-4 sm:grid-cols-2">
 							<FormInput
 								label="Start"
 								name={`shift[${i}].startAt`}
@@ -203,23 +260,45 @@
 							/>
 						</div>
 
-						<div class="mt-4 border-t pt-4">
-							<div class="mb-2 flex items-center justify-between">
-								<h4 class="font-medium">Ansvarlige</h4>
-								<Button type="button" class="text-sm" onclick={() => eventState.addUserToShift(i)}>
+						{#if hasTimes && shiftLength >= 4}
+							<div
+								class="mt-3 flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-700"
+							>
+								<Clock size={16} />
+								<span>Vakten er lengre enn 4 timer – vurder ekstra bemanning.</span>
+							</div>
+						{/if}
+
+						<div class="mt-5 rounded-lg border border-gray-200 bg-white p-4">
+							<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+								<div>
+									<h4 class="text-sm font-semibold text-gray-900">Ansvarlige</h4>
+									<p class="text-xs text-gray-500">
+										Ansvarlige får e-post med kalenderinvitasjon når du lagrer endringene.
+									</p>
+								</div>
+								<Button
+									type="button"
+									intent="outline"
+									size="sm"
+									class="w-full sm:w-auto"
+									onclick={() => eventState.addUserToShift(i)}
+								>
 									<Plus class="mr-1 h-4 w-4" />
-									Legg til
+									Legg til ansvarlig
 								</Button>
 							</div>
 
 							<input type="hidden" name={`shift[${i}].userCount`} value={shift.users.length} />
 
 							{#if shift.users.length === 0}
-								<p class="py-2 text-sm text-gray-500 italic">Ingen ansvarlige</p>
+								<p class="py-2 text-sm italic text-gray-500">
+									Ingen ansvarlige lagt til ennå. Husk å invitere minst én.
+								</p>
 							{:else}
-								<div class="space-y-2">
+								<div class="mt-4 space-y-3">
 									{#each shift.users as user, j (user.id)}
-										<div class="flex items-center gap-2">
+										<div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
 											<Combobox
 												type="single"
 												name="shift[{i}].user[{j}].id"
@@ -237,13 +316,13 @@
 													}
 												}}
 												inputProps={{
-													class: 'flex-1',
-													placeholder: 'Velg en bruker'
+													class: 'w-full',
+													placeholder: 'Velg ansvarlig'
 												}}
 											/>
 											<button
 												type="button"
-												class="flex h-10 w-10 items-center justify-center rounded-lg border hover:text-red-500"
+												class="flex h-10 items-center justify-center rounded-lg border border-gray-200 bg-white px-4 text-sm font-medium text-gray-600 transition-colors hover:border-red-200 hover:text-red-500"
 												onclick={() => {
 													if (i < originalShifts.length && user.id) {
 														removedUserShifts = [
@@ -254,28 +333,37 @@
 													eventState.deleteUserFromShift(i, user.id);
 												}}
 											>
-												<X class="h-4 w-4" />
+												Fjern
 											</button>
 										</div>
 									{/each}
 								</div>
 							{/if}
 						</div>
+					</article>
+				{:else}
+					<div
+						class="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-sm text-gray-500"
+					>
+						Ingen vakter registrert. Legg til den første for å starte planleggingen.
 					</div>
 				{/each}
 			</div>
+		</section>
 
-			<div class="flex justify-end gap-4 border-t pt-6">
-				<div class="flex gap-2">
-					<a href={resolve('/portal/arrangementer')}>
-						<Button type="button" intent="warning">Avbryt</Button>
-					</a>
-					<Button type="submit" intent="primary" disabled={!eventState.isValid()}>
-						<Save class="mr-1 h-4 w-4" />
-						Lagre endringer
-					</Button>
-				</div>
-			</div>
-		</form>
-	</div>
+		<div class="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end">
+			<a href={resolve('/portal/arrangementer')} class="sm:w-auto">
+				<Button type="button" intent="outline" class="w-full sm:w-auto">Avbryt</Button>
+			</a>
+			<Button
+				type="submit"
+				intent="primary"
+				disabled={!eventState.isValid()}
+				class="flex w-full items-center justify-center gap-2 sm:w-auto"
+			>
+				<Save class="h-4 w-4" />
+				Lagre endringer
+			</Button>
+		</div>
+	</form>
 </div>
