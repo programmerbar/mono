@@ -132,6 +132,15 @@
 							</div>
 						</div>
 					</div>
+					{#if data.event.slug}
+						<p class="text-xs text-gray-700">Slug: "{data.event.slug}"</p>
+					{/if}
+				</div>
+				<div class="mt-6 space-y-4">
+					<h2 class="text-sm font-semibold text-gray-900">Beskrivelse</h2>
+					<p class="text-sm">
+						<span class="text-gray-700">{data.event.description || 'Ingen beskrivelse'}</span>
+					</p>
 				</div>
 
 				<div class="mt-6 space-y-4">
