@@ -3,7 +3,6 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import { ArrowLeft, ChevronLeft, ChevronRight } from '@lucide/svelte';
-	import type { PageData } from './$types';
 	import { SvelteSet, SvelteURLSearchParams } from 'svelte/reactivity';
 
 	const formatter = new Intl.DateTimeFormat('no-NO', {
@@ -11,7 +10,7 @@
 		timeStyle: 'short'
 	});
 
-	let { data }: { data: PageData } = $props();
+	let { data } = $props();
 
 	function formatTimestamp(value: Date | string | number) {
 		const date = value instanceof Date ? value : new Date(value);
