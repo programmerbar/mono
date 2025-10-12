@@ -5,9 +5,17 @@
 	type Props = HTMLInputAttributes & {
 		label?: string;
 		description?: string;
+		error?: string;
 	};
 
-	let { label, description, class: className, value = $bindable(), ...props }: Props = $props();
+	let {
+		label,
+		class: className,
+		value = $bindable(),
+		description = $bindable(),
+		error = $bindable(),
+		...props
+	}: Props = $props();
 </script>
 
 <label class="flex flex-col gap-1">
@@ -19,5 +27,9 @@
 
 	{#if description}
 		<span class="text-sm text-gray-500">{description}</span>
+	{/if}
+
+	{#if error}
+		<span class="text-sm text-red-500">{error}</span>
 	{/if}
 </label>

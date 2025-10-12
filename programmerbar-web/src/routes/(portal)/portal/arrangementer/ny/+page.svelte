@@ -17,7 +17,11 @@
 	let successMessage = $state('');
 	let isSubmitting = $state(false);
 	let createEventState = new CreateEventState();
-	let isSlugTaken = $derived(data.allSlugs.includes(createEventState.slug));
+	let slugError = $derived.by(() =>
+		createEventState.shouldBePublic && data.allSlugs.includes(createEventState.slug)
+			? 'Denne lenken er allerede i bruk. Velg et annet navn eller beskrivelse.'
+			: ''
+	);
 
 	const handleSubmit: EventHandler<SubmitEvent, HTMLFormElement> = async (e) => {
 		e.preventDefault();
@@ -26,8 +30,8 @@
 			return;
 		}
 
-		if (isSlugTaken) {
-			error = 'Denne lenken er allerede i bruk. Velg et annet navn eller beskrivelse.';
+		if (slugError) {
+			error = slugError;
 			return;
 		}
 
@@ -99,15 +103,11 @@
 				<FormInput
 					label="Navn"
 					description="Navn på arrangementet som vises for medlemmene"
+					bind:error={slugError}
 					placeholder="Fest med Foobar"
 					bind:value={createEventState.name}
 					required
 				/>
-				{#if isSlugTaken && createEventState.shouldBePublic}
-					<p class="text-sm text-red-600">
-						Denne lenken er allerede i bruk. Velg et annet navn eller beskrivelse.
-					</p>
-				{/if}
 				<FormInput
 					label="Dato"
 					description="Starttidspunkt for arrangementet"
@@ -146,11 +146,6 @@
 							<p class="text-xs text-gray-500">
 								Lenkeforslag: programmer.bar/arrangementer/{createEventState.slug}
 							</p>
-							{#if isSlugTaken}
-								<p class="text-sm text-red-600">
-									Denne lenken er allerede i bruk. Velg et annet navn pls.
-								</p>
-							{/if}
 						{/if}
 					</div>
 				{/if}
