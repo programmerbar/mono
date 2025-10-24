@@ -63,51 +63,21 @@ const main: Handle = async ({ event, resolve }) => {
 	event.locals.feideProvider = feideProvider;
 
 	// Setup services
-
-	const statusService = new StatusService(event.platform!.env.STATUS_KV);
-	event.locals.statusService = statusService;
-
-	const invitationService = new InvitationService(db);
-	event.locals.invitationService = invitationService;
-
-	const userService = new UserService(db);
-	event.locals.userService = userService;
-
-	const eventService = new EventService(db);
-	event.locals.eventService = eventService;
-
-	const emailService = new EmailService(resend);
-	event.locals.emailService = emailService;
-
-	const shiftService = new ShiftService(db);
-	event.locals.shiftService = shiftService;
-
-	const beerService = new BeerService(db, shiftService);
-	event.locals.beerService = beerService;
-
-	const notificationService = new NotificationService(db);
-	event.locals.notificationService = notificationService;
-
-	const contactSubmissionService = new ContactSubmissionService(db);
-	event.locals.contactSubmissionService = contactSubmissionService;
-
-	const producerService = new ProducerService(db);
-	event.locals.producerService = producerService;
-
-	const productTypeService = new ProductTypeService(db);
-	event.locals.productTypeService = productTypeService;
-
-	const productService = new ProductService(db);
-	event.locals.productService = productService;
-
-	const imageService = new ImageService(R2_BUCKET, db);
-	event.locals.imageService = imageService;
-
-	const referralService = new ReferralService(db);
-	event.locals.referralService = referralService;
-
-	const pendingApplicationService = new PendingApplicationService(db);
-	event.locals.pendingApplicationService = pendingApplicationService;
+	event.locals.statusService = new StatusService(STATUS_KV);
+	event.locals.emailService = new EmailService(resend);
+	event.locals.invitationService = new InvitationService(db);
+	event.locals.userService = new UserService(db);
+	event.locals.eventService = new EventService(db);
+	event.locals.shiftService = new ShiftService(db);
+	event.locals.notificationService = new NotificationService(db);
+	event.locals.contactSubmissionService = new ContactSubmissionService(db);
+	event.locals.producerService = new ProducerService(db);
+	event.locals.productTypeService = new ProductTypeService(db);
+	event.locals.productService = new ProductService(db);
+	event.locals.imageService = new ImageService(R2_BUCKET, db);
+	event.locals.referralService = new ReferralService(db);
+	event.locals.pendingApplicationService = new PendingApplicationService(db);
+	event.locals.beerService = new BeerService(db, event.locals.shiftService);
 
 	// Validate auth
 	const sessionId = event.cookies.get(auth.sessionCookieName);
