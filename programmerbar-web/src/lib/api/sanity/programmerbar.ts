@@ -1,7 +1,6 @@
-import { echoSanityClient } from './client';
 import groq from 'groq';
 
-const query = groq`*[_type == "studentGroup"
+export const PROGRAMMERBAR_GROUP_QUERY = groq`*[_type == "studentGroup"
     && slug.current == $slug
     && !(_id in path('drafts.**'))] {
     _id,
@@ -29,7 +28,7 @@ const query = groq`*[_type == "studentGroup"
     }
   }[0]`;
 
-type StudentGroup = {
+export type StudentGroup = {
 	_id: string;
 	_createdAt: string;
 	_updatedAt: string;
@@ -52,8 +51,4 @@ type StudentGroup = {
 		linkedin: string;
 		email: string;
 	}>;
-};
-
-export const getProgrammerbarGroup = async () => {
-	return await echoSanityClient.fetch<StudentGroup>(query, { slug: 'programmerbar' });
 };

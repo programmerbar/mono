@@ -21,12 +21,12 @@ const ContanctSubmissionSchema = z.object({
 export const createContactSubmissionAction = form(
 	ContanctSubmissionSchema,
 	async ({ name, email, namekjkj, emailkjkj, messagekjkj }) => {
-		const { locals, getClientAddress } = getRequestEvent();
-
+		const event = getRequestEvent();
+		const { locals, getClientAddress } = event;
 		const ip = getClientAddress();
 
 		if (name || email) {
-			await locals.banService.banIp(ip);
+			await locals.banService.ban(event);
 
 			return fail(400, { success: false });
 		}

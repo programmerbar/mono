@@ -1,3 +1,6 @@
+import { building } from '$app/environment';
+import type { RequestEvent } from '@sveltejs/kit';
+
 export class BanService {
 	#kv: KVNamespace;
 
@@ -5,11 +8,15 @@ export class BanService {
 		this.#kv = kv;
 	}
 
-	async banIp(ip: string): Promise<void> {
+	async ban(event: RequestEvent): Promise<void> {
+		const ip = event.getClientAddress();
 		await this.#kv.put(`banned:${ip}`, 'banned', { expirationTtl: 60 * 60 * 24 * 7 });
 	}
 
-	async isIpBanned(ip: string): Promise<boolean> {
+	async isBanned(event: RequestEvent): Promise<boolean> {
+		if (building) return false;
+
+		const ip = event.getClientAddress();
 		const banned = await this.#kv.get(`banned:${ip}`);
 		return banned !== null;
 	}

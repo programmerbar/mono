@@ -4,10 +4,11 @@
 	import { marked } from 'marked';
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import SEO from '$lib/components/SEO.svelte';
+	import { getProgrammerbarGroup } from './data.remote';
 
-	let { data } = $props();
+	const programmerbar = await getProgrammerbarGroup();
 
-	const html = marked.parse(data.programmerbar.description);
+	const html = marked.parse(programmerbar.description);
 </script>
 
 <SEO
@@ -18,16 +19,16 @@
 	type="website"
 />
 
-<div class="bg-background mx-auto w-full max-w-screen-lg rounded-xl border-2 p-8 shadow-lg">
+<div class="bg-background mx-auto w-full max-w-5xl rounded-xl border-2 p-8 shadow-lg">
 	<Heading class="mb-4 text-4xl">Om oss</Heading>
 
 	<div class="mb-16">
 		<div
 			class="mx-auto mb-4 flex h-72 w-full items-center justify-center gap-4 rounded-xl border-2 bg-gray-100 sm:float-right sm:ml-4 md:w-96"
 		>
-			{#if data.programmerbar.image}
+			{#if programmerbar.image}
 				<img
-					src={echoUrlFor(data.programmerbar.image).url()}
+					src={echoUrlFor(programmerbar.image).url()}
 					alt="Programmerbar"
 					class="h-full w-full rounded-xl object-cover"
 				/>
@@ -39,7 +40,7 @@
 			{/if}
 		</div>
 
-		<article class="prose prose-xl text-xl break-words">
+		<article class="prose prose-xl wrap-break-words text-xl">
 			{@html html}
 		</article>
 	</div>
@@ -48,7 +49,7 @@
 		<Heading class="text-3xl" level={2}>Styremedlemmer</Heading>
 
 		<ul class="mt-4 grid grid-cols-1 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
-			{#each data.programmerbar.members as member (member.profile._id)}
+			{#each programmerbar.members as member (member.profile._id)}
 				<li class="p-1 text-center">
 					<div class="mb-3 flex items-center justify-center">
 						{#if member.profile.picture}

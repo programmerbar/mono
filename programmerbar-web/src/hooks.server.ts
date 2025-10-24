@@ -1,4 +1,3 @@
-import { dev } from '$app/environment';
 import { createAuth } from '$lib/auth/lucia';
 import { FeideProvider } from '$lib/auth/feide';
 import { createDatabase } from '$lib/db/drizzle';
@@ -24,6 +23,7 @@ import { PendingApplicationService } from '$lib/services/pending-application.ser
 import { csrf } from '$lib/hooks/csrf';
 
 const main: Handle = async ({ event, resolve }) => {
+	// Set up primitive services from Cloudflare environment
 	const STATUS_KV = event.platform!.env.STATUS_KV;
 	const R2_BUCKET = event.platform!.env.BUCKET;
 	const DB = event.platform!.env.DB;
@@ -31,10 +31,9 @@ const main: Handle = async ({ event, resolve }) => {
 	const banService = new BanService(STATUS_KV);
 	event.locals.banService = banService;
 
-	const ip = event.getClientAddress();
-	const isIpBanned = await banService.isIpBanned(ip);
-
-	if (isIpBanned) {
+	// Check if IP is banned
+	const isBanned = await banService.isBanned(event);
+	if (isBanned) {
 		return new Response(null, {
 			status: 429,
 			headers: {
@@ -63,7 +62,8 @@ const main: Handle = async ({ event, resolve }) => {
 	);
 	event.locals.feideProvider = feideProvider;
 
-	// Setup status service
+	// Setup services
+
 	const statusService = new StatusService(event.platform!.env.STATUS_KV);
 	event.locals.statusService = statusService;
 
@@ -122,14 +122,14 @@ const main: Handle = async ({ event, resolve }) => {
 		event.locals.session = null;
 	}
 
+	// Clear cookie if no valid user
 	if (!event.locals.user) {
 		event.cookies.delete(auth.sessionCookieName, {
-			path: '/',
-			httpOnly: true,
-			secure: !dev
+			path: '/'
 		});
 	}
 
+	// Only board members have access to routes under /portal/admin
 	if (event.url.pathname.startsWith('/portal/admin') && event.locals.user?.role !== 'board') {
 		return new Response(null, {
 			status: 307,
@@ -139,6 +139,7 @@ const main: Handle = async ({ event, resolve }) => {
 		});
 	}
 
+	// Only authenticated users have access to routes under /portal
 	if (event.url.pathname.startsWith('/portal') && !event.locals.user) {
 		return new Response(null, {
 			status: 307,
