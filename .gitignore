@@ -9,3 +9,4 @@ dist
 .pnpm-store
 /target
 apps/*/target/
+.claude

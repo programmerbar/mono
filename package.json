@@ -17,10 +17,8 @@
     "extract": "turbo run extract",
     "typegen": "turbo run typegen"
   },
-  "dependencies": {
-    "turbo": "2.5.8"
-  },
   "devDependencies": {
+    "turbo": "2.5.8",
     "typescript": "5.9.3"
   }
 }
