@@ -1,64 +1,30 @@
 <script lang="ts">
 	import { urlFor } from '$lib/api/sanity/image';
-	import { Heart } from '@lucide/svelte';
 	import { resolve } from '$app/paths';
 	import type { filterProducts } from '$lib/filter-products';
 	import type { FilterState } from '$lib/states/filter-state.svelte';
-	import { WishlistState } from '$lib/states/wishlist-state.svelte';
 	import Chip from '$lib/components/ui/Chip.svelte';
 
+	type Product = ReturnType<typeof filterProducts>[number];
 	type Props = {
-		product: ReturnType<typeof filterProducts>[number];
+		product: Product;
 		filterState: FilterState;
 		alwaysShowCreditPrice?: boolean;
 		disableLink?: boolean;
-		disableWishlist?: boolean;
 	};
 
 	let {
 		product = $bindable(),
 		filterState = $bindable(),
 		alwaysShowCreditPrice = false,
-		disableLink = false,
-		disableWishlist = false
+		disableLink = false
 	}: Props = $props();
-
-	let wishlist = new WishlistState();
-	let isWishlisted = $derived.by(() => wishlist.products.includes(product._id));
-
-	const handleHeartClick = () => {
-		if (disableWishlist) return;
-
-		if (isWishlisted) {
-			wishlist.remove(product._id);
-		} else {
-			wishlist.add(product._id);
-		}
-	};
 </script>
 
 <div
 	class="bg-background group relative flex h-full flex-col overflow-hidden rounded-2xl border-2 shadow-lg transition-all duration-300 hover:shadow-xl"
 >
 	<div class="relative overflow-hidden">
-		{#if !disableWishlist}
-			<div
-				class="absolute top-3 right-3 z-10 rounded-full bg-white/90 p-2 shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
-			>
-				<button
-					onclick={handleHeartClick}
-					aria-label={isWishlisted ? 'Remove from favorites' : 'Add to favorites'}
-					class="flex items-center justify-center"
-				>
-					{#if isWishlisted}
-						<Heart class="h-4 w-4 fill-red-500 stroke-red-500" />
-					{:else}
-						<Heart class="h-4 w-4 stroke-gray-600 transition-colors hover:stroke-red-500" />
-					{/if}
-				</button>
-			</div>
-		{/if}
-
 		{#if product.isSoldOut}
 			<div
 				class="absolute top-3 left-3 z-10 rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white shadow-md"
@@ -84,7 +50,7 @@
 			{/if}
 		{:else}
 			<div
-				class="flex h-56 w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200"
+				class="flex h-56 w-full items-center justify-center bg-linear-to-br from-gray-100 to-gray-200"
 				aria-label="No image available"
 			>
 				<span class="text-sm font-medium text-gray-400">Ingen bilde</span>
