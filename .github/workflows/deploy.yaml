@@ -10,6 +10,9 @@ jobs:
     name: 🚀 Deploy web to Cloudflare
     runs-on: ubuntu-latest
 
+    env:
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+
     steps:
       - name: 🔍 Checkout
         uses: actions/checkout@v4
