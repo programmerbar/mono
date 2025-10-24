@@ -2,6 +2,11 @@ import type { Database } from '$lib/db/drizzle';
 import * as table from '$lib/db/schemas';
 import { and, eq, isNull, desc } from 'drizzle-orm';
 
+type NotificationPayload = {
+	title: string;
+	message: string;
+};
+
 export class NotificationService {
 	#db: Database;
 
@@ -50,5 +55,15 @@ export class NotificationService {
 			.returning();
 
 		return notification[0];
+	}
+
+	async sendNotifications(userIds: Array<string>, payload: NotificationPayload) {
+		const notifications = userIds.map((userId) => ({
+			userId,
+			title: payload.title,
+			body: payload.message
+		}));
+
+		await this.#db.insert(table.notifications).values(notifications);
 	}
 }

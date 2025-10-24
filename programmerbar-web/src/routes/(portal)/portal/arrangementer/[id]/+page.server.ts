@@ -24,7 +24,7 @@ export const actions: Actions = {
 			message: 'Unauthorized'
 		});
 	},
-	join: async ({ request, locals }) => {
+	join: async ({ request, locals, params }) => {
 		if (!locals.user) {
 			return fail(401, {
 				message: 'Not logged in'
@@ -45,9 +45,18 @@ export const actions: Actions = {
 			status: 'accepted'
 		});
 
+		// Notify board members
+		const event = await locals.eventService.findFullEventById(params.id);
+		const boardMemebers = (await locals.userService.findAllBoardMembers()).map((user) => user.id);
+
+		await locals.notificationService.sendNotifications(boardMemebers, {
+			title: 'Ny frivillig på vakt',
+			message: `Frivillig ${locals.user.name} har meldt seg på en vakt for arrangement ${event?.name ?? params.id}.`
+		});
+
 		return { success: true };
 	},
-	leave: async ({ request, locals }) => {
+	leave: async ({ request, locals, params }) => {
 		if (!locals.user) {
 			return fail(401, {
 				message: 'Not logged in'
@@ -65,6 +74,15 @@ export const actions: Actions = {
 		await locals.eventService.deleteUserShift({
 			shiftId,
 			userId: locals.user.id
+		});
+
+		// Notify board members
+		const event = await locals.eventService.findFullEventById(params.id);
+		const boardMemebers = (await locals.userService.findAllBoardMembers()).map((user) => user.id);
+
+		await locals.notificationService.sendNotifications(boardMemebers, {
+			title: 'Frivillig har forlatt vakt',
+			message: `Frivillig ${locals.user.name} har forlatt en vakt for arrangement ${event?.name ?? params.id}.`
 		});
 
 		return { success: true };
