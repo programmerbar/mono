@@ -97,17 +97,6 @@
 		return items;
 	});
 
-	const pageStart = $derived.by(() => {
-		if (data.pagination.totalCount === 0) {
-			return 0;
-		}
-		return (data.pagination.currentPage - 1) * data.pagination.pageSize + 1;
-	});
-
-	const pageEnd = $derived.by(() =>
-		Math.min(data.pagination.currentPage * data.pagination.pageSize, data.pagination.totalCount)
-	);
-
 	const previousPage = $derived.by(() =>
 		data.pagination.currentPage > 1 ? data.pagination.currentPage - 1 : null
 	);
@@ -219,16 +208,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div
-				class="flex flex-col gap-4 border-t px-6 py-4 sm:flex-row sm:items-center sm:justify-between"
-			>
-				<p class="text-sm text-gray-600">
-					Viser {pageStart}
-					{#if data.pagination.totalCount > 0}
-						–{pageEnd}
-					{/if}
-					av {data.pagination.totalCount}
-				</p>
+			<div class="flex justify-center border-t px-6 py-4">
 				<nav aria-label="Paginering" class="flex items-center gap-2">
 					{#if previousPage}
 						<ButtonLink
