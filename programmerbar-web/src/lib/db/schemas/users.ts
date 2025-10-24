@@ -2,7 +2,6 @@ import { sqliteTable, text, integer, uniqueIndex } from 'drizzle-orm/sqlite-core
 import { relations, type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
 import { sessions } from './sessions';
 import { shifts } from './shifts';
-import { usersGroups } from './users-groups';
 import { notifications } from './notifications';
 import { referrals } from './referrals';
 import { claimedCredits } from './claimed-credit';
@@ -30,7 +29,6 @@ export const users = sqliteTable(
 export const usersRelations = relations(users, ({ many }) => ({
 	sessions: many(sessions),
 	shifts: many(shifts),
-	memberships: many(usersGroups),
 	notifications: many(notifications),
 	referralsGiven: many(referrals, { relationName: 'referrer' }),
 	referralsReceived: many(referrals, { relationName: 'referred' }),
