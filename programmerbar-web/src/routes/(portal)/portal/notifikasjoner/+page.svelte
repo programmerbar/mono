@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
-	import { enhance } from '$app/forms';
 	import { Bell, Check, BellOff } from '@lucide/svelte';
+	import { archiveNotificationAction } from './data.remote';
 
 	let { data } = $props();
 </script>
@@ -57,8 +57,10 @@
 							</div>
 						</div>
 
-						<form action="?/archive" method="post" use:enhance class="flex-shrink-0">
-							<input type="hidden" name="notificationId" value={notification.id} />
+						<form {...archiveNotificationAction} class="shrink-0">
+							<input
+								{...archiveNotificationAction.fields.notificationId.as('hidden', notification.id)}
+							/>
 							<Button
 								type="submit"
 								size="square"

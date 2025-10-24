@@ -7,7 +7,6 @@ import { BeerService } from '$lib/services/beer.service';
 import { ContactSubmissionService } from '$lib/services/contact-submission.service';
 import { EmailService } from '$lib/services/email.service';
 import { EventService } from '$lib/services/event.service';
-import { GroupsService } from '$lib/services/groups.service';
 import { InvitationService } from '$lib/services/invitation.service';
 import { NotificationService } from '$lib/services/notification.service';
 import { ProducerService } from '$lib/services/producer.service';
@@ -88,9 +87,6 @@ const main: Handle = async ({ event, resolve }) => {
 
 	const notificationService = new NotificationService(db);
 	event.locals.notificationService = notificationService;
-
-	const groupsService = new GroupsService(db);
-	event.locals.groupsService = groupsService;
 
 	const contactSubmissionService = new ContactSubmissionService(db);
 	event.locals.contactSubmissionService = contactSubmissionService;

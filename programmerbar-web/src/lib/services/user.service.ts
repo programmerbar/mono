@@ -119,4 +119,10 @@ export class UserService {
 	async findAllIncludeDeleted() {
 		return await this.#db.query.users.findMany();
 	}
+
+	async findAllBoardMembers() {
+		return await this.#db.query.users.findMany({
+			where: (row, { eq, not }) => and(eq(row.role, 'board'), not(row.isDeleted))
+		});
+	}
 }

@@ -40,46 +40,36 @@ export const actions: Actions = {
 			});
 		}
 
-		try {
-			const success = await locals.beerService.claimProductCredits(userId, creditCost, {
-				productId
-			});
+		const success = await locals.beerService.claimProductCredits(userId, creditCost, {
+			productId
+		});
 
-			if (success) {
-				const users = await locals.groupsService.getUsersById('board');
-				await Promise.all(
-					users.map((user) => {
-						return locals.notificationService.create(
-							user.userId,
-							'Produkt claimet',
-							`${locals.user?.name} har claimed produktet ${product.name} for ${creditCost} credits.`
-						);
-					})
-				);
-			}
-
-			if (success) {
-				const updatedBeerCount = await locals.beerService.getTotalAvailableBeers(userId);
-
-				return {
-					success: true,
-					message: `Produkt claimet for ${creditCost} credits.`,
-					productId,
-					updatedBeerCount
-				};
-			}
-
+		if (!success) {
 			return fail(400, {
 				success: false,
 				message: 'Du har ikkje nokk bonger til å claime dette produktet'
 			});
-		} catch (error) {
-			console.error('Error claiming product from menu page:', error);
-
-			return fail(500, {
-				success: false,
-				message: 'Internal error while claiming product'
-			});
 		}
+
+		const users = await locals.userService.findAllBoardMembers();
+
+		await Promise.all(
+			users.map((user) => {
+				return locals.notificationService.create(
+					user.id,
+					'Produkt claimet',
+					`${locals.user?.name} har claimed produktet ${product.name} for ${creditCost} credits.`
+				);
+			})
+		);
+
+		const updatedBeerCount = await locals.beerService.getTotalAvailableBeers(userId);
+
+		return {
+			success: true,
+			message: `Produkt claimet for ${creditCost} credits.`,
+			productId,
+			updatedBeerCount
+		};
 	}
 };
