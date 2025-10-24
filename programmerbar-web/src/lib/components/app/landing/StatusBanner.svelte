@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/cn';
-	import { getStatus } from '../../../../routes/(app)/status.remote';
+	import { getStatus } from '../../../../routes/(app)/common.remote';
 
 	const statusQuery = getStatus();
 </script>
