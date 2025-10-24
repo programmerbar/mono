@@ -7,7 +7,7 @@
 	import PriceRangeSlider from '$lib/components/ui/PriceRangeSlider.svelte';
 
 	type Props = {
-		filterState: FilterState;
+		filter: FilterState;
 		types: ReturnType<typeof extractTypes>;
 		breweries: Array<string>;
 		priceRange: { min: number; max: number };
@@ -16,7 +16,7 @@
 	};
 
 	let {
-		filterState = $bindable(),
+		filter = $bindable(),
 		types,
 		breweries,
 		priceRange,
@@ -27,7 +27,7 @@
 	const typeOptions = $derived(types.map((type) => ({ id: type._id, label: type.title })));
 
 	function updatePriceRange(newRange: { min: number; max: number }) {
-		filterState.priceRange = newRange;
+		filter.current.priceRange = newRange;
 	}
 </script>
 
@@ -46,7 +46,7 @@
 			id="search"
 			placeholder="Søk etter produkt"
 			class="border-border rounded-lg border-2 px-2 py-1"
-			bind:value={filterState.search}
+			bind:value={filter.current.search}
 		/>
 	</div>
 
@@ -55,7 +55,7 @@
 		<select
 			id="sort"
 			class="border-border rounded-lg border-2 px-2 py-1"
-			bind:value={filterState.sort}
+			bind:value={filter.current.sort}
 		>
 			{#each SORT_OPTIONS as option (option.value)}
 				<option value={option.value}>{option.label}</option>
@@ -65,8 +65,8 @@
 
 	<MultipleSelect
 		options={typeOptions}
-		selected={Array.from(filterState.types)}
-		onToggle={(type) => filterState.toggleType(type)}
+		selected={Array.from(filter.current.types)}
+		onToggle={(type) => filter.toggleType(type)}
 		placeholder="Alle typer"
 		label="Type"
 	/>
@@ -77,8 +77,8 @@
 				? { id: '__no_brewery__', label: 'Uten bryggeri' }
 				: { id: brewery, label: brewery }
 		)}
-		selected={Array.from(filterState.breweries)}
-		onToggle={(brewery) => filterState.toggleBrewery(brewery)}
+		selected={Array.from(filter.current.breweries)}
+		onToggle={(brewery) => filter.toggleBrewery(brewery)}
 		placeholder="Alle bryggerier"
 		label="Bryggeri"
 	/>
@@ -86,7 +86,7 @@
 	<PriceRangeSlider
 		min={priceRange.min}
 		max={priceRange.max}
-		value={filterState.priceRange}
+		value={filter.current.priceRange}
 		onUpdate={updatePriceRange}
 	/>
 
@@ -97,7 +97,7 @@
 				type="checkbox"
 				id="hideSoldOut"
 				class="h-4 w-4 rounded border-2"
-				bind:checked={filterState.hideSoldOut}
+				bind:checked={filter.current.hideSoldOut}
 			/>
 		</div>
 
@@ -107,13 +107,13 @@
 				type="checkbox"
 				id="showStudentPrice"
 				class="h-4 w-4 rounded border-2"
-				bind:checked={filterState.showStudentPrice}
+				bind:checked={filter.current.showStudentPrice}
 			/>
 		</div>
 	{/if}
 
 	<div class="pt-2">
-		<Button intent="outline" class="w-full" onclick={() => filterState.reset()}>
+		<Button intent="outline" class="w-full" onclick={() => filter.reset()}>
 			Tilbakestill filtre
 		</Button>
 	</div>

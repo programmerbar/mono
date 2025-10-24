@@ -8,14 +8,14 @@
 	type Product = ReturnType<typeof filterProducts>[number];
 	type Props = {
 		product: Product;
-		filterState: FilterState;
+		filter: FilterState;
 		alwaysShowCreditPrice?: boolean;
 		disableLink?: boolean;
 	};
 
 	let {
 		product = $bindable(),
-		filterState = $bindable(),
+		filter = $bindable(),
 		alwaysShowCreditPrice = false,
 		disableLink = false
 	}: Props = $props();
@@ -75,13 +75,13 @@
 					{/if}
 				</div>
 				<div class="mt-auto">
-					{#if alwaysShowCreditPrice || filterState.showCreditPrice}
+					{#if alwaysShowCreditPrice || filter.current.showCreditPrice}
 						{@const credits = product.priceList.credits || 0}
 						{@const unit = credits === 1 ? 'bong' : 'bonger'}
 						<p class="text-xl font-bold text-black">
 							{credits === 0 ? 'Gratis' : `${credits} ${unit}`}
 						</p>
-					{:else if filterState.showStudentPrice}
+					{:else if filter.current.showStudentPrice}
 						<p class="text-xl font-bold text-black">
 							{product.priceList.student === 0 ? 'Gratis' : `${product.priceList.student} kr`}
 						</p>
@@ -115,13 +115,13 @@
 					{/if}
 				</div>
 				<div class="mt-auto">
-					{#if alwaysShowCreditPrice || filterState.showCreditPrice}
+					{#if alwaysShowCreditPrice || filter.current.showCreditPrice}
 						{@const credits = product.priceList.credits || 0}
 						{@const unit = credits === 1 ? 'bong' : 'bonger'}
 						<p class="text-xl font-bold text-black">
 							{credits === 0 ? 'Gratis' : `${credits} ${unit}`}
 						</p>
-					{:else if filterState.showStudentPrice}
+					{:else if filter.current.showStudentPrice}
 						<p class="text-xl font-bold text-black">
 							{product.priceList.student === 0 ? 'Gratis' : `${product.priceList.student} kr`}
 						</p>

@@ -12,15 +12,12 @@
 
 	let types = extractTypes(data.products);
 	let breweries = extractBreweries(data.products);
-	let filterState = new FilterState();
-	let priceRange = $derived(extractPriceRange(data.products, filterState.showStudentPrice));
-	let filteredProducts = $derived(filterProducts(data.products, filterState));
+	let filter = new FilterState();
+	let priceRange = $derived(extractPriceRange(data.products, filter.current.showStudentPrice));
+	let filteredProducts = $derived(filterProducts(data.products, filter));
 
-	// Initialize price range when component mounts
 	$effect(() => {
-		if (priceRange) {
-			filterState.initializePriceRange(priceRange.min, priceRange.max);
-		}
+		filter.initializePriceRange(priceRange.min, priceRange.max);
 	});
 </script>
 
@@ -33,7 +30,7 @@
 />
 
 <div class="flex w-full flex-col gap-8 sm:mx-auto sm:max-w-screen-sm md:max-w-full md:flex-row">
-	<ProductSidebar {types} {breweries} {priceRange} {filterState} />
+	<ProductSidebar {types} {breweries} {priceRange} {filter} />
 
 	<div class="flex-1">
 		{#if filteredProducts.length > 0}
@@ -42,7 +39,7 @@
 			<ul class="grid w-full grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
 				{#each filteredProducts as product (product._id)}
 					<li>
-						<ProductPreview {product} {filterState} />
+						<ProductPreview {product} {filter} />
 					</li>
 				{/each}
 			</ul>

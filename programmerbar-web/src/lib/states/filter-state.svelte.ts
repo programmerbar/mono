@@ -13,107 +13,57 @@ export const SORT_OPTIONS = [
 
 export type Sort = (typeof SORT_OPTIONS)[number]['value'];
 
+type FilterStateType = {
+	search: string;
+	sort: Sort;
+	types: SvelteSet<string>;
+	breweries: SvelteSet<string>;
+	priceRange: {
+		min: number;
+		max: number;
+	};
+	hideSoldOut: boolean;
+	showStudentPrice: boolean;
+	showCreditPrice: boolean;
+};
+
+function getDefaultState(): FilterStateType {
+	return {
+		search: '',
+		sort: 'name-asc',
+		types: new SvelteSet(),
+		breweries: new SvelteSet(),
+		priceRange: { min: 0, max: 1000 },
+		hideSoldOut: true,
+		showStudentPrice: true,
+		showCreditPrice: false
+	};
+}
+
 export class FilterState {
-	#search = $state('');
-	#sort = $state<Sort>('name-asc');
-	#types = $state<SvelteSet<string>>(new SvelteSet<string>());
-	#breweries = $state<SvelteSet<string>>(new SvelteSet<string>());
-	#priceRange = $state<{ min: number; max: number }>({ min: 0, max: 1000 });
-	#hideSoldOut = $state(true);
-	#showStudentPrice = $state(true);
-	#showCreditPrice = $state(false);
+	current = $state(getDefaultState());
 
-	get search() {
-		return this.#search;
-	}
-
-	get sort() {
-		return this.#sort;
-	}
-
-	get types() {
-		return this.#types;
-	}
-
-	get breweries() {
-		return this.#breweries;
-	}
-
-	get priceRange() {
-		return this.#priceRange;
-	}
-
-	get hideSoldOut() {
-		return this.#hideSoldOut;
-	}
-
-	get showStudentPrice() {
-		return this.#showStudentPrice;
-	}
-
-	get showCreditPrice() {
-		return this.#showCreditPrice;
-	}
-
-	set search(value: string) {
-		this.#search = value;
-	}
-
-	set sort(value: Sort) {
-		this.#sort = value;
-	}
-
-	set types(value: SvelteSet<string>) {
-		this.#types = value;
-	}
-
-	set breweries(value: SvelteSet<string>) {
-		this.#breweries = value;
-	}
-
-	set priceRange(value: { min: number; max: number }) {
-		this.#priceRange = value;
-	}
-
-	set hideSoldOut(value: boolean) {
-		this.#hideSoldOut = value;
-	}
-
-	set showStudentPrice(value: boolean) {
-		this.#showStudentPrice = value;
-	}
-	set showCreditPrice(value: boolean) {
-		this.#showCreditPrice = value;
-	}
-
-	toggleType = (value: string) => {
-		if (this.#types.has(value)) {
-			this.#types.delete(value);
+	toggleType(value: string) {
+		if (this.current.types.has(value)) {
+			this.current.types.delete(value);
 		} else {
-			this.#types.add(value);
+			this.current.types.add(value);
 		}
-	};
+	}
 
-	toggleBrewery = (value: string) => {
-		if (this.#breweries.has(value)) {
-			this.#breweries.delete(value);
+	toggleBrewery(value: string) {
+		if (this.current.breweries.has(value)) {
+			this.current.breweries.delete(value);
 		} else {
-			this.#breweries.add(value);
+			this.current.breweries.add(value);
 		}
-	};
+	}
 
-	reset = () => {
-		this.#search = '';
-		this.#sort = 'name-asc';
-		this.#types = new SvelteSet<string>();
-		this.#breweries = new SvelteSet<string>();
-		this.#priceRange = { min: 0, max: 1000 };
-		this.#hideSoldOut = true;
-		this.#showStudentPrice = true;
-		this.#showCreditPrice = false;
-	};
+	reset() {
+		this.current = getDefaultState();
+	}
 
-	initializePriceRange = (minPrice: number, maxPrice: number) => {
-		this.#priceRange = { min: minPrice, max: maxPrice };
-	};
+	initializePriceRange(minPrice: number, maxPrice: number) {
+		this.current.priceRange = { min: minPrice, max: maxPrice };
+	}
 }

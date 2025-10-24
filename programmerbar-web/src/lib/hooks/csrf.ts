@@ -13,7 +13,7 @@ function isFormContentType(request: Request): boolean {
 	);
 }
 
-export function csrf(allowedPaths: string[], allowedOrigins: string[] = []): Handle {
+export function csrf(allowedPaths: Array<string>, allowedOrigins: Array<string> = []): Handle {
 	return async ({ event, resolve }) => {
 		const { request, url } = event;
 
