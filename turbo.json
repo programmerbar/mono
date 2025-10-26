@@ -39,5 +39,8 @@
     "db:migrate:local": {
       "cache": false
     }
-  }
+  },
+  "globalPassThroughEnv": [
+    "*"
+  ]
 }
