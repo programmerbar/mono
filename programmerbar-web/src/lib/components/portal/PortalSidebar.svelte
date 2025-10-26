@@ -40,9 +40,7 @@
 	let user = getUser();
 	let theme = getThemeContext();
 	let isSidebarOpen = $state(false);
-	let isMobile = $state(true); // Start as mobile to prevent flash
-
-	const showFullLayout = $derived((isSidebarOpen && isMobile) || !isMobile);
+	let isMobile = $state(false);
 
 	// Main portal navigation items
 	const portalRoutes = [
@@ -164,11 +162,10 @@
 <!-- Sidebar -->
 <aside
 	class={cn(
-		'fixed top-0 left-0 z-50 h-svh transform border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out dark:border-slate-700 dark:bg-slate-800',
+		'fixed top-0 left-0 z-50 h-svh transform overflow-hidden border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out lg:w-64 dark:border-slate-700 dark:bg-slate-800',
 		{
 			'w-80': isSidebarOpen && isMobile, // Large width when opened on mobile
 			'w-16 sm:w-20': !isSidebarOpen || !isMobile, // Narrow when closed or not mobile
-			'lg:w-64': true, // Desktop width
 			'translate-x-0': isSidebarOpen,
 			'-translate-x-full lg:translate-x-0': !isSidebarOpen
 		}
@@ -177,47 +174,21 @@
 	<div class="flex h-full flex-col">
 		<!-- Header -->
 		<div
-			class={cn('flex items-center border-b border-gray-200 py-4 dark:border-slate-700', {
-				'justify-center px-2': !showFullLayout,
-				'justify-start gap-3 px-6': showFullLayout
-			})}
+			class="flex items-center justify-start gap-3 border-b border-gray-200 px-6 py-4 dark:border-slate-700"
 		>
-			<img
-				src={logo}
-				alt="Programmerbar"
-				class={cn('', {
-					'h-6 w-6': !showFullLayout,
-					'h-8 w-8': showFullLayout
-				})}
-			/>
-			<div
-				class={cn('', {
-					hidden: !showFullLayout,
-					block: showFullLayout
-				})}
-			>
+			<img src={logo} alt="Programmerbar" class="h-8 w-8" />
+			<div>
 				<h1 class="font-bold text-gray-800 dark:text-gray-100">Portal</h1>
 				<p class="text-xs text-gray-500 dark:text-gray-400">Programmerbar</p>
 			</div>
 		</div>
 
 		<!-- Navigation -->
-		<nav
-			class={cn('flex-1 space-y-6 overflow-y-auto py-6', {
-				'px-1': !showFullLayout,
-				'space-y-8 px-4': showFullLayout
-			})}
-		>
+		<nav class="flex-1 space-y-8 overflow-y-auto px-4 py-6">
 			<!-- Main Portal Section -->
 			<div>
 				<h2
-					class={cn(
-						'mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400',
-						{
-							hidden: !showFullLayout,
-							block: showFullLayout
-						}
-					)}
+					class="mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400"
 				>
 					Generelt
 				</h2>
@@ -229,10 +200,8 @@
 							<a
 								{href}
 								class={cn(
-									'flex items-center rounded-lg py-2 text-sm font-medium transition-colors',
+									'flex items-center justify-start gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
 									{
-										'justify-center gap-0 px-1': !showFullLayout,
-										'justify-start gap-3 px-3': showFullLayout,
 										'bg-blue-50 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300': isActive,
 										'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100':
 											!isActive
@@ -241,12 +210,7 @@
 								title={route.name}
 							>
 								<route.icon class="h-5 w-5 shrink-0" />
-								<span
-									class={cn('', {
-										hidden: !showFullLayout,
-										inline: showFullLayout
-									})}>{route.name}</span
-								>
+								<span class="inline">{route.name}</span>
 							</a>
 						</li>
 					{/each}
@@ -257,13 +221,7 @@
 			{#if adminRoutes.length > 0}
 				<div>
 					<h2
-						class={cn(
-							'mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400',
-							{
-								hidden: !showFullLayout,
-								block: showFullLayout
-							}
-						)}
+						class="mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400"
 					>
 						Administrator
 					</h2>
@@ -275,10 +233,8 @@
 								<a
 									{href}
 									class={cn(
-										'relative flex items-center rounded-lg py-2 text-sm font-medium transition-colors',
+										'relative flex items-center justify-start gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
 										{
-											'justify-center gap-0 px-1': !showFullLayout,
-											'justify-start gap-3 px-3': showFullLayout,
 											'bg-amber-50 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300':
 												isActive,
 											'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100':
@@ -288,21 +244,10 @@
 									title={route.name}
 								>
 									<route.icon class="h-5 w-5 shrink-0" />
-									<span
-										class={cn('flex-1', {
-											hidden: !showFullLayout,
-											inline: showFullLayout
-										})}>{route.name}</span
-									>
+									<span class="inline flex-1">{route.name}</span>
 									{#if route.count && route.count > 0}
 										<span
-											class={cn(
-												'flex items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white',
-												{
-													'absolute -top-1 -right-1 h-4 w-4': !showFullLayout,
-													'static h-5 w-5': showFullLayout
-												}
-											)}
+											class="static flex size-5 items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white"
 										>
 											{route.count}
 										</span>
@@ -321,10 +266,8 @@
 						<a
 							href={notificationsHref}
 							class={cn(
-								'relative flex items-center rounded-lg py-2 text-sm font-medium transition-colors',
+								'relative flex items-center justify-start gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
 								{
-									'justify-center gap-0 px-1': !showFullLayout,
-									'justify-start gap-3 px-3': showFullLayout,
 									'bg-gray-100 text-gray-900 dark:bg-slate-700 dark:text-gray-100':
 										page.url.pathname === notificationsHref,
 									'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100':
@@ -334,21 +277,10 @@
 							title="Notifikasjoner"
 						>
 							<Bell class="h-5 w-5 shrink-0" />
-							<span
-								class={cn('flex-1', {
-									hidden: !showFullLayout,
-									inline: showFullLayout
-								})}>Notifikasjoner</span
-							>
+							<span class="inline flex-1">Notifikasjoner</span>
 							{#if notifications.length > 0}
 								<span
-									class={cn(
-										'flex items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white',
-										{
-											'absolute -top-1 -right-1 h-4 w-4': !showFullLayout,
-											'static h-5 w-5': showFullLayout
-										}
-									)}
+									class="static flex size-5 items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white"
 								>
 									{notifications.length}
 								</span>
@@ -360,18 +292,8 @@
 		</nav>
 
 		<!-- User section -->
-		<div
-			class={cn('border-t border-gray-200 dark:border-slate-700', {
-				'p-2': !showFullLayout,
-				'p-4': showFullLayout
-			})}
-		>
-			<div
-				class={cn('mb-3 flex items-center', {
-					'justify-center gap-0': !showFullLayout,
-					'justify-start gap-3': showFullLayout
-				})}
-			>
+		<div class="border-t border-gray-200 p-4 dark:border-slate-700">
+			<div class="mb-3 flex items-center justify-start gap-3">
 				<div
 					class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900"
 				>
@@ -379,12 +301,7 @@
 						{$user?.name?.charAt(0)?.toUpperCase() || 'U'}
 					</span>
 				</div>
-				<div
-					class={cn('min-w-0 flex-1', {
-						hidden: !showFullLayout,
-						block: showFullLayout
-					})}
-				>
+				<div class="min-w-0 flex-1">
 					<p class="truncate text-sm font-medium text-gray-700 dark:text-gray-200">{$user?.name}</p>
 					<p class="truncate text-xs text-gray-500 dark:text-gray-400">
 						{$user?.role === 'board' ? 'Styret' : 'Frivillig'}
@@ -392,41 +309,19 @@
 				</div>
 			</div>
 
-			<div
-				class={cn('flex gap-2', {
-					'flex-col': !showFullLayout,
-					'flex-row': showFullLayout
-				})}
-			>
+			<div class="flex gap-2">
 				<a
 					href={resolve('/')}
-					class={cn(
-						'flex items-center rounded-lg py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100',
-						{
-							'w-full justify-center gap-0 px-1': !showFullLayout,
-							'flex-1 justify-start gap-2 px-3': showFullLayout
-						}
-					)}
+					class="flex flex-1 items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100"
 					title="Hjem"
 				>
 					<House class="h-4 w-4 shrink-0" />
-					<span
-						class={cn('', {
-							hidden: !showFullLayout,
-							inline: showFullLayout
-						})}>Til forsiden</span
-					>
+					<span class="inline">Til forsiden</span>
 				</a>
 
 				<button
 					onclick={() => theme.toggle()}
-					class={cn(
-						'flex items-center rounded-lg py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100',
-						{
-							'w-full justify-center gap-0 px-1': !showFullLayout,
-							'justify-center gap-0 px-2': showFullLayout
-						}
-					)}
+					class="flex items-center justify-center gap-0 rounded-lg px-2 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100"
 					title={theme.current === 'dark' ? 'Bytt til lyst tema' : 'Bytt til mørkt tema'}
 				>
 					{#if theme.current === 'dark'}
