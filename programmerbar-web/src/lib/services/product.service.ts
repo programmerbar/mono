@@ -25,6 +25,7 @@ export class ProductService {
 	}
 
 	async getAll(): Promise<ProductWithRelations[]> {
+		console.log(`[ProductService] Fetching all products`);
 		const productList = await this.#db
 			.select({
 				product: products,
@@ -48,14 +49,18 @@ export class ProductService {
 				: [];
 
 		// Combine data
-		return productList.map(({ product, producer }) => ({
+		const result = productList.map(({ product, producer }) => ({
 			...product,
 			producer,
 			types: productTypesData.filter((pt) => pt.productId === product.id).map((pt) => pt.type)
 		}));
+
+		console.log(`[ProductService] Found ${result.length} product(s)`);
+		return result;
 	}
 
 	async getById(id: string): Promise<ProductWithRelations | null> {
+		console.log(`[ProductService] Fetching product by ID: ${id}`);
 		const result = await this.#db
 			.select({
 				product: products,
@@ -65,7 +70,10 @@ export class ProductService {
 			.leftJoin(producers, eq(products.producerId, producers.id))
 			.where(eq(products.id, id));
 
-		if (!result[0]) return null;
+		if (!result[0]) {
+			console.log(`[ProductService] Product not found: ${id}`);
+			return null;
+		}
 
 		// Get product types
 		const productTypesData = await this.#db
@@ -76,6 +84,9 @@ export class ProductService {
 			.innerJoin(productTypes, eq(productProductTypes.productTypeId, productTypes.id))
 			.where(eq(productProductTypes.productId, id));
 
+		console.log(
+			`[ProductService] ✅ Found product: ${result[0].product.name} with ${productTypesData.length} type(s)`
+		);
 		return {
 			...result[0].product,
 			producer: result[0].producer,
@@ -87,6 +98,7 @@ export class ProductService {
 		data: Omit<ProductInsert, 'createdAt' | 'updatedAt'> & { id?: string },
 		typeIds: string[] = []
 	): Promise<ProductWithRelations> {
+		console.log(`[ProductService] Creating product: ${data.name}`);
 		const now = new Date().toISOString();
 		const product: ProductInsert = {
 			id: data.id || nanoid(),
@@ -111,6 +123,7 @@ export class ProductService {
 
 		// Add product types
 		if (typeIds.length > 0) {
+			console.log(`[ProductService] Adding ${typeIds.length} product type(s)`);
 			await this.#db.insert(productProductTypes).values(
 				typeIds.map((typeId) => ({
 					productId: product.id,
@@ -119,6 +132,7 @@ export class ProductService {
 			);
 		}
 
+		console.log(`[ProductService] ✅ Product created: ${product.id} (${product.name})`);
 		return (await this.getById(product.id))!;
 	}
 
@@ -127,6 +141,7 @@ export class ProductService {
 		data: Partial<Omit<ProductInsert, 'id' | 'createdAt'>>,
 		typeIds?: string[]
 	): Promise<ProductWithRelations | null> {
+		console.log(`[ProductService] Updating product: ${id}`);
 		const now = new Date().toISOString();
 		const updateData = {
 			...data,
@@ -137,6 +152,7 @@ export class ProductService {
 
 		// Update product types if provided
 		if (typeIds !== undefined) {
+			console.log(`[ProductService] Updating product types: ${typeIds.length} type(s)`);
 			// Remove existing types
 			await this.#db.delete(productProductTypes).where(eq(productProductTypes.productId, id));
 
@@ -151,14 +167,17 @@ export class ProductService {
 			}
 		}
 
+		console.log(`[ProductService] ✅ Product updated: ${id}`);
 		return await this.getById(id);
 	}
 
 	async delete(id: string): Promise<boolean> {
+		console.log(`[ProductService] Deleting product: ${id}`);
 		// Delete product types first (cascade should handle this, but being explicit)
 		await this.#db.delete(productProductTypes).where(eq(productProductTypes.productId, id));
 
 		await this.#db.delete(products).where(eq(products.id, id));
+		console.log(`[ProductService] ✅ Product deleted: ${id}`);
 		return true;
 	}
 }

@@ -80,33 +80,43 @@ export class EmailService {
 	}
 
 	async sendContactUsEmail(data: ContactUsEmailProps) {
+		console.log(`[EmailService] Sending contact us email from: ${data.email} (${data.name})`);
 		await this.sendEmail({
 			from: FROM_EMAIL,
 			subject: 'Kontaktskjema på hjemmesiden',
 			to: [PROGRAMMERBAR_EMAIL],
 			react: <ContactUsEmail {...data} />
 		});
+		console.log(`[EmailService] ✅ Contact us email sent`);
 	}
 
 	async sendInvitaitonEmail(data: InvitationEmailProps) {
+		console.log(`[EmailService] Sending invitation email to: ${data.email}`);
 		await this.sendEmail({
 			from: FROM_EMAIL,
 			subject: 'Invitasjon til Programmerbar',
 			to: [data.email],
 			react: <InvitationEmail email={data.email} />
 		});
+		console.log(`[EmailService] ✅ Invitation email sent to ${data.email}`);
 	}
 
 	async sendVolunteerRequestEmail(data: VolunteerRequestEmailProps) {
+		console.log(`[EmailService] Sending volunteer request email for: ${data.email} (${data.name})`);
 		await this.sendEmail({
 			from: FROM_EMAIL,
 			subject: 'Ny frivillig-søknad',
 			to: ['frivilligansvarlig@programmerbar.no'],
 			react: <VoulenteerRequestEmail name={data.name} email={data.email} />
 		});
+		console.log(`[EmailService] ✅ Volunteer request email sent`);
 	}
 
 	async sendShiftEmail(data: ShiftEmailProps) {
+		console.log(`[EmailService] Sending shift email to: ${data.user.email} (${data.user.name})`);
+		console.log(
+			`[EmailService] Shift: ${data.shift.summary} (${data.shift.startAtFormatted} - ${data.shift.endAtFormatted})`
+		);
 		const icsContent = createIcsEvent(data.shift);
 
 		await this.sendEmail({
@@ -122,24 +132,27 @@ export class EmailService {
 				}
 			]
 		});
+		console.log(`[EmailService] ✅ Shift email sent with calendar attachment`);
 	}
 
 	private async sendEmail(payload: CreateEmailOptions) {
-		console.log('###### SENDING EMAIL ########');
-		console.log(`Sending email to: ${payload.to}`);
-		console.log(`Subject: ${payload.subject}`);
+		console.log(`[EmailService] ###### SENDING EMAIL ########`);
+		console.log(`[EmailService] To: ${payload.to}`);
+		console.log(`[EmailService] Subject: ${payload.subject}`);
 		console.log(await render(payload.react));
-		console.log('#############################');
+		console.log(`[EmailService] #############################`);
 
 		if (payload.attachments) {
-			console.log('########### ATTACHMENTS ############');
+			console.log(`[EmailService] ########### ATTACHMENTS ############`);
 			console.log(payload.attachments);
 		}
 
 		if (dev) {
+			console.log(`[EmailService] Dev mode - email not actually sent`);
 			return;
 		}
 
 		await this.#resend.emails.send(payload);
+		console.log(`[EmailService] ✅ Email sent via Resend`);
 	}
 }

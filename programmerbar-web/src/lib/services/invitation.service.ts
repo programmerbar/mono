@@ -12,7 +12,8 @@ export class InvitationService {
 	}
 
 	async invite(email: string) {
-		return await this.#db
+		console.log(`[InvitationService] Creating invitation for: ${email}`);
+		const invitation = await this.#db
 			.insert(invitations)
 			.values({
 				id: nanoid(),
@@ -22,10 +23,17 @@ export class InvitationService {
 			})
 			.returning()
 			.get();
+
+		console.log(
+			`[InvitationService] ✅ Invitation created: ${invitation.id} for ${email} (expires in 7 days)`
+		);
+		return invitation;
 	}
 
 	async claim(id: string) {
+		console.log(`[InvitationService] Claiming invitation: ${id}`);
 		await this.#db.delete(invitations).where(eq(invitations.id, id));
+		console.log(`[InvitationService] ✅ Invitation claimed and deleted: ${id}`);
 	}
 
 	async findByEmail(email: string) {
@@ -35,30 +43,42 @@ export class InvitationService {
 	}
 
 	async findValidInvitationByEmail(email: string) {
+		console.log(`[InvitationService] Validating invitation for: ${email}`);
 		const invitation = await this.findByEmail(email);
 
 		if (!invitation) {
+			console.log(`[InvitationService] ❌ No invitation found for: ${email}`);
 			return { success: false, error: 'No invitation found' } as const;
 		}
 
 		if (invitation.claimedAt !== null) {
+			console.log(`[InvitationService] ❌ Invitation already claimed for: ${email}`);
 			return { success: false, error: 'Invitation already claimed' } as const;
 		}
 
 		if (isPast(invitation.expiresAt)) {
+			console.log(`[InvitationService] ❌ Invitation expired for: ${email}`);
 			return { success: false, error: 'Invitation expired' } as const;
 		}
 
+		console.log(`[InvitationService] ✅ Valid invitation found for: ${email}`);
 		return { success: true, invitation } as const;
 	}
 
 	async findAllUnused() {
-		return await this.#db.query.invitations.findMany({
+		console.log(`[InvitationService] Fetching all unused invitations`);
+		const invitations = await this.#db.query.invitations.findMany({
 			where: (row, { isNull }) => isNull(row.claimedAt)
 		});
+
+		console.log(`[InvitationService] Found ${invitations.length} unused invitation(s)`);
+		return invitations;
 	}
 
 	async delete(id: string) {
-		return await this.#db.delete(invitations).where(eq(invitations.id, id));
+		console.log(`[InvitationService] Deleting invitation: ${id}`);
+		const result = await this.#db.delete(invitations).where(eq(invitations.id, id));
+		console.log(`[InvitationService] ✅ Invitation deleted: ${id}`);
+		return result;
 	}
 }

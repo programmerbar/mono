@@ -10,6 +10,7 @@ export class ShiftService {
 	}
 
 	async findCompletedShiftsByUserId(userId: string) {
+		console.log(`[ShiftService] Finding completed shifts for user: ${userId}`);
 		const completedShifts = await this.#db
 			.select()
 			.from(shifts)
@@ -22,12 +23,21 @@ export class ShiftService {
 				)
 			);
 
+		console.log(
+			`[ShiftService] Found ${completedShifts.length} completed shift(s) for user ${userId}`
+		);
 		return completedShifts.map((shifts) => shifts.shift);
 	}
 
 	async findUsersWithCompletedShiftsByUserIds(userIds: string[]) {
-		if (userIds.length === 0) return [];
+		if (userIds.length === 0) {
+			console.log(`[ShiftService] No user IDs provided for completed shifts lookup`);
+			return [];
+		}
 
+		console.log(
+			`[ShiftService] Finding users with completed shifts among ${userIds.length} user(s)`
+		);
 		const usersWithCompletedShifts = await this.#db
 			.select({ userId: userShifts.userId })
 			.from(shifts)
@@ -41,11 +51,15 @@ export class ShiftService {
 			)
 			.groupBy(userShifts.userId);
 
+		console.log(
+			`[ShiftService] Found ${usersWithCompletedShifts.length} user(s) with completed shifts`
+		);
 		return usersWithCompletedShifts.map((row) => row.userId);
 	}
 
 	async findUpcomingShiftsByUserId(userId: string) {
-		const upcomingShifts = this.#db
+		console.log(`[ShiftService] Finding upcoming shifts for user: ${userId}`);
+		const upcomingShifts = await this.#db
 			.select()
 			.from(shifts)
 			.leftJoin(userShifts, eq(shifts.id, userShifts.shiftId))
@@ -58,10 +72,14 @@ export class ShiftService {
 				)
 			);
 
+		console.log(
+			`[ShiftService] Found ${upcomingShifts.length} upcoming shift(s) for user ${userId}`
+		);
 		return upcomingShifts;
 	}
 
 	async findShiftsWithUnclaimedBeersByUserId(userId: string) {
+		console.log(`[ShiftService] Finding shifts with unclaimed beers for user: ${userId}`);
 		const shiftsWithUnclaimedBeer = await this.#db
 			.select()
 			.from(shifts)
@@ -75,6 +93,9 @@ export class ShiftService {
 				)
 			);
 
+		console.log(
+			`[ShiftService] Found ${shiftsWithUnclaimedBeer.length} shift(s) with unclaimed beers for user ${userId}`
+		);
 		return shiftsWithUnclaimedBeer;
 	}
 }
