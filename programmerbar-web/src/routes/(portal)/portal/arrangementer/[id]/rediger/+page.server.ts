@@ -128,10 +128,25 @@ export const actions: Actions = {
 					userId
 				}));
 				await locals.eventService.createUserShifts(userShiftsToCreate);
+
+				// Notify users that they've been assigned to a shift
+				await locals.notificationService.sendNotifications(usersToAdd, {
+					title: 'Ny vakt tildelt',
+					message: `Du har blitt tildelt en vakt for ${existingEvent.name}.`
+				});
 			}
 
-			for (const userId of usersToRemove) {
-				await locals.eventService.deleteUserShift({ shiftId, userId });
+			// Remove users from shifts
+			await Promise.all(
+				usersToRemove.map((userId) => locals.eventService.deleteUserShift({ shiftId, userId }))
+			);
+
+			// Notify users that they've been removed from a shift
+			if (usersToRemove.length > 0) {
+				await locals.notificationService.sendNotifications(usersToRemove, {
+					title: 'Fjernet fra vakt',
+					message: `Du har blitt fjernet fra en vakt for ${existingEvent.name}.`
+				});
 			}
 		}
 
