@@ -42,11 +42,26 @@ class ThemeState {
 	}
 
 	toggle() {
+		this.#disableTransitions();
 		this.#theme = this.#theme === 'light' ? 'dark' : 'light';
 	}
 
 	set(theme: Theme) {
+		this.#disableTransitions();
 		this.#theme = theme;
+	}
+
+	// Disable transitions during theme change
+	#disableTransitions() {
+		if (!browser) return;
+		const portalLayout = document.getElementById('portal-layout');
+		if (!portalLayout) return;
+
+		portalLayout.classList.add('disable-transitions');
+
+		setTimeout(() => {
+			portalLayout.classList.remove('disable-transitions');
+		}, 0);
 	}
 }
 
