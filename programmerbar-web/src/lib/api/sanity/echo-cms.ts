@@ -26,7 +26,8 @@ export type Happening = {
 const getEventsQuery = groq`*[
 	_type == "happening" &&
 	!(_id in path("drafts.**")) &&
-	"programmerbar" in organizers[]->slug.current &&
+	("programmerbar" in organizers[]->slug.current ||
+	"3ce656b8-40b7-4614-ae68-6acc1efa8661" == location->_id) &&
 	date >= now()
 ] | order(date asc) {
 	_id,
@@ -45,7 +46,8 @@ export const getEvents = async () => {
 const getUpcomingEventsQuery = groq`*[
 	_type == "happening" &&
 	!(_id in path("drafts.**")) &&
-	"programmerbar" in organizers[]->slug.current &&
+	("programmerbar" in organizers[]->slug.current ||
+	"3ce656b8-40b7-4614-ae68-6acc1efa8661" == location->_id) &&
 	date > now()
 ] | order(date asc) {
 	_id,
@@ -64,7 +66,8 @@ export const getUpcomingEvents = async () => {
 export const getEventBySlugQuery = groq`*[
 	_type == "happening" &&
 	!(_id in path("drafts.**")) &&
-	"programmerbar" in organizers[]->slug.current &&
+	("programmerbar" in organizers[]->slug.current ||
+	"3ce656b8-40b7-4614-ae68-6acc1efa8661" == location->_id) &&
 	slug.current == $slug
 ] {
 	_id,
@@ -98,7 +101,8 @@ export type RepeatingEvent = {
 export const getRepeatingEventsQuery = groq`*[
 	_type == "repeatingHappening" &&
 	!(_id in path("drafts.**")) &&
-	"programmerbar" in organizers[]->slug.current
+	("programmerbar" in organizers[]->slug.current ||
+	"3ce656b8-40b7-4614-ae68-6acc1efa8661" == location->_id)
 ] | order(date asc) {
 	_id,
 	title,
@@ -121,7 +125,8 @@ export const getRepeatingEvents = async () => {
 export const getRepeatingEventBySlugQuery = groq`*[
 	_type == "repeatingHappening" &&
 	!(_id in path("drafts.**")) &&
-	"programmerbar" in organizers[]->slug.current &&
+	("programmerbar" in organizers[]->slug.current ||
+	"3ce656b8-40b7-4614-ae68-6acc1efa8661" == location->_id) &&
 	slug.current == $slug
 ] {
 	_id,
