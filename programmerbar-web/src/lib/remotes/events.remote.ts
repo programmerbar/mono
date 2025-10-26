@@ -48,6 +48,13 @@ export const createEvent = command(CreateEventSchema, async (event) => {
 	const userIds = Array.from(new Set(mappedUserShifts.flatMap((shift) => shift.userId)));
 	await sendShiftEmails(locals, userIds, createdEvent.name, createdShifts, shifts);
 
+	if (userIds.length > 0) {
+		await locals.notificationService.sendNotifications(userIds, {
+			title: 'Ny vakt tildelt',
+			message: `Du har blitt tildelt en vakt for ${createdEvent.name}.`
+		});
+	}
+
 	return {
 		success: true,
 		eventId: createdEvent.id
@@ -81,7 +88,7 @@ async function sendShiftEmails(
 		for (const userId of shiftData.users) {
 			const user = users.find((u) => u.id === userId);
 
-			if (!user || !user.email) continue;
+			if (!user || !user.email || !user.altEmail) continue;
 
 			emailsToSend.push({
 				user: {
