@@ -51,7 +51,7 @@ export const actions: Actions = {
 
 		await locals.notificationService.sendNotifications(boardMemebers, {
 			title: 'Ny frivillig på vakt',
-			message: `Frivillig ${locals.user.name} har meldt seg på en vakt for arrangement ${event?.name ?? params.id}.`
+			message: `${locals.user.name} har meldt seg på en vakt for ${event?.name ?? params.id}.`
 		});
 
 		return { success: true };
@@ -82,7 +82,7 @@ export const actions: Actions = {
 
 		await locals.notificationService.sendNotifications(boardMemebers, {
 			title: 'Frivillig har forlatt vakt',
-			message: `Frivillig ${locals.user.name} har forlatt en vakt for arrangement ${event?.name ?? params.id}.`
+			message: `${locals.user.name} har forlatt vakten for ${event?.name ?? params.id}.`
 		});
 
 		return { success: true };
