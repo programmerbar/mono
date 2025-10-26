@@ -19,9 +19,6 @@ export class PushNotificationService {
 		this.#vapidPublicKey = config.vapidPublicKey;
 		this.#vapidPrivateKey = config.vapidPrivateKey;
 		this.#vapidSubject = config.vapidSubject;
-
-		// Configure web-push with VAPID keys
-		webpush.setVapidDetails(this.#vapidSubject, this.#vapidPublicKey, this.#vapidPrivateKey);
 	}
 
 	/**
@@ -107,7 +104,13 @@ export class PushNotificationService {
 			data: payload.data || {}
 		});
 
-		return await webpush.sendNotification(pushSubscription, notificationPayload);
+		return await webpush.sendNotification(pushSubscription, notificationPayload, {
+			vapidDetails: {
+				subject: this.#vapidSubject,
+				publicKey: this.#vapidPublicKey,
+				privateKey: this.#vapidPrivateKey
+			}
+		});
 	}
 
 	/**

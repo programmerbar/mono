@@ -90,8 +90,6 @@ const main: Handle = async ({ event, resolve }) => {
 	const vapidSubject = event.platform?.env.VAPID_SUBJECT || 'mailto:web@programmerbar.no';
 
 	if (vapidPublicKey && vapidPrivateKey) {
-		console.log('Initialized push notification service with VAPID keys.');
-
 		pushNotificationService = new PushNotificationService(event.locals.pushSubscriptionService, {
 			vapidPublicKey,
 			vapidPrivateKey,
