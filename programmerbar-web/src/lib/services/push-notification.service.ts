@@ -1,5 +1,6 @@
-import webpush from 'web-push';
+import { buildPushPayload } from '@block65/webcrypto-web-push';
 import type { PushSubscriptionService } from './push-subscription.service';
+import type { PushSubscription, PushMessage, VapidKeys } from '@block65/webcrypto-web-push';
 
 export class PushNotificationService {
 	#pushSubscriptionService: PushSubscriptionService;
@@ -25,12 +26,19 @@ export class PushNotificationService {
 	 * Send push notification to a specific user
 	 */
 	async sendToUser(userId: string, payload: PushPayload) {
+		console.log(`[PushNotificationService] Attempting to send push to user ${userId}`);
+		console.log(`[PushNotificationService] Payload:`, JSON.stringify(payload));
+
 		const subscriptions = await this.#pushSubscriptionService.getByUserId(userId);
 
 		if (subscriptions.length === 0) {
-			console.log(`No push subscriptions found for user ${userId}`);
+			console.log(`[PushNotificationService] No push subscriptions found for user ${userId}`);
 			return { sent: 0, failed: 0 };
 		}
+
+		console.log(
+			`[PushNotificationService] Found ${subscriptions.length} subscription(s) for user ${userId}`
+		);
 
 		const results = await Promise.allSettled(
 			subscriptions.map((sub) => this.#sendPush(sub, payload))
@@ -43,18 +51,26 @@ export class PushNotificationService {
 			const result = results[i];
 			if (result.status === 'fulfilled') {
 				sent++;
+				console.log(
+					`[PushNotificationService] ✅ Successfully sent push to ${subscriptions[i].endpoint.substring(0, 50)}...`
+				);
 				// Update last used timestamp
 				await this.#pushSubscriptionService.updateLastUsed(subscriptions[i].endpoint);
 			} else {
 				failed++;
-				console.error(`Failed to send push to ${subscriptions[i].endpoint}:`, result.reason);
+				console.error(
+					`[PushNotificationService] ❌ Failed to send push to ${subscriptions[i].endpoint.substring(0, 50)}...`
+				);
+				console.error(`[PushNotificationService] Error details:`, result.reason);
 				// If subscription is expired/invalid, remove it
 				if (this.#isSubscriptionError(result.reason)) {
+					console.log(`[PushNotificationService] Removing expired subscription`);
 					await this.#pushSubscriptionService.deleteById(subscriptions[i].id);
 				}
 			}
 		}
 
+		console.log(`[PushNotificationService] Push results - Sent: ${sent}, Failed: ${failed}`);
 		return { sent, failed };
 	}
 
@@ -86,31 +102,60 @@ export class PushNotificationService {
 
 	/**
 	 * Send push to a single subscription
+	 * Using @block65/webcrypto-web-push for Cloudflare Workers compatibility
 	 */
 	async #sendPush(subscription: SubscriptionData, payload: PushPayload) {
-		const pushSubscription = {
+		// Prepare subscription object
+		const pushSubscription: PushSubscription = {
 			endpoint: subscription.endpoint,
+			expirationTime: null,
 			keys: {
 				p256dh: subscription.p256dh,
 				auth: subscription.auth
 			}
 		};
 
+		// Prepare notification payload
 		const notificationPayload = JSON.stringify({
 			title: payload.title,
 			body: payload.body,
-			icon: payload.icon || '/favicon.png',
-			badge: payload.badge || '/favicon.png',
+			icon: payload.icon || '/android-chrome-192x192.png',
+			badge: payload.badge || '/favicon-32x32.png',
 			data: payload.data || {}
 		});
 
-		return await webpush.sendNotification(pushSubscription, notificationPayload, {
-			vapidDetails: {
-				subject: this.#vapidSubject,
-				publicKey: this.#vapidPublicKey,
-				privateKey: this.#vapidPrivateKey
+		// VAPID credentials
+		const vapid: VapidKeys = {
+			subject: this.#vapidSubject,
+			publicKey: this.#vapidPublicKey,
+			privateKey: this.#vapidPrivateKey
+		};
+
+		// Message to send
+		const message: PushMessage = {
+			data: notificationPayload,
+			options: {
+				ttl: 43200 // 12 hours
 			}
+		};
+
+		// Build push payload using webcrypto-web-push
+		const fetchPayload = await buildPushPayload(message, pushSubscription, vapid);
+
+		// Send the push notification
+		// Convert body to ArrayBuffer to satisfy TypeScript
+		const result = await fetch(pushSubscription.endpoint, {
+			...fetchPayload,
+			body: fetchPayload.body.buffer as ArrayBuffer
 		});
+
+		if (!result.ok) {
+			throw new Error(
+				`Push notification failed: ${result.status} ${result.statusText || 'Unknown error'}`
+			);
+		}
+
+		return result;
 	}
 
 	/**
@@ -119,9 +164,9 @@ export class PushNotificationService {
 	#isSubscriptionError(error: unknown): boolean {
 		if (!error) return false;
 
-		const statusCode = (error as { statusCode: number }).statusCode;
+		const errorMessage = error instanceof Error ? error.message : String(error);
 		// 404 = endpoint not found, 410 = subscription expired
-		return statusCode === 404 || statusCode === 410;
+		return errorMessage.includes('404') || errorMessage.includes('410');
 	}
 }
 
