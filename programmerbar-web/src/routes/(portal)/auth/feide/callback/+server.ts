@@ -87,7 +87,7 @@ export const GET: RequestHandler = async ({ locals, cookies, url }) => {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				location: '/'
+				location: '/location'
 			}
 		});
 	}
