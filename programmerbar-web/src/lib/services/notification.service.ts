@@ -58,14 +58,16 @@ export class NotificationService {
 			.returning();
 
 		// Send push notification if service is available
-		this.#pushNotificationService
-			?.sendToUser(userId, {
-				title,
-				body: body || ''
-			})
-			.catch((error) => {
-				console.error('Failed to send push notification:', error);
-			});
+		if (this.#pushNotificationService) {
+			this.#pushNotificationService
+				.sendToUser(userId, {
+					title,
+					body: body || ''
+				})
+				.catch((error) => {
+					console.error('Failed to send push notification:', error);
+				});
+		}
 
 		return notification[0];
 	}
@@ -80,13 +82,15 @@ export class NotificationService {
 		await this.#db.insert(table.notifications).values(notifications);
 
 		// Send push notifications if service is available
-		this.#pushNotificationService
-			?.sendToUsers(userIds, {
-				title: payload.title,
-				body: payload.message
-			})
-			.catch((error) => {
-				console.error('Failed to send push notifications:', error);
-			});
+		if (this.#pushNotificationService) {
+			this.#pushNotificationService
+				.sendToUsers(userIds, {
+					title: payload.title,
+					body: payload.message
+				})
+				.catch((error) => {
+					console.error('Failed to send push notifications:', error);
+				});
+		}
 	}
 }

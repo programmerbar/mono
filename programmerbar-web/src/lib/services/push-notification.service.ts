@@ -80,6 +80,10 @@ export class PushNotificationService {
 			{ sent: 0, failed: 0 }
 		);
 
+		console.log(
+			`Push notification sent to users. Total sent: ${totals.sent}, Total failed: ${totals.failed}`
+		);
+
 		return totals;
 	}
 
