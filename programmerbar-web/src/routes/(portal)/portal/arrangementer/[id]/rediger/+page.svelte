@@ -14,7 +14,7 @@
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import { differenceInHours } from 'date-fns';
 
-	let { data } = $props();
+	let { data, form } = $props();
 
 	let showDeleteConfirm = $state(false);
 
@@ -46,7 +46,7 @@
 	let removedUserShifts = $state<Array<string>>([]);
 
 	beforeNavigate(({ cancel }) => {
-		if (deletedShiftIds.length > 0 || removedUserShifts.length > 0) {
+		if (!form?.message && (deletedShiftIds.length > 0 || removedUserShifts.length > 0)) {
 			if (!confirm('Du har ulagrede endringer. Er du sikker på at du vil forlate siden?')) {
 				cancel();
 			}
