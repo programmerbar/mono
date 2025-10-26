@@ -1,6 +1,7 @@
 import type { Database } from '$lib/db/drizzle';
 import * as table from '$lib/db/schemas';
 import { and, eq, isNull, desc } from 'drizzle-orm';
+import type { PushNotificationService } from './push-notification.service';
 
 type NotificationPayload = {
 	title: string;
@@ -9,9 +10,11 @@ type NotificationPayload = {
 
 export class NotificationService {
 	#db: Database;
+	#pushNotificationService?: PushNotificationService;
 
-	constructor(db: Database) {
+	constructor(db: Database, pushNotificationService?: PushNotificationService) {
 		this.#db = db;
+		this.#pushNotificationService = pushNotificationService;
 	}
 
 	async getUnarchived(userId: string) {
@@ -54,6 +57,16 @@ export class NotificationService {
 			})
 			.returning();
 
+		// Send push notification if service is available
+		this.#pushNotificationService
+			?.sendToUser(userId, {
+				title,
+				body: body || ''
+			})
+			.catch((error) => {
+				console.error('Failed to send push notification:', error);
+			});
+
 		return notification[0];
 	}
 
@@ -65,5 +78,15 @@ export class NotificationService {
 		}));
 
 		await this.#db.insert(table.notifications).values(notifications);
+
+		// Send push notifications if service is available
+		this.#pushNotificationService
+			?.sendToUsers(userIds, {
+				title: payload.title,
+				body: payload.message
+			})
+			.catch((error) => {
+				console.error('Failed to send push notifications:', error);
+			});
 	}
 }

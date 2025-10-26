@@ -3,6 +3,7 @@ export * from './contact-submissions';
 export * from './events';
 export * from './invitations';
 export * from './notifications';
+export * from './push-subscriptions';
 export * from './sessions';
 export * from './shifts';
 export * from './user-shifts';

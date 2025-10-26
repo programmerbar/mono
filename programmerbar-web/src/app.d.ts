@@ -38,6 +38,8 @@ declare global {
 			imageService: import('$lib/services/image.service').ImageService;
 			referralService: import('$lib/services/referral.service').ReferralService;
 			pendingApplicationService: import('$lib/services/pending-application.service').PendingApplicationService;
+			pushSubscriptionService: import('$lib/services/push-subscription.service').PushSubscriptionService;
+			pushNotificationService?: import('$lib/services/push-notification.service').PushNotificationService;
 		}
 		// interface PageData {}
 		// interface PageState {}

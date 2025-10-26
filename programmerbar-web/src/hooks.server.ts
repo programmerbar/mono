@@ -14,6 +14,8 @@ import { ProductTypeService } from '$lib/services/product-type.service';
 import { ShiftService } from '$lib/services/shift.service';
 import { StatusService } from '$lib/services/status.service';
 import { UserService } from '$lib/services/user.service';
+import { PushSubscriptionService } from '$lib/services/push-subscription.service';
+import { PushNotificationService } from '$lib/services/push-notification.service';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { Resend } from 'resend';
@@ -69,7 +71,6 @@ const main: Handle = async ({ event, resolve }) => {
 	event.locals.userService = new UserService(db);
 	event.locals.eventService = new EventService(db);
 	event.locals.shiftService = new ShiftService(db);
-	event.locals.notificationService = new NotificationService(db);
 	event.locals.contactSubmissionService = new ContactSubmissionService(db);
 	event.locals.producerService = new ProducerService(db);
 	event.locals.productTypeService = new ProductTypeService(db);
@@ -78,6 +79,27 @@ const main: Handle = async ({ event, resolve }) => {
 	event.locals.referralService = new ReferralService(db);
 	event.locals.pendingApplicationService = new PendingApplicationService(db);
 	event.locals.beerService = new BeerService(db, event.locals.shiftService);
+
+	// Setup push notification services
+	event.locals.pushSubscriptionService = new PushSubscriptionService(db);
+
+	// Only initialize push notifications if VAPID keys are configured
+	let pushNotificationService: PushNotificationService | undefined;
+	const vapidPublicKey = event.platform?.env.PUBLIC_VAPID_PUBLIC_KEY;
+	const vapidPrivateKey = event.platform?.env.VAPID_PRIVATE_KEY;
+	const vapidSubject = event.platform?.env.VAPID_SUBJECT || 'mailto:noreply@programmer.bar';
+
+	if (vapidPublicKey && vapidPrivateKey) {
+		pushNotificationService = new PushNotificationService(event.locals.pushSubscriptionService, {
+			vapidPublicKey,
+			vapidPrivateKey,
+			vapidSubject
+		});
+		event.locals.pushNotificationService = pushNotificationService;
+	}
+
+	// Setup notification service with optional push support
+	event.locals.notificationService = new NotificationService(db, pushNotificationService);
 
 	// Validate auth
 	const sessionId = event.cookies.get(auth.sessionCookieName);

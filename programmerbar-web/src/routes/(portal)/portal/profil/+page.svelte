@@ -3,6 +3,7 @@
 	import Pill from '$lib/components/ui/Pill.svelte';
 	import { initials } from '$lib/utils';
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
+	import PushNotificationToggle from '$lib/components/portal/PushNotificationToggle.svelte';
 
 	let { data } = $props();
 	let user = $derived(data.user);
@@ -113,7 +114,7 @@
 						<div
 							class="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
 						>
-							<div class="h-3 w-3 flex-shrink-0 rounded-full bg-blue-400"></div>
+							<div class="h-3 w-3 shrink-0 rounded-full bg-blue-400"></div>
 							<div class="flex-1">
 								<p class="text-sm font-medium text-gray-900 dark:text-gray-100">
 									Totale referreringer
@@ -126,7 +127,7 @@
 						<div
 							class="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
 						>
-							<div class="h-3 w-3 flex-shrink-0 rounded-full bg-green-400"></div>
+							<div class="h-3 w-3 shrink-0 rounded-full bg-green-400"></div>
 							<div class="flex-1">
 								<p class="text-sm font-medium text-gray-900 dark:text-gray-100">
 									Godkjente referreringer
@@ -139,7 +140,7 @@
 						<div
 							class="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
 						>
-							<div class="h-3 w-3 flex-shrink-0 rounded-full bg-yellow-400"></div>
+							<div class="h-3 w-3 shrink-0 rounded-full bg-yellow-400"></div>
 							<div class="flex-1">
 								<p class="text-sm font-medium text-gray-900 dark:text-gray-100">
 									Ventende referreringer
@@ -191,6 +192,8 @@
 					</div>
 				</div>
 			</div>
+
+			<PushNotificationToggle />
 		</div>
 	</div>
 </div>

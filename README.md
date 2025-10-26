@@ -16,7 +16,7 @@
 1. Fill in env-variables
 
    ```bash
-   cp programmerbar-web/.dev.vars.example programmerbar-web/.dev.vars
+   cp programmerbar-web/.env.example programmerbar-web/.env
    ```
 
 1. Fill in the empty variables

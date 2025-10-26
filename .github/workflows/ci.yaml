@@ -15,6 +15,9 @@ env:
   FEIDE_REDIRECT_URI: http://localhost:8000/auth/feide/callback
   ADMIN_KEY: test-admin-key
   RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+  PUBLIC_VAPID_PUBLIC_KEY: ${{ secrets.PUBLIC_VAPID_PUBLIC_KEY }}
+  VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+  VAPID_SUBJECT: "mailto:web@programmerbar.no"
 
 jobs:
   ci:
