@@ -162,7 +162,7 @@
 						</label>
 						<p class="text-xs text-gray-500 dark:text-gray-400">
 							Beskriv hva som skjer – teksten vises offentlig. Slug foreslås automatisk fra navnet,
-							men kan endres senere ved behov.
+							men kan endres senere ved behov. Støtter Markdown-formattering.
 						</p>
 						<Textarea
 							id="description"
