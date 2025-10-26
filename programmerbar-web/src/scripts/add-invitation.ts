@@ -1,4 +1,4 @@
-import { invitations } from '../src/lib/db/schemas';
+import { invitations } from '../lib/db/schemas';
 import { nanoid } from 'nanoid';
 import { setup } from './setup';
 

@@ -1,4 +1,4 @@
-import { createDatabase } from '../src/lib/db/drizzle';
+import { createDatabase } from '../lib/db/drizzle';
 import { type D1Database } from '@cloudflare/workers-types';
 import { getPlatformProxy } from 'wrangler';
 

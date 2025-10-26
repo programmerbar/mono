@@ -16,11 +16,10 @@
 		"format:check": "prettier --check .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
-		"clean": "rm -rf node_modules .svelte-kit build .turbo",
+		"clean": "rm -rf node_modules .svelte-kit .turbo .wrangler",
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "wrangler d1 migrations apply progbar-db",
-		"db:migrate:local": "pnpm db:migrate -- --local",
-		"client:generate": "./generate-api-client.sh"
+		"db:migrate:local": "pnpm db:migrate -- --local"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "4.20251014.0",

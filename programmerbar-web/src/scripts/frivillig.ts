@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { pendingApplications } from '../src/lib/db/schemas';
+import { pendingApplications } from '../lib/db/schemas';
 import { nanoid } from 'nanoid';
 import { setup } from './setup';
 
