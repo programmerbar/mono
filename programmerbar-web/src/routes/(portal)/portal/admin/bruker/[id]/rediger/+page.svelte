@@ -50,15 +50,19 @@
 		</ButtonLink>
 		<div>
 			<Heading>Rediger bruker</Heading>
-			<p class="mt-1 text-gray-600">Administrer {user.name}s profil og tillatelser</p>
+			<p class="mt-1 text-gray-600 dark:text-gray-300">
+				Administrer {user.name}s profil og tillatelser
+			</p>
 		</div>
 	</div>
 
 	<!-- User overview (read-only) -->
-	<div class="rounded-lg border bg-white p-4 sm:p-6">
+	<div class="rounded-lg border bg-white p-4 sm:p-6 dark:border-slate-700 dark:bg-slate-800">
 		<div class="flex items-center gap-4">
-			<div class="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-				<span class="text-2xl font-semibold text-blue-600">
+			<div
+				class="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30"
+			>
+				<span class="text-2xl font-semibold text-blue-600 dark:text-blue-400">
 					{initials(user.name)}
 				</span>
 			</div>
@@ -74,11 +78,13 @@
 	</div>
 
 	<!-- Edit form -->
-	<div class="rounded-lg border bg-white">
-		<div class="border-b px-6 py-4">
+	<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
+		<div class="border-b px-6 py-4 dark:border-slate-600">
 			<div class="flex items-center gap-2">
-				<UserCog class="h-5 w-5 text-gray-600" />
-				<h3 class="text-lg font-semibold text-gray-900">Rediger brukerdetaljer</h3>
+				<UserCog class="h-5 w-5 text-gray-600 dark:text-gray-300" />
+				<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+					Rediger brukerdetaljer
+				</h3>
 			</div>
 		</div>
 
@@ -86,22 +92,34 @@
 			<div class="space-y-6">
 				<!-- Read-only fields -->
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-					<div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
-						<span class="mb-1 block text-sm font-medium text-gray-500">Navn</span>
-						<p class="text-sm text-gray-900">{user.name}</p>
-						<p class="mt-1 text-xs text-gray-500">Kan ikke endres</p>
+					<div
+						class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+					>
+						<span class="mb-1 block text-sm font-medium text-gray-500 dark:text-gray-400">Navn</span
+						>
+						<p class="text-sm text-gray-900 dark:text-gray-100">{user.name}</p>
+						<p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kan ikke endres</p>
 					</div>
-					<div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
-						<span class="mb-1 block text-sm font-medium text-gray-500">E-post</span>
-						<p class="text-sm text-gray-900">{user.altEmail || user.email}</p>
-						<p class="mt-1 text-xs text-gray-500">Kan ikke endres</p>
+					<div
+						class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+					>
+						<span class="mb-1 block text-sm font-medium text-gray-500 dark:text-gray-400"
+							>E-post</span
+						>
+						<p class="text-sm text-gray-900 dark:text-gray-100">{user.altEmail || user.email}</p>
+						<p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kan ikke endres</p>
 					</div>
 				</div>
 
 				<!-- Editable fields -->
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-					<div class="rounded-lg border border-gray-200 bg-white p-4">
-						<label for="edit-phone" class="mb-2 block text-sm font-medium text-gray-700">
+					<div
+						class="rounded-lg border border-gray-200 bg-white p-4 dark:border-slate-600 dark:bg-slate-700"
+					>
+						<label
+							for="edit-phone"
+							class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200"
+						>
 							Telefon
 						</label>
 						<Input
@@ -114,8 +132,10 @@
 						/>
 					</div>
 
-					<div class="rounded-lg border border-gray-200 bg-white p-4">
-						<div class="mb-2 block text-sm font-medium text-gray-700">Rolle</div>
+					<div
+						class="rounded-lg border border-gray-200 bg-white p-4 dark:border-slate-600 dark:bg-slate-700"
+					>
+						<div class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200">Rolle</div>
 						<div class="flex items-center gap-3">
 							<label class="flex cursor-pointer items-center">
 								<input
@@ -126,7 +146,7 @@
 									bind:group={editForm.role}
 								/>
 								<div
-									class="flex items-center justify-center rounded-lg border px-4 py-2 text-sm transition-colors peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-50"
+									class="flex items-center justify-center rounded-lg border px-4 py-2 text-sm transition-colors peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-50 dark:border-slate-500 dark:text-gray-300 dark:peer-checked:border-blue-400 dark:peer-checked:bg-blue-950/50 dark:peer-checked:text-blue-300 dark:hover:bg-slate-600"
 								>
 									Frivillig
 								</div>
@@ -141,7 +161,7 @@
 									bind:group={editForm.role}
 								/>
 								<div
-									class="flex items-center justify-center rounded-lg border px-4 py-2 text-sm transition-colors peer-checked:border-purple-500 peer-checked:bg-purple-50 peer-checked:text-purple-700 hover:bg-gray-50"
+									class="flex items-center justify-center rounded-lg border px-4 py-2 text-sm transition-colors peer-checked:border-purple-500 peer-checked:bg-purple-50 peer-checked:text-purple-700 hover:bg-gray-50 dark:border-slate-500 dark:text-gray-300 dark:peer-checked:border-purple-400 dark:peer-checked:bg-purple-950/50 dark:peer-checked:text-purple-300 dark:hover:bg-slate-600"
 								>
 									Styret
 								</div>
@@ -151,11 +171,15 @@
 				</div>
 
 				<!-- Can Refer Setting -->
-				<div class="rounded-lg border border-gray-200 bg-white p-4">
+				<div
+					class="rounded-lg border border-gray-200 bg-white p-4 dark:border-slate-600 dark:bg-slate-700"
+				>
 					<div class="flex items-center justify-between">
 						<div>
-							<div class="mb-1 text-sm font-medium text-gray-700">Kan referere nye brukere</div>
-							<p class="text-xs text-gray-500">
+							<div class="mb-1 text-sm font-medium text-gray-700 dark:text-gray-200">
+								Kan referere nye brukere
+							</div>
+							<p class="text-xs text-gray-500 dark:text-gray-400">
 								Tillater brukeren å referere nye frivillige til Programmerbar
 							</p>
 						</div>
@@ -164,9 +188,9 @@
 								type="checkbox"
 								name="canRefer"
 								bind:checked={editForm.canRefer}
-								class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+								class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-slate-500 dark:bg-slate-600 dark:checked:bg-blue-600 dark:focus:ring-blue-500"
 							/>
-							<span class="text-sm font-medium text-gray-900">
+							<span class="text-sm font-medium text-gray-900 dark:text-gray-100">
 								{editForm.canRefer ? 'Ja' : 'Nei'}
 							</span>
 						</label>

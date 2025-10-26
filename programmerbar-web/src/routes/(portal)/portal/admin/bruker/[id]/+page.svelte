@@ -8,7 +8,16 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { enhance } from '$app/forms';
-	import { ArrowLeft, UserCog, Edit3 } from '@lucide/svelte';
+	import {
+		ArrowLeft,
+		UserCog,
+		Edit3,
+		Mail,
+		Beer,
+		ClipboardList,
+		CheckCircle,
+		Trash2
+	} from '@lucide/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 
 	let { data } = $props();
@@ -53,16 +62,18 @@
 		</ButtonLink>
 		<div>
 			<Heading>Brukerdetaljer</Heading>
-			<p class="mt-1 text-gray-600">Vis og administrer {user.name}s profil</p>
+			<p class="mt-1 text-gray-600 dark:text-gray-300">Vis og administrer {user.name}s profil</p>
 		</div>
 	</div>
 
 	<!-- User overview -->
-	<div class="rounded-lg border bg-white p-4 sm:p-6">
+	<div class="rounded-lg border bg-white p-4 sm:p-6 dark:border-slate-700 dark:bg-slate-800">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center gap-4">
-				<div class="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-					<span class="text-2xl font-semibold text-blue-600">
+				<div
+					class="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30"
+				>
+					<span class="text-2xl font-semibold text-blue-600 dark:text-blue-400">
 						{initials(data.user.name)}
 					</span>
 				</div>
@@ -88,29 +99,35 @@
 
 	<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 		<div class="space-y-6 lg:col-span-2">
-			<div class="rounded-lg border bg-white">
-				<div class="border-b px-6 py-4">
+			<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
+				<div class="border-b px-6 py-4 dark:border-slate-600">
 					<div class="flex items-center gap-2">
-						<UserCog class="h-5 w-5 text-gray-600" />
-						<h3 class="text-lg font-semibold text-gray-900">Brukerinformasjon</h3>
+						<UserCog class="h-5 w-5 text-gray-600 dark:text-gray-300" />
+						<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+							Brukerinformasjon
+						</h3>
 					</div>
 				</div>
 				<div class="p-6">
 					<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 						<div>
-							<dt class="text-sm font-medium text-gray-500">Navn</dt>
-							<dd class="mt-1 text-sm text-gray-900">{user.name}</dd>
+							<dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Navn</dt>
+							<dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{user.name}</dd>
 						</div>
 						<div>
-							<dt class="text-sm font-medium text-gray-500">E-post</dt>
-							<dd class="mt-1 text-sm text-gray-900">{user.altEmail || user.email}</dd>
+							<dt class="text-sm font-medium text-gray-500 dark:text-gray-400">E-post</dt>
+							<dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
+								{user.altEmail || user.email}
+							</dd>
 						</div>
 						<div>
-							<dt class="text-sm font-medium text-gray-500">Telefon</dt>
-							<dd class="mt-1 text-sm text-gray-900">{user.phone || 'Ikke oppgitt'}</dd>
+							<dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Telefon</dt>
+							<dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
+								{user.phone || 'Ikke oppgitt'}
+							</dd>
 						</div>
 						<div>
-							<dt class="text-sm font-medium text-gray-500">Rolle</dt>
+							<dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Rolle</dt>
 							<dd class="mt-1">
 								<Pill variant={user.role === 'board' ? 'purple' : 'blue'}>
 									{user.role === 'board' ? 'Styret' : 'Frivillig'}
@@ -118,7 +135,7 @@
 							</dd>
 						</div>
 						<div>
-							<dt class="text-sm font-medium text-gray-500">Kan referere</dt>
+							<dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Kan referere</dt>
 							<dd class="mt-1">
 								<Pill variant={user.canRefer ? 'green' : 'red'}>
 									{user.canRefer ? 'Ja' : 'Nei'}
@@ -129,37 +146,43 @@
 				</div>
 			</div>
 
-			<div class="rounded-lg border bg-white">
-				<div class="border-b px-6 py-4">
-					<h3 class="text-lg font-semibold text-gray-900">Verv stats</h3>
+			<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
+				<div class="border-b px-6 py-4 dark:border-slate-600">
+					<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Verv stats</h3>
 				</div>
 				<div class="p-6">
 					<div class="space-y-3">
 						<div
-							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0"
+							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-slate-600"
 						>
 							<div class="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-blue-400"></div>
 							<div class="flex-1">
-								<p class="text-sm text-gray-900">Totale referreinger</p>
-								<p class="text-xs text-gray-500">{data.referrals.totalReferrals}</p>
+								<p class="text-sm text-gray-900 dark:text-gray-100">Totale referreinger</p>
+								<p class="text-xs text-gray-500 dark:text-gray-400">
+									{data.referrals.totalReferrals}
+								</p>
 							</div>
 						</div>
 						<div
-							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0"
+							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-slate-600"
 						>
 							<div class="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-green-400"></div>
 							<div class="flex-1">
-								<p class="text-sm text-gray-900">Godkjente referreninger</p>
-								<p class="text-xs text-gray-500">{data.referrals.completedReferrals}</p>
+								<p class="text-sm text-gray-900 dark:text-gray-100">Godkjente referreninger</p>
+								<p class="text-xs text-gray-500 dark:text-gray-400">
+									{data.referrals.completedReferrals}
+								</p>
 							</div>
 						</div>
 						<div
-							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0"
+							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-slate-600"
 						>
 							<div class="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-yellow-400"></div>
 							<div class="flex-1">
-								<p class="text-sm text-gray-900">Ventende referreringer</p>
-								<p class="text-xs text-gray-500">{data.referrals.pendingReferrals}</p>
+								<p class="text-sm text-gray-900 dark:text-gray-100">Ventende referreringer</p>
+								<p class="text-xs text-gray-500 dark:text-gray-400">
+									{data.referrals.pendingReferrals}
+								</p>
 							</div>
 						</div>
 					</div>
@@ -168,64 +191,73 @@
 		</div>
 
 		<div class="space-y-6">
-			<div class="rounded-lg border bg-white">
-				<div class="border-b px-6 py-4">
-					<h3 class="text-lg font-semibold text-gray-900">Statistikk</h3>
+			<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
+				<div class="border-b px-6 py-4 dark:border-slate-600">
+					<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Statistikk</h3>
 				</div>
 				<div class="space-y-4 p-6">
 					<div class="flex justify-between">
-						<span class="text-sm text-gray-600">Antall ganger stått (sem)</span>
-						<span class="text-sm font-semibold text-gray-900">{data.timesVolunteered || 0}</span>
+						<span class="text-sm text-gray-600 dark:text-gray-300">Antall ganger stått (sem)</span>
+						<span class="text-sm font-semibold text-gray-900 dark:text-gray-100"
+							>{data.timesVolunteered || 0}</span
+						>
 					</div>
 					<div class="flex justify-between">
-						<span class="text-sm text-gray-600">Antall Bonger</span>
-						<span class="text-sm font-semibold text-gray-900">{data.unclaimedBeers || 0}</span>
+						<span class="text-sm text-gray-600 dark:text-gray-300">Antall Bonger</span>
+						<span class="text-sm font-semibold text-gray-900 dark:text-gray-100"
+							>{data.unclaimedBeers || 0}</span
+						>
 					</div>
 					<div class="flex justify-between">
-						<span class="text-sm text-gray-600">Kommende arrangement</span>
-						<span class="text-sm font-semibold text-gray-900">
+						<span class="text-sm text-gray-600 dark:text-gray-300">Kommende arrangement</span>
+						<span class="text-sm font-semibold text-gray-900 dark:text-gray-100">
 							{data.shifts?.length > 0 ? data.shifts[0].event?.name : 'Ingen'}
 						</span>
 					</div>
 				</div>
 			</div>
 
-			<div class="rounded-lg border bg-white">
-				<div class="border-b px-6 py-4">
-					<h3 class="text-lg font-semibold text-gray-900">Handlinger</h3>
+			<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
+				<div class="border-b px-6 py-4 dark:border-slate-600">
+					<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Handlinger</h3>
 				</div>
 				<div class="flex flex-col gap-2 p-6">
 					<!-- eslint-disable svelte/no-navigation-without-resolve -->
 					<a
-						class="w-full rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50"
+						class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-slate-700"
 						href={mailto(data.user.altEmail || data.user.email)}
 					>
-						📧 Send e-post
+						<Mail class="h-4 w-4" />
+						Send e-post
 					</a>
 					<button
-						class="w-full rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50"
+						class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-slate-700"
 						onclick={() => (showAddBeers = true)}
 					>
-						🍺 Legg til / Fjern bonger
+						<Beer class="h-4 w-4" />
+						Legg til / Fjern bonger
 					</button>
 					<button
-						class="w-full rounded-md px-4 py-2 text-left text-sm transition-colors hover:bg-gray-50 {userHasCompletedTraining
-							? 'text-green-600'
-							: 'text-gray-700'}"
+						class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm transition-colors hover:bg-gray-50 dark:hover:bg-slate-700 {userHasCompletedTraining
+							? 'text-green-600 dark:text-green-400'
+							: 'text-gray-700 dark:text-gray-300'}"
 						onclick={() => (showTrainingChecklist = true)}
 					>
 						{#if userHasCompletedTraining}
-							✅ Opplæring fullført
+							<CheckCircle class="h-4 w-4" />
+							Opplæring fullført
 						{:else}
-							📋 Start opplæring
+							<ClipboardList class="h-4 w-4" />
+							Start opplæring
 						{/if}
 					</button>
-					<div class="border-t border-gray-200 pt-2">
+					<div class="border-t border-gray-200 pt-2 dark:border-slate-600">
 						<button
-							class="w-full rounded-md px-4 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
+							class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
 							onclick={() => (showDeleteConfirm = true)}
 						>
-							🗑️ Slett bruker
+							<Trash2 class="h-4 w-4" />
+							Slett bruker
 						</button>
 					</div>
 				</div>
@@ -244,13 +276,19 @@
 />
 
 {#if showAddBeers}
-	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs">
-		<div class="mx-4 w-full max-w-md rounded-lg border bg-white p-6 shadow-lg">
-			<h3 class="mb-2 text-lg font-semibold text-gray-900">Legg til øl</h3>
-			<p class="mb-4 text-sm text-gray-600">
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs dark:bg-black/40"
+	>
+		<div
+			class="mx-4 w-full max-w-md rounded-lg border bg-white p-6 shadow-lg dark:border-slate-600 dark:bg-slate-800"
+		>
+			<h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">Legg til øl</h3>
+			<p class="mb-4 text-sm text-gray-600 dark:text-gray-300">
 				Det du skriver her, vil endre på antall ekstra bonger <strong>{user.name}</strong> har tilgjengelig.
 			</p>
-			<p class="mb-4 text-sm text-gray-600">Påvirker ikke antall bonger som dei har stått for</p>
+			<p class="mb-4 text-sm text-gray-600 dark:text-gray-300">
+				Påvirker ikke antall bonger som dei har stått for
+			</p>
 			<form
 				method="POST"
 				action="?/addBeers"
@@ -276,13 +314,13 @@
 					<button
 						type="button"
 						onclick={() => (showAddBeers = false)}
-						class="rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200"
+						class="rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600"
 					>
 						Avbryt
 					</button>
 					<button
 						type="submit"
-						class="rounded-md bg-blue-600 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-700"
+						class="rounded-md bg-blue-600 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700"
 					>
 						Legg til
 					</button>
@@ -293,10 +331,14 @@
 {/if}
 
 {#if showDeleteConfirm}
-	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs">
-		<div class="mx-4 w-full max-w-md rounded-lg border bg-white p-6 shadow-lg">
-			<h3 class="mb-2 text-lg font-semibold text-gray-900">Slett bruker</h3>
-			<p class="mb-4 text-sm text-gray-600">
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs dark:bg-black/40"
+	>
+		<div
+			class="mx-4 w-full max-w-md rounded-lg border bg-white p-6 shadow-lg dark:border-slate-600 dark:bg-slate-800"
+		>
+			<h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">Slett bruker</h3>
+			<p class="mb-4 text-sm text-gray-600 dark:text-gray-300">
 				Er du sikker på at du vil slette <strong>{user.name}</strong>? Skriv inn brukerens navn for
 				å bekrefte.
 			</p>
@@ -333,14 +375,14 @@
 							showDeleteConfirm = false;
 							deleteConfirmName = '';
 						}}
-						class="rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200"
+						class="rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600"
 					>
 						Avbryt
 					</button>
 					<button
 						type="submit"
 						disabled={deleteConfirmName !== user.name}
-						class="rounded-md bg-red-600 px-4 py-2 text-sm text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+						class="rounded-md bg-red-600 px-4 py-2 text-sm text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-600 dark:hover:bg-red-700"
 					>
 						Slett bruker
 					</button>
@@ -352,7 +394,7 @@
 
 {#if toastMessage}
 	<div
-		class="fixed right-4 bottom-4 z-50 rounded-md border border-green-400 bg-green-100 px-4 py-3 text-green-700 shadow-lg"
+		class="fixed right-4 bottom-4 z-50 rounded-md border border-green-400 bg-green-100 px-4 py-3 text-green-700 shadow-lg dark:border-green-700 dark:bg-green-950/50 dark:text-green-300"
 	>
 		{toastMessage}
 	</div>

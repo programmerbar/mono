@@ -29,24 +29,35 @@
 	<!-- Welcome Header -->
 	<div>
 		<Heading>Portal Hjem</Heading>
-		<p class="mt-2 text-gray-600">Oversikt over dine vakter, øl og referrerings-status</p>
+		<p class="mt-2 text-gray-600 dark:text-gray-300">
+			Oversikt over dine vakter, øl og referrerings-status
+		</p>
 	</div>
 
 	<!-- Referral Form -->
 	{#if data.canRefer}
-		<div class="rounded-lg border border-blue-200 bg-blue-50 p-6">
+		<div
+			class="rounded-lg border border-blue-200 bg-blue-50 p-6 dark:border-blue-800 dark:bg-blue-950/50"
+		>
 			<div class="mb-4 flex items-start gap-3">
-				<UserCheck class="mt-0.5 h-5 w-5 text-blue-600" />
+				<UserCheck class="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-400" />
 				<div>
-					<h3 class="text-lg font-semibold text-blue-900">Velkommen til Programmerbar!</h3>
-					<p class="text-sm text-blue-700">Hvem referrerte deg til Programmerbar?</p>
+					<h3 class="text-lg font-semibold text-blue-900 dark:text-blue-200">
+						Velkommen til Programmerbar!
+					</h3>
+					<p class="text-sm text-blue-700 dark:text-blue-300">
+						Hvem referrerte deg til Programmerbar?
+					</p>
 				</div>
 			</div>
 
 			<form method="POST" action="?/refer" use:enhance>
 				<div class="flex items-end gap-3">
 					<div class="flex-1">
-						<label for="referrer" class="mb-2 block text-sm font-medium text-blue-800">
+						<label
+							for="referrer"
+							class="mb-2 block text-sm font-medium text-blue-800 dark:text-blue-300"
+						>
 							Velg person
 						</label>
 						<Combobox
@@ -69,62 +80,81 @@
 	<!-- Stats Overview -->
 	<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 		<!-- Personal Stats -->
-		<div class="rounded-lg border bg-white p-6">
-			<h3 class="mb-4 text-lg font-semibold text-gray-900">Mine statistikker</h3>
+		<div class="rounded-lg border bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
+			<h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Mine statistikker</h3>
 			<div class="space-y-4">
-				<div class="flex items-center gap-4 rounded-lg border border-green-200 bg-green-50 p-4">
-					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-						<CheckCircle class="h-5 w-5 text-green-600" />
+				<div
+					class="flex items-center gap-4 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-950/50"
+				>
+					<div
+						class="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 dark:bg-green-900"
+					>
+						<CheckCircle class="h-5 w-5 text-green-600 dark:text-green-400" />
 					</div>
 					<div>
-						<p class="text-sm font-medium text-green-800">Vakter fullført</p>
-						<p class="text-2xl font-bold text-green-900">{data.shiftsCompleted}</p>
+						<p class="text-sm font-medium text-green-800 dark:text-green-300">Vakter fullført</p>
+						<p class="text-2xl font-bold text-green-900 dark:text-green-200">
+							{data.shiftsCompleted}
+						</p>
 					</div>
 				</div>
 
-				<div class="flex items-center gap-4 rounded-lg border border-amber-200 bg-amber-50 p-4">
-					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
-						<Beer class="h-5 w-5 text-amber-600" />
+				<div
+					class="flex items-center gap-4 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/50"
+				>
+					<div
+						class="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900"
+					>
+						<Beer class="h-5 w-5 text-amber-600 dark:text-amber-400" />
 					</div>
 					<div>
-						<p class="text-sm font-medium text-amber-800">Gratis øl igjen</p>
-						<p class="text-2xl font-bold text-amber-900">{data.unclaimedBeers}</p>
+						<p class="text-sm font-medium text-amber-800 dark:text-amber-300">Gratis øl igjen</p>
+						<p class="text-2xl font-bold text-amber-900 dark:text-amber-200">
+							{data.unclaimedBeers}
+						</p>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<!-- Referral Stats -->
-		<div class="rounded-lg border bg-white p-6">
+		<div class="rounded-lg border bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
 			<div class="mb-4 flex items-center gap-2">
-				<TrendingUp class="h-5 w-5 text-gray-600" />
-				<h3 class="text-lg font-semibold text-gray-900">Referrerings-statistikk</h3>
+				<TrendingUp class="h-5 w-5 text-gray-600 dark:text-gray-400" />
+				<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+					Referrerings-statistikk
+				</h3>
 			</div>
 			<div class="space-y-4">
-				<div class="flex items-center justify-between rounded-lg bg-gray-50 p-3">
+				<div class="flex items-center justify-between rounded-lg bg-gray-50 p-3 dark:bg-slate-700">
 					<div class="flex items-center gap-3">
-						<Users class="h-4 w-4 text-gray-600" />
-						<span class="text-sm font-medium text-gray-700">Totale referreringer</span>
+						<Users class="h-4 w-4 text-gray-600 dark:text-gray-400" />
+						<span class="text-sm font-medium text-gray-700 dark:text-gray-200"
+							>Totale referreringer</span
+						>
 					</div>
-					<span class="text-lg font-bold text-gray-900">{data.referralStats.totalReferrals}</span>
+					<span class="text-lg font-bold text-gray-900 dark:text-gray-100"
+						>{data.referralStats.totalReferrals}</span
+					>
 				</div>
 
-				<div class="flex items-center justify-between rounded-lg bg-gray-50 p-3">
+				<div class="flex items-center justify-between rounded-lg bg-gray-50 p-3 dark:bg-slate-700">
 					<div class="flex items-center gap-3">
-						<CheckCircle class="h-4 w-4 text-green-600" />
-						<span class="text-sm font-medium text-gray-700">Fullført 1 vakt</span>
+						<CheckCircle class="h-4 w-4 text-green-600 dark:text-green-400" />
+						<span class="text-sm font-medium text-gray-700 dark:text-gray-200">Fullført 1 vakt</span
+						>
 					</div>
-					<span class="text-lg font-bold text-green-600"
+					<span class="text-lg font-bold text-green-600 dark:text-green-400"
 						>{data.referralStats.completedReferrals}</span
 					>
 				</div>
 
-				<div class="flex items-center justify-between rounded-lg bg-gray-50 p-3">
+				<div class="flex items-center justify-between rounded-lg bg-gray-50 p-3 dark:bg-slate-700">
 					<div class="flex items-center gap-3">
-						<Clock class="h-4 w-4 text-orange-600" />
-						<span class="text-sm font-medium text-gray-700">Ventende</span>
+						<Clock class="h-4 w-4 text-orange-600 dark:text-orange-400" />
+						<span class="text-sm font-medium text-gray-700 dark:text-gray-200">Ventende</span>
 					</div>
-					<span class="text-lg font-bold text-orange-600"
+					<span class="text-lg font-bold text-orange-600 dark:text-orange-400"
 						>{data.referralStats.pendingReferrals}</span
 					>
 				</div>
@@ -133,29 +163,31 @@
 	</div>
 
 	<!-- Upcoming Shifts -->
-	<div class="rounded-lg border bg-white">
-		<div class="border-b p-6">
+	<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
+		<div class="border-b p-6 dark:border-slate-700">
 			<div class="flex items-center gap-2">
-				<Calendar class="h-5 w-5 text-gray-600" />
-				<h3 class="text-lg font-semibold text-gray-900">Kommende vakter</h3>
+				<Calendar class="h-5 w-5 text-gray-600 dark:text-gray-400" />
+				<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Kommende vakter</h3>
 			</div>
 		</div>
 
-		<div class="divide-y">
+		<div class="divide-y dark:divide-slate-700">
 			{#each data.upcomingShifts as shift (shift.shift.id)}
 				<!-- eslint-disable svelte/no-navigation-without-resolve -->
 				<a
 					href={shift.event?.id
 						? resolve('/(portal)/portal/arrangementer/[id]', { id: shift.event.id })
 						: resolve('/portal/arrangementer')}
-					class="block p-4 transition-colors hover:bg-gray-50"
+					class="block p-4 transition-colors hover:bg-gray-50 dark:hover:bg-slate-700"
 				>
 					<div class="flex items-center justify-between">
 						<div>
-							<h4 class="font-medium text-gray-900 transition-colors hover:text-blue-600">
+							<h4
+								class="font-medium text-gray-900 transition-colors hover:text-blue-600 dark:text-gray-100 dark:hover:text-blue-400"
+							>
 								{shift.event?.name}
 							</h4>
-							<div class="mt-1 flex items-center gap-4 text-sm text-gray-500">
+							<div class="mt-1 flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
 								<div class="flex items-center gap-1">
 									<Clock class="h-3 w-3" />
 									<span>{formatDate(shift.shift.startAt)}</span>
@@ -169,12 +201,13 @@
 				</a>
 			{:else}
 				<div class="p-8 text-center">
-					<AlertCircle class="mx-auto h-12 w-12 text-gray-300 mb-4" />
-					<p class="text-lg font-medium text-gray-500">Ingen kommende vakter</p>
-					<p class="text-sm text-gray-400 mt-1">
+					<AlertCircle class="mx-auto h-12 w-12 text-gray-300 dark:text-gray-600 mb-4" />
+					<p class="text-lg font-medium text-gray-500 dark:text-gray-400">Ingen kommende vakter</p>
+					<p class="text-sm text-gray-400 dark:text-gray-500 mt-1">
 						Du har ingen vakter å jobbe. Sjekk
-						<a href={resolve('/portal/arrangementer')} class="text-blue-600 hover:underline"
-							>arrangementer</a
+						<a
+							href={resolve('/portal/arrangementer')}
+							class="text-blue-600 hover:underline dark:text-blue-400">arrangementer</a
 						>
 						for å melde deg på nye vakter.
 					</p>

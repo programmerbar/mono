@@ -36,7 +36,7 @@ export const actions: Actions = {
 
 		await locals.pendingApplicationService.delete(applicationId);
 
-		return { success: true, message: 'Application approved and user created' };
+		return { success: true, message: 'Søknad godkjent og bruker opprettet' };
 	},
 
 	deny: async ({ locals, request }) => {
@@ -61,6 +61,6 @@ export const actions: Actions = {
 			await locals.invitationService.delete(existingInvitation.id);
 		}
 
-		return { success: true, message: 'Application denied and data removed' };
+		return { success: true, message: 'Søknad avslått og fjernet' };
 	}
 };

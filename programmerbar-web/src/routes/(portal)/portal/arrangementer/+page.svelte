@@ -87,14 +87,14 @@
 	</div>
 
 	<!-- Tabs and Search -->
-	<div class="overflow-hidden rounded-lg border bg-white">
+	<div class="overflow-hidden rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
 		<!-- Tab Navigation -->
-		<div class="flex border-b">
+		<div class="flex border-b dark:border-slate-700">
 			<button
 				class="flex-1 border-b-2 px-6 py-4 text-sm font-medium transition-colors {activeTab ===
 				'upcoming'
-					? 'border-blue-500 text-blue-600'
-					: 'border-transparent text-gray-500 hover:text-gray-700'}"
+					? 'border-blue-500 text-blue-600 dark:border-blue-400 dark:text-blue-400'
+					: 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}"
 				onclick={() => (activeTab = 'upcoming')}
 			>
 				Arrangementer ({upcomingEvents.length})
@@ -102,8 +102,8 @@
 			<button
 				class="flex-1 border-b-2 px-6 py-4 text-sm font-medium transition-colors {activeTab ===
 				'past'
-					? 'border-blue-500 text-blue-600'
-					: 'border-transparent text-gray-500 hover:text-gray-700'}"
+					? 'border-blue-500 text-blue-600 dark:border-blue-400 dark:text-blue-400'
+					: 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}"
 				onclick={() => (activeTab = 'past')}
 			>
 				Tidligere arrangementer ({pastEvents.length})
@@ -121,14 +121,14 @@
 		</div>
 
 		<!-- Events List -->
-		<div class="divide-y overflow-hidden">
+		<div class="divide-y overflow-hidden dark:divide-slate-700">
 			{#if filteredEvents.length === 0}
 				<div class="px-6 py-12 text-center">
-					<Calendar class="mx-auto mb-4 h-12 w-12 text-gray-300" />
-					<p class="text-lg font-medium text-gray-500">
+					<Calendar class="mx-auto mb-4 h-12 w-12 text-gray-300 dark:text-gray-600" />
+					<p class="text-lg font-medium text-gray-500 dark:text-gray-400">
 						Ingen {activeTab === 'upcoming' ? 'kommende' : 'tidligere'} arrangementer
 					</p>
-					<p class="mt-1 text-sm text-gray-400">
+					<p class="mt-1 text-sm text-gray-400 dark:text-gray-500">
 						{activeTab === 'upcoming'
 							? 'Nye arrangementer vil vises her når de opprettes.'
 							: 'Tidligere arrangementer vil vises her.'}
@@ -137,13 +137,15 @@
 			{:else}
 				{#each filteredEvents as event (event.id)}
 					{@const status = getEventStatus(event)}
-					<div class="bg-white p-4 transition-colors hover:bg-gray-50">
+					<div
+						class="bg-white p-4 transition-colors hover:bg-gray-50 dark:bg-slate-800 dark:hover:bg-slate-700"
+					>
 						<div class="flex items-start justify-between">
 							<div class="min-w-0 flex-1">
 								<div class="mb-2 flex items-center gap-3">
 									<a
 										href={resolve('/(portal)/portal/arrangementer/[id]', { id: event.id })}
-										class="text-lg font-medium text-gray-900 transition-colors hover:text-blue-600"
+										class="text-lg font-medium text-gray-900 transition-colors hover:text-blue-600 dark:text-gray-100 dark:hover:text-blue-400"
 									>
 										{event.name}
 									</a>
@@ -152,7 +154,7 @@
 									</Pill>
 								</div>
 
-								<div class="flex items-center gap-4 text-sm text-gray-500">
+								<div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
 									<div class="flex items-center gap-1">
 										<Calendar class="h-4 w-4" />
 										<span>{formatDate(event.date)}</span>
@@ -167,7 +169,7 @@
 							{#if $user?.role === 'board'}
 								<a
 									href={resolve('/(portal)/portal/arrangementer/[id]/rediger', { id: event.id })}
-									class="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-600"
+									class="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-600 dark:border-slate-600 dark:text-gray-500 dark:hover:bg-slate-600 dark:hover:text-gray-300"
 									aria-label="Rediger arrangement"
 								>
 									<SquarePen class="h-4 w-4" />

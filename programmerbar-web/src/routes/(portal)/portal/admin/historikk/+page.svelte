@@ -120,38 +120,44 @@
 		</ButtonLink>
 		<div>
 			<Heading>Bonghistorikk</Heading>
-			<p class="mt-1 text-gray-600">Se historikk for bruk av bong</p>
+			<p class="mt-1 text-gray-600 dark:text-gray-300">Se historikk for bruk av bong</p>
 		</div>
 	</div>
 
-	<div class="rounded-lg border bg-white">
-		<div class="border-b px-6 py-4">
-			<h2 class="text-lg font-semibold text-gray-900">Claimede bonger</h2>
-			<p class="text-sm text-gray-600">Viser de siste claimene først.</p>
+	<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
+		<div class="border-b px-6 py-4 dark:border-slate-600">
+			<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Claimede bonger</h2>
+			<p class="text-sm text-gray-600 dark:text-gray-300">Viser de siste claimene først.</p>
 		</div>
-		<div class="flex flex-col gap-4 border-b px-6 py-4 lg:flex-row lg:items-end lg:justify-between">
+		<div
+			class="flex flex-col gap-4 border-b px-6 py-4 lg:flex-row lg:items-end lg:justify-between dark:border-slate-600"
+		>
 			<form
 				method="get"
 				class="grid w-full gap-4 sm:grid-cols-2 lg:flex lg:flex-1 lg:flex-wrap lg:items-end"
 			>
 				<div class="flex flex-col gap-2">
-					<label for="startDate" class="text-sm font-medium text-gray-700">Fra</label>
+					<label for="startDate" class="text-sm font-medium text-gray-700 dark:text-gray-200"
+						>Fra</label
+					>
 					<input
 						id="startDate"
 						type="datetime-local"
 						name="startDate"
 						value={data.filters?.startDate ?? ''}
-						class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
+						class="dark:focus:border-primary dark:focus:ring-primary/20 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100"
 					/>
 				</div>
 				<div class="flex flex-col gap-2">
-					<label for="endDate" class="text-sm font-medium text-gray-700">Til</label>
+					<label for="endDate" class="text-sm font-medium text-gray-700 dark:text-gray-200"
+						>Til</label
+					>
 					<input
 						id="endDate"
 						type="datetime-local"
 						name="endDate"
 						value={data.filters?.endDate ?? ''}
-						class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
+						class="dark:focus:border-primary dark:focus:ring-primary/20 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100"
 					/>
 				</div>
 				<input type="hidden" name="page" value="1" />
@@ -174,33 +180,39 @@
 			</ButtonLink>
 		</div>
 		{#if data.claimedCredits.length === 0}
-			<div class="px-6 py-12 text-center text-gray-500">
+			<div class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
 				Det er ingen registrerte claim i databasen ennå.
 			</div>
 		{:else}
 			<div class="overflow-x-auto">
-				<table class="w-full min-w-[720px] divide-y divide-gray-200">
-					<thead class="bg-gray-50">
-						<tr class="text-xs font-semibold tracking-wide text-gray-500 uppercase">
+				<table class="w-full min-w-[720px] divide-y divide-gray-200 dark:divide-slate-600">
+					<thead class="bg-gray-50 dark:bg-slate-700">
+						<tr
+							class="text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400"
+						>
 							<th class="px-6 py-3 text-left">Dato</th>
 							<th class="px-6 py-3 text-left">Bruker</th>
 							<th class="px-6 py-3 text-left">Produkt-ID</th>
 							<th class="px-6 py-3 text-right">Credits</th>
 						</tr>
 					</thead>
-					<tbody class="divide-y divide-gray-200 text-sm text-gray-700">
+					<tbody
+						class="divide-y divide-gray-200 text-sm text-gray-700 dark:divide-slate-600 dark:text-gray-300"
+					>
 						{#each data.claimedCredits as entry (entry.id)}
-							<tr class="transition-colors hover:bg-gray-50">
+							<tr class="transition-colors hover:bg-gray-50 dark:hover:bg-slate-700">
 								<td class="px-6 py-4 whitespace-nowrap">
 									{formatTimestamp(entry.createdAt)}
 								</td>
 								<td class="px-6 py-4 whitespace-nowrap">
 									{entry.user?.name ?? 'Ukjent bruker'}
 								</td>
-								<td class="px-6 py-4 font-mono text-xs whitespace-nowrap text-gray-500">
+								<td
+									class="px-6 py-4 font-mono text-xs whitespace-nowrap text-gray-500 dark:text-gray-400"
+								>
 									{entry.productId}
 								</td>
-								<td class="px-6 py-4 text-right whitespace-nowrap text-gray-900">
+								<td class="px-6 py-4 text-right whitespace-nowrap text-gray-900 dark:text-gray-100">
 									{entry.creditCost}
 								</td>
 							</tr>
@@ -208,7 +220,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="flex justify-center border-t px-6 py-4">
+			<div class="flex justify-center border-t px-6 py-4 dark:border-slate-600">
 				<nav aria-label="Paginering" class="flex items-center gap-2">
 					{#if previousPage}
 						<ButtonLink
@@ -222,7 +234,7 @@
 						</ButtonLink>
 					{:else}
 						<span
-							class="flex items-center gap-1 rounded-lg border border-dashed bg-gray-50 px-3 py-1.5 text-sm text-gray-400"
+							class="flex items-center gap-1 rounded-lg border border-dashed bg-gray-50 px-3 py-1.5 text-sm text-gray-400 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-500"
 						>
 							<ChevronLeft class="h-4 w-4" />
 							Forrige
@@ -231,10 +243,10 @@
 
 					{#each paginationItems as item (item.type === 'page' ? item.value : item.key)}
 						{#if item.type === 'ellipsis'}
-							<span class="px-2 text-sm text-gray-400">…</span>
+							<span class="px-2 text-sm text-gray-400 dark:text-gray-500">…</span>
 						{:else if item.value === data.pagination.currentPage}
 							<span
-								class="border-primary-dark bg-primary rounded-lg border px-3 py-1.5 text-sm font-medium text-white"
+								class="border-primary-dark bg-primary dark:border-primary-dark dark:bg-primary rounded-lg border px-3 py-1.5 text-sm font-medium text-white"
 							>
 								{item.value}
 							</span>
@@ -257,7 +269,7 @@
 						</ButtonLink>
 					{:else}
 						<span
-							class="flex items-center gap-1 rounded-lg border border-dashed bg-gray-50 px-3 py-1.5 text-sm text-gray-400"
+							class="flex items-center gap-1 rounded-lg border border-dashed bg-gray-50 px-3 py-1.5 text-sm text-gray-400 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-500"
 						>
 							Neste
 							<ChevronRight class="h-4 w-4" />

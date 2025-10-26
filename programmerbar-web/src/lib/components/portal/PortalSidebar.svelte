@@ -11,10 +11,13 @@
 		Menu,
 		X,
 		Shield,
-		UserCheck
+		UserCheck,
+		Moon,
+		Sun
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { getUser } from '$lib/context/user.context';
+	import { getThemeContext } from '$lib/context/theme.context.svelte';
 	import { resolve } from '$app/paths';
 	import type { Notification as DbNotification } from '$lib/db/schemas';
 	import { cn } from '$lib/cn';
@@ -35,6 +38,7 @@
 
 	let { notifications, pendingApplicationsCount }: Props = $props();
 	let user = getUser();
+	let theme = getThemeContext();
 	let isSidebarOpen = $state(false);
 	let isMobile = $state(true); // Start as mobile to prevent flash
 
@@ -160,7 +164,7 @@
 <!-- Sidebar -->
 <aside
 	class={cn(
-		'fixed top-0 left-0 z-50 h-[100svh] transform border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out',
+		'fixed top-0 left-0 z-50 h-svh transform border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out dark:border-slate-700 dark:bg-slate-800',
 		{
 			'w-80': isSidebarOpen && isMobile, // Large width when opened on mobile
 			'w-16 sm:w-20': !isSidebarOpen || !isMobile, // Narrow when closed or not mobile
@@ -173,7 +177,7 @@
 	<div class="flex h-full flex-col">
 		<!-- Header -->
 		<div
-			class={cn('flex items-center border-b border-gray-200 py-4', {
+			class={cn('flex items-center border-b border-gray-200 py-4 dark:border-slate-700', {
 				'justify-center px-2': !showFullLayout,
 				'justify-start gap-3 px-6': showFullLayout
 			})}
@@ -192,8 +196,8 @@
 					block: showFullLayout
 				})}
 			>
-				<h1 class="font-bold text-gray-800">Portal</h1>
-				<p class="text-xs text-gray-500">Programmerbar</p>
+				<h1 class="font-bold text-gray-800 dark:text-gray-100">Portal</h1>
+				<p class="text-xs text-gray-500 dark:text-gray-400">Programmerbar</p>
 			</div>
 		</div>
 
@@ -207,10 +211,13 @@
 			<!-- Main Portal Section -->
 			<div>
 				<h2
-					class={cn('mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase', {
-						hidden: !showFullLayout,
-						block: showFullLayout
-					})}
+					class={cn(
+						'mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400',
+						{
+							hidden: !showFullLayout,
+							block: showFullLayout
+						}
+					)}
 				>
 					Generelt
 				</h2>
@@ -226,13 +233,14 @@
 									{
 										'justify-center gap-0 px-1': !showFullLayout,
 										'justify-start gap-3 px-3': showFullLayout,
-										'bg-blue-50 text-blue-700': isActive,
-										'text-gray-600 hover:bg-gray-50 hover:text-gray-900': !isActive
+										'bg-blue-50 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300': isActive,
+										'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100':
+											!isActive
 									}
 								)}
 								title={route.name}
 							>
-								<route.icon class="h-5 w-5 flex-shrink-0" />
+								<route.icon class="h-5 w-5 shrink-0" />
 								<span
 									class={cn('', {
 										hidden: !showFullLayout,
@@ -249,10 +257,13 @@
 			{#if adminRoutes.length > 0}
 				<div>
 					<h2
-						class={cn('mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase', {
-							hidden: !showFullLayout,
-							block: showFullLayout
-						})}
+						class={cn(
+							'mb-3 px-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400',
+							{
+								hidden: !showFullLayout,
+								block: showFullLayout
+							}
+						)}
 					>
 						Administrator
 					</h2>
@@ -268,13 +279,15 @@
 										{
 											'justify-center gap-0 px-1': !showFullLayout,
 											'justify-start gap-3 px-3': showFullLayout,
-											'bg-amber-50 text-amber-700': isActive,
-											'text-gray-600 hover:bg-gray-50 hover:text-gray-900': !isActive
+											'bg-amber-50 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300':
+												isActive,
+											'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100':
+												!isActive
 										}
 									)}
 									title={route.name}
 								>
-									<route.icon class="h-5 w-5 flex-shrink-0" />
+									<route.icon class="h-5 w-5 shrink-0" />
 									<span
 										class={cn('flex-1', {
 											hidden: !showFullLayout,
@@ -312,14 +325,15 @@
 								{
 									'justify-center gap-0 px-1': !showFullLayout,
 									'justify-start gap-3 px-3': showFullLayout,
-									'bg-gray-100 text-gray-900': page.url.pathname === notificationsHref,
-									'text-gray-600 hover:bg-gray-50 hover:text-gray-900':
+									'bg-gray-100 text-gray-900 dark:bg-slate-700 dark:text-gray-100':
+										page.url.pathname === notificationsHref,
+									'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100':
 										page.url.pathname !== notificationsHref
 								}
 							)}
 							title="Notifikasjoner"
 						>
-							<Bell class="h-5 w-5 flex-shrink-0" />
+							<Bell class="h-5 w-5 shrink-0" />
 							<span
 								class={cn('flex-1', {
 									hidden: !showFullLayout,
@@ -347,7 +361,7 @@
 
 		<!-- User section -->
 		<div
-			class={cn('border-t border-gray-200', {
+			class={cn('border-t border-gray-200 dark:border-slate-700', {
 				'p-2': !showFullLayout,
 				'p-4': showFullLayout
 			})}
@@ -358,8 +372,10 @@
 					'justify-start gap-3': showFullLayout
 				})}
 			>
-				<div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100">
-					<span class="text-sm font-medium text-blue-600">
+				<div
+					class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900"
+				>
+					<span class="text-sm font-medium text-blue-600 dark:text-blue-300">
 						{$user?.name?.charAt(0)?.toUpperCase() || 'U'}
 					</span>
 				</div>
@@ -369,32 +385,57 @@
 						block: showFullLayout
 					})}
 				>
-					<p class="truncate text-sm font-medium text-gray-700">{$user?.name}</p>
-					<p class="truncate text-xs text-gray-500">
+					<p class="truncate text-sm font-medium text-gray-700 dark:text-gray-200">{$user?.name}</p>
+					<p class="truncate text-xs text-gray-500 dark:text-gray-400">
 						{$user?.role === 'board' ? 'Styret' : 'Frivillig'}
 					</p>
 				</div>
 			</div>
 
-			<a
-				href={resolve('/')}
-				class={cn(
-					'flex w-full items-center rounded-lg py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900',
-					{
-						'justify-center gap-0 px-1': !showFullLayout,
-						'justify-start gap-2 px-3': showFullLayout
-					}
-				)}
-				title="Hjem"
+			<div
+				class={cn('flex gap-2', {
+					'flex-col': !showFullLayout,
+					'flex-row': showFullLayout
+				})}
 			>
-				<Home class="h-4 w-4 flex-shrink-0" />
-				<span
-					class={cn('', {
-						hidden: !showFullLayout,
-						inline: showFullLayout
-					})}>Til forsiden</span
+				<a
+					href={resolve('/')}
+					class={cn(
+						'flex items-center rounded-lg py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100',
+						{
+							'w-full justify-center gap-0 px-1': !showFullLayout,
+							'flex-1 justify-start gap-2 px-3': showFullLayout
+						}
+					)}
+					title="Hjem"
 				>
-			</a>
+					<Home class="h-4 w-4 shrink-0" />
+					<span
+						class={cn('', {
+							hidden: !showFullLayout,
+							inline: showFullLayout
+						})}>Til forsiden</span
+					>
+				</a>
+
+				<button
+					onclick={() => theme.toggle()}
+					class={cn(
+						'flex items-center rounded-lg py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100',
+						{
+							'w-full justify-center gap-0 px-1': !showFullLayout,
+							'justify-center gap-0 px-2': showFullLayout
+						}
+					)}
+					title={theme.current === 'dark' ? 'Bytt til lyst tema' : 'Bytt til mørkt tema'}
+				>
+					{#if theme.current === 'dark'}
+						<Sun class="h-4 w-4 shrink-0" />
+					{:else}
+						<Moon class="h-4 w-4 shrink-0" />
+					{/if}
+				</button>
+			</div>
 		</div>
 	</div>
 </aside>

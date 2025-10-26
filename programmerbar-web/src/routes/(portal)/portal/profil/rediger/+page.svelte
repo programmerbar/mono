@@ -47,10 +47,12 @@
 	</div>
 
 	<!-- Profile overview (read-only) -->
-	<div class="rounded-lg border bg-white p-4 sm:p-6">
+	<div class="rounded-lg border bg-white p-4 sm:p-6 dark:border-slate-700 dark:bg-slate-800">
 		<div class="flex items-center gap-4">
-			<div class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-300">
-				<span class="text-2xl font-semibold text-gray-700">
+			<div
+				class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-300 dark:bg-slate-700"
+			>
+				<span class="text-2xl font-semibold text-gray-700 dark:text-gray-300">
 					{initials(user.name)}
 				</span>
 			</div>
@@ -66,30 +68,45 @@
 	</div>
 
 	<!-- Edit form -->
-	<div class="rounded-lg border bg-white">
+	<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
 		<div class="px-6 py-4">
-			<h3 class="mb-4 text-lg font-semibold text-gray-900">Rediger informasjon</h3>
+			<h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
+				Rediger informasjon
+			</h3>
 
 			<form method="POST" action="?/save" use:enhance={handleSave} class="space-y-6">
 				<div class="space-y-4">
 					<!-- Read-only fields -->
 					<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-						<div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
-							<span class="mb-1 block text-sm font-medium text-gray-500">Navn</span>
-							<p class="text-sm text-gray-900">{user.name}</p>
-							<p class="mt-1 text-xs text-gray-500">Kan ikke endres</p>
+						<div
+							class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+						>
+							<span class="mb-1 block text-sm font-medium text-gray-500 dark:text-gray-400"
+								>Navn</span
+							>
+							<p class="text-sm text-gray-900 dark:text-gray-100">{user.name}</p>
+							<p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kan ikke endres</p>
 						</div>
-						<div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
-							<span class="mb-1 block text-sm font-medium text-gray-500">Hovedepost</span>
-							<p class="text-sm text-gray-900">{user.email}</p>
-							<p class="mt-1 text-xs text-gray-500">Kan ikke endres</p>
+						<div
+							class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+						>
+							<span class="mb-1 block text-sm font-medium text-gray-500 dark:text-gray-400"
+								>Hovedepost</span
+							>
+							<p class="text-sm text-gray-900 dark:text-gray-100">{user.email}</p>
+							<p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kan ikke endres</p>
 						</div>
 					</div>
 
 					<!-- Editable fields -->
 					<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-						<div class="rounded-lg border border-gray-200 bg-white p-4">
-							<label for="edit-email" class="mb-2 block text-sm font-medium text-gray-700">
+						<div
+							class="rounded-lg border border-gray-200 bg-white p-4 dark:border-slate-600 dark:bg-slate-700"
+						>
+							<label
+								for="edit-email"
+								class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200"
+							>
 								Alternativ e-post
 							</label>
 							<Input
@@ -101,8 +118,13 @@
 								placeholder="din.alternativ@epost.no"
 							/>
 						</div>
-						<div class="rounded-lg border border-gray-200 bg-white p-4">
-							<label for="edit-phone" class="mb-2 block text-sm font-medium text-gray-700">
+						<div
+							class="rounded-lg border border-gray-200 bg-white p-4 dark:border-slate-600 dark:bg-slate-700"
+						>
+							<label
+								for="edit-phone"
+								class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200"
+							>
 								Telefon
 							</label>
 							<Input

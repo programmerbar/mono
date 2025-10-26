@@ -38,8 +38,8 @@
 
 <div class="mx-auto max-w-md space-y-4">
 	<div class="text-center">
-		<h1 class="mb-2 text-2xl font-bold text-gray-800">Barstatus</h1>
-		<p class="text-gray-600">Velg gjeldende status for baren</p>
+		<h1 class="mb-2 text-2xl font-bold text-gray-800 dark:text-gray-100">Barstatus</h1>
+		<p class="text-gray-600 dark:text-gray-300">Velg gjeldende status for baren</p>
 	</div>
 
 	<div class="space-y-3">
@@ -60,15 +60,16 @@
 				<input type="hidden" name="status" value={status} />
 				<button
 					class={cn(
-						'w-full rounded-2xl border-2 bg-white p-6 transition-all duration-200 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60',
+						'w-full rounded-2xl border-2 bg-white p-6 transition-all duration-200 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 dark:bg-slate-800',
 						{
-							'border-green-200 bg-green-50 shadow-green-100 hover:border-green-300 hover:shadow-green-200':
+							'border-green-200 bg-green-50 shadow-green-100 hover:border-green-300 hover:shadow-green-200 dark:border-green-800 dark:bg-green-950/30 dark:shadow-green-900/20 dark:hover:border-green-700 dark:hover:shadow-green-900/30':
 								isSelected && color === 'green',
-							'border-orange-200 bg-orange-50 shadow-orange-100 hover:border-orange-300 hover:shadow-orange-200':
+							'border-orange-200 bg-orange-50 shadow-orange-100 hover:border-orange-300 hover:shadow-orange-200 dark:border-orange-800 dark:bg-orange-950/30 dark:shadow-orange-900/20 dark:hover:border-orange-700 dark:hover:shadow-orange-900/30':
 								isSelected && color === 'orange',
-							'border-red-200 bg-red-50 shadow-red-100 hover:border-red-300 hover:shadow-red-200':
+							'border-red-200 bg-red-50 shadow-red-100 hover:border-red-300 hover:shadow-red-200 dark:border-red-800 dark:bg-red-950/30 dark:shadow-red-900/20 dark:hover:border-red-700 dark:hover:shadow-red-900/30':
 								isSelected && color === 'red',
-							'border-gray-200 hover:border-gray-300 hover:bg-gray-50': !isSelected
+							'border-gray-200 hover:border-gray-300 hover:bg-gray-50 dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-700':
+								!isSelected
 						}
 					)}
 					disabled={isUpdating}
@@ -79,7 +80,7 @@
 								'bg-green-500 text-white': isSelected && color === 'green',
 								'bg-orange-500 text-white': isSelected && color === 'orange',
 								'bg-red-500 text-white': isSelected && color === 'red',
-								'bg-gray-100 text-gray-600': !isSelected
+								'bg-gray-100 text-gray-600 dark:bg-slate-700 dark:text-gray-300': !isSelected
 							})}
 						>
 							{#if isUpdating && newStatus === status}
@@ -92,20 +93,20 @@
 						<div class="flex-1 text-left">
 							<h3
 								class={cn('text-lg font-semibold', {
-									'text-green-800': isSelected && color === 'green',
-									'text-orange-800': isSelected && color === 'orange',
-									'text-red-800': isSelected && color === 'red',
-									'text-gray-800': !isSelected
+									'text-green-800 dark:text-green-300': isSelected && color === 'green',
+									'text-orange-800 dark:text-orange-300': isSelected && color === 'orange',
+									'text-red-800 dark:text-red-300': isSelected && color === 'red',
+									'text-gray-800 dark:text-gray-100': !isSelected
 								})}
 							>
 								{label}
 							</h3>
 							<p
 								class={cn('text-sm', {
-									'text-green-600': isSelected && color === 'green',
-									'text-orange-600': isSelected && color === 'orange',
-									'text-red-600': isSelected && color === 'red',
-									'text-gray-500': !isSelected
+									'text-green-600 dark:text-green-400': isSelected && color === 'green',
+									'text-orange-600 dark:text-orange-400': isSelected && color === 'orange',
+									'text-red-600 dark:text-red-400': isSelected && color === 'red',
+									'text-gray-500 dark:text-gray-400': !isSelected
 								})}
 							>
 								{description}

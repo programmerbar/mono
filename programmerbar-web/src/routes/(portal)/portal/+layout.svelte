@@ -1,9 +1,14 @@
 <script lang="ts">
 	import PortalSidebar from '$lib/components/portal/PortalSidebar.svelte';
+	import { createThemeContext } from '$lib/context/theme.context.svelte';
+
 	let { data, children } = $props();
+
+	// Initialize theme context for portal
+	createThemeContext();
 </script>
 
-<div class="flex min-h-screen bg-gray-50">
+<div id="portal-layout" class="flex min-h-screen bg-gray-50 dark:bg-slate-900">
 	<PortalSidebar
 		notifications={data.notifications}
 		pendingApplicationsCount={data.pendingApplicationsCount}

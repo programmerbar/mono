@@ -14,7 +14,7 @@
 <svelte:element
 	this={tag}
 	class={cn(
-		'text-lg font-medium',
+		'text-lg font-medium text-gray-900 dark:text-gray-100',
 		{
 			'text-2xl': level === 1,
 			'text-xl': level === 2

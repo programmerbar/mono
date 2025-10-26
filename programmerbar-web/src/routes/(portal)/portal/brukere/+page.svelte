@@ -45,44 +45,48 @@
 			</li>
 		{:else}
 			<li class="block col-span-3 text-center py-4">
-				<p>Fant ingen bruker</p>
+				<p class="dark:text-gray-300">Fant ingen bruker</p>
 			</li>
 		{/each}
 	</ul>
 </section>
 
 {#if data.invitations.length > 0}
-	<hr class="my-12 border-t border-gray-200" />
+	<hr class="my-12 border-t border-gray-200 dark:border-slate-700" />
 	<section class="mt-12 space-y-6">
 		<Heading>Invitasjoner</Heading>
 
 		<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 			{#each data.invitations as invitation (invitation.id)}
-				<li class="relative block rounded-lg border bg-white p-4">
+				<li
+					class="relative block rounded-lg border bg-white p-4 dark:border-slate-700 dark:bg-slate-800"
+				>
 					<form method="post" action="?/deleteInvitation" use:enhance>
 						<input name="invitationId" hidden value={invitation.id} />
-						<button class="absolute top-2 right-2 h-6 w-6 cursor-pointer text-gray-500">
-							<X class="h-6 w-6 text-gray-500" />
+						<button
+							class="absolute top-2 right-2 h-6 w-6 cursor-pointer text-gray-500 dark:text-gray-400"
+						>
+							<X class="h-6 w-6 text-gray-500 dark:text-gray-400" />
 						</button>
 					</form>
 
-					<p class="text-sm">
+					<p class="text-sm dark:text-gray-300">
 						<span class="font-medium">E-post:</span>
 						<!-- eslint-disable svelte/no-navigation-without-resolve -->
 						<a class="hover:underline" href={mailto(invitation.email)}>{invitation.email}</a>
 					</p>
-					<p class="text-sm">
+					<p class="text-sm dark:text-gray-300">
 						<span class="font-medium">Sendt:</span>
 						{formatDate(invitation.createdAt)}
 					</p>
-					<p class="text-sm">
+					<p class="text-sm dark:text-gray-300">
 						<span class="font-medium">Utgår:</span>
 						{formatDate(invitation.expiresAt)}
 					</p>
 				</li>
 			{:else}
 				<li class="block col-span-3 text-center py-4">
-					<p>Ingen invitasjoner</p>
+					<p class="dark:text-gray-300">Ingen invitasjoner</p>
 				</li>
 			{/each}
 		</ul>

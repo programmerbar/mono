@@ -5,6 +5,8 @@
 @plugin '@tailwindcss/typography';
 @plugin '@tailwindcss/forms';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
 	--background: #f5f5f5;
 	--foreground: #262626;
@@ -23,6 +25,26 @@
 	--muted: #eeeeee;
 
 	--border: #c4c4c4;
+}
+
+.dark {
+	--background: #0f172a;
+	--foreground: #e2e8f0;
+
+	--primary: #14747c;
+	--primary-light: #1fa7b2;
+	--primary-dark: #0f5157;
+
+	--secondary: #feeabb;
+	--secondary-light: #fff7e6;
+	--secondary-dark: #fee8b4;
+
+	--card: #1e293b;
+	--card-muted: #334155;
+
+	--muted: #1e293b;
+
+	--border: #475569;
 }
 
 @theme inline {

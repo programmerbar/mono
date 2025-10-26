@@ -20,16 +20,16 @@
 
 <label class="flex flex-col gap-1">
 	{#if label}
-		<span class="text-sm font-medium">{label}</span>
+		<span class="text-sm font-medium dark:text-gray-200">{label}</span>
 	{/if}
 
 	<Input bind:value class={className} {...props} />
 
 	{#if description}
-		<span class="text-sm text-gray-500">{description}</span>
+		<span class="text-sm text-gray-500 dark:text-gray-400">{description}</span>
 	{/if}
 
 	{#if error}
-		<span class="text-sm text-red-500">{error}</span>
+		<span class="text-sm text-red-500 dark:text-red-400">{error}</span>
 	{/if}
 </label>

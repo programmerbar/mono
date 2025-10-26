@@ -10,7 +10,7 @@
 <textarea
 	bind:value
 	class={cn(
-		'border-border focus:border-border focus:outline-primary min-h-20 w-full resize-none rounded-lg border-2 p-2 placeholder:text-sm focus:ring-0',
+		'border-border focus:border-border focus:outline-primary dark:focus:border-primary dark:focus:outline-primary min-h-20 w-full resize-none rounded-lg border-2 bg-white p-2 text-gray-900 placeholder:text-sm placeholder:text-gray-400 focus:ring-0 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100 dark:placeholder:text-gray-500',
 		className
 	)}
 	{...props}

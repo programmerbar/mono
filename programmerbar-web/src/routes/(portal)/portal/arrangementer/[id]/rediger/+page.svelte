@@ -62,7 +62,7 @@
 	<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 		<div class="space-y-2">
 			<Heading level={1}>Rediger arrangementet</Heading>
-			<p class="text-sm text-gray-600">
+			<p class="text-sm text-gray-600 dark:text-gray-300">
 				Oppdater detaljer, bemanning og publiseringsstatus for arrangementet. Endringene lagres ikke
 				automatisk.
 			</p>
@@ -86,7 +86,9 @@
 	</div>
 
 	{#if deletedShiftIds.length > 0 || removedUserShifts.length > 0}
-		<div class="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-700">
+		<div
+			class="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-700 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-300"
+		>
 			<p class="font-medium">Ulagrede endringer</p>
 			<ul class="mt-1 space-y-1">
 				{#if deletedShiftIds.length > 0}
@@ -116,10 +118,12 @@
 			<input type="hidden" name="removedUserShifts" value={keyValue} />
 		{/each}
 
-		<section class="space-y-6 rounded-lg border border-gray-200 bg-white p-6">
+		<section
+			class="space-y-6 rounded-lg border border-gray-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800"
+		>
 			<div>
-				<h2 class="text-lg font-semibold text-gray-900">Arrangementsdetaljer</h2>
-				<p class="mt-1 text-sm text-gray-500">
+				<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Arrangementsdetaljer</h2>
+				<p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
 					Oppdater navn, tidspunkt og offentlig informasjon for arrangementet.
 				</p>
 			</div>
@@ -142,22 +146,27 @@
 				/>
 			</div>
 
-			<div class="rounded-lg border border-gray-100 bg-gray-50 p-4">
+			<div
+				class="rounded-lg border border-gray-100 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+			>
 				<Checkbox
 					id="shouldBePublic"
 					bind:checked={eventState.shouldBePublic}
 					label="Vis arrangementet offentlig"
 				/>
-				<p class="mt-1 text-xs text-gray-500">
+				<p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
 					Når arrangementet er offentlig synlig på nettsiden, trenger det en beskrivelse og slug.
 				</p>
 
 				{#if eventState.shouldBePublic}
 					<div class="mt-4 space-y-2">
-						<label for="description" class="block text-sm font-medium text-gray-700">
+						<label
+							for="description"
+							class="block text-sm font-medium text-gray-700 dark:text-gray-200"
+						>
 							Beskrivelse
 						</label>
-						<p class="text-xs text-gray-500">
+						<p class="text-xs text-gray-500 dark:text-gray-400">
 							Beskriv hva som skjer – teksten vises offentlig. Slug foreslås automatisk fra navnet,
 							men kan endres senere ved behov.
 						</p>
@@ -169,7 +178,7 @@
 							class="min-h-28 border-1"
 						/>
 						{#if eventState.slug}
-							<p class="text-xs text-gray-500">
+							<p class="text-xs text-gray-500 dark:text-gray-400">
 								Lenke: programmer.bar/arrangementer/{eventState.slug}
 							</p>
 						{/if}
@@ -178,11 +187,13 @@
 			</div>
 		</section>
 
-		<section class="space-y-6 rounded-lg border border-gray-200 bg-white p-6">
+		<section
+			class="space-y-6 rounded-lg border border-gray-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800"
+		>
 			<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<div>
-					<h2 class="text-lg font-semibold text-gray-900">Vakter</h2>
-					<p class="mt-1 text-sm text-gray-500">
+					<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Vakter</h2>
+					<p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
 						Legg til, fjern eller oppdater vakter og ansvarlige. Kalenderinvitasjoner sendes
 						automatisk.
 					</p>
@@ -206,24 +217,28 @@
 						? differenceInHours(new Date(shift.endAt), new Date(shift.startAt))
 						: 0}
 
-					<article class="rounded-lg border border-gray-200 bg-gray-50 p-5">
+					<article
+						class="rounded-lg border border-gray-200 bg-gray-50 p-5 dark:border-slate-600 dark:bg-slate-700"
+					>
 						<div class="flex items-start justify-between gap-3">
 							<div class="flex items-center gap-3">
 								<div
-									class="flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-semibold text-gray-600"
+									class="flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-semibold text-gray-600 dark:bg-slate-800 dark:text-gray-300"
 								>
 									{i + 1}
 								</div>
 								<div>
-									<h3 class="text-base font-semibold text-gray-900">Vakt {i + 1}</h3>
-									<p class="text-xs text-gray-500">
+									<h3 class="text-base font-semibold text-gray-900 dark:text-gray-100">
+										Vakt {i + 1}
+									</h3>
+									<p class="text-xs text-gray-500 dark:text-gray-400">
 										Oppdater start- og sluttid, og hvem som har ansvar.
 									</p>
 								</div>
 							</div>
 							<button
 								type="button"
-								class="rounded-full p-2 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
+								class="rounded-full p-2 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/50 dark:hover:text-red-400"
 								onclick={() => {
 									if (i < originalShifts.length) {
 										deletedShiftIds.push(originalShifts[i].id);
@@ -262,18 +277,20 @@
 
 						{#if hasTimes && shiftLength >= 4}
 							<div
-								class="mt-3 flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-700"
+								class="mt-3 flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-700 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-300"
 							>
 								<Clock size={16} />
 								<span>Vakten er lengre enn 4 timer – vurder ekstra bemanning.</span>
 							</div>
 						{/if}
 
-						<div class="mt-5 rounded-lg border border-gray-200 bg-white p-4">
+						<div
+							class="mt-5 rounded-lg border border-gray-200 bg-white p-4 dark:border-slate-600 dark:bg-slate-800"
+						>
 							<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 								<div>
-									<h4 class="text-sm font-semibold text-gray-900">Ansvarlige</h4>
-									<p class="text-xs text-gray-500">
+									<h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Ansvarlige</h4>
+									<p class="text-xs text-gray-500 dark:text-gray-400">
 										Ansvarlige får e-post med kalenderinvitasjon når du lagrer endringene.
 									</p>
 								</div>
@@ -292,7 +309,7 @@
 							<input type="hidden" name={`shift[${i}].userCount`} value={shift.users.length} />
 
 							{#if shift.users.length === 0}
-								<p class="py-2 text-sm text-gray-500 italic">
+								<p class="py-2 text-sm text-gray-500 italic dark:text-gray-400">
 									Ingen ansvarlige lagt til ennå. Husk å invitere minst én.
 								</p>
 							{:else}
@@ -322,7 +339,7 @@
 											/>
 											<button
 												type="button"
-												class="flex h-10 items-center justify-center rounded-lg border border-gray-200 bg-white px-4 text-sm font-medium text-gray-600 transition-colors hover:border-red-200 hover:text-red-500"
+												class="flex h-10 items-center justify-center rounded-lg border border-gray-200 bg-white px-4 text-sm font-medium text-gray-600 transition-colors hover:border-red-200 hover:text-red-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:border-red-800 dark:hover:text-red-400"
 												onclick={() => {
 													if (i < originalShifts.length && user.id) {
 														removedUserShifts = [
@@ -343,7 +360,7 @@
 					</article>
 				{:else}
 					<div
-						class="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-sm text-gray-500"
+						class="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-sm text-gray-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-400"
 					>
 						Ingen vakter registrert. Legg til den første for å starte planleggingen.
 					</div>
@@ -351,7 +368,9 @@
 			</div>
 		</section>
 
-		<div class="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end">
+		<div
+			class="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-slate-700"
+		>
 			<a href={resolve('/portal/arrangementer')} class="sm:w-auto">
 				<Button type="button" intent="outline" class="w-full sm:w-auto">Avbryt</Button>
 			</a>

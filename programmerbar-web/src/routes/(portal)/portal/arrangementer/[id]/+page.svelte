@@ -8,6 +8,7 @@
 	import { X, Plus, Calendar, Clock, Users, ArrowLeft } from '@lucide/svelte';
 	import { resolve } from '$app/paths';
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
+	import { cn } from '$lib/cn';
 
 	let { data } = $props();
 	let user = getUser();
@@ -36,8 +37,8 @@
 				Til arrangementer
 			</ButtonLink>
 
-			<Heading level={1} class="break-words">{data.event.name}</Heading>
-			<div class="flex flex-wrap gap-2 text-xs text-gray-500">
+			<Heading level={1} class="wrap-break-words">{data.event.name}</Heading>
+			<div class="flex flex-wrap gap-2 text-xs text-gray-500 dark:text-gray-400">
 				<span>{formatDate(data.event.date)}</span>
 				<span aria-hidden="true">•</span>
 				<span>
@@ -62,18 +63,28 @@
 		{/if}
 	</div>
 
-	<div class="rounded-lg border border-gray-200 bg-white">
-		<div class="border-b border-gray-200 px-6 pt-4">
+	<div class="rounded-lg border border-gray-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+		<div class="border-b border-gray-200 px-6 pt-4 dark:border-slate-700">
 			<div class="flex flex-wrap gap-2">
 				<button
-					class={`rounded-t-lg px-4 py-2 text-sm font-medium transition-colors ${activeTab === 'details' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+					class={cn(
+						'rounded-t-lg px-4 py-2 text-sm font-medium transition-colors',
+						activeTab === 'details'
+							? 'border-b-2 border-blue-500 text-blue-600 dark:border-blue-400 dark:text-blue-400'
+							: 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+					)}
 					onclick={() => (activeTab = 'details')}
 					type="button"
 				>
 					Detaljer
 				</button>
 				<button
-					class={`rounded-t-lg px-4 py-2 text-sm font-medium transition-colors ${activeTab === 'shifts' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+					class={cn(
+						'rounded-t-lg px-4 py-2 text-sm font-medium transition-colors',
+						activeTab === 'shifts'
+							? 'border-b-2 border-blue-500 text-blue-600 dark:border-blue-400 dark:text-blue-400'
+							: 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+					)}
 					onclick={() => (activeTab = 'shifts')}
 					type="button"
 				>
@@ -85,30 +96,38 @@
 		<div class="p-6">
 			{#if activeTab === 'details'}
 				<div class="grid gap-6 md:grid-cols-3">
-					<div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+					<div
+						class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+					>
 						<div class="flex items-center gap-3">
 							<div
-								class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600"
+								class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400"
 							>
 								<Calendar class="h-5 w-5" />
 							</div>
 							<div>
-								<p class="text-xs tracking-wide text-gray-500 uppercase">Dato</p>
-								<p class="text-sm font-semibold text-gray-900">{formatDate(data.event.date)}</p>
+								<p class="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">Dato</p>
+								<p class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+									{formatDate(data.event.date)}
+								</p>
 							</div>
 						</div>
 					</div>
 
-					<div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+					<div
+						class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+					>
 						<div class="flex items-center gap-3">
 							<div
-								class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600"
+								class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400"
 							>
 								<Clock class="h-5 w-5" />
 							</div>
 							<div>
-								<p class="text-xs tracking-wide text-gray-500 uppercase">Antall vakter</p>
-								<p class="text-sm font-semibold text-gray-900">
+								<p class="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
+									Antall vakter
+								</p>
+								<p class="text-sm font-semibold text-gray-900 dark:text-gray-100">
 									{data.event.shifts.length}
 									{data.event.shifts.length === 1 ? ' vakt' : ' vakter'}
 								</p>
@@ -116,16 +135,20 @@
 						</div>
 					</div>
 
-					<div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+					<div
+						class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+					>
 						<div class="flex items-center gap-3">
 							<div
-								class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600"
+								class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400"
 							>
 								<Users class="h-5 w-5" />
 							</div>
 							<div>
-								<p class="text-xs tracking-wide text-gray-500 uppercase">Ansvarlige</p>
-								<p class="text-sm font-semibold text-gray-900">
+								<p class="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
+									Ansvarlige
+								</p>
+								<p class="text-sm font-semibold text-gray-900 dark:text-gray-100">
 									{totalResponsibles}
 									{totalResponsibles === 1 ? ' person' : ' personer'}
 								</p>
@@ -133,27 +156,31 @@
 						</div>
 					</div>
 					{#if data.event.slug}
-						<p class="text-xs text-gray-700">Slug: "{data.event.slug}"</p>
+						<p class="text-xs text-gray-700 dark:text-gray-300">Slug: "{data.event.slug}"</p>
 					{/if}
 				</div>
 				<div class="mt-6 space-y-4">
-					<h2 class="text-sm font-semibold text-gray-900">Beskrivelse</h2>
+					<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Beskrivelse</h2>
 					<p class="text-sm">
-						<span class="text-gray-700">{data.event.description || 'Ingen beskrivelse'}</span>
+						<span class="text-gray-700 dark:text-gray-300"
+							>{data.event.description || 'Ingen beskrivelse'}</span
+						>
 					</p>
 				</div>
 
 				<div class="mt-6 space-y-4">
-					<h2 class="text-sm font-semibold text-gray-900">Vaktoversikt</h2>
+					<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Vaktoversikt</h2>
 					<div class="space-y-3">
 						{#each data.event.shifts as shift, i (shift.id)}
-							<div class="rounded-lg border border-gray-200 bg-white p-4">
+							<div
+								class="rounded-lg border border-gray-200 bg-white p-4 dark:border-slate-600 dark:bg-slate-800"
+							>
 								<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 									<div class="space-y-1">
-										<p class="text-xs tracking-wide text-gray-500 uppercase">
+										<p class="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
 											Vakt {i + 1}
 										</p>
-										<div class="flex flex-wrap gap-3 text-sm text-gray-600">
+										<div class="flex flex-wrap gap-3 text-sm text-gray-600 dark:text-gray-300">
 											<span>{formatDate(shift.startAt)}</span>
 											<span aria-hidden="true">•</span>
 											<span>
@@ -165,8 +192,8 @@
 										{shift.members.length} ansvarlig{shift.members.length === 1 ? '' : 'e'}
 									</Pill>
 								</div>
-								<div class="mt-4 text-sm text-gray-700">
-									<p class="font-medium text-gray-900">Ansvarlige</p>
+								<div class="mt-4 text-sm text-gray-700 dark:text-gray-300">
+									<p class="font-medium text-gray-900 dark:text-gray-100">Ansvarlige</p>
 									<p>
 										{shift.members.map((member) => member.user.name).join(', ') ||
 											'Ingen registrerte ansvarlige'}
@@ -179,7 +206,7 @@
 			{:else if activeTab === 'shifts'}
 				{#if data.event.shifts.length === 0}
 					<div
-						class="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-8 text-center text-sm text-gray-500"
+						class="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-8 text-center text-sm text-gray-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-400"
 					>
 						Ingen vakter er opprettet for dette arrangementet ennå.
 					</div>
@@ -187,11 +214,15 @@
 					<div class="space-y-4">
 						{#each data.event.shifts as shift, i (shift.id)}
 							{@const isInShift = shift.members.some((member) => member.userId === $user?.id)}
-							<div class="rounded-lg border border-gray-200 bg-white p-5">
+							<div
+								class="rounded-lg border border-gray-200 bg-white p-5 dark:border-slate-600 dark:bg-slate-800"
+							>
 								<div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
 									<div>
-										<h3 class="text-sm font-semibold text-gray-900">Vakt {i + 1}</h3>
-										<div class="mt-1 flex flex-wrap gap-3 text-sm text-gray-600">
+										<h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+											Vakt {i + 1}
+										</h3>
+										<div class="mt-1 flex flex-wrap gap-3 text-sm text-gray-600 dark:text-gray-300">
 											<span>{formatDate(shift.startAt)}</span>
 											<span aria-hidden="true">•</span>
 											<span>
@@ -209,8 +240,8 @@
 									</Pill>
 								</div>
 
-								<div class="mt-4 text-sm text-gray-700">
-									<p class="font-medium text-gray-900">Ansvarlige</p>
+								<div class="mt-4 text-sm text-gray-700 dark:text-gray-300">
+									<p class="font-medium text-gray-900 dark:text-gray-100">Ansvarlige</p>
 									<p>
 										{shift.members.map((member) => member.user.name).join(', ') ||
 											'Ingen registrerte ansvarlige'}
