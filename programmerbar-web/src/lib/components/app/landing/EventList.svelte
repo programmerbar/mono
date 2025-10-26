@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Happening } from '$lib/api/sanity/events';
+	import type { Happening } from '$lib/api/sanity/echo-cms';
 	import { formatDate } from '$lib/date';
 	import { resolve } from '$app/paths';
 

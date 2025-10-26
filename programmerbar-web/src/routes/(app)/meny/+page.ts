@@ -1,4 +1,4 @@
-import { getProducts } from '$lib/api/sanity/products';
+import { getProducts } from '$lib/api/sanity/queries';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async () => {

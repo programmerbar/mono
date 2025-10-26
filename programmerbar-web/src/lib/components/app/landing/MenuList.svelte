@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { GetProductsQueryResult } from '@programmerbar/cms/types';
+	import type { GET_PRODUCTS_QUERYResult } from '@programmerbar/cms/types';
 	import { resolve } from '$app/paths';
 
 	type Props = {
-		products: GetProductsQueryResult;
+		products: GET_PRODUCTS_QUERYResult;
 	};
 
 	let { products }: Props = $props();

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { urlFor } from '$lib/api/sanity/image';
+	import { urlFor } from '$lib/api/sanity/queries';
 	import type { filterProducts } from '$lib/filter-products';
 	type Product = ReturnType<typeof filterProducts>[number];
 	type Props = {

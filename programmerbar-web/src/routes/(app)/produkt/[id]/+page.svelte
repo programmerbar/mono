@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/state';
-	import { urlFor } from '$lib/api/sanity/image';
+	import { urlFor } from '$lib/api/sanity/queries';
 	import { cn } from '$lib/cn';
 	import ProductDetailsCard from '$lib/components/app/product/ProductDetailsCard.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
@@ -185,7 +185,7 @@
 
 			<!-- Pricing -->
 			<div
-				class="space-y-4 rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-6"
+				class="space-y-4 rounded-xl border border-blue-200 bg-linear-to-r from-blue-50 to-indigo-50 p-6"
 			>
 				<div
 					class={cn('grid grid-cols-1 gap-4', {

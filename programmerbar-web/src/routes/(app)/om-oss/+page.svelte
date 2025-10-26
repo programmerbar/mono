@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { echoUrlFor } from '$lib/api/sanity/image';
+	import { echoUrlFor } from '$lib/api/sanity/echo-cms';
 	import { Smile, Beer, Wine, Wifi, UserCircle } from '@lucide/svelte';
 	import { marked } from 'marked';
 	import Heading from '$lib/components/ui/Heading.svelte';

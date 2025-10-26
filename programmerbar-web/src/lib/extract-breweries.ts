@@ -1,6 +1,6 @@
-import type { GetProductsQueryResult } from '@programmerbar/cms/types';
+import type { GET_PRODUCTS_QUERYResult } from '@programmerbar/cms/types';
 
-export const extractBreweries = (products: GetProductsQueryResult) => {
+export const extractBreweries = (products: GET_PRODUCTS_QUERYResult) => {
 	const producers = products
 		.map((product) => product.producer)
 		.filter(Boolean)

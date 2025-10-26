@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { urlFor } from '$lib/api/sanity/image';
+	import { urlFor } from '$lib/api/sanity/queries';
 	import Button from '$lib/components/ui/Button.svelte';
 
 	type Product = {

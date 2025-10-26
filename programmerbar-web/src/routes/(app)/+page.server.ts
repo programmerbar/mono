@@ -1,5 +1,5 @@
-import { getEvents as getSanityEvents, getRepeatingEvents } from '$lib/api/sanity/events';
-import { getProducts } from '$lib/api/sanity/products';
+import { getEvents as getSanityEvents, getRepeatingEvents } from '$lib/api/sanity/echo-cms';
+import { getProducts } from '$lib/api/sanity/queries';
 import { flattenRepeatingEvents } from '$lib/repeating-events';
 import type { PageServerLoad } from './$types';
 

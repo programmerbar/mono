@@ -1,7 +1,7 @@
-import type { GetProductsQueryResult } from '@programmerbar/cms/types';
+import type { GET_PRODUCTS_QUERYResult } from '@programmerbar/cms/types';
 
 export const extractPriceRange = (
-	products: GetProductsQueryResult,
+	products: GET_PRODUCTS_QUERYResult,
 	useStudentPrice: boolean = true
 ) => {
 	if (products.length === 0) {

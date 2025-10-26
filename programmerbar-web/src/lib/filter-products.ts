@@ -1,7 +1,7 @@
-import type { GetProductsQueryResult } from '@programmerbar/cms/types';
+import type { GET_PRODUCTS_QUERYResult } from '@programmerbar/cms/types';
 import type { FilterState } from './states/filter-state.svelte';
 
-export const filterProducts = (products: GetProductsQueryResult, filter: FilterState) => {
+export const filterProducts = (products: GET_PRODUCTS_QUERYResult, filter: FilterState) => {
 	const filteredProducts = products.filter((product) => {
 		if (filter.current.hideSoldOut && product.isSoldOut) {
 			return false;

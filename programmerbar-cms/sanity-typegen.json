@@ -1,5 +1,5 @@
 {
-  "path": "../programmerbar-web/src/**/*.{ts,tsx,js,jsx}",
+  "path": "./src/queries/**/*.ts",
   "schema": "schema.json",
   "generates": "./sanity.types.ts"
 }

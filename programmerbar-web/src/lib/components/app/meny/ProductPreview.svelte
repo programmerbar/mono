@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { urlFor } from '$lib/api/sanity/image';
+	import { urlFor } from '$lib/api/sanity/queries';
 	import { resolve } from '$app/paths';
 	import type { filterProducts } from '$lib/filter-products';
 	import type { FilterState } from '$lib/states/filter-state.svelte';

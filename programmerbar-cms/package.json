@@ -2,7 +2,8 @@
   "name": "@programmerbar/cms",
   "private": true,
   "exports": {
-    "./types": "./sanity.types.ts"
+    "./types": "./sanity.types.ts",
+    "./queries": "./src/queries/index.ts"
   },
   "scripts": {
     "dev": "sanity dev",
@@ -21,6 +22,7 @@
     "@sanity/client": "7.12.0",
     "@sanity/icons": "3.7.4",
     "@sanity/vision": "4.11.0",
+    "groq": "4.11.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "sanity": "4.11.0",

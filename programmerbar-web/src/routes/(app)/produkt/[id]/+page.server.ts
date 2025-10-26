@@ -1,4 +1,4 @@
-import { getProductById } from '$lib/api/sanity/products';
+import { getProductById } from '$lib/api/sanity/queries';
 import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 

@@ -1,6 +1,6 @@
-import type { GetProductsQueryResult } from '@programmerbar/cms/types';
+import type { GET_PRODUCTS_QUERYResult } from '@programmerbar/cms/types';
 
-export const extractTypes = (products: GetProductsQueryResult) => {
+export const extractTypes = (products: GET_PRODUCTS_QUERYResult) => {
 	return products
 		.flatMap((product) => product.productTypes)
 		.filter(Boolean)
@@ -12,6 +12,6 @@ export const extractTypes = (products: GetProductsQueryResult) => {
 				}
 				return acc;
 			},
-			[] as Array<Exclude<GetProductsQueryResult[number]['productTypes'], null>[number]>
+			[] as Array<Exclude<GET_PRODUCTS_QUERYResult[number]['productTypes'], null>[number]>
 		);
 };
