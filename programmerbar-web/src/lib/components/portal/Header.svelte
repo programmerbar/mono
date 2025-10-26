@@ -36,8 +36,8 @@
 			routeId: '/(portal)/portal/arrangementer'
 		},
 		{
-			name: 'Brukere',
-			routeId: '/(portal)/portal/brukere'
+			name: 'Frivillige',
+			routeId: '/(portal)/portal/frivillige'
 		},
 		{
 			name: 'Min Profil',

@@ -22,16 +22,16 @@
 </script>
 
 <svelte:head>
-	<title>Brukere</title>
+	<title>Frivillige</title>
 </svelte:head>
 
 <section class="space-y-6">
-	<Heading>Brukere</Heading>
+	<Heading>Frivillige</Heading>
 
 	<div class="flex items-center gap-2">
 		<Input
 			type="search"
-			class="w-full flex-1 border-1"
+			class="w-full flex-1 border"
 			placeholder="Søk etter bruker"
 			bind:value={search}
 		/>
