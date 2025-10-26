@@ -69,7 +69,7 @@ export class NotificationService {
 		// Send push notification if service is available
 		if (this.#pushNotificationService) {
 			console.log(`[NotificationService] Triggering push notification for user ${userId}`);
-			this.#pushNotificationService
+			await this.#pushNotificationService
 				.sendToUser(userId, {
 					title,
 					body: body || ''
@@ -104,7 +104,7 @@ export class NotificationService {
 			console.log(
 				`[NotificationService] Triggering push notifications for ${userIds.length} user(s)`
 			);
-			this.#pushNotificationService
+			await this.#pushNotificationService
 				.sendToUsers(userIds, {
 					title: payload.title,
 					body: payload.message
