@@ -46,7 +46,7 @@
 >
 	<ProgressBar />
 
-	<header class="mx-auto flex w-full max-w-screen-lg justify-between px-4 py-8">
+	<header class="mx-auto flex w-full max-w-5xl justify-between px-4 py-8">
 		<a href={resolve('/')}>
 			<img src={logo} class="h-20 w-20" alt="ProgrammerBar Logo" />
 		</a>

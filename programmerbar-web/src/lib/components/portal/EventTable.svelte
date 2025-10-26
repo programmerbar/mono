@@ -178,7 +178,7 @@
 						{/if}
 					</tr>
 				</thead>
-				<tbody class="border-b border-gray-100 break-words whitespace-nowrap">
+				<tbody class="wrap-break-words border-b border-gray-100 whitespace-nowrap">
 					{#each filteredEvents as event (event.id)}
 						{@const status = getEventStatus(event)}
 						<tr class="hover:bg-gray-50">

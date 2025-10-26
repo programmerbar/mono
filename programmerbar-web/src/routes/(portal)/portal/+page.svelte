@@ -7,13 +7,13 @@
 	import { enhance } from '$app/forms';
 	import { resolve } from '$app/paths';
 	import {
-		CheckCircle,
+		CircleCheck,
 		Beer,
 		Users,
 		UserCheck,
 		Clock,
 		Calendar,
-		AlertCircle,
+		CircleAlert,
 		TrendingUp
 	} from '@lucide/svelte';
 
@@ -89,7 +89,7 @@
 					<div
 						class="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 dark:bg-green-900"
 					>
-						<CheckCircle class="h-5 w-5 text-green-600 dark:text-green-400" />
+						<CircleCheck class="h-5 w-5 text-green-600 dark:text-green-400" />
 					</div>
 					<div>
 						<p class="text-sm font-medium text-green-800 dark:text-green-300">Vakter fullført</p>
@@ -140,7 +140,7 @@
 
 				<div class="flex items-center justify-between rounded-lg bg-gray-50 p-3 dark:bg-slate-700">
 					<div class="flex items-center gap-3">
-						<CheckCircle class="h-4 w-4 text-green-600 dark:text-green-400" />
+						<CircleCheck class="h-4 w-4 text-green-600 dark:text-green-400" />
 						<span class="text-sm font-medium text-gray-700 dark:text-gray-200">Fullført 1 vakt</span
 						>
 					</div>
@@ -201,7 +201,7 @@
 				</a>
 			{:else}
 				<div class="p-8 text-center">
-					<AlertCircle class="mx-auto h-12 w-12 text-gray-300 dark:text-gray-600 mb-4" />
+					<CircleAlert class="mx-auto h-12 w-12 text-gray-300 dark:text-gray-600 mb-4" />
 					<p class="text-lg font-medium text-gray-500 dark:text-gray-400">Ingen kommende vakter</p>
 					<p class="text-sm text-gray-400 dark:text-gray-500 mt-1">
 						Du har ingen vakter å jobbe. Sjekk

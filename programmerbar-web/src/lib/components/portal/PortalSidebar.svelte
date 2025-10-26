@@ -1,7 +1,7 @@
 <script lang="ts">
 	import logo from '$lib/assets/programmerbar-modern.svg';
 	import {
-		Home,
+		House,
 		Calendar,
 		Users,
 		Settings,
@@ -27,7 +27,7 @@
 	type NavRoute = {
 		name: string;
 		routeId: RouteId;
-		icon: typeof Home;
+		icon: typeof House;
 		count?: number;
 	};
 
@@ -49,7 +49,7 @@
 		{
 			name: 'Hjem',
 			routeId: '/(portal)/portal',
-			icon: Home
+			icon: House
 		},
 		{
 			name: 'Arrangementer',
@@ -409,7 +409,7 @@
 					)}
 					title="Hjem"
 				>
-					<Home class="h-4 w-4 shrink-0" />
+					<House class="h-4 w-4 shrink-0" />
 					<span
 						class={cn('', {
 							hidden: !showFullLayout,

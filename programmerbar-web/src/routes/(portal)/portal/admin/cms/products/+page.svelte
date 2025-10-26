@@ -4,7 +4,7 @@
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import Chip from '$lib/components/ui/Chip.svelte';
-	import { Plus, Trash2, Package, Edit } from '@lucide/svelte';
+	import { Plus, Trash2, Package, SquarePen } from '@lucide/svelte';
 
 	let { data } = $props();
 	let deletingId = $state<string | null>(null);
@@ -52,13 +52,13 @@
 							</th>
 						</tr>
 					</thead>
-					<tbody class="border-b border-gray-100 break-words whitespace-nowrap">
+					<tbody class="wrap-break-words border-b border-gray-100 whitespace-nowrap">
 						{#each data.products as product (product.id)}
 							<tr class="hover:bg-gray-50">
 								<td class="px-6 py-4">
 									<div class="flex items-center gap-3">
 										{#if product.imageId}
-											<div class="h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg">
+											<div class="h-12 w-12 shrink-0 overflow-hidden rounded-lg">
 												<img
 													src="/api/images/{product.imageId}"
 													alt={product.name}
@@ -67,7 +67,7 @@
 											</div>
 										{:else}
 											<div
-												class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-gray-100"
+												class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-gray-100"
 											>
 												<Package class="h-6 w-6 text-gray-400" />
 											</div>
@@ -93,7 +93,7 @@
 											href={`/portal/admin/cms/products/${product.id}/rediger`}
 											intent="outline"
 										>
-											<Edit class="h-4 w-4" />
+											<SquarePen class="h-4 w-4" />
 										</ButtonLink>
 										<form method="POST" action="?/delete" use:enhance class="inline">
 											<input type="hidden" name="id" value={product.id} />

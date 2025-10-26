@@ -6,7 +6,7 @@
 	import Select from '$lib/components/ui/Select.svelte';
 	import MultipleSelect from '$lib/components/ui/MultipleSelect.svelte';
 	import ImageUpload from '$lib/components/ui/ImageUpload.svelte';
-	import { Package, Calculator, Tag, Droplets, AlertTriangle } from '@lucide/svelte';
+	import { Package, Calculator, Tag, Droplets, TriangleAlert } from '@lucide/svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { resolve } from '$app/paths';
@@ -287,7 +287,7 @@
 
 					<div class="mt-4">
 						<div class="mb-4 flex items-center gap-2">
-							<AlertTriangle class="h-5 w-5 text-gray-400" />
+							<TriangleAlert class="h-5 w-5 text-gray-400" />
 							<h3 class="text-lg font-medium text-gray-900">Status</h3>
 						</div>
 						<div class="flex items-center gap-3">

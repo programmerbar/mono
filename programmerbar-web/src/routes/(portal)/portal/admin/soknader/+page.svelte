@@ -5,7 +5,7 @@
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import { normalDate } from '$lib/date';
-	import { UserCheck, Mail, Calendar, FileUser, CheckCircle2, XCircle } from '@lucide/svelte';
+	import { UserCheck, Mail, Calendar, FileUser, CircleCheck, CircleX } from '@lucide/svelte';
 
 	let { data, form } = $props();
 
@@ -37,7 +37,7 @@
 			class="rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-950/50"
 		>
 			<div class="flex items-center gap-2">
-				<CheckCircle2 class="h-4 w-4 text-green-600 dark:text-green-400" />
+				<CircleCheck class="h-4 w-4 text-green-600 dark:text-green-400" />
 				<p class="font-medium text-green-800 dark:text-green-300">{form.message}</p>
 			</div>
 		</div>
@@ -116,7 +116,7 @@
 									class="flex w-full items-center gap-2 sm:w-auto"
 									disabled={processingId === application.id}
 								>
-									<CheckCircle2 class="h-4 w-4" />
+									<CircleCheck class="h-4 w-4" />
 									{processingId === application.id ? 'Behandler...' : 'Godkjenn'}
 								</Button>
 							</form>
@@ -144,7 +144,7 @@
 									class="flex w-full items-center gap-2 sm:w-auto"
 									disabled={processingId === application.id}
 								>
-									<XCircle class="h-4 w-4" />
+									<CircleX class="h-4 w-4" />
 									{processingId === application.id ? 'Behandler...' : 'Avslå'}
 								</Button>
 							</form>

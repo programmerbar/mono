@@ -11,11 +11,11 @@
 	import {
 		ArrowLeft,
 		UserCog,
-		Edit3,
+		SquarePen,
 		Mail,
 		Beer,
 		ClipboardList,
-		CheckCircle,
+		CircleCheck,
 		Trash2
 	} from '@lucide/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
@@ -91,7 +91,7 @@
 				intent="primary"
 				class="flex items-center gap-2"
 			>
-				<Edit3 class="h-4 w-4" />
+				<SquarePen class="h-4 w-4" />
 				Rediger
 			</ButtonLink>
 		</div>
@@ -155,7 +155,7 @@
 						<div
 							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-slate-600"
 						>
-							<div class="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-blue-400"></div>
+							<div class="mt-2 h-2 w-2 shrink-0 rounded-full bg-blue-400"></div>
 							<div class="flex-1">
 								<p class="text-sm text-gray-900 dark:text-gray-100">Totale referreinger</p>
 								<p class="text-xs text-gray-500 dark:text-gray-400">
@@ -166,7 +166,7 @@
 						<div
 							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-slate-600"
 						>
-							<div class="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-green-400"></div>
+							<div class="mt-2 h-2 w-2 shrink-0 rounded-full bg-green-400"></div>
 							<div class="flex-1">
 								<p class="text-sm text-gray-900 dark:text-gray-100">Godkjente referreninger</p>
 								<p class="text-xs text-gray-500 dark:text-gray-400">
@@ -177,7 +177,7 @@
 						<div
 							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-slate-600"
 						>
-							<div class="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-yellow-400"></div>
+							<div class="mt-2 h-2 w-2 shrink-0 rounded-full bg-yellow-400"></div>
 							<div class="flex-1">
 								<p class="text-sm text-gray-900 dark:text-gray-100">Ventende referreringer</p>
 								<p class="text-xs text-gray-500 dark:text-gray-400">
@@ -244,7 +244,7 @@
 						onclick={() => (showTrainingChecklist = true)}
 					>
 						{#if userHasCompletedTraining}
-							<CheckCircle class="h-4 w-4" />
+							<CircleCheck class="h-4 w-4" />
 							Opplæring fullført
 						{:else}
 							<ClipboardList class="h-4 w-4" />

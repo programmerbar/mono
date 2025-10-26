@@ -3,7 +3,7 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 	import Heading from '$lib/components/ui/Heading.svelte';
-	import { Plus, Trash2, Package, Edit } from '@lucide/svelte';
+	import { Plus, Trash2, Package, SquarePen } from '@lucide/svelte';
 
 	let { data } = $props();
 	let deletingId = $state<string | null>(null);
@@ -51,7 +51,7 @@
 							</th>
 						</tr>
 					</thead>
-					<tbody class="border-b border-gray-100 break-words whitespace-nowrap">
+					<tbody class="wrap-break-words border-b border-gray-100 whitespace-nowrap">
 						{#each data.producers as producer (producer.id)}
 							<tr class="hover:bg-gray-50">
 								<td class="px-6 py-4 whitespace-nowrap">
@@ -66,7 +66,7 @@
 											href={`/portal/admin/cms/producers/${producer.id}/rediger`}
 											intent="outline"
 										>
-											<Edit class="h-4 w-4" />
+											<SquarePen class="h-4 w-4" />
 										</ButtonLink>
 										<form method="POST" action="?/delete" use:enhance class="inline">
 											<input type="hidden" name="id" value={producer.id} />

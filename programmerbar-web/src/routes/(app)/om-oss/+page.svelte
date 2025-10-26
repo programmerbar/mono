@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { echoUrlFor } from '$lib/api/sanity/echo-cms';
-	import { Smile, Beer, Wine, Wifi, UserCircle } from '@lucide/svelte';
+	import { Smile, Beer, Wine, Wifi, CircleUser } from '@lucide/svelte';
 	import { marked } from 'marked';
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import SEO from '$lib/components/SEO.svelte';
@@ -62,7 +62,7 @@
 							<div
 								class="flex size-20 items-center justify-center rounded-full border-2 bg-gray-200"
 							>
-								<UserCircle class="size-10 text-gray-400" />
+								<CircleUser class="size-10 text-gray-400" />
 							</div>
 						{/if}
 					</div>

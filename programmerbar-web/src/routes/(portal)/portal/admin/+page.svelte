@@ -66,7 +66,7 @@
 						class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400 dark:text-gray-500"
 					/>
 					<Input
-						class="w-full border-1 pl-10"
+						class="w-full border pl-10"
 						type="search"
 						placeholder="Søk etter navn eller e-post..."
 						bind:value={search}
@@ -92,7 +92,7 @@
 			<div class="rounded-lg border bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
-						<div class="h-10 w-10 flex-shrink-0">
+						<div class="h-10 w-10 shrink-0">
 							<div
 								class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30"
 							>
@@ -197,7 +197,7 @@
 						<tr class="transition-colors hover:bg-gray-50 dark:hover:bg-slate-700">
 							<td class="px-6 py-4 whitespace-nowrap">
 								<div class="flex items-center">
-									<div class="h-10 w-10 flex-shrink-0">
+									<div class="h-10 w-10 shrink-0">
 										<div
 											class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30"
 										>

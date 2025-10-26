@@ -116,7 +116,7 @@
 				type="search"
 				placeholder="Søk etter arrangementer..."
 				bind:value={search}
-				class="w-full border-1"
+				class="w-full border"
 			/>
 		</div>
 

@@ -129,19 +129,13 @@
 			</div>
 
 			<div class="grid gap-4 md:grid-cols-2">
-				<FormInput
-					label="Navn"
-					name="name"
-					class="border-1"
-					bind:value={eventState.name}
-					required
-				/>
+				<FormInput label="Navn" name="name" class="border" bind:value={eventState.name} required />
 				<FormInput
 					label="Dato"
 					name="date"
 					bind:value={eventState.date}
 					type="datetime-local"
-					class="border-1"
+					class="border"
 					required
 				/>
 			</div>
@@ -175,7 +169,7 @@
 							name="description"
 							bind:value={eventState.description}
 							placeholder="Oppdater beskrivelsen som vises offentlig…"
-							class="min-h-28 border-1"
+							class="min-h-28 border"
 						/>
 						{#if eventState.slug}
 							<p class="text-xs text-gray-500 dark:text-gray-400">

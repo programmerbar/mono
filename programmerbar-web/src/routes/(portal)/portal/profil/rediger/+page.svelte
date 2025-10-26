@@ -114,7 +114,7 @@
 								name="altEmail"
 								bind:value={editForm.altEmail}
 								type="email"
-								class="w-full border-1"
+								class="w-full border"
 								placeholder="din.alternativ@epost.no"
 							/>
 						</div>
@@ -132,7 +132,7 @@
 								name="phone"
 								bind:value={editForm.phone}
 								type="tel"
-								class="w-full border-1"
+								class="w-full border"
 								placeholder="+47 123 45 678"
 							/>
 						</div>

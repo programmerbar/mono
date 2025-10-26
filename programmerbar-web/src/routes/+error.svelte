@@ -3,21 +3,21 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 	import {
-		AlertCircle,
+		CircleAlert,
 		Lock,
 		ShieldAlert,
-		FileQuestion,
-		AlertTriangle,
+		FileQuestionMark,
+		TriangleAlert,
 		Wifi
 	} from '@lucide/svelte';
 
-	type Icon = typeof AlertCircle;
+	type Icon = typeof CircleAlert;
 
 	const errors: Record<number, { title: string; message: string; icon: Icon }> = {
 		400: {
 			title: 'Dårlig forespørsel',
 			message: 'Vi kunne ikke forstå forespørselen din. Prøv på nytt.',
-			icon: AlertCircle
+			icon: CircleAlert
 		},
 		401: {
 			title: 'Uautorisert',
@@ -32,12 +32,12 @@
 		404: {
 			title: 'Siden ble ikke funnet',
 			message: 'Beklager, vi kunne ikke finne siden du leter etter.',
-			icon: FileQuestion
+			icon: FileQuestionMark
 		},
 		500: {
 			title: 'Serverfeil',
 			message: 'Noe gikk galt på serveren vår. Vennligst prøv igjen senere.',
-			icon: AlertTriangle
+			icon: TriangleAlert
 		},
 		503: {
 			title: 'Tjenesten er utilgjengelig',
@@ -49,7 +49,7 @@
 	const error = errors[page.status] || {
 		title: 'Feil',
 		message: 'Noe uventet skjedde. Vennligst prøv igjen.',
-		icon: AlertCircle
+		icon: CircleAlert
 	};
 </script>
 

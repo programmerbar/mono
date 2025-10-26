@@ -128,7 +128,7 @@
 							bind:value={editForm.phone}
 							type="tel"
 							placeholder="+47 123 45 678"
-							class="w-full border-1"
+							class="w-full border"
 						/>
 					</div>
 
