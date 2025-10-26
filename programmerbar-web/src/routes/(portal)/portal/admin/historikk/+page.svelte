@@ -2,7 +2,7 @@
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Heading from '$lib/components/ui/Heading.svelte';
-	import { ArrowLeft, ChevronLeft, ChevronRight } from '@lucide/svelte';
+	import { History, ChevronLeft, ChevronRight } from '@lucide/svelte';
 	import { SvelteSet, SvelteURLSearchParams } from 'svelte/reactivity';
 
 	const formatter = new Intl.DateTimeFormat('no-NO', {
@@ -115,9 +115,7 @@
 <div class="space-y-6">
 	<!-- Header with back button -->
 	<div class="flex items-center gap-4">
-		<ButtonLink href="/portal/admin" intent="outline" size="square" aria-label="Tilbake">
-			<ArrowLeft class="h-5 w-5" />
-		</ButtonLink>
+		<History class="h-6 w-6 text-gray-600 dark:text-gray-300" />
 		<div>
 			<Heading>Bonghistorikk</Heading>
 			<p class="mt-1 text-gray-600 dark:text-gray-300">Se historikk for bruk av bong</p>
