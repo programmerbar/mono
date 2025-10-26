@@ -8,13 +8,12 @@
 	import { enhance } from '$app/forms';
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
 	import { toDateTimeLocalInput } from '$lib/date';
-	import { beforeNavigate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import { differenceInHours } from 'date-fns';
 
-	let { data, form } = $props();
+	let { data } = $props();
 
 	let showDeleteConfirm = $state(false);
 
@@ -44,14 +43,6 @@
 	let originalShifts = $state(data.event.shifts.map((shift) => ({ id: shift.id })));
 	let deletedShiftIds = $state<Array<string>>([]);
 	let removedUserShifts = $state<Array<string>>([]);
-
-	beforeNavigate(({ cancel }) => {
-		if (!form?.message && (deletedShiftIds.length > 0 || removedUserShifts.length > 0)) {
-			if (!confirm('Du har ulagrede endringer. Er du sikker på at du vil forlate siden?')) {
-				cancel();
-			}
-		}
-	});
 </script>
 
 <svelte:head>
