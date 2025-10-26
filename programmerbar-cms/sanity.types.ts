@@ -15,7 +15,7 @@
 // Source: schema.json
 export type ProductType = {
 	_id: string;
-	_type: 'productType';
+	_type: "productType";
 	_createdAt: string;
 	_updatedAt: string;
 	_rev: string;
@@ -24,7 +24,7 @@ export type ProductType = {
 
 export type Product = {
 	_id: string;
-	_type: 'product';
+	_type: "product";
 	_createdAt: string;
 	_updatedAt: string;
 	_rev: string;
@@ -33,10 +33,10 @@ export type Product = {
 	description?: string;
 	productType?: Array<{
 		_ref: string;
-		_type: 'reference';
+		_type: "reference";
 		_weak?: boolean;
 		_key: string;
-		[internalGroqTypeReferenceTo]?: 'productType';
+		[internalGroqTypeReferenceTo]?: "productType";
 	}>;
 	isSoldOut: boolean;
 	priceList: Price;
@@ -46,25 +46,25 @@ export type Product = {
 	image?: {
 		asset?: {
 			_ref: string;
-			_type: 'reference';
+			_type: "reference";
 			_weak?: boolean;
-			[internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+			[internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 		};
 		media?: unknown;
 		hotspot?: SanityImageHotspot;
 		crop?: SanityImageCrop;
-		_type: 'image';
+		_type: "image";
 	};
 	producer?: {
 		_ref: string;
-		_type: 'reference';
+		_type: "reference";
 		_weak?: boolean;
-		[internalGroqTypeReferenceTo]?: 'producer';
+		[internalGroqTypeReferenceTo]?: "producer";
 	};
 };
 
 export type Price = {
-	_type: 'price';
+	_type: "price";
 	ordinary: number;
 	student: number;
 	internal: number;
@@ -73,7 +73,7 @@ export type Price = {
 
 export type Producer = {
 	_id: string;
-	_type: 'producer';
+	_type: "producer";
 	_createdAt: string;
 	_updatedAt: string;
 	_rev: string;
@@ -81,20 +81,20 @@ export type Producer = {
 	logo?: {
 		asset?: {
 			_ref: string;
-			_type: 'reference';
+			_type: "reference";
 			_weak?: boolean;
-			[internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+			[internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 		};
 		media?: unknown;
 		hotspot?: SanityImageHotspot;
 		crop?: SanityImageCrop;
-		_type: 'image';
+		_type: "image";
 	};
 };
 
 export type MediaTag = {
 	_id: string;
-	_type: 'media.tag';
+	_type: "media.tag";
 	_createdAt: string;
 	_updatedAt: string;
 	_rev: string;
@@ -104,7 +104,7 @@ export type MediaTag = {
 export type Markdown = string;
 
 export type SanityImagePaletteSwatch = {
-	_type: 'sanity.imagePaletteSwatch';
+	_type: "sanity.imagePaletteSwatch";
 	background?: string;
 	foreground?: string;
 	population?: number;
@@ -112,7 +112,7 @@ export type SanityImagePaletteSwatch = {
 };
 
 export type SanityImagePalette = {
-	_type: 'sanity.imagePalette';
+	_type: "sanity.imagePalette";
 	darkMuted?: SanityImagePaletteSwatch;
 	lightVibrant?: SanityImagePaletteSwatch;
 	darkVibrant?: SanityImagePaletteSwatch;
@@ -123,31 +123,31 @@ export type SanityImagePalette = {
 };
 
 export type SanityImageDimensions = {
-	_type: 'sanity.imageDimensions';
-	height?: number;
-	width?: number;
-	aspectRatio?: number;
+	_type: "sanity.imageDimensions";
+	height: number;
+	width: number;
+	aspectRatio: number;
 };
 
 export type SanityImageHotspot = {
-	_type: 'sanity.imageHotspot';
-	x?: number;
-	y?: number;
-	height?: number;
-	width?: number;
+	_type: "sanity.imageHotspot";
+	x: number;
+	y: number;
+	height: number;
+	width: number;
 };
 
 export type SanityImageCrop = {
-	_type: 'sanity.imageCrop';
-	top?: number;
-	bottom?: number;
-	left?: number;
-	right?: number;
+	_type: "sanity.imageCrop";
+	top: number;
+	bottom: number;
+	left: number;
+	right: number;
 };
 
 export type SanityFileAsset = {
 	_id: string;
-	_type: 'sanity.fileAsset';
+	_type: "sanity.fileAsset";
 	_createdAt: string;
 	_updatedAt: string;
 	_rev: string;
@@ -169,7 +169,7 @@ export type SanityFileAsset = {
 
 export type SanityImageAsset = {
 	_id: string;
-	_type: 'sanity.imageAsset';
+	_type: "sanity.imageAsset";
 	_createdAt: string;
 	_updatedAt: string;
 	_rev: string;
@@ -191,7 +191,7 @@ export type SanityImageAsset = {
 };
 
 export type SanityImageMetadata = {
-	_type: 'sanity.imageMetadata';
+	_type: "sanity.imageMetadata";
 	location?: Geopoint;
 	dimensions?: SanityImageDimensions;
 	palette?: SanityImagePalette;
@@ -202,20 +202,20 @@ export type SanityImageMetadata = {
 };
 
 export type Geopoint = {
-	_type: 'geopoint';
+	_type: "geopoint";
 	lat?: number;
 	lng?: number;
 	alt?: number;
 };
 
 export type Slug = {
-	_type: 'slug';
+	_type: "slug";
 	current: string;
 	source?: string;
 };
 
 export type SanityAssetSourceData = {
-	_type: 'sanity.assetSourceData';
+	_type: "sanity.assetSourceData";
 	name?: string;
 	id?: string;
 	url?: string;
@@ -274,14 +274,14 @@ export type GetProductsQueryResult = Array<{
 	image: {
 		asset?: {
 			_ref: string;
-			_type: 'reference';
+			_type: "reference";
 			_weak?: boolean;
-			[internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+			[internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 		};
 		media?: unknown;
 		hotspot?: SanityImageHotspot;
 		crop?: SanityImageCrop;
-		_type: 'image';
+		_type: "image";
 	} | null;
 	producer: string | null;
 	volume: number | null;
@@ -304,14 +304,14 @@ export type GetProductByIdQueryResult = {
 	image: {
 		asset?: {
 			_ref: string;
-			_type: 'reference';
+			_type: "reference";
 			_weak?: boolean;
-			[internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+			[internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 		};
 		media?: unknown;
 		hotspot?: SanityImageHotspot;
 		crop?: SanityImageCrop;
-		_type: 'image';
+		_type: "image";
 	} | null;
 	producer: string | null;
 	volume: number | null;
@@ -320,13 +320,13 @@ export type GetProductByIdQueryResult = {
 } | null;
 
 // Source: ../programmerbar-web/src/lib/api/sanity/programmerbar.ts
-// Variable: query
+// Variable: PROGRAMMERBAR_GROUP_QUERY
 // Query: *[_type == "studentGroup"    && slug.current == $slug    && !(_id in path('drafts.**'))] {    _id,    _createdAt,    _updatedAt,    name,    groupType,    "slug": slug.current,    description,    image,    "members": members[] {      role,      "profile": profile->{        _id,        name,        picture,        socials,      },    },    "socials": socials {      facebook,      instagram,      linkedin,      email,    }  }[0]
-export type QueryResult = null;
+export type PROGRAMMERBAR_GROUP_QUERYResult = null;
 
 // Query TypeMap
-import '@sanity/client';
-declare module '@sanity/client' {
+import "@sanity/client";
+declare module "@sanity/client" {
 	interface SanityQueries {
 		'*[\n\t_type == "happening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current &&\n\tdate >= now()\n] | order(date asc) {\n\t_id,\n\ttitle,\n\t"slug": slug.current,\n\tdate,\n\tregistrationStart,\n\t_createdAt,\n\tbody\n}[0...6]': GetEventsQueryResult;
 		'*[\n\t_type == "happening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current &&\n\tdate > now()\n] | order(date asc) {\n\t_id,\n\ttitle,\n\t"slug": slug.current,\n\tdate,\n\tregistrationStart,\n\t_createdAt,\n\tbody\n}': GetUpcomingEventsQueryResult;
@@ -335,6 +335,6 @@ declare module '@sanity/client' {
 		'*[\n\t_type == "repeatingHappening" &&\n\t!(_id in path("drafts.**")) &&\n\t"programmerbar" in organizers[]->slug.current &&\n\tslug.current == $slug\n] {\n\t_id,\n\ttitle,\n\tdayOfWeek,\n\tstartTime,\n\tendTime,\n\tstartDate,\n\tignoredDates,\n\tendDate,\n\tinterval,\n\t_createdAt,\n\t"slug": slug.current,\n\tbody\n}[0]': GetRepeatingEventBySlugQueryResult;
 		'*[_type == "product" && !(_id in path("drafts.**"))] {\n    _id,\n    sku,\n    name,\n    description,\n    "productTypes": productType[]->{\n        _id,\n        title\n    },\n    isSoldOut,\n    priceList,\n    image,\n    "producer": producer->name,\n    volume,\n    alcoholContent,\n    variants,\n}': GetProductsQueryResult;
 		'*[_type == "product" && _id == $id && !(_id in path("drafts.**"))] {\n    _id,\n    sku,\n    name,\n    description,\n    "productTypes": productType[]->{\n        _id,\n        title\n    },\n    isSoldOut,\n    priceList,\n    image,\n    "producer": producer->name,\n    volume,\n    alcoholContent,\n    variants,\n}[0]': GetProductByIdQueryResult;
-		'*[_type == "studentGroup"\n    && slug.current == $slug\n    && !(_id in path(\'drafts.**\'))] {\n    _id,\n    _createdAt,\n    _updatedAt,\n    name,\n    groupType,\n    "slug": slug.current,\n    description,\n    image,\n    "members": members[] {\n      role,\n      "profile": profile->{\n        _id,\n        name,\n        picture,\n        socials,\n      },\n    },\n    "socials": socials {\n      facebook,\n      instagram,\n      linkedin,\n      email,\n    }\n  }[0]': QueryResult;
+		'*[_type == "studentGroup"\n    && slug.current == $slug\n    && !(_id in path(\'drafts.**\'))] {\n    _id,\n    _createdAt,\n    _updatedAt,\n    name,\n    groupType,\n    "slug": slug.current,\n    description,\n    image,\n    "members": members[] {\n      role,\n      "profile": profile->{\n        _id,\n        name,\n        picture,\n        socials,\n      },\n    },\n    "socials": socials {\n      facebook,\n      instagram,\n      linkedin,\n      email,\n    }\n  }[0]': PROGRAMMERBAR_GROUP_QUERYResult;
 	}
 }

@@ -1,4 +1,4 @@
-import type { GetProductsQueryResult } from '../../sanity.types';
+import type { GetProductsQueryResult } from '@programmerbar/cms/types';
 
 export const extractPriceRange = (
 	products: GetProductsQueryResult,

@@ -10,8 +10,7 @@
 		"sourceMap": true,
 		"strict": true,
 		"moduleResolution": "bundler",
-		"jsx": "react-jsx",
-		"types": ["@cloudflare/workers-types"]
+		"jsx": "react-jsx"
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	// except $lib which is handled by https://kit.svelte.dev/docs/configuration#files

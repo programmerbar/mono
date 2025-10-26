@@ -1,4 +1,4 @@
-import type { GetProductsQueryResult } from '../../sanity.types';
+import type { GetProductsQueryResult } from '@programmerbar/cms/types';
 import type { FilterState } from './states/filter-state.svelte';
 
 export const filterProducts = (products: GetProductsQueryResult, filter: FilterState) => {

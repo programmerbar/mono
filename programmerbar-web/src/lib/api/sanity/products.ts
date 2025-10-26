@@ -1,6 +1,6 @@
 import { sanityClient } from './client';
 import groq from 'groq';
-import type { GetProductByIdQueryResult, GetProductsQueryResult } from '../../../../sanity.types';
+import type { GetProductByIdQueryResult, GetProductsQueryResult } from '@programmerbar/cms/types';
 
 const getProductsQuery = groq`*[_type == "product" && !(_id in path("drafts.**"))] {
     _id,
