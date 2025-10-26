@@ -2,15 +2,21 @@
 
 ## Prerequisites
 
-- [pnpm](https://pnpm.io/)
 - [Node.js](https://nodejs.org/)
 
 ## How to run locally
 
+1. Use the correct package manager with corepack
+
+   ```bash
+   corepack enable
+   corepack prepare pnpm@latest --activate
+   ```
+
 1. Fill in env-variables
 
    ```bash
-   cp programmerbar-web/.env.example .env
+   cp programmerbar-web/.dev.vars.example programmerbar-web/.dev.vars
    ```
 
 1. Fill in the empty variables
