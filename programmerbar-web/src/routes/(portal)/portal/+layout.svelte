@@ -1,11 +1,20 @@
 <script lang="ts">
 	import PortalSidebar from '$lib/components/portal/PortalSidebar.svelte';
 	import { createThemeContext } from '$lib/states/theme.svelte.js';
+	import { onMount } from 'svelte';
 
 	let { data, children } = $props();
 
 	// Initialize theme context for portal
 	createThemeContext();
+
+	// Ensure body dark class is removed when leaving portal
+	onMount(() => {
+		return () => {
+			// Cleanup: remove dark class from body when leaving portal
+			document.body.classList.remove('dark');
+		};
+	});
 </script>
 
 <div id="portal-layout" class="bg-portal-background flex min-h-screen">

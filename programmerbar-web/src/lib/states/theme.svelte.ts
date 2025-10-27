@@ -24,11 +24,13 @@ class ThemeState {
 
 			const portalLayout = document.getElementById('portal-layout');
 
-			// Update document class for dark mode
+			// Update document class for dark mode on both portal layout and body
 			if (this.#theme === 'dark') {
 				portalLayout?.classList.add('dark');
+				document.body.classList.add('dark');
 			} else {
 				portalLayout?.classList.remove('dark');
+				document.body.classList.remove('dark');
 			}
 		});
 	}
