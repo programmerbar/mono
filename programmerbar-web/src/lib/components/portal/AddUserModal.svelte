@@ -34,13 +34,13 @@
 		<div class={theme.isDark ? 'dark' : ''}>
 			<Dialog.Overlay class="fixed inset-0 z-50 bg-black/60 dark:bg-black/80" />
 			<Dialog.Content
-				class="bg-background fixed top-[50%] left-[50%] z-50 w-full max-w-[94%] translate-x-[-50%] translate-y-[-50%] rounded-lg border p-5 outline-none sm:max-w-[490px] md:w-full dark:border-portal-border dark:bg-portal-card"
+				class="bg-background dark:border-portal-border dark:bg-portal-card fixed top-[50%] left-[50%] z-50 w-full max-w-[94%] translate-x-[-50%] translate-y-[-50%] rounded-lg border p-5 outline-none sm:max-w-[490px] md:w-full"
 			>
 				<Dialog.Title
 					class="flex w-full items-center justify-center text-lg font-medium dark:text-gray-100"
 					>Send invitasjon</Dialog.Title
 				>
-				<Separator.Root class="bg-muted -mx-5 mt-5 mb-6 block h-px dark:bg-portal-border" />
+				<Separator.Root class="bg-muted dark:bg-portal-border -mx-5 mt-5 mb-6 block h-px" />
 				<Dialog.Description class="text-sm dark:text-gray-300">
 					Send en invitasjon til brukeren for å gi tilgang til portalen. Du kan bare invitere
 					brukere med feide-konto. E-posten skal være i formatet: navn@student.uib.no. Du kan se det

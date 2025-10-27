@@ -3,6 +3,7 @@
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 	import Pill from '$lib/components/ui/Pill.svelte';
 	import TrainingChecklist from '$lib/components/portal/Training.svelte';
+	import AddBeersModal from '$lib/components/portal/AddBeersModal.svelte';
 	import type { User } from '$lib/server/db/schemas/index.js';
 	import { initials, mailto } from '$lib/utils/strings.js';
 	import { goto } from '$app/navigation';
@@ -26,7 +27,6 @@
 	let showDeleteConfirm = $state(false);
 	let showAddBeers = $state(false);
 	let showTrainingChecklist = $state(false);
-	let additionalBeers = $state(0);
 	let deleteConfirmName = $state('');
 
 	let userHasCompletedTraining = $state(data.user.isTrained || false);
@@ -67,7 +67,7 @@
 	</div>
 
 	<!-- User overview -->
-	<div class="rounded-lg border bg-portal-card p-4 sm:p-6 border-portal-border">
+	<div class="bg-portal-card border-portal-border rounded-lg border p-4 sm:p-6">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center gap-4">
 				<div
@@ -99,8 +99,8 @@
 
 	<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 		<div class="space-y-6 lg:col-span-2">
-			<div class="rounded-lg border bg-portal-card border-portal-border">
-				<div class="border-b px-6 py-4 border-portal-border">
+			<div class="bg-portal-card border-portal-border rounded-lg border">
+				<div class="border-portal-border border-b px-6 py-4">
 					<div class="flex items-center gap-2">
 						<UserCog class="h-5 w-5 text-gray-600 dark:text-gray-300" />
 						<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
@@ -146,14 +146,14 @@
 				</div>
 			</div>
 
-			<div class="rounded-lg border bg-portal-card border-portal-border">
-				<div class="border-b px-6 py-4 border-portal-border">
+			<div class="bg-portal-card border-portal-border rounded-lg border">
+				<div class="border-portal-border border-b px-6 py-4">
 					<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Verv stats</h3>
 				</div>
 				<div class="p-6">
 					<div class="space-y-3">
 						<div
-							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-portal-border"
+							class="dark:border-portal-border flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0"
 						>
 							<div class="mt-2 h-2 w-2 shrink-0 rounded-full bg-blue-400"></div>
 							<div class="flex-1">
@@ -164,7 +164,7 @@
 							</div>
 						</div>
 						<div
-							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-portal-border"
+							class="dark:border-portal-border flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0"
 						>
 							<div class="mt-2 h-2 w-2 shrink-0 rounded-full bg-green-400"></div>
 							<div class="flex-1">
@@ -175,7 +175,7 @@
 							</div>
 						</div>
 						<div
-							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-portal-border"
+							class="dark:border-portal-border flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0"
 						>
 							<div class="mt-2 h-2 w-2 shrink-0 rounded-full bg-yellow-400"></div>
 							<div class="flex-1">
@@ -191,8 +191,8 @@
 		</div>
 
 		<div class="space-y-6">
-			<div class="rounded-lg border bg-portal-card border-portal-border">
-				<div class="border-b px-6 py-4 border-portal-border">
+			<div class="bg-portal-card border-portal-border rounded-lg border">
+				<div class="border-portal-border border-b px-6 py-4">
 					<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Statistikk</h3>
 				</div>
 				<div class="space-y-4 p-6">
@@ -217,28 +217,28 @@
 				</div>
 			</div>
 
-			<div class="rounded-lg border bg-portal-card border-portal-border">
-				<div class="border-b px-6 py-4 border-portal-border">
+			<div class="bg-portal-card border-portal-border rounded-lg border">
+				<div class="border-portal-border border-b px-6 py-4">
 					<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Handlinger</h3>
 				</div>
 				<div class="flex flex-col gap-2 p-6">
 					<!-- eslint-disable svelte/no-navigation-without-resolve -->
 					<a
-						class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-portal-hover dark:text-gray-300"
+						class="hover:bg-portal-hover flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors dark:text-gray-300"
 						href={mailto(data.user.altEmail || data.user.email)}
 					>
 						<Mail class="h-4 w-4" />
 						Send e-post
 					</a>
 					<button
-						class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-portal-hover dark:text-gray-300"
+						class="hover:bg-portal-hover flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors dark:text-gray-300"
 						onclick={() => (showAddBeers = true)}
 					>
 						<Beer class="h-4 w-4" />
 						Legg til / Fjern bonger
 					</button>
 					<button
-						class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm transition-colors hover:bg-portal-hover {userHasCompletedTraining
+						class="hover:bg-portal-hover flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm transition-colors {userHasCompletedTraining
 							? 'text-green-600 dark:text-green-400'
 							: 'text-gray-700 dark:text-gray-300'}"
 						onclick={() => (showTrainingChecklist = true)}
@@ -251,7 +251,7 @@
 							Start opplæring
 						{/if}
 					</button>
-					<div class="border-t border-gray-200 pt-2 border-portal-border">
+					<div class="dark:border-portal-border border-t border-gray-200 pt-2">
 						<button
 							class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
 							onclick={() => (showDeleteConfirm = true)}
@@ -275,67 +275,20 @@
 	onsave={onTrainingSave}
 />
 
-{#if showAddBeers}
-	<div
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs dark:bg-black/40"
-	>
-		<div
-			class="mx-4 w-full max-w-md rounded-lg border bg-portal-card p-6 shadow-lg border-portal-border"
-		>
-			<h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">Legg til øl</h3>
-			<p class="mb-4 text-sm text-gray-600 dark:text-gray-300">
-				Det du skriver her, vil endre på antall ekstra bonger <strong>{user.name}</strong> har tilgjengelig.
-			</p>
-			<p class="mb-4 text-sm text-gray-600 dark:text-gray-300">
-				Påvirker ikke antall bonger som dei har stått for
-			</p>
-			<form
-				method="POST"
-				action="?/addBeers"
-				use:enhance={() => {
-					return async ({ result }) => {
-						if (result.type === 'success') {
-							showAddBeers = false;
-							window.location.reload();
-						}
-					};
-				}}
-			>
-				<div class="mb-4">
-					<Input
-						type="number"
-						name="additionalBeers"
-						bind:value={additionalBeers}
-						placeholder="Antall øl"
-						class="w-full"
-					/>
-				</div>
-				<div class="flex justify-end gap-3">
-					<button
-						type="button"
-						onclick={() => (showAddBeers = false)}
-						class="rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 dark:bg-portal-hover dark:text-gray-300 dark:hover:bg-[#222222]"
-					>
-						Avbryt
-					</button>
-					<button
-						type="submit"
-						class="rounded-md bg-blue-600 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700"
-					>
-						Legg til
-					</button>
-				</div>
-			</form>
-		</div>
-	</div>
-{/if}
+<!-- Add Beers Modal Component -->
+<AddBeersModal
+	isOpen={showAddBeers}
+	userName={user.name}
+	onclose={() => (showAddBeers = false)}
+	onsuccess={() => window.location.reload()}
+/>
 
 {#if showDeleteConfirm}
 	<div
 		class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs dark:bg-black/40"
 	>
 		<div
-			class="mx-4 w-full max-w-md rounded-lg border bg-portal-card p-6 shadow-lg border-portal-border"
+			class="bg-portal-card border-portal-border mx-4 w-full max-w-md rounded-lg border p-6 shadow-lg"
 		>
 			<h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">Slett bruker</h3>
 			<p class="mb-4 text-sm text-gray-600 dark:text-gray-300">
@@ -375,7 +328,7 @@
 							showDeleteConfirm = false;
 							deleteConfirmName = '';
 						}}
-						class="rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 dark:bg-portal-hover dark:text-gray-300 dark:hover:bg-[#222222]"
+						class="dark:bg-portal-hover rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-[#222222]"
 					>
 						Avbryt
 					</button>

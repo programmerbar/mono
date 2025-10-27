@@ -118,9 +118,7 @@
 	}
 </script>
 
-<div
-	class="overflow-auto rounded-lg border border-portal-border bg-portal-card p-4 sm:p-6"
->
+<div class="border-portal-border bg-portal-card overflow-auto rounded-lg border p-4 sm:p-6">
 	<h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Push-varsler</h3>
 
 	{#if !isSupported}

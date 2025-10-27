@@ -63,8 +63,8 @@
 		{/if}
 	</div>
 
-	<div class="rounded-lg border border-gray-200 bg-portal-card border-portal-border">
-		<div class="border-b border-gray-200 px-6 pt-4 border-portal-border">
+	<div class="bg-portal-card border-portal-border rounded-lg border border-gray-200">
+		<div class="border-portal-border border-b border-gray-200 px-6 pt-4">
 			<div class="flex flex-wrap gap-2">
 				<button
 					class={cn(
@@ -97,7 +97,7 @@
 			{#if activeTab === 'details'}
 				<div class="grid gap-6 md:grid-cols-3">
 					<div
-						class="rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
+						class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
 					>
 						<div class="flex items-center gap-3">
 							<div
@@ -115,7 +115,7 @@
 					</div>
 
 					<div
-						class="rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
+						class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
 					>
 						<div class="flex items-center gap-3">
 							<div
@@ -136,7 +136,7 @@
 					</div>
 
 					<div
-						class="rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
+						class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
 					>
 						<div class="flex items-center gap-3">
 							<div
@@ -173,7 +173,7 @@
 					<div class="space-y-3">
 						{#each data.event.shifts as shift, i (shift.id)}
 							<div
-								class="rounded-lg border border-gray-200 bg-white p-4 border-portal-border dark:bg-portal-card"
+								class="border-portal-border dark:bg-portal-card rounded-lg border border-gray-200 bg-white p-4"
 							>
 								<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 									<div class="space-y-1">
@@ -206,7 +206,7 @@
 			{:else if activeTab === 'shifts'}
 				{#if data.event.shifts.length === 0}
 					<div
-						class="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-8 text-center text-sm text-gray-500 border-portal-border dark:bg-portal-hover dark:text-gray-400"
+						class="border-portal-border dark:bg-portal-hover rounded-lg border border-dashed border-gray-300 bg-gray-50 p-8 text-center text-sm text-gray-500 dark:text-gray-400"
 					>
 						Ingen vakter er opprettet for dette arrangementet ennå.
 					</div>
@@ -215,7 +215,7 @@
 						{#each data.event.shifts as shift, i (shift.id)}
 							{@const isInShift = shift.members.some((member) => member.userId === $user?.id)}
 							<div
-								class="rounded-lg border border-gray-200 bg-white p-5 border-portal-border dark:bg-portal-card"
+								class="border-portal-border dark:bg-portal-card rounded-lg border border-gray-200 bg-white p-5"
 							>
 								<div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
 									<div>

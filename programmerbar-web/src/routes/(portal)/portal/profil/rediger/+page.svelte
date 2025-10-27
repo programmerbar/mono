@@ -47,10 +47,10 @@
 	</div>
 
 	<!-- Profile overview (read-only) -->
-	<div class="rounded-lg border bg-portal-card p-4 sm:p-6 border-portal-border">
+	<div class="bg-portal-card border-portal-border rounded-lg border p-4 sm:p-6">
 		<div class="flex items-center gap-4">
 			<div
-				class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-300 dark:bg-portal-hover"
+				class="dark:bg-portal-hover flex h-16 w-16 items-center justify-center rounded-full bg-gray-300"
 			>
 				<span class="text-2xl font-semibold text-gray-700 dark:text-gray-300">
 					{initials(user.name)}
@@ -68,7 +68,7 @@
 	</div>
 
 	<!-- Edit form -->
-	<div class="rounded-lg border bg-portal-card border-portal-border">
+	<div class="bg-portal-card border-portal-border rounded-lg border">
 		<div class="px-6 py-4">
 			<h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
 				Rediger informasjon
@@ -79,7 +79,7 @@
 					<!-- Read-only fields -->
 					<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 						<div
-							class="rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
+							class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
 						>
 							<span class="mb-1 block text-sm font-medium text-gray-500 dark:text-gray-400"
 								>Navn</span
@@ -88,7 +88,7 @@
 							<p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kan ikke endres</p>
 						</div>
 						<div
-							class="rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
+							class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
 						>
 							<span class="mb-1 block text-sm font-medium text-gray-500 dark:text-gray-400"
 								>Hovedepost</span
@@ -101,7 +101,7 @@
 					<!-- Editable fields -->
 					<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 						<div
-							class="rounded-lg border border-gray-200 bg-white p-4 border-portal-border dark:bg-portal-hover"
+							class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-white p-4"
 						>
 							<label
 								for="edit-email"
@@ -119,7 +119,7 @@
 							/>
 						</div>
 						<div
-							class="rounded-lg border border-gray-200 bg-white p-4 border-portal-border dark:bg-portal-hover"
+							class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-white p-4"
 						>
 							<label
 								for="edit-phone"

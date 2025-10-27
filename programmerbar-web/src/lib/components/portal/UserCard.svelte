@@ -23,9 +23,9 @@
 
 <div
 	class={cn(
-		'relative block cursor-default rounded-lg border border-portal-border bg-portal-card p-4 transition-colors',
+		'border-portal-border bg-portal-card relative block cursor-default rounded-lg border p-4 transition-colors',
 		{
-			'cursor-pointer hover:bg-gray-100 active:bg-gray-200/70 dark:hover:bg-portal-hover dark:active:bg-[#303030]':
+			'dark:hover:bg-portal-hover cursor-pointer hover:bg-gray-100 active:bg-gray-200/70 dark:active:bg-[#303030]':
 				onSelect !== undefined
 		}
 	)}
@@ -37,7 +37,7 @@
 >
 	<div class="mb-2 flex justify-center">
 		<div
-			class="flex h-16 w-16 items-center justify-center rounded-full border border-gray-300 bg-gray-200 dark:border-portal-border dark:bg-portal-hover"
+			class="dark:border-portal-border dark:bg-portal-hover flex h-16 w-16 items-center justify-center rounded-full border border-gray-300 bg-gray-200"
 		>
 			<span class="text-lg font-medium text-gray-600 dark:text-gray-300">{initials(user.name)}</span
 			>
@@ -55,7 +55,7 @@
 				</span>
 			{:else}
 				<span
-					class="inline-block rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-800 dark:bg-portal-hover dark:text-gray-300"
+					class="dark:bg-portal-hover inline-block rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-800 dark:text-gray-300"
 				>
 					Frivillig
 				</span>

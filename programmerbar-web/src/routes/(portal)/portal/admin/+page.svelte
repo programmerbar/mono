@@ -58,7 +58,7 @@
 	</div>
 
 	<!-- Search and Filters -->
-	<div class="rounded-lg border bg-portal-card p-4 border-portal-border">
+	<div class="bg-portal-card border-portal-border rounded-lg border p-4">
 		<div class="flex flex-col gap-3 sm:flex-row">
 			<div class="flex-1">
 				<div class="relative">
@@ -89,7 +89,7 @@
 	<!-- Mobile View -->
 	<div class="block space-y-3 sm:hidden">
 		{#each filteredUsers as user (user.id)}
-			<div class="rounded-lg border bg-portal-card p-4 border-portal-border">
+			<div class="bg-portal-card border-portal-border rounded-lg border p-4">
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
 						<div class="h-10 w-10 shrink-0">
@@ -126,9 +126,7 @@
 			</div>
 		{/each}
 		{#if filteredUsers.length === 0}
-			<div
-				class="rounded-lg border bg-portal-card p-8 text-center border-portal-border"
-			>
+			<div class="bg-portal-card border-portal-border rounded-lg border p-8 text-center">
 				<div class="flex flex-col items-center gap-2">
 					<Users class="h-12 w-12 text-gray-300 dark:text-gray-600" />
 					<div class="text-lg font-medium text-gray-500 dark:text-gray-400">
@@ -144,11 +142,11 @@
 
 	<!-- Desktop Table View -->
 	<div
-		class="hidden overflow-hidden rounded-lg border bg-portal-card sm:block border-portal-border"
+		class="bg-portal-card border-portal-border hidden overflow-hidden rounded-lg border sm:block"
 	>
 		<div class="overflow-x-auto">
 			<table class="w-full">
-				<thead class="border-b bg-gray-50 border-portal-border dark:bg-portal-hover">
+				<thead class="border-portal-border dark:bg-portal-hover border-b bg-gray-50">
 					<tr>
 						<th class="px-6 py-3 text-left">
 							<button
@@ -192,9 +190,9 @@
 						</th>
 					</tr>
 				</thead>
-				<tbody class="divide-y divide-gray-200 divide-portal-border">
+				<tbody class="divide-portal-border divide-y divide-gray-200">
 					{#each filteredUsers as user (user.id)}
-						<tr class="transition-colors hover:bg-portal-hover">
+						<tr class="hover:bg-portal-hover transition-colors">
 							<td class="px-6 py-4 whitespace-nowrap">
 								<div class="flex items-center">
 									<div class="h-10 w-10 shrink-0">

@@ -18,7 +18,7 @@
 <select
 	bind:value
 	class={cn(
-		'h-10 rounded-lg border-2 border-input-border bg-input-background p-2 text-sm text-gray-900 focus:border-border focus:outline-primary focus:ring-0 dark:text-gray-100',
+		'border-input-border bg-input-background focus:border-border focus:outline-primary h-10 rounded-lg border-2 p-2 text-sm text-gray-900 focus:ring-0 dark:text-gray-100',
 		className
 	)}
 	{...props}

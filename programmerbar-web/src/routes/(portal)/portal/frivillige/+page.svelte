@@ -52,15 +52,13 @@
 </section>
 
 {#if data.invitations.length > 0}
-	<hr class="my-12 border-t border-gray-200 border-portal-border" />
+	<hr class="border-portal-border my-12 border-t border-gray-200" />
 	<section class="mt-12 space-y-6">
 		<Heading>Invitasjoner</Heading>
 
 		<ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
 			{#each data.invitations as invitation (invitation.id)}
-				<li
-					class="relative block rounded-lg border bg-portal-card p-4 border-portal-border"
-				>
+				<li class="bg-portal-card border-portal-border relative block rounded-lg border p-4">
 					<form method="post" action="?/deleteInvitation" use:enhance>
 						<input name="invitationId" hidden value={invitation.id} />
 						<button

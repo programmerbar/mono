@@ -96,7 +96,7 @@
 
 	<form onsubmit={handleSubmit} class="space-y-8">
 		<section
-			class="space-y-6 rounded-lg border border-gray-200 bg-portal-card p-6 border-portal-border"
+			class="bg-portal-card border-portal-border space-y-6 rounded-lg border border-gray-200 p-6"
 		>
 			<div>
 				<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Arrangementsdetaljer</h2>
@@ -124,7 +124,7 @@
 			</div>
 
 			<div
-				class="rounded-lg border border-gray-100 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
+				class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-100 bg-gray-50 p-4"
 			>
 				<Checkbox
 					id="shouldBePublic"
@@ -164,7 +164,7 @@
 		</section>
 
 		<section
-			class="space-y-6 rounded-lg border border-gray-200 bg-portal-card p-6 border-portal-border"
+			class="bg-portal-card border-portal-border space-y-6 rounded-lg border border-gray-200 p-6"
 		>
 			<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<div>
@@ -193,12 +193,12 @@
 						: 0}
 
 					<article
-						class="rounded-lg border border-gray-200 bg-gray-50 p-5 border-portal-border dark:bg-portal-hover"
+						class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-5"
 					>
 						<div class="flex items-start justify-between gap-3">
 							<div class="flex items-center gap-3">
 								<div
-									class="flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-semibold text-gray-600 dark:bg-portal-card dark:text-gray-300"
+									class="dark:bg-portal-card flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-semibold text-gray-600 dark:text-gray-300"
 								>
 									{i + 1}
 								</div>
@@ -248,7 +248,7 @@
 						{/if}
 
 						<div
-							class="mt-5 rounded-lg border border-gray-200 bg-white p-4 border-portal-border dark:bg-portal-card"
+							class="border-portal-border dark:bg-portal-card mt-5 rounded-lg border border-gray-200 bg-white p-4"
 						>
 							<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 								<div>
@@ -293,7 +293,7 @@
 										/>
 										<button
 											type="button"
-											class="flex h-10 items-center justify-center rounded-lg border border-gray-200 bg-white px-4 text-sm font-medium text-gray-600 transition-colors hover:border-red-200 hover:text-red-500 border-portal-border dark:bg-portal-card dark:text-gray-300 dark:hover:border-red-800 dark:hover:text-red-400"
+											class="border-portal-border dark:bg-portal-card flex h-10 items-center justify-center rounded-lg border border-gray-200 bg-white px-4 text-sm font-medium text-gray-600 transition-colors hover:border-red-200 hover:text-red-500 dark:text-gray-300 dark:hover:border-red-800 dark:hover:text-red-400"
 											onclick={() => createEventState.deleteUserFromShift(i, user.id)}
 										>
 											Fjern
@@ -318,7 +318,7 @@
 		</section>
 
 		<div
-			class="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end border-portal-border"
+			class="border-portal-border flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end"
 		>
 			<a href={resolve('/portal/arrangementer')} class="sm:w-auto">
 				<Button type="button" intent="outline" class="w-full sm:w-auto">Avbryt</Button>

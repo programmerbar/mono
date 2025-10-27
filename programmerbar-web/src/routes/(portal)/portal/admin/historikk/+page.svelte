@@ -122,13 +122,13 @@
 		</div>
 	</div>
 
-	<div class="rounded-lg border bg-portal-card border-portal-border">
-		<div class="border-b px-6 py-4 border-portal-border">
+	<div class="bg-portal-card border-portal-border rounded-lg border">
+		<div class="border-portal-border border-b px-6 py-4">
 			<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Claimede bonger</h2>
 			<p class="text-sm text-gray-600 dark:text-gray-300">Viser de siste claimene først.</p>
 		</div>
 		<div
-			class="flex flex-col gap-4 border-b px-6 py-4 lg:flex-row lg:items-end lg:justify-between border-portal-border"
+			class="border-portal-border flex flex-col gap-4 border-b px-6 py-4 lg:flex-row lg:items-end lg:justify-between"
 		>
 			<form
 				method="get"
@@ -143,7 +143,7 @@
 						type="datetime-local"
 						name="startDate"
 						value={data.filters?.startDate ?? ''}
-						class="dark:focus:border-primary dark:focus:ring-primary/20 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none border-portal-border dark:bg-portal-hover dark:text-gray-100"
+						class="dark:focus:border-primary dark:focus:ring-primary/20 border-portal-border dark:bg-portal-hover w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none dark:text-gray-100"
 					/>
 				</div>
 				<div class="flex flex-col gap-2">
@@ -155,7 +155,7 @@
 						type="datetime-local"
 						name="endDate"
 						value={data.filters?.endDate ?? ''}
-						class="dark:focus:border-primary dark:focus:ring-primary/20 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none border-portal-border dark:bg-portal-hover dark:text-gray-100"
+						class="dark:focus:border-primary dark:focus:ring-primary/20 border-portal-border dark:bg-portal-hover w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none dark:text-gray-100"
 					/>
 				</div>
 				<input type="hidden" name="page" value="1" />
@@ -183,8 +183,8 @@
 			</div>
 		{:else}
 			<div class="overflow-x-auto">
-				<table class="w-full min-w-[720px] divide-y divide-gray-200 divide-portal-border">
-					<thead class="bg-gray-50 dark:bg-portal-hover">
+				<table class="divide-portal-border w-full min-w-[720px] divide-y divide-gray-200">
+					<thead class="dark:bg-portal-hover bg-gray-50">
 						<tr
 							class="text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400"
 						>
@@ -195,10 +195,10 @@
 						</tr>
 					</thead>
 					<tbody
-						class="divide-y divide-gray-200 text-sm text-gray-700 divide-portal-border dark:text-gray-300"
+						class="divide-portal-border divide-y divide-gray-200 text-sm text-gray-700 dark:text-gray-300"
 					>
 						{#each data.claimedCredits as entry (entry.id)}
-							<tr class="transition-colors hover:bg-portal-hover">
+							<tr class="hover:bg-portal-hover transition-colors">
 								<td class="px-6 py-4 whitespace-nowrap">
 									{formatTimestamp(entry.createdAt)}
 								</td>
@@ -218,7 +218,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="flex justify-center border-t px-6 py-4 border-portal-border">
+			<div class="border-portal-border flex justify-center border-t px-6 py-4">
 				<nav aria-label="Paginering" class="flex items-center gap-2">
 					{#if previousPage}
 						<ButtonLink
@@ -232,7 +232,7 @@
 						</ButtonLink>
 					{:else}
 						<span
-							class="flex items-center gap-1 rounded-lg border border-dashed bg-gray-50 px-3 py-1.5 text-sm text-gray-400 border-portal-border dark:bg-portal-hover dark:text-gray-500"
+							class="border-portal-border dark:bg-portal-hover flex items-center gap-1 rounded-lg border border-dashed bg-gray-50 px-3 py-1.5 text-sm text-gray-400 dark:text-gray-500"
 						>
 							<ChevronLeft class="h-4 w-4" />
 							Forrige
@@ -267,7 +267,7 @@
 						</ButtonLink>
 					{:else}
 						<span
-							class="flex items-center gap-1 rounded-lg border border-dashed bg-gray-50 px-3 py-1.5 text-sm text-gray-400 border-portal-border dark:bg-portal-hover dark:text-gray-500"
+							class="border-portal-border dark:bg-portal-hover flex items-center gap-1 rounded-lg border border-dashed bg-gray-50 px-3 py-1.5 text-sm text-gray-400 dark:text-gray-500"
 						>
 							Neste
 							<ChevronRight class="h-4 w-4" />

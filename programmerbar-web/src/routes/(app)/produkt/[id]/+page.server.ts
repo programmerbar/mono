@@ -1,6 +1,19 @@
 import { getProductById } from '$lib/api/sanity/queries';
 import { fail } from '@sveltejs/kit';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
+import { error } from '@sveltejs/kit';
+
+export const load: PageServerLoad = async ({ params }) => {
+	const product = await getProductById(params.id);
+
+	if (!product) {
+		throw error(404, 'Product not found');
+	}
+
+	return {
+		product
+	};
+};
 
 export const actions: Actions = {
 	claimProduct: async ({ locals, params }) => {
