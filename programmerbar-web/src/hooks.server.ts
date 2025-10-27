@@ -1,30 +1,30 @@
-import { createAuth } from '$lib/auth/lucia';
-import { FeideProvider } from '$lib/auth/feide';
-import { createDatabase } from '$lib/db/drizzle';
-import { BanService } from '$lib/services/ban.service';
-import { BeerService } from '$lib/services/beer.service';
-import { ContactSubmissionService } from '$lib/services/contact-submission.service';
-import { EmailService } from '$lib/services/email.service';
-import { EventService } from '$lib/services/event.service';
-import { InvitationService } from '$lib/services/invitation.service';
-import { NotificationService } from '$lib/services/notification.service';
-import { ProducerService } from '$lib/services/producer.service';
-import { ProductService } from '$lib/services/product.service';
-import { ProductTypeService } from '$lib/services/product-type.service';
-import { ShiftService } from '$lib/services/shift.service';
-import { StatusService } from '$lib/services/status.service';
-import { UserService } from '$lib/services/user.service';
-import { PushSubscriptionService } from '$lib/services/push-subscription.service';
-import { PushNotificationService } from '$lib/services/push-notification.service';
+import { createAuth } from '$lib/server/auth/lucia';
+import { FeideProvider } from '$lib/server/auth/feide';
+import { createDatabase } from '$lib/server/db/drizzle';
+import { BanService } from '$lib/server/services/ban.service';
+import { BeerService } from '$lib/server/services/beer.service';
+import { ContactSubmissionService } from '$lib/server/services/contact-submission.service';
+import { EmailService } from '$lib/server/services/email.service';
+import { EventService } from '$lib/server/services/event.service';
+import { InvitationService } from '$lib/server/services/invitation.service';
+import { NotificationService } from '$lib/server/services/notification.service';
+import { ProducerService } from '$lib/server/services/producer.service';
+import { ProductService } from '$lib/server/services/product.service';
+import { ProductTypeService } from '$lib/server/services/product-type.service';
+import { ShiftService } from '$lib/server/services/shift.service';
+import { StatusService } from '$lib/server/services/status.service';
+import { UserService } from '$lib/server/services/user.service';
+import { PushSubscriptionService } from '$lib/server/services/push-subscription.service';
+import { PushNotificationService } from '$lib/server/services/push-notification.service';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { Resend } from 'resend';
-import { ImageService } from '$lib/services/image.service';
-import { ReferralService } from '$lib/services/referral.service';
-import { PendingApplicationService } from '$lib/services/pending-application.service';
-import { csrf } from '$lib/hooks/csrf';
+import { ImageService } from '$lib/server/services/image.service';
+import { ReferralService } from '$lib/server/services/referral.service';
+import { PendingApplicationService } from '$lib/server/services/pending-application.service';
+import { csrf } from '$lib/server/csrf';
 
-const main: Handle = async ({ event, resolve }) => {
+const setup: Handle = async ({ event, resolve }) => {
 	// Set up primitive services from Cloudflare environment
 	const STATUS_KV = event.platform!.env.STATUS_KV;
 	const R2_BUCKET = event.platform!.env.BUCKET;
@@ -145,4 +145,4 @@ const main: Handle = async ({ event, resolve }) => {
 };
 
 // Allow Slack webhook endpoint to bypass CSRF protection
-export const handle = sequence(csrf(['/slack-command']), main);
+export const handle = sequence(csrf(['/slack-command']), setup);

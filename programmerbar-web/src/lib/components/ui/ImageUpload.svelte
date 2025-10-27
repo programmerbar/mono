@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { X, Image as ImageIcon } from '@lucide/svelte';
 	import Button from './Button.svelte';
-	import { cn } from '$lib/cn';
+	import { cn } from '$lib/utils/cn';
 
 	interface ImageUploadProps {
 		type: 'product' | 'producer';

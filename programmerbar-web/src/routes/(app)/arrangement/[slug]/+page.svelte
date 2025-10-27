@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatDate } from '$lib/date';
+	import { formatDate } from '$lib/utils/date.js';
 	import { marked } from 'marked';
 	import { toast } from 'svelte-sonner';
 	import { Calendar, Share2, ExternalLink } from '@lucide/svelte';

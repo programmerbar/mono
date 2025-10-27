@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
-	import { buttonVariant, type ButtonVariantProps } from '$lib/styles/button-variant';
+	import { buttonVariant, type ButtonVariantProps } from '$lib/components/styles/button-variant';
 	import type { ResolvedPathname } from '$app/types';
 
 	type Props = Omit<HTMLAnchorAttributes, 'href'> &

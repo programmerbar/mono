@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/state';
 	import { urlFor } from '$lib/api/sanity/queries';
-	import { cn } from '$lib/cn';
+	import { cn } from '$lib/utils/cn';
 	import ProductDetailsCard from '$lib/components/app/product/ProductDetailsCard.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import SEO from '$lib/components/SEO.svelte';

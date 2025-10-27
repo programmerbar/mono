@@ -1,7 +1,7 @@
 import { getEventBySlug, getRepeatingEventBySlug, type Happening } from '$lib/api/sanity/echo-cms';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { getNextOccurrence } from '$lib/repeating-events';
+import { getNextOccurrence } from '$lib/utils/events';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const event = await getEventBySlug(params.slug);

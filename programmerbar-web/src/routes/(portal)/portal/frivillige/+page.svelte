@@ -3,8 +3,8 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import { X } from '@lucide/svelte';
 	import AddUserModal from '$lib/components/portal/AddUserModal.svelte';
-	import { mailto } from '$lib/utils';
-	import { formatDate } from '$lib/date';
+	import { mailto } from '$lib/utils/strings.js';
+	import { formatDate } from '$lib/utils/date.js';
 	import UserCard from '$lib/components/portal/UserCard.svelte';
 	import { enhance } from '$app/forms';
 

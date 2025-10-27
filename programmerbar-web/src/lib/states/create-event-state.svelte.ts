@@ -1,6 +1,6 @@
-import { slugify } from '$lib/utils';
+import { slugify } from '$lib/utils/strings';
 import { CreateEventSchema } from '$lib/validators';
-import { toUtcISOStringFromLocal } from '$lib/date';
+import { toUtcISOStringFromLocal } from '$lib/utils/date';
 
 type CreateEventShiftUser = {
 	id: string;

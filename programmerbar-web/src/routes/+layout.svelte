@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../tailwind.css';
 
-	import { setUserContext } from '$lib/context/user.context';
+	import { setUserContext } from '$lib/states/user';
 	import { Toaster } from 'svelte-sonner';
 	import { writable } from 'svelte/store';
 	import { registerServiceWorker } from '$lib/utils/push-notifications';

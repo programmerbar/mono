@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Beer, Lock, Users, Loader } from '@lucide/svelte';
-	import { cn } from '$lib/cn';
+	import { cn } from '$lib/utils/cn.js';
 	import { enhance } from '$app/forms';
 
 	let { data } = $props();

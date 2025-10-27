@@ -2,13 +2,13 @@
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Pill from '$lib/components/ui/Pill.svelte';
-	import { formatDate, time } from '$lib/date';
+	import { formatDate, time } from '$lib/utils/date';
 	import { enhance } from '$app/forms';
-	import { getUser } from '$lib/context/user.context.js';
+	import { getUser } from '$lib/states/user';
 	import { X, Plus, Calendar, Clock, Users, ArrowLeft } from '@lucide/svelte';
 	import { resolve } from '$app/paths';
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
-	import { cn } from '$lib/cn';
+	import { cn } from '$lib/utils/cn';
 
 	let { data } = $props();
 	let user = getUser();

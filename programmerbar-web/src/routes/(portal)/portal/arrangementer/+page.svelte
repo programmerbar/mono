@@ -3,11 +3,11 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Pill from '$lib/components/ui/Pill.svelte';
-	import { formatDate } from '$lib/date';
+	import { formatDate } from '$lib/utils/date';
 	import { SquarePen, Calendar, Users } from '@lucide/svelte';
-	import { getUser } from '$lib/context/user.context';
+	import { getUser } from '$lib/states/user';
 	import { resolve } from '$app/paths';
-	import type { Event, Shift } from '$lib/db/schemas';
+	import type { Event, Shift } from '$lib/server/db/schemas';
 
 	type EventWithShifts = Event & {
 		shifts: Array<Shift>;

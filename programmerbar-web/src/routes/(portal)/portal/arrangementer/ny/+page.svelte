@@ -9,7 +9,7 @@
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
 	import { differenceInHours } from 'date-fns';
-	import { createEvent } from '$lib/remotes/events.remote.js';
+	import { createEvent } from '$lib/api/remotes/events.remote';
 	import { resolve } from '$app/paths';
 
 	let { data } = $props();

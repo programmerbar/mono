@@ -4,7 +4,7 @@
 	import Pill from '$lib/components/ui/Pill.svelte';
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import { normalDate } from '$lib/date';
+	import { normalDate } from '$lib/utils/date.js';
 	import { UserCheck, Mail, Calendar, FileUser, CircleCheck, CircleX } from '@lucide/svelte';
 
 	let { data, form } = $props();

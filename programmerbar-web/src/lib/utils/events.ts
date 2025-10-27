@@ -1,4 +1,4 @@
-import type { Happening, RepeatingEvent } from './api/sanity/echo-cms';
+import type { Happening, RepeatingEvent } from '../api/sanity/echo-cms';
 import { eachDayOfInterval } from 'date-fns';
 import { normalDate } from './date';
 

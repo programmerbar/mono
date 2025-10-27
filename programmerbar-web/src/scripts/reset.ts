@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { setup } from './setup';
-import * as schema from '../lib/db/schemas';
+import * as schema from '../lib/server/db/schemas';
 import { reset } from 'drizzle-seed';
 import { BaseSQLiteDatabase } from 'drizzle-orm/sqlite-core';
 import type { ExtractTablesWithRelations } from 'drizzle-orm';

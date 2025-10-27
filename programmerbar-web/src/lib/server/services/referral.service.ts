@@ -1,6 +1,6 @@
-import type { Database } from '$lib/db/drizzle';
+import type { Database } from '$lib/server/db/drizzle';
 import { eq, and } from 'drizzle-orm';
-import { referrals, users, type ReferralInsert } from '$lib/db/schemas';
+import { referrals, users, type ReferralInsert } from '$lib/server/db/schemas';
 import { nanoid } from 'nanoid';
 import type { ShiftService } from './shift.service';
 

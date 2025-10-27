@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Happening } from '$lib/api/sanity/echo-cms';
-	import { formatDate } from '$lib/date';
+	import { formatDate } from '$lib/utils/date';
 	import { resolve } from '$app/paths';
 
 	type Props = {

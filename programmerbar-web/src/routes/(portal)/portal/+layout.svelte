@@ -1,20 +1,12 @@
 <script lang="ts">
 	import PortalSidebar from '$lib/components/portal/PortalSidebar.svelte';
-	import { createThemeContext } from '$lib/context/theme.context.svelte';
+	import { createThemeContext } from '$lib/states/theme.svelte.js';
 
 	let { data, children } = $props();
 
 	// Initialize theme context for portal
-	let theme = createThemeContext();
+	createThemeContext();
 </script>
-
-<svelte:head>
-	{#if theme.isDark}
-		<meta name="theme-color" content="#0f172b" />
-	{:else}
-		<meta name="theme-color" content="#f5f5f5" />
-	{/if}
-</svelte:head>
 
 <div id="portal-layout" class="flex min-h-screen bg-gray-50 dark:bg-slate-900">
 	<PortalSidebar

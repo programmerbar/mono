@@ -1,5 +1,5 @@
-import type { Database } from '$lib/db/drizzle';
-import { images } from '$lib/db/schemas';
+import type { Database } from '$lib/server/db/drizzle';
+import { images } from '$lib/server/db/schemas';
 import { nanoid } from 'nanoid';
 
 export class ImageService {

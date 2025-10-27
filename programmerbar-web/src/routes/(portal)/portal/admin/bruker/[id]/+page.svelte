@@ -3,8 +3,8 @@
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 	import Pill from '$lib/components/ui/Pill.svelte';
 	import TrainingChecklist from '$lib/components/portal/Training.svelte';
-	import type { User } from '$lib/db/schemas';
-	import { initials, mailto } from '$lib/utils';
+	import type { User } from '$lib/server/db/schemas/index.js';
+	import { initials, mailto } from '$lib/utils/strings.js';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { enhance } from '$app/forms';

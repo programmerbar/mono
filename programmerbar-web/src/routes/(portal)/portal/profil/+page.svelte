@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import Pill from '$lib/components/ui/Pill.svelte';
-	import { initials } from '$lib/utils';
+	import { initials } from '$lib/utils/strings.js';
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 	import PushNotificationToggle from '$lib/components/portal/PushNotificationToggle.svelte';
 

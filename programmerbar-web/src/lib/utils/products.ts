@@ -1,5 +1,66 @@
 import type { GET_PRODUCTS_QUERYResult } from '@programmerbar/cms/types';
-import type { FilterState } from './states/filter-state.svelte';
+import type { FilterState } from '$lib/states/filter-state.svelte';
+
+export const extractBreweries = (products: GET_PRODUCTS_QUERYResult) => {
+	const producers = products
+		.map((product) => product.producer)
+		.filter(Boolean)
+		.reduce((acc, producer) => {
+			if (!acc.includes(producer!)) {
+				acc.push(producer!);
+			}
+			return acc;
+		}, [] as Array<string>)
+		.sort();
+
+	// Check if there are any products without producers
+	const hasProductsWithoutProducers = products.some((product) => !product.producer);
+
+	if (hasProductsWithoutProducers) {
+		// Add "No brewery" option at the beginning
+		return ['__no_brewery__', ...producers];
+	}
+
+	return producers;
+};
+
+export const extractPriceRange = (
+	products: GET_PRODUCTS_QUERYResult,
+	useStudentPrice: boolean = true
+) => {
+	if (products.length === 0) {
+		return { min: 0, max: 100 };
+	}
+
+	const prices = products.map((product) =>
+		useStudentPrice ? product.priceList.student : product.priceList.ordinary
+	);
+
+	const min = Math.min(...prices);
+	const max = Math.max(...prices);
+
+	// Round down min to nearest 5, round up max to nearest 5 for nicer numbers
+	return {
+		min: Math.floor(min / 5) * 5,
+		max: Math.ceil(max / 5) * 5
+	};
+};
+
+export const extractTypes = (products: GET_PRODUCTS_QUERYResult) => {
+	return products
+		.flatMap((product) => product.productTypes)
+		.filter(Boolean)
+		.reduce(
+			(acc, type) => {
+				if (!type) return acc;
+				if (!acc.some((t) => t._id === type?._id)) {
+					acc.push(type);
+				}
+				return acc;
+			},
+			[] as Array<Exclude<GET_PRODUCTS_QUERYResult[number]['productTypes'], null>[number]>
+		);
+};
 
 export const filterProducts = (products: GET_PRODUCTS_QUERYResult, filter: FilterState) => {
 	const filteredProducts = products.filter((product) => {

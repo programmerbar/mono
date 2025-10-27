@@ -1,5 +1,5 @@
-import type { Database } from '$lib/db/drizzle';
-import { events, shifts, userShifts } from '$lib/db/schemas';
+import type { Database } from '$lib/server/db/drizzle';
+import { events, shifts, userShifts } from '$lib/server/db/schemas';
 import { eq, and, lte, gte, inArray } from 'drizzle-orm';
 
 export class ShiftService {

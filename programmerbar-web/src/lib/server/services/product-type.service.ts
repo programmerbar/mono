@@ -1,5 +1,5 @@
-import type { Database } from '$lib/db/drizzle';
-import { productTypes, type ProductType, type ProductTypeInsert } from '$lib/db/schemas';
+import type { Database } from '$lib/server/db/drizzle';
+import { productTypes, type ProductType, type ProductTypeInsert } from '$lib/server/db/schemas';
 import { eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 

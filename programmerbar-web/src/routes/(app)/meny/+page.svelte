@@ -1,10 +1,12 @@
 <script lang="ts">
 	import ProductPreview from '$lib/components/app/meny/ProductPreview.svelte';
 	import ProductSidebar from '$lib/components/app/meny/ProductSidebar.svelte';
-	import { extractTypes } from '$lib/extract-types';
-	import { extractBreweries } from '$lib/extract-breweries';
-	import { extractPriceRange } from '$lib/extract-price-range';
-	import { filterProducts } from '$lib/filter-products';
+	import {
+		filterProducts,
+		extractBreweries,
+		extractPriceRange,
+		extractTypes
+	} from '$lib/utils/products';
 	import { FilterState } from '$lib/states/filter-state.svelte';
 	import SEO from '$lib/components/SEO.svelte';
 

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { cn } from '$lib/cn';
+	import { cn } from '$lib/utils/cn';
 	import { Check } from '@lucide/svelte';
 	import { Combobox, type WithoutChildrenOrChild, mergeProps } from 'bits-ui';
-	import { getThemeContext } from '$lib/context/theme.context.svelte';
+	import { getThemeContext } from '$lib/states/theme.svelte';
 
 	type Props = Combobox.RootProps & {
 		inputProps?: WithoutChildrenOrChild<Combobox.InputProps>;

@@ -1,7 +1,7 @@
 import { getProducts } from '$lib/api/sanity/queries';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
-export const load: PageLoad = async () => {
+export const load: PageServerLoad = async () => {
 	const products = await getProducts();
 
 	return {

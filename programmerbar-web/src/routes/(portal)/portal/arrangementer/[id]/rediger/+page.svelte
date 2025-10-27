@@ -7,7 +7,7 @@
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import { enhance } from '$app/forms';
 	import { CreateEventState } from '$lib/states/create-event-state.svelte';
-	import { toDateTimeLocalInput } from '$lib/date';
+	import { toDateTimeLocalInput } from '$lib/utils/date.js';
 	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 	import Heading from '$lib/components/ui/Heading.svelte';

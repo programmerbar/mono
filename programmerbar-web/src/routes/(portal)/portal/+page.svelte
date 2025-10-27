@@ -3,7 +3,7 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Combobox from '$lib/components/ui/Combobox.svelte';
 	import Pill from '$lib/components/ui/Pill.svelte';
-	import { formatDate } from '$lib/date';
+	import { formatDate } from '$lib/utils/date.js';
 	import { enhance } from '$app/forms';
 	import { resolve } from '$app/paths';
 	import {

@@ -1,5 +1,5 @@
-import { type Database } from '$lib/db/drizzle';
-import { producers, type Producer, type ProducerInsert } from '$lib/db/schemas';
+import { type Database } from '$lib/server/db/drizzle';
+import { producers, type Producer, type ProducerInsert } from '$lib/server/db/schemas';
 import { eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 

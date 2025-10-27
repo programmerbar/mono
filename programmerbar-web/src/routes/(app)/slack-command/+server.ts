@@ -1,4 +1,4 @@
-import { STATUS, StatusService } from '$lib/services/status.service';
+import { STATUS, StatusService } from '$lib/server/services/status.service';
 import type { RequestHandler } from './$types';
 
 type Command = (typeof COMMAND)[keyof typeof COMMAND];

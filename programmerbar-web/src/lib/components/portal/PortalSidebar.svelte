@@ -16,13 +16,13 @@
 		Sun
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
-	import { getUser } from '$lib/context/user.context';
-	import { getThemeContext } from '$lib/context/theme.context.svelte';
+	import { getThemeContext } from '$lib/states/theme.svelte';
 	import { resolve } from '$app/paths';
-	import type { Notification as DbNotification } from '$lib/db/schemas';
-	import { cn } from '$lib/cn';
+	import type { Notification as DbNotification } from '$lib/server/db/schemas';
+	import { cn } from '$lib/utils/cn';
 	import { onNavigate } from '$app/navigation';
 	import type { RouteId } from '$app/types';
+	import { getUser } from '$lib/states/user';
 
 	type NavRoute = {
 		name: string;
@@ -310,15 +310,6 @@
 			</div>
 
 			<div class="flex gap-2">
-				<a
-					href={resolve('/')}
-					class="flex flex-1 items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100"
-					title="Hjem"
-				>
-					<House class="h-4 w-4 shrink-0" />
-					<span class="inline">Til forsiden</span>
-				</a>
-
 				<button
 					onclick={() => theme.toggle()}
 					class="flex items-center justify-center gap-0 rounded-lg px-2 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100"
@@ -330,6 +321,15 @@
 						<Moon class="h-4 w-4 shrink-0" />
 					{/if}
 				</button>
+
+				<a
+					href={resolve('/')}
+					class="flex flex-1 items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100"
+					title="Hjem"
+				>
+					<House class="h-4 w-4 shrink-0" />
+					<span class="inline">Til forsiden</span>
+				</a>
 			</div>
 		</div>
 	</div>

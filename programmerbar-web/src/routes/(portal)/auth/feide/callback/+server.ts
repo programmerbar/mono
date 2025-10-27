@@ -1,4 +1,4 @@
-import { getFeideUser } from '$lib/auth/feide';
+import { getFeideUser } from '$lib/server/auth/feide';
 import { nanoid } from 'nanoid';
 import type { RequestHandler } from './$types';
 import {

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from '$lib/cn';
-	import type { extractTypes } from '$lib/extract-types';
+	import { cn } from '$lib/utils/cn';
+	import type { extractTypes } from '$lib/utils/products';
 	import { FilterState, SORT_OPTIONS } from '$lib/states/filter-state.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import MultipleSelect from '$lib/components/ui/MultipleSelect.svelte';

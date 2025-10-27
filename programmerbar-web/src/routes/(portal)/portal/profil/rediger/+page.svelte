@@ -3,10 +3,10 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Pill from '$lib/components/ui/Pill.svelte';
-	import { initials } from '$lib/utils';
+	import { initials } from '$lib/utils/strings.js';
 	import { enhance } from '$app/forms';
 	import { ArrowLeft } from '@lucide/svelte';
-	import type { User } from '$lib/db/schemas';
+	import type { User } from '$lib/server/db/schemas/index.js';
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 	import type { SubmitFunction } from './$types.js';
 

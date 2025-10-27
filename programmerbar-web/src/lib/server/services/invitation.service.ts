@@ -1,5 +1,5 @@
-import type { Database } from '$lib/db/drizzle';
-import { invitations } from '$lib/db/schemas';
+import type { Database } from '$lib/server/db/drizzle';
+import { invitations } from '$lib/server/db/schemas';
 import { eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { isPast } from 'date-fns';

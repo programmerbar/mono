@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onNavigate } from '$app/navigation';
 	import logo from '$lib/assets/programmerbar-modern.svg';
-	import { cn } from '$lib/cn';
+	import { cn } from '$lib/utils/cn';
 	import HeaderItem from './HeaderItem.svelte';
 	import HeaderSignOut from './HeaderSignOut.svelte';
 	import MenuItem from './MenuItem.svelte';
 	import ProgressBar from './ProgressBar.svelte';
 	import { Menu, X } from '@lucide/svelte';
 	import MenuSignOut from './MenuSignOut.svelte';
-	import { getUser } from '$lib/context/user.context';
+	import { getUser } from '$lib/states/user';
 	import { resolve } from '$app/paths';
 
 	let isOpen = $state(false);

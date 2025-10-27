@@ -1,4 +1,4 @@
-import { type Database } from '$lib/db/drizzle';
+import { type Database } from '$lib/server/db/drizzle';
 import {
 	products,
 	producers,
@@ -8,7 +8,7 @@ import {
 	type ProductInsert,
 	type Producer,
 	type ProductType
-} from '$lib/db/schemas';
+} from '$lib/server/db/schemas';
 import { eq, inArray } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 

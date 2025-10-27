@@ -4,8 +4,8 @@
 	import Button from '../ui/Button.svelte';
 	import Input from '../ui/Input.svelte';
 	import { toast } from 'svelte-sonner';
-	import { sendInvitationEmail } from '$lib/remotes/invitations.remote';
-	import { getThemeContext } from '$lib/context/theme.context.svelte';
+	import { sendInvitationEmail } from '$lib/api/remotes/invitations.remote';
+	import { getThemeContext } from '$lib/states/theme.svelte';
 
 	let open = $state(false);
 	let email = $state('');

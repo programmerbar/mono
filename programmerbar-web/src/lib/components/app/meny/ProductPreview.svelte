@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { urlFor } from '$lib/api/sanity/queries';
 	import { resolve } from '$app/paths';
-	import type { filterProducts } from '$lib/filter-products';
+	import { filterProducts } from '$lib/utils/products';
 	import type { FilterState } from '$lib/states/filter-state.svelte';
 	import Chip from '$lib/components/ui/Chip.svelte';
 

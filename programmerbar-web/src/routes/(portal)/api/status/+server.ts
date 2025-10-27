@@ -1,4 +1,4 @@
-import { StatusService } from '$lib/services/status.service';
+import { StatusService } from '$lib/server/services/status.service';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ locals }) => {

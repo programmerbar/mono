@@ -1,8 +1,8 @@
-import type { Database } from '$lib/db/drizzle';
-import { users, userShifts } from '$lib/db/schemas';
+import type { Database } from '$lib/server/db/drizzle';
+import { users, userShifts } from '$lib/server/db/schemas';
 import { eq, and } from 'drizzle-orm';
 import { ShiftService } from './shift.service';
-import { claimedCredits, type ClaimedCreditInsert } from '$lib/db/schemas';
+import { claimedCredits, type ClaimedCreditInsert } from '$lib/server/db/schemas';
 import { nanoid } from 'nanoid';
 
 export class BeerService {

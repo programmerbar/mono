@@ -1,6 +1,6 @@
 <script lang="ts">
 	import lervigLogo from '$lib/assets/lervig-logo-black.png';
-	import { getUser } from '$lib/context/user.context';
+	import { getUser } from '$lib/states/user';
 	import { resolve } from '$app/paths';
 
 	let user = getUser();

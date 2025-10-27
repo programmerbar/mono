@@ -10,7 +10,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { resolve } from '$app/paths';
-	import type { ProductUpdate } from '$lib/db/schemas';
+	import type { ProductUpdate } from '$lib/server/db/schemas';
 
 	interface Producer {
 		id: string;

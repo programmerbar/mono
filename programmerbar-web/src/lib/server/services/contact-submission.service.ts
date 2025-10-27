@@ -1,5 +1,5 @@
-import type { Database } from '$lib/db/drizzle';
-import { contactSubmissions, type ContactSubmissionInsert } from '$lib/db/schemas';
+import type { Database } from '$lib/server/db/drizzle';
+import { contactSubmissions, type ContactSubmissionInsert } from '$lib/server/db/schemas';
 import { nanoid } from 'nanoid';
 import { desc } from 'drizzle-orm';
 

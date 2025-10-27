@@ -1,5 +1,5 @@
-import { claimedCredits } from '$lib/db/schemas';
-import { parseDateTimeLocal } from '$lib/date';
+import { claimedCredits } from '$lib/server/db/schemas';
+import { parseDateTimeLocal } from '$lib/utils/date';
 import { and, count, gte, lte } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 

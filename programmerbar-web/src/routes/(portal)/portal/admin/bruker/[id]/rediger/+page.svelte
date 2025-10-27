@@ -4,11 +4,11 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 	import Pill from '$lib/components/ui/Pill.svelte';
-	import { initials } from '$lib/utils';
+	import { initials } from '$lib/utils/strings.js';
 	import { enhance } from '$app/forms';
 	import { ArrowLeft, UserCog } from '@lucide/svelte';
 	import { resolve } from '$app/paths';
-	import type { User } from '$lib/db/schemas';
+	import type { User } from '$lib/server/db/schemas/index.js';
 	import type { SubmitFunction } from './$types.js';
 
 	let { data } = $props();

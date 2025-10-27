@@ -6,7 +6,7 @@ import {
 	VoulenteerRequestEmail
 } from '@programmerbar/email-templates';
 import type { CreateEmailOptions, Resend } from 'resend';
-import { formatDate, normalDate } from '$lib/date';
+import { formatDate, normalDate } from '$lib/utils/date';
 import { render } from '@react-email/render';
 
 const PROGRAMMERBAR_EMAIL = 'styret@programmerbar.no';

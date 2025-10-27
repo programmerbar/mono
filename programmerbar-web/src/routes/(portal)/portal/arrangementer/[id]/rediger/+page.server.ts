@@ -1,6 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { parseDateTimeLocal } from '$lib/date';
+import { parseDateTimeLocal } from '$lib/utils/date';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const event = await locals.eventService.findFullEventById(params.id);

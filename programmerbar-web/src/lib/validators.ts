@@ -17,21 +17,21 @@ export const CreateEventSchema = z.object({
 
 export const ContactUsSchema = zfd.formData({
 	namekjkj: zfd.text(z.string().min(2).max(50)),
-	emailkjkj: zfd.text(z.string().email().min(3)),
+	emailkjkj: zfd.text(z.email().min(3)),
 	messagekjkj: zfd.text(z.string().min(5).max(1000))
 });
 
 export const CreateInvitationSchema = z.object({
-	email: z.string().email()
+	email: z.email()
 });
 
-export const isValidEmail = (x: unknown): boolean => z.string().email().safeParse(x).success;
+export const isValidEmail = (x: unknown): boolean => z.email().safeParse(x).success;
 
 export const CreateEmailShiftSchema = z.object({
 	user: z.object({
 		name: z.string().min(1),
-		email: z.string().email(),
-		altEmail: z.string().email()
+		email: z.email(),
+		altEmail: z.email()
 	}),
 	shift: z.object({
 		startAt: z.coerce.date(),

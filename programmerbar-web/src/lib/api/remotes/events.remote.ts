@@ -1,6 +1,6 @@
 import { CreateEventSchema } from '$lib/validators';
-import type { ShiftEmailProps } from '$lib/services/email.service';
-import { normalDate } from '$lib/date';
+import type { ShiftEmailProps } from '$lib/server/services/email.service';
+import { normalDate } from '$lib/utils/date';
 import { z } from 'zod';
 import { command, getRequestEvent } from '$app/server';
 

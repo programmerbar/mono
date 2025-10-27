@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { nanoid } from 'nanoid';
-import { referrals, users } from '../lib/db/schemas';
+import { referrals, users } from '../lib/server/db/schemas';
 import { setup } from './setup';
 
 async function main() {

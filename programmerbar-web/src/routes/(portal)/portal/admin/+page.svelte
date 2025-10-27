@@ -3,8 +3,8 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Select from '$lib/components/ui/Select.svelte';
 	import Pill from '$lib/components/ui/Pill.svelte';
-	import type { User } from '$lib/db/schemas';
-	import { initials } from '$lib/utils.js';
+	import type { User } from '$lib/server/db/schemas/index.js';
+	import { initials } from '$lib/utils/strings.js';
 	import { Users, Search, ChevronUp, ChevronDown, Eye, UserCog } from '@lucide/svelte';
 	import { resolve } from '$app/paths';
 

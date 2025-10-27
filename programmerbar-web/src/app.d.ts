@@ -9,37 +9,37 @@ declare global {
 			resend: import('resend').Resend;
 
 			// DB client
-			db: import('$lib/db/drizzle').Database;
+			db: import('$lib/server/db/drizzle').Database;
 
 			// Auth service
-			auth: import('$lib/auth/lucia').Auth;
+			auth: import('$lib/server/auth/lucia').Auth;
 
 			// Auth
 			user: import('lucia').User | null;
 			session: import('lucia').Session | null;
 
 			// Auth providers
-			feideProvider: import('$lib/auth/feide').FeideProvider;
+			feideProvider: import('$lib/server/auth/feide').FeideProvider;
 
 			// Serivces
-			emailService: import('$lib/services/email.service').EmailService;
-			statusService: import('$lib/services/status.service').StatusService;
-			invitationService: import('$lib/services/invitation.service').InvitationService;
-			eventService: import('$lib/services/event.service').EventService;
-			userService: import('$lib/services/user.service').UserService;
-			shiftService: import('$lib/services/shift.service').ShiftService;
-			beerService: import('$lib/services/beer.service').BeerService;
-			banService: import('$lib/services/ban.service').BanService;
-			notificationService: import('$lib/services/notification.service').NotificationService;
-			contactSubmissionService: import('$lib/services/contact-submission.service').ContactSubmissionService;
-			producerService: import('$lib/services/producer.service').ProducerService;
-			productTypeService: import('$lib/services/product-type.service').ProductTypeService;
-			productService: import('$lib/services/product.service').ProductService;
-			imageService: import('$lib/services/image.service').ImageService;
-			referralService: import('$lib/services/referral.service').ReferralService;
-			pendingApplicationService: import('$lib/services/pending-application.service').PendingApplicationService;
-			pushSubscriptionService: import('$lib/services/push-subscription.service').PushSubscriptionService;
-			pushNotificationService?: import('$lib/services/push-notification.service').PushNotificationService;
+			emailService: import('$lib/server/services/email.service').EmailService;
+			statusService: import('$lib/server/services/status.service').StatusService;
+			invitationService: import('$lib/server/services/invitation.service').InvitationService;
+			eventService: import('$lib/server/services/event.service').EventService;
+			userService: import('$lib/server/services/user.service').UserService;
+			shiftService: import('$lib/server/services/shift.service').ShiftService;
+			beerService: import('$lib/server/services/beer.service').BeerService;
+			banService: import('$lib/server/services/ban.service').BanService;
+			notificationService: import('$lib/server/services/notification.service').NotificationService;
+			contactSubmissionService: import('$lib/server/services/contact-submission.service').ContactSubmissionService;
+			producerService: import('$lib/server/services/producer.service').ProducerService;
+			productTypeService: import('$lib/server/services/product-type.service').ProductTypeService;
+			productService: import('$lib/server/services/product.service').ProductService;
+			imageService: import('$lib/server/services/image.service').ImageService;
+			referralService: import('$lib/server/services/referral.service').ReferralService;
+			pendingApplicationService: import('$lib/server/services/pending-application.service').PendingApplicationService;
+			pushSubscriptionService: import('$lib/server/services/push-subscription.service').PushSubscriptionService;
+			pushNotificationService?: import('$lib/server/services/push-notification.service').PushNotificationService;
 		}
 		// interface PageData {}
 		// interface PageState {}

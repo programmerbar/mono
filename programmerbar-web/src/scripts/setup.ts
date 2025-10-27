@@ -1,4 +1,4 @@
-import { createDatabase } from '../lib/db/drizzle';
+import { createDatabase } from '../lib/server/db/drizzle';
 import { getPlatformProxy } from 'wrangler';
 
 interface Env {

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import type { TrainingItem } from '$lib/constants/training';
-	import { DEFAULT_TRAINING_ITEMS, TRAINING_CATEGORIES } from '$lib/constants/training';
+	import type { TrainingItem } from '$lib/utils/training';
+	import { DEFAULT_TRAINING_ITEMS, TRAINING_CATEGORIES } from '$lib/utils/training';
 	import Button from '$lib/components/ui/Button.svelte';
 
 	interface Props {

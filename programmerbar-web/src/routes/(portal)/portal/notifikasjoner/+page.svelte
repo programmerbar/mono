@@ -42,7 +42,7 @@
 		</div>
 	{:else}
 		<div
-			class="divide-y rounded-lg border bg-white dark:divide-slate-600 dark:border-slate-700 dark:bg-slate-800"
+			class="divide-y overflow-hidden rounded-lg border bg-white dark:divide-slate-600 dark:border-slate-700 dark:bg-slate-800"
 		>
 			{#each data.notifications as notification (notification.id)}
 				<div class="p-4 transition-colors hover:bg-gray-50 dark:hover:bg-slate-700">

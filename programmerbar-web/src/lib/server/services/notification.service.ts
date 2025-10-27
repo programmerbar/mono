@@ -1,5 +1,5 @@
-import type { Database } from '$lib/db/drizzle';
-import * as table from '$lib/db/schemas';
+import type { Database } from '$lib/server/db/drizzle';
+import * as table from '$lib/server/db/schemas';
 import { and, eq, isNull, desc } from 'drizzle-orm';
 import type { PushNotificationService } from './push-notification.service';
 
