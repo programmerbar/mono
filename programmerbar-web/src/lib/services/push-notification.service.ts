@@ -135,7 +135,7 @@ export class PushNotificationService {
 		const message: PushMessage = {
 			data: notificationPayload,
 			options: {
-				ttl: 43200 // 12 hours
+				ttl: 604800 // 1 week
 			}
 		};
 
