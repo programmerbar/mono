@@ -8,7 +8,7 @@
 	import ProgressBar from './ProgressBar.svelte';
 	import { Menu, X } from '@lucide/svelte';
 	import MenuSignOut from './MenuSignOut.svelte';
-	import { getUser } from '$lib/states/user';
+	import { getUser } from '$lib/states/user.svelte';
 	import { resolve } from '$app/paths';
 
 	let isOpen = $state(false);
@@ -56,7 +56,7 @@
 			<HeaderItem to={resolve('/meny')} name="/meny" />
 			<HeaderItem to="https://forms.gle/BLdygdoRJgjMbQZj6" name="/booking" />
 			<HeaderItem to={resolve('/om-oss')} name="/om_oss" />
-			{#if !!$user}
+			{#if !!user.current}
 				<HeaderSignOut />
 			{:else}
 				<HeaderItem to={resolve('/bli-frivillig')} name="/bli_frivillig" />
@@ -78,7 +78,7 @@
 			<MenuItem to={resolve('/meny')} name="/meny" />
 			<MenuItem to="https://forms.gle/BLdygdoRJgjMbQZj6" name="/booking" />
 			<MenuItem to={resolve('/om-oss')} name="/om_oss" />
-			{#if !!$user}
+			{#if !!user.current}
 				<MenuSignOut />
 			{:else}
 				<MenuItem to={resolve('/bli-frivillig')} name="/bli_frivillig" />

@@ -22,7 +22,7 @@
 	import { cn } from '$lib/utils/cn';
 	import { onNavigate } from '$app/navigation';
 	import type { RouteId } from '$app/types';
-	import { getUser } from '$lib/states/user';
+	import { getUser } from '$lib/states/user.svelte';
 
 	type NavRoute = {
 		name: string;
@@ -68,7 +68,7 @@
 
 	// Admin routes (only visible to board members)
 	const adminRoutes = $derived(
-		$user?.role === 'board'
+		user.current?.role === 'board'
 			? ([
 					{
 						name: 'Status',
@@ -162,7 +162,7 @@
 <!-- Sidebar -->
 <aside
 	class={cn(
-		'border-portal-border bg-portal-card fixed top-0 left-0 z-50 h-svh transform overflow-hidden border-r transition-transform duration-300 ease-in-out lg:w-64',
+		'border-portal-border bg-portal-card fixed top-0 left-0 z-50 h-svh transform overflow-hidden border-r transition-transform duration-300 ease-in-out lg:w-80',
 		{
 			'w-80': isSidebarOpen && isMobile, // Large width when opened on mobile
 			'w-16 sm:w-20': !isSidebarOpen || !isMobile, // Narrow when closed or not mobile
@@ -207,7 +207,7 @@
 								)}
 								title={route.name}
 							>
-								<route.icon class="h-5 w-5 shrink-0" />
+								<route.icon class="size-5 shrink-0" />
 								<span class="inline">{route.name}</span>
 							</a>
 						</li>
@@ -241,7 +241,7 @@
 									)}
 									title={route.name}
 								>
-									<route.icon class="h-5 w-5 shrink-0" />
+									<route.icon class="size-5 shrink-0" />
 									<span class="inline flex-1">{route.name}</span>
 									{#if route.count && route.count > 0}
 										<span
@@ -274,7 +274,7 @@
 							)}
 							title="Notifikasjoner"
 						>
-							<Bell class="h-5 w-5 shrink-0" />
+							<Bell class="size-5 shrink-0" />
 							<span class="inline flex-1">Notifikasjoner</span>
 							{#if notifications.length > 0}
 								<span
@@ -296,13 +296,15 @@
 					class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900"
 				>
 					<span class="text-sm font-medium text-blue-600 dark:text-blue-300">
-						{$user?.name?.charAt(0)?.toUpperCase() || 'U'}
+						{user.current?.name?.charAt(0)?.toUpperCase() || 'U'}
 					</span>
 				</div>
 				<div class="min-w-0 flex-1">
-					<p class="truncate text-sm font-medium text-gray-700 dark:text-gray-200">{$user?.name}</p>
+					<p class="truncate text-sm font-medium text-gray-700 dark:text-gray-200">
+						{user.current?.name}
+					</p>
 					<p class="truncate text-xs text-gray-500 dark:text-gray-400">
-						{$user?.role === 'board' ? 'Styret' : 'Frivillig'}
+						{user.current?.role === 'board' ? 'Styret' : 'Frivillig'}
 					</p>
 				</div>
 			</div>
@@ -314,9 +316,9 @@
 					title={theme.current === 'dark' ? 'Bytt til lyst tema' : 'Bytt til mørkt tema'}
 				>
 					{#if theme.current === 'dark'}
-						<Sun class="h-4 w-4 shrink-0" />
+						<Sun class="size-5 shrink-0" />
 					{:else}
-						<Moon class="h-4 w-4 shrink-0" />
+						<Moon class="size-5 shrink-0" />
 					{/if}
 				</button>
 
@@ -325,7 +327,7 @@
 					class="hover:bg-portal-hover flex flex-1 items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
 					title="Hjem"
 				>
-					<House class="h-4 w-4 shrink-0" />
+					<House class="size-5 shrink-0" />
 					<span class="inline">Til forsiden</span>
 				</a>
 			</div>

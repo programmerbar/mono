@@ -112,7 +112,7 @@
 	<title>Admin - Bonghistorikk</title>
 </svelte:head>
 
-<div class="space-y-6">
+<div class="space-y-10">
 	<!-- Header with back button -->
 	<div class="flex items-center gap-4">
 		<History class="h-6 w-6 text-gray-600 dark:text-gray-300" />

@@ -37,7 +37,7 @@
 	<title>Rediger Profil</title>
 </svelte:head>
 
-<div class="space-y-6">
+<div class="space-y-10">
 	<!-- Header with back button -->
 	<div class="flex items-center gap-4">
 		<ButtonLink href="/portal/profil" intent="outline" size="square">
@@ -79,7 +79,7 @@
 					<!-- Read-only fields -->
 					<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 						<div
-							class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
+							class="dark:border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
 						>
 							<span class="mb-1 block text-sm font-medium text-gray-500 dark:text-gray-400"
 								>Navn</span
@@ -88,7 +88,7 @@
 							<p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kan ikke endres</p>
 						</div>
 						<div
-							class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
+							class="dark:border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
 						>
 							<span class="mb-1 block text-sm font-medium text-gray-500 dark:text-gray-400"
 								>Hovedepost</span
@@ -101,7 +101,7 @@
 					<!-- Editable fields -->
 					<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 						<div
-							class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-white p-4"
+							class="dark:border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-white p-4"
 						>
 							<label
 								for="edit-email"
@@ -119,7 +119,7 @@
 							/>
 						</div>
 						<div
-							class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-white p-4"
+							class="dark:border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-white p-4"
 						>
 							<label
 								for="edit-phone"

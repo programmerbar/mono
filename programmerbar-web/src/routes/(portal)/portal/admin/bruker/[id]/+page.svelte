@@ -54,7 +54,7 @@
 	<title>Admin - {user.name}</title>
 </svelte:head>
 
-<div class="space-y-6">
+<div class="space-y-10">
 	<!-- Header with back button -->
 	<div class="flex items-center gap-4">
 		<ButtonLink href="/portal/admin" intent="outline" size="square">

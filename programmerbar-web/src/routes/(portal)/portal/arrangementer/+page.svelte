@@ -5,7 +5,7 @@
 	import Pill from '$lib/components/ui/Pill.svelte';
 	import { formatDate } from '$lib/utils/date';
 	import { SquarePen, Calendar, Users } from '@lucide/svelte';
-	import { getUser } from '$lib/states/user';
+	import { getUser } from '$lib/states/user.svelte';
 	import { resolve } from '$app/paths';
 	import type { Event, Shift } from '$lib/server/db/schemas';
 
@@ -75,11 +75,11 @@
 	<title>Arrangementer</title>
 </svelte:head>
 
-<div class="space-y-6">
+<div class="space-y-10">
 	<!-- Header -->
 	<div class="flex items-center justify-between">
 		<Heading>Arrangementer</Heading>
-		{#if $user?.role === 'board'}
+		{#if user.current?.role === 'board'}
 			<a href={resolve('/portal/arrangementer/ny')}>
 				<Button intent="primary">Nytt arrangement</Button>
 			</a>
@@ -164,7 +164,7 @@
 								</div>
 							</div>
 
-							{#if $user?.role === 'board'}
+							{#if user.current?.role === 'board'}
 								<a
 									href={resolve('/(portal)/portal/arrangementer/[id]/rediger', { id: event.id })}
 									class="border-portal-border dark:hover:bg-portal-hover flex h-8 w-8 items-center justify-center rounded-lg border text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"

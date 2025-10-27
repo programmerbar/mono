@@ -23,9 +23,9 @@
 		pendingApplicationsCount={data.pendingApplicationsCount}
 	/>
 
-	<div class="min-w-0 flex-1 lg:ml-64">
+	<div class="min-w-0 flex-1 lg:ml-80">
 		<main class="mb-32 min-w-0 flex-1 p-4 sm:px-6 sm:pt-6 lg:px-8 lg:pt-8">
-			<div class="mx-auto max-w-5xl min-w-0">
+			<div class="mx-auto max-w-5xl min-w-0 py-10">
 				{@render children()}
 			</div>
 		</main>

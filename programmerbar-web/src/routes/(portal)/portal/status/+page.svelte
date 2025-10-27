@@ -36,7 +36,7 @@
 	<title>Endre status</title>
 </svelte:head>
 
-<div class="mx-auto max-w-md space-y-4">
+<div class="mx-auto max-w-md space-y-10">
 	<div class="text-center">
 		<h1 class="mb-2 text-2xl font-bold text-gray-800 dark:text-gray-100">Barstatus</h1>
 		<p class="text-gray-600 dark:text-gray-300">Velg gjeldende status for baren</p>

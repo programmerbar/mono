@@ -4,7 +4,7 @@
 	import Pill from '$lib/components/ui/Pill.svelte';
 	import { formatDate, time } from '$lib/utils/date';
 	import { enhance } from '$app/forms';
-	import { getUser } from '$lib/states/user';
+	import { getUser } from '$lib/states/user.svelte';
 	import { X, Plus, Calendar, Clock, Users, ArrowLeft } from '@lucide/svelte';
 	import { resolve } from '$app/paths';
 	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
@@ -23,7 +23,7 @@
 	<title>{data.event.name}</title>
 </svelte:head>
 
-<section class="space-y-6">
+<section class="space-y-10">
 	<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 		<div class="space-y-2">
 			<ButtonLink
@@ -52,7 +52,7 @@
 			</div>
 		</div>
 
-		{#if $user?.role === 'board'}
+		{#if user.current?.role === 'board'}
 			<ButtonLink
 				intent="primary"
 				class="w-full sm:w-auto"
@@ -213,7 +213,9 @@
 				{:else}
 					<div class="space-y-4">
 						{#each data.event.shifts as shift, i (shift.id)}
-							{@const isInShift = shift.members.some((member) => member.userId === $user?.id)}
+							{@const isInShift = shift.members.some(
+								(member) => member.userId === user.current?.id
+							)}
 							<div
 								class="border-portal-border dark:bg-portal-card rounded-lg border border-gray-200 bg-white p-5"
 							>

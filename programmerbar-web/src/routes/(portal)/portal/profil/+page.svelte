@@ -13,7 +13,7 @@
 	<title>Min Profil</title>
 </svelte:head>
 
-<div class="space-y-6">
+<div class="space-y-10">
 	<div class="bg-portal-card border-portal-border rounded-lg border p-4 sm:p-6">
 		<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 			<div class="flex items-center gap-4">
@@ -51,13 +51,13 @@
 					<div class="space-y-4">
 						<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 							<div
-								class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
+								class="dark:border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
 							>
 								<dt class="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">Navn</dt>
 								<dd class="text-sm text-gray-900 dark:text-gray-100">{user.name}</dd>
 							</div>
 							<div
-								class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
+								class="dark:border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
 							>
 								<dt class="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">
 									Hovedepost
@@ -65,7 +65,7 @@
 								<dd class="text-sm text-gray-900 dark:text-gray-100">{user.email}</dd>
 							</div>
 							<div
-								class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
+								class="dark:border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
 							>
 								<dt class="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">
 									Alternativ e-post
@@ -75,7 +75,7 @@
 								</dd>
 							</div>
 							<div
-								class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
+								class="dark:border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
 							>
 								<dt class="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">Telefon</dt>
 								<dd class="text-sm text-gray-900 dark:text-gray-100">
@@ -83,7 +83,7 @@
 								</dd>
 							</div>
 							<div
-								class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
+								class="dark:border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
 							>
 								<dt class="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">Rolle</dt>
 								<dd>
@@ -93,7 +93,7 @@
 								</dd>
 							</div>
 							<div
-								class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
+								class="dark:border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-4"
 							>
 								<dt class="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">Opplæring</dt>
 								<dd>
@@ -112,7 +112,7 @@
 					<h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Verv stats</h3>
 					<div class="space-y-3">
 						<div
-							class="border-portal-border dark:bg-portal-hover flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4"
+							class="dark:border-portal-border dark:bg-portal-hover flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4"
 						>
 							<div class="h-3 w-3 shrink-0 rounded-full bg-blue-400"></div>
 							<div class="flex-1">
@@ -125,7 +125,7 @@
 							</div>
 						</div>
 						<div
-							class="border-portal-border dark:bg-portal-hover flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4"
+							class="dark:border-portal-border dark:bg-portal-hover flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4"
 						>
 							<div class="h-3 w-3 shrink-0 rounded-full bg-green-400"></div>
 							<div class="flex-1">
@@ -138,7 +138,7 @@
 							</div>
 						</div>
 						<div
-							class="border-portal-border dark:bg-portal-hover flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4"
+							class="dark:border-portal-border dark:bg-portal-hover flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4"
 						>
 							<div class="h-3 w-3 shrink-0 rounded-full bg-yellow-400"></div>
 							<div class="flex-1">
@@ -161,7 +161,7 @@
 					<h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Statistikk</h3>
 					<div class="space-y-4">
 						<div
-							class="border-portal-border dark:bg-portal-hover flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4"
+							class="dark:border-portal-border dark:bg-portal-hover flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4"
 						>
 							<span class="text-sm font-medium text-gray-600 dark:text-gray-300"
 								>Antall ganger stått (sem)</span
@@ -171,7 +171,7 @@
 							>
 						</div>
 						<div
-							class="border-portal-border dark:bg-portal-hover flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4"
+							class="dark:border-portal-border dark:bg-portal-hover flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4"
 						>
 							<span class="text-sm font-medium text-gray-600 dark:text-gray-300">Antall Bonger</span
 							>
@@ -180,7 +180,7 @@
 							>
 						</div>
 						<div
-							class="border-portal-border dark:bg-portal-hover flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4"
+							class="dark:border-portal-border dark:bg-portal-hover flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4"
 						>
 							<span class="text-sm font-medium text-gray-600 dark:text-gray-300"
 								>Kommende arrangement</span

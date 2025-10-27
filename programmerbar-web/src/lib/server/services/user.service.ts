@@ -43,7 +43,6 @@ export class UserService {
 			where: (row, { not }) => not(row.isDeleted)
 		});
 
-		console.log(`[UserService] Found ${users.length} user(s)`);
 		return users;
 	}
 

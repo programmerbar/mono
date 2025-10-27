@@ -1,6 +1,6 @@
 <script lang="ts">
 	import lervigLogo from '$lib/assets/lervig-logo-black.png';
-	import { getUser } from '$lib/states/user';
+	import { getUser } from '$lib/states/user.svelte';
 	import { resolve } from '$app/paths';
 
 	let user = getUser();
@@ -81,17 +81,17 @@
 				<a class="opacity-70 transition-opacity hover:opacity-100" href={resolve('/beer-pong')}
 					>Beer Pong</a
 				>
-				{#if $user}
+				{#if user.current}
 					<a class="opacity-70 transition-opacity hover:opacity-100" href={resolve('/portal')}
 						>Portal</a
 					>
 				{/if}
-				{#if $user}
+				{#if user.current}
 					<a class="opacity-70 transition-opacity hover:opacity-100" href={resolve('/emeritus')}
 						>Emeritus</a
 					>
 				{/if}
-				{#if !$user}
+				{#if !user.current}
 					<a class="opacity-70 transition-opacity hover:opacity-100" href={resolve('/logg-inn')}
 						>Logg inn</a
 					>

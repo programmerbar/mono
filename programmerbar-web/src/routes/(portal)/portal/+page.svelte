@@ -25,7 +25,7 @@
 	<title>Hjem — Programmerbar Portal</title>
 </svelte:head>
 
-<div class="space-y-8">
+<div class="space-y-10">
 	<!-- Welcome Header -->
 	<div>
 		<Heading>Portal Hjem</Heading>

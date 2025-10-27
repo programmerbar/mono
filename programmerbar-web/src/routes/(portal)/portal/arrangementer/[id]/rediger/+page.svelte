@@ -49,7 +49,7 @@
 	<title>Rediger arrangement: {eventState.name}</title>
 </svelte:head>
 
-<div class="space-y-8">
+<div class="space-y-10">
 	<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 		<div class="space-y-2">
 			<Heading level={1}>Rediger arrangementet</Heading>
@@ -110,7 +110,7 @@
 		{/each}
 
 		<section
-			class="bg-portal-card border-portal-border space-y-6 rounded-lg border border-gray-200 p-6"
+			class="bg-portal-card dark:border-portal-border space-y-6 rounded-lg border border-gray-200 p-6"
 		>
 			<div>
 				<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Arrangementsdetaljer</h2>
@@ -132,7 +132,7 @@
 			</div>
 
 			<div
-				class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-100 bg-gray-50 p-4"
+				class="dark:border-portal-border dark:bg-portal-hover rounded-lg border border-gray-100 bg-gray-50 p-4"
 			>
 				<Checkbox
 					id="shouldBePublic"
@@ -173,7 +173,7 @@
 		</section>
 
 		<section
-			class="bg-portal-card border-portal-border space-y-6 rounded-lg border border-gray-200 p-6"
+			class="bg-portal-card dark:border-portal-border space-y-6 rounded-lg border border-gray-200 p-6"
 		>
 			<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<div>
@@ -203,7 +203,7 @@
 						: 0}
 
 					<article
-						class="border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-5"
+						class="dark:border-portal-border dark:bg-portal-hover rounded-lg border border-gray-200 bg-gray-50 p-5"
 					>
 						<div class="flex items-start justify-between gap-3">
 							<div class="flex items-center gap-3">
@@ -270,7 +270,7 @@
 						{/if}
 
 						<div
-							class="border-portal-border dark:bg-portal-card mt-5 rounded-lg border border-gray-200 bg-white p-4"
+							class="dark:border-portal-border dark:bg-portal-card mt-5 rounded-lg border border-gray-200 bg-white p-4"
 						>
 							<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 								<div>
@@ -324,7 +324,7 @@
 											/>
 											<button
 												type="button"
-												class="border-portal-border dark:bg-portal-card flex h-10 items-center justify-center rounded-lg border border-gray-200 bg-white px-4 text-sm font-medium text-gray-600 transition-colors hover:border-red-200 hover:text-red-500 dark:text-gray-300 dark:hover:border-red-800 dark:hover:text-red-400"
+												class="dark:border-portal-border dark:bg-portal-card flex h-10 items-center justify-center rounded-lg border border-gray-200 bg-white px-4 text-sm font-medium text-gray-600 transition-colors hover:border-red-200 hover:text-red-500 dark:text-gray-300 dark:hover:border-red-800 dark:hover:text-red-400"
 												onclick={() => {
 													if (i < originalShifts.length && user.id) {
 														removedUserShifts = [
@@ -345,7 +345,7 @@
 					</article>
 				{:else}
 					<div
-						class="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-sm text-gray-500 border-portal-border dark:bg-portal-hover dark:text-gray-400"
+						class="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-sm text-gray-500 dark:border-portal-border dark:bg-portal-hover dark:text-gray-400"
 					>
 						Ingen vakter registrert. Legg til den første for å starte planleggingen.
 					</div>
@@ -354,7 +354,7 @@
 		</section>
 
 		<div
-			class="border-portal-border flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end"
+			class="dark:border-portal-border flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end"
 		>
 			<a href={resolve('/portal/arrangementer')} class="sm:w-auto">
 				<Button type="button" intent="outline" class="w-full sm:w-auto">Avbryt</Button>

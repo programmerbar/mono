@@ -11,7 +11,7 @@
 	<title>Notifikasjoner</title>
 </svelte:head>
 
-<div class="space-y-6">
+<div class="space-y-10">
 	<!-- Header -->
 	<div class="flex items-center gap-3">
 		<Bell class="h-6 w-6 text-gray-600 dark:text-gray-300" />

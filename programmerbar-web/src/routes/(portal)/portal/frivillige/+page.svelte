@@ -25,7 +25,7 @@
 	<title>Frivillige</title>
 </svelte:head>
 
-<section class="space-y-6">
+<section class="space-y-10">
 	<Heading>Frivillige</Heading>
 
 	<div class="flex items-center gap-2">
@@ -52,7 +52,7 @@
 </section>
 
 {#if data.invitations.length > 0}
-	<hr class="border-portal-border my-12 border-t border-gray-200" />
+	<hr class="dark:border-portal-border my-12 border-t border-gray-200" />
 	<section class="mt-12 space-y-6">
 		<Heading>Invitasjoner</Heading>
 
