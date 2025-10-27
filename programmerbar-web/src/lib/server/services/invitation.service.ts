@@ -12,7 +12,6 @@ export class InvitationService {
 	}
 
 	async invite(email: string) {
-		console.log(`[InvitationService] Creating invitation for: ${email}`);
 		const invitation = await this.#db
 			.insert(invitations)
 			.values({
@@ -31,9 +30,7 @@ export class InvitationService {
 	}
 
 	async claim(id: string) {
-		console.log(`[InvitationService] Claiming invitation: ${id}`);
 		await this.#db.delete(invitations).where(eq(invitations.id, id));
-		console.log(`[InvitationService] ✅ Invitation claimed and deleted: ${id}`);
 	}
 
 	async findByEmail(email: string) {
@@ -43,7 +40,6 @@ export class InvitationService {
 	}
 
 	async findValidInvitationByEmail(email: string) {
-		console.log(`[InvitationService] Validating invitation for: ${email}`);
 		const invitation = await this.findByEmail(email);
 
 		if (!invitation) {
@@ -66,19 +62,15 @@ export class InvitationService {
 	}
 
 	async findAllUnused() {
-		console.log(`[InvitationService] Fetching all unused invitations`);
 		const invitations = await this.#db.query.invitations.findMany({
 			where: (row, { isNull }) => isNull(row.claimedAt)
 		});
 
-		console.log(`[InvitationService] Found ${invitations.length} unused invitation(s)`);
 		return invitations;
 	}
 
 	async delete(id: string) {
-		console.log(`[InvitationService] Deleting invitation: ${id}`);
 		const result = await this.#db.delete(invitations).where(eq(invitations.id, id));
-		console.log(`[InvitationService] ✅ Invitation deleted: ${id}`);
 		return result;
 	}
 }

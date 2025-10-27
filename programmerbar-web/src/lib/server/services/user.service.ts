@@ -10,14 +10,11 @@ export class UserService {
 	}
 
 	async findByFeideId(feideId: string) {
-		console.log(`[UserService] Finding user by Feide ID: ${feideId}`);
 		const user = await this.#db.query.users.findFirst({
 			where: (row, { eq, not, and }) => and(eq(row.feideId, feideId), not(row.isDeleted))
 		});
 
-		if (user) {
-			console.log(`[UserService] ✅ Found user: ${user.id} (${user.email})`);
-		} else {
+		if (!user) {
 			console.log(`[UserService] No user found with Feide ID: ${feideId}`);
 		}
 
@@ -31,7 +28,6 @@ export class UserService {
 	}
 
 	async create(user: UserInsert) {
-		console.log(`[UserService] Creating new user: ${user.email}`);
 		const newUser = await this.#db
 			.insert(users)
 			.values(user)
@@ -43,7 +39,6 @@ export class UserService {
 	}
 
 	async findAll() {
-		console.log(`[UserService] Fetching all users`);
 		const users = await this.#db.query.users.findMany({
 			where: (row, { not }) => not(row.isDeleted)
 		});
@@ -53,7 +48,6 @@ export class UserService {
 	}
 
 	async updateUserRole(userId: string, role: 'board' | 'normal') {
-		console.log(`[UserService] Updating user ${userId} role to: ${role}`);
 		const updatedUser = await this.#db
 			.update(users)
 			.set({ role })
@@ -84,7 +78,6 @@ export class UserService {
 	}
 
 	async updateTrainingStatus(userId: string, isTrained: boolean) {
-		console.log(`[UserService] Updating user ${userId} training status to: ${isTrained}`);
 		const updatedUser = await this.#db
 			.update(users)
 			.set({ isTrained })
@@ -92,7 +85,6 @@ export class UserService {
 			.returning()
 			.then((rows) => rows[0]);
 
-		console.log(`[UserService] ✅ Training status updated for user: ${updatedUser.id}`);
 		return updatedUser;
 	}
 
@@ -123,7 +115,6 @@ export class UserService {
 	}
 
 	async deleteUser(userId: string) {
-		console.log(`[UserService] Soft deleting user: ${userId}`);
 		const deletedUser = await this.#db
 			.update(users)
 			.set({ isDeleted: true })

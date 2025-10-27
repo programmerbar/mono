@@ -16,7 +16,6 @@ export class EventService {
 	}
 
 	async create(name: string, date: Date, slug: string | null, description: string | null) {
-		console.log(`[EventService] Creating event: ${name} on ${date.toISOString()}`);
 		const event = await this.#db
 			.insert(events)
 			.values({
@@ -34,25 +33,19 @@ export class EventService {
 
 	async createShifts(values: Array<ShiftInsert>) {
 		if (values.length === 0) {
-			console.log(`[EventService] No shifts to create`);
 			return [];
 		}
 
-		console.log(`[EventService] Creating ${values.length} shift(s)`);
 		const createdShifts = await this.#db.insert(shifts).values(values).returning();
-		console.log(`[EventService] ✅ Created ${createdShifts.length} shift(s)`);
 		return createdShifts;
 	}
 
 	async createUserShifts(values: Array<UserShiftInsert>) {
 		if (values.length === 0) {
-			console.log(`[EventService] No user shifts to create`);
 			return;
 		}
 
-		console.log(`[EventService] Assigning ${values.length} user(s) to shifts`);
 		const result = await this.#db.insert(userShifts).values(values);
-		console.log(`[EventService] ✅ Assigned ${values.length} user(s) to shifts`);
 		return result;
 	}
 
@@ -61,11 +54,9 @@ export class EventService {
 	}
 
 	async deleteUserShift(values: { shiftId: string; userId: string }) {
-		console.log(`[EventService] Removing user ${values.userId} from shift ${values.shiftId}`);
 		await this.#db
 			.delete(userShifts)
 			.where(and(eq(userShifts.shiftId, values.shiftId), eq(userShifts.userId, values.userId)));
-		console.log(`[EventService] ✅ User removed from shift`);
 	}
 
 	async findFullEventById(id: string) {
@@ -91,7 +82,6 @@ export class EventService {
 		id: string,
 		eventData: { name: string; date: Date; description: string | null; slug: string | null }
 	) {
-		console.log(`[EventService] Updating event ${id}: ${eventData.name}`);
 		const event = await this.#db
 			.insert(events)
 			.values({
@@ -171,16 +161,12 @@ export class EventService {
 	}
 
 	async delete(id: string) {
-		console.log(`[EventService] Deleting event: ${id}`);
 		await this.#db.delete(events).where(eq(events.id, id));
-		console.log(`[EventService] ✅ Event deleted: ${id}`);
 	}
 
 	async deleteShift(id: string) {
-		console.log(`[EventService] Deleting shift: ${id}`);
 		await this.#db.delete(userShifts).where(eq(userShifts.shiftId, id));
 		await this.#db.delete(shifts).where(eq(shifts.id, id));
-		console.log(`[EventService] ✅ Shift deleted: ${id}`);
 	}
 
 	async getUpcomingPublicEvents() {

@@ -12,7 +12,6 @@ export class ReferralService {
 	}
 
 	async createReferral(referrerId: string, referredId: string) {
-		console.log(`[ReferralService] Creating referral: ${referrerId} → ${referredId}`);
 		const referral: ReferralInsert = {
 			id: nanoid(),
 			referredBy: referrerId,
@@ -26,12 +25,10 @@ export class ReferralService {
 			.returning()
 			.then((rows) => rows[0]);
 
-		console.log(`[ReferralService] ✅ Referral created: ${created.id} (status: pending)`);
 		return created;
 	}
 
 	async completeReferral(referredUserId: string) {
-		console.log(`[ReferralService] Completing referral for referred user: ${referredUserId}`);
 		const completed = await this.#db
 			.update(referrals)
 			.set({
@@ -41,12 +38,6 @@ export class ReferralService {
 			.where(and(eq(referrals.referred, referredUserId), eq(referrals.status, 'pending')))
 			.returning()
 			.then((rows) => rows[0]);
-
-		if (completed) {
-			console.log(`[ReferralService] ✅ Referral completed: ${completed.id}`);
-		} else {
-			console.log(`[ReferralService] No pending referral found for user: ${referredUserId}`);
-		}
 
 		return completed;
 	}
@@ -78,13 +69,11 @@ export class ReferralService {
 	}
 
 	async canUserRefer(userId: string) {
-		console.log(`[ReferralService] Checking if user can refer: ${userId}`);
 		const user = await this.#db.query.users.findFirst({
 			where: (row, { eq }) => eq(row.id, userId)
 		});
 
 		if (!user || !user.canRefer) {
-			console.log(`[ReferralService] User cannot refer (not found or canRefer=false): ${userId}`);
 			return false;
 		}
 
@@ -94,7 +83,6 @@ export class ReferralService {
 			.where(eq(referrals.referred, userId));
 
 		const canRefer = existingReferral.length === 0;
-		console.log(`[ReferralService] User ${userId} can refer: ${canRefer}`);
 		return canRefer;
 	}
 
@@ -115,15 +103,11 @@ export class ReferralService {
 		const previousEarnedBeers = Math.floor(previousCompletedReferrals / 2);
 
 		if (earnedBeers > previousEarnedBeers) {
-			console.log(
-				`[ReferralService] Awarding beer credit to referrer ${referrerId} (${completedReferrals} completed referrals)`
-			);
 			const user = await this.#db.query.users.findFirst({
 				where: (row, { eq }) => eq(row.id, referrerId)
 			});
 
 			if (!user) {
-				console.log(`[ReferralService] ❌ Referrer not found: ${referrerId}`);
 				return null;
 			}
 
@@ -135,20 +119,13 @@ export class ReferralService {
 				.where(eq(users.id, referrerId))
 				.returning();
 
-			console.log(
-				`[ReferralService] ✅ Beer credit awarded to ${referrerId} (total: ${updated.additionalBeers})`
-			);
 			return updated;
 		}
 
-		console.log(
-			`[ReferralService] No beer credit awarded (${completedReferrals} completed, need ${earnedBeers * 2})`
-		);
 		return null;
 	}
 
 	async checkAndCompleteMyReferees(userId: string, shiftService: ShiftService) {
-		console.log(`[ReferralService] Checking and completing referrals for user: ${userId}`);
 		const user = await this.#db.query.users.findFirst({
 			where: (row, { eq }) => eq(row.id, userId),
 			with: {
@@ -159,13 +136,9 @@ export class ReferralService {
 		});
 
 		if (!user?.referralsGiven || user.referralsGiven.length === 0) {
-			console.log(`[ReferralService] No pending referrals to check for user ${userId}`);
 			return [];
 		}
 
-		console.log(
-			`[ReferralService] Found ${user.referralsGiven.length} pending referral(s) for user ${userId}`
-		);
 		const referredUserIds = user.referralsGiven.map((r) => r.referred);
 
 		const usersWithCompletedShifts =
@@ -183,14 +156,10 @@ export class ReferralService {
 			}
 		}
 
-		console.log(
-			`[ReferralService] ✅ Completed ${completedReferrals.length} referral(s) for user ${userId}`
-		);
 		return completedReferrals;
 	}
 
 	async getReferralStats(userId: string) {
-		console.log(`[ReferralService] Getting referral stats for user: ${userId}`);
 		const given = await this.#db.query.users.findFirst({
 			where: (row, { eq }) => eq(row.id, userId),
 			with: {
@@ -208,9 +177,6 @@ export class ReferralService {
 			pendingReferrals: pendingCount
 		};
 
-		console.log(
-			`[ReferralService] Stats for ${userId}: ${stats.totalReferrals} total, ${stats.completedReferrals} completed, ${stats.pendingReferrals} pending`
-		);
 		return stats;
 	}
 }

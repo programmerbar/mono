@@ -27,18 +27,12 @@ export class PushNotificationService {
 	 */
 	async sendToUser(userId: string, payload: PushPayload) {
 		console.log(`[PushNotificationService] Attempting to send push to user ${userId}`);
-		console.log(`[PushNotificationService] Payload:`, JSON.stringify(payload));
 
 		const subscriptions = await this.#pushSubscriptionService.getByUserId(userId);
 
 		if (subscriptions.length === 0) {
-			console.log(`[PushNotificationService] No push subscriptions found for user ${userId}`);
 			return { sent: 0, failed: 0 };
 		}
-
-		console.log(
-			`[PushNotificationService] Found ${subscriptions.length} subscription(s) for user ${userId}`
-		);
 
 		const results = await Promise.allSettled(
 			subscriptions.map((sub) => this.#sendPush(sub, payload))
@@ -51,9 +45,6 @@ export class PushNotificationService {
 			const result = results[i];
 			if (result.status === 'fulfilled') {
 				sent++;
-				console.log(
-					`[PushNotificationService] ✅ Successfully sent push to ${subscriptions[i].endpoint.substring(0, 50)}...`
-				);
 				// Update last used timestamp
 				await this.#pushSubscriptionService.updateLastUsed(subscriptions[i].endpoint);
 			} else {
