@@ -119,12 +119,12 @@
 </script>
 
 <div
-	class="overflow-auto rounded-lg border bg-white p-4 sm:p-6 dark:border-slate-700 dark:bg-slate-800"
+	class="overflow-auto rounded-lg border border-portal-border bg-portal-card p-4 sm:p-6"
 >
 	<h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Push-varsler</h3>
 
 	{#if !isSupported}
-		<div class="rounded-lg bg-yellow-50 p-4 dark:bg-yellow-900/20">
+		<div class="rounded-lg bg-yellow-50 p-4 dark:bg-yellow-900/30">
 			<p class="text-sm text-yellow-800 dark:text-yellow-200">
 				Push-varsler støttes ikke i denne nettleseren.
 			</p>
@@ -175,7 +175,7 @@
 			</div>
 
 			<div class="space-y-3">
-				<div class="rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
+				<div class="rounded-lg bg-blue-50 p-4 dark:bg-blue-900/30">
 					<h4 class="mb-2 text-sm font-medium text-blue-900 dark:text-blue-100">Om push-varsler</h4>
 					<ul class="list-inside list-disc space-y-1 text-sm text-blue-800 dark:text-blue-200">
 						<li>Du må gi tillatelse i nettleseren</li>
@@ -185,7 +185,7 @@
 					</ul>
 				</div>
 
-				<div class="rounded-lg bg-orange-50 p-4 dark:bg-orange-900/20">
+				<div class="rounded-lg bg-orange-50 p-4 dark:bg-orange-900/30">
 					<h4 class="mb-2 text-sm font-medium text-orange-900 dark:text-orange-100">
 						⚠️ Bruker du Brave?
 					</h4>

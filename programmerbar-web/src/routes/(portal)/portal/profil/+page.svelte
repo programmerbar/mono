@@ -14,11 +14,11 @@
 </svelte:head>
 
 <div class="space-y-6">
-	<div class="rounded-lg border bg-white p-4 sm:p-6 dark:border-slate-700 dark:bg-slate-800">
+	<div class="rounded-lg border bg-portal-card p-4 sm:p-6 border-portal-border">
 		<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 			<div class="flex items-center gap-4">
 				<div
-					class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-300 dark:bg-slate-700"
+					class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-300 dark:bg-portal-hover"
 				>
 					<span class="text-2xl font-semibold text-gray-700 dark:text-gray-300">
 						{initials(data.user.name)}
@@ -43,7 +43,7 @@
 
 	<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 		<div class="space-y-6 lg:col-span-2">
-			<div class="overflow-auto rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
+			<div class="overflow-auto rounded-lg border bg-portal-card border-portal-border">
 				<div class="px-6 py-4">
 					<h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
 						Brukerinformasjon
@@ -51,13 +51,13 @@
 					<div class="space-y-4">
 						<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 							<div
-								class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+								class="rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
 							>
 								<dt class="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">Navn</dt>
 								<dd class="text-sm text-gray-900 dark:text-gray-100">{user.name}</dd>
 							</div>
 							<div
-								class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+								class="rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
 							>
 								<dt class="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">
 									Hovedepost
@@ -65,7 +65,7 @@
 								<dd class="text-sm text-gray-900 dark:text-gray-100">{user.email}</dd>
 							</div>
 							<div
-								class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+								class="rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
 							>
 								<dt class="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">
 									Alternativ e-post
@@ -75,7 +75,7 @@
 								</dd>
 							</div>
 							<div
-								class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+								class="rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
 							>
 								<dt class="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">Telefon</dt>
 								<dd class="text-sm text-gray-900 dark:text-gray-100">
@@ -83,7 +83,7 @@
 								</dd>
 							</div>
 							<div
-								class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+								class="rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
 							>
 								<dt class="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">Rolle</dt>
 								<dd>
@@ -93,7 +93,7 @@
 								</dd>
 							</div>
 							<div
-								class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+								class="rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
 							>
 								<dt class="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">Opplæring</dt>
 								<dd>
@@ -107,12 +107,12 @@
 				</div>
 			</div>
 
-			<div class="overflow-auto rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
+			<div class="overflow-auto rounded-lg border bg-portal-card border-portal-border">
 				<div class="px-6 py-4">
 					<h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Verv stats</h3>
 					<div class="space-y-3">
 						<div
-							class="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+							class="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
 						>
 							<div class="h-3 w-3 shrink-0 rounded-full bg-blue-400"></div>
 							<div class="flex-1">
@@ -125,7 +125,7 @@
 							</div>
 						</div>
 						<div
-							class="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+							class="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
 						>
 							<div class="h-3 w-3 shrink-0 rounded-full bg-green-400"></div>
 							<div class="flex-1">
@@ -138,7 +138,7 @@
 							</div>
 						</div>
 						<div
-							class="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+							class="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
 						>
 							<div class="h-3 w-3 shrink-0 rounded-full bg-yellow-400"></div>
 							<div class="flex-1">
@@ -156,12 +156,12 @@
 		</div>
 
 		<div class="space-y-6">
-			<div class="overflow-auto rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
+			<div class="overflow-auto rounded-lg border bg-portal-card border-portal-border">
 				<div class="px-6 py-4">
 					<h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Statistikk</h3>
 					<div class="space-y-4">
 						<div
-							class="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+							class="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
 						>
 							<span class="text-sm font-medium text-gray-600 dark:text-gray-300"
 								>Antall ganger stått (sem)</span
@@ -171,7 +171,7 @@
 							>
 						</div>
 						<div
-							class="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+							class="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
 						>
 							<span class="text-sm font-medium text-gray-600 dark:text-gray-300">Antall Bonger</span
 							>
@@ -180,7 +180,7 @@
 							>
 						</div>
 						<div
-							class="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700"
+							class="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4 border-portal-border dark:bg-portal-hover"
 						>
 							<span class="text-sm font-medium text-gray-600 dark:text-gray-300"
 								>Kommende arrangement</span

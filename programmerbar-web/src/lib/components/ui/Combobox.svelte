@@ -49,7 +49,7 @@
 	<Combobox.Input
 		{...mergedInputProps}
 		class={cn(
-			'placeholder:text-foreground-alt/50 border-border focus:border-border focus:outline-primary inline-flex h-10 w-full truncate rounded-lg border bg-white px-4 transition-colors focus:ring-0 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100 dark:placeholder:text-gray-500',
+			'placeholder:text-foreground-alt/50 inline-flex h-10 w-full truncate rounded-lg border border-input-border bg-input-background px-4 transition-colors focus:border-border focus:outline-primary focus:ring-0 dark:text-gray-100 dark:placeholder:text-gray-500',
 			mergedInputProps.class
 		)}
 	/>
@@ -57,13 +57,13 @@
 	<Combobox.Portal>
 		<div class={theme.isDark ? 'dark' : ''}>
 			<Combobox.Content
-				class="border-border max-h-52 w-(--bits-combobox-anchor-width) min-w-(--bits-combobox-anchor-width) overflow-y-auto rounded-xl border bg-white px-1 py-3 shadow outline-none dark:border-slate-600 dark:bg-slate-800"
+				class="max-h-52 w-(--bits-combobox-anchor-width) min-w-(--bits-combobox-anchor-width) overflow-y-auto rounded-xl border border-portal-border bg-white px-1 py-3 shadow outline-none dark:bg-portal-card"
 				sideOffset={8}
 				{...contentProps}
 			>
 				{#each filteredItems as option (option.value)}
 					<Combobox.Item
-						class="data-highlighted:bg-muted data-selected:bg-accent flex h-10 w-full items-center rounded-lg py-3 pr-1.5 pl-5 text-sm capitalize transition-all duration-75 outline-none select-none data-disabled:cursor-not-allowed data-disabled:opacity-50 dark:text-gray-100 dark:data-highlighted:bg-slate-700 dark:data-selected:bg-slate-600"
+						class="data-highlighted:bg-muted data-selected:bg-accent flex h-10 w-full items-center rounded-lg py-3 pr-1.5 pl-5 text-sm capitalize transition-all duration-75 outline-none select-none data-disabled:cursor-not-allowed data-disabled:opacity-50 dark:text-gray-100 dark:data-highlighted:bg-portal-hover dark:data-selected:bg-portal-hover"
 						value={option.value}
 						label={option.label}
 						disabled={disabledOptions?.includes(option.value)}

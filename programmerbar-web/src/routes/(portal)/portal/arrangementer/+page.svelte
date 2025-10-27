@@ -87,9 +87,9 @@
 	</div>
 
 	<!-- Tabs and Search -->
-	<div class="overflow-hidden rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
+	<div class="overflow-hidden rounded-lg border bg-portal-card border-portal-border">
 		<!-- Tab Navigation -->
-		<div class="flex border-b dark:border-slate-700">
+		<div class="flex border-b border-portal-border">
 			<button
 				class="flex-1 border-b-2 px-6 py-4 text-sm font-medium transition-colors {activeTab ===
 				'upcoming'
@@ -121,7 +121,7 @@
 		</div>
 
 		<!-- Events List -->
-		<div class="divide-y overflow-hidden dark:divide-slate-700">
+		<div class="divide-y overflow-hidden divide-portal-border">
 			{#if filteredEvents.length === 0}
 				<div class="px-6 py-12 text-center">
 					<Calendar class="mx-auto mb-4 h-12 w-12 text-gray-300 dark:text-gray-600" />
@@ -138,7 +138,7 @@
 				{#each filteredEvents as event (event.id)}
 					{@const status = getEventStatus(event)}
 					<div
-						class="bg-white p-4 transition-colors hover:bg-gray-50 dark:bg-slate-800 dark:hover:bg-slate-700"
+						class="bg-portal-card p-4 transition-colors hover:bg-portal-hover"
 					>
 						<div class="flex items-start justify-between">
 							<div class="min-w-0 flex-1">
@@ -169,7 +169,7 @@
 							{#if $user?.role === 'board'}
 								<a
 									href={resolve('/(portal)/portal/arrangementer/[id]/rediger', { id: event.id })}
-									class="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-600 dark:border-slate-600 dark:text-gray-500 dark:hover:bg-slate-600 dark:hover:text-gray-300"
+									class="flex h-8 w-8 items-center justify-center rounded-lg border border-portal-border text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-portal-hover dark:hover:text-gray-300"
 									aria-label="Rediger arrangement"
 								>
 									<SquarePen class="h-4 w-4" />

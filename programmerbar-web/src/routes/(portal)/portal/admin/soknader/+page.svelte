@@ -45,7 +45,7 @@
 
 	<!-- Applications List -->
 	{#if data.pendingApplications.length === 0}
-		<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
+		<div class="rounded-lg border bg-portal-card border-portal-border">
 			<div class="p-12 text-center">
 				<UserCheck class="mx-auto mb-4 h-12 w-12 text-gray-300 dark:text-gray-600" />
 				<h3 class="mb-2 text-lg font-medium text-gray-500 dark:text-gray-400">
@@ -58,7 +58,7 @@
 		</div>
 	{:else}
 		<div
-			class="divide-y rounded-lg border bg-white dark:divide-slate-600 dark:border-slate-700 dark:bg-slate-800"
+			class="divide-y rounded-lg border bg-portal-card divide-portal-border border-portal-border"
 		>
 			{#each data.pendingApplications as application (application.id)}
 				<div class="p-6">

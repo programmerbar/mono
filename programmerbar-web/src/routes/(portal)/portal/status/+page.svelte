@@ -60,7 +60,7 @@
 				<input type="hidden" name="status" value={status} />
 				<button
 					class={cn(
-						'w-full rounded-2xl border-2 bg-white p-6 transition-all duration-200 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 dark:bg-slate-800',
+						'w-full rounded-2xl border-2 bg-portal-card p-6 transition-all duration-200 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60',
 						{
 							'border-green-200 bg-green-50 shadow-green-100 hover:border-green-300 hover:shadow-green-200 dark:border-green-800 dark:bg-green-950/30 dark:shadow-green-900/20 dark:hover:border-green-700 dark:hover:shadow-green-900/30':
 								isSelected && color === 'green',
@@ -68,7 +68,7 @@
 								isSelected && color === 'orange',
 							'border-red-200 bg-red-50 shadow-red-100 hover:border-red-300 hover:shadow-red-200 dark:border-red-800 dark:bg-red-950/30 dark:shadow-red-900/20 dark:hover:border-red-700 dark:hover:shadow-red-900/30':
 								isSelected && color === 'red',
-							'border-gray-200 hover:border-gray-300 hover:bg-gray-50 dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-700':
+							'border-gray-200 hover:border-gray-300 hover:bg-gray-50 border-portal-border dark:hover:border-portal-border dark:hover:bg-portal-hover':
 								!isSelected
 						}
 					)}
@@ -80,7 +80,7 @@
 								'bg-green-500 text-white': isSelected && color === 'green',
 								'bg-orange-500 text-white': isSelected && color === 'orange',
 								'bg-red-500 text-white': isSelected && color === 'red',
-								'bg-gray-100 text-gray-600 dark:bg-slate-700 dark:text-gray-300': !isSelected
+								'bg-gray-100 text-gray-600 dark:bg-portal-hover dark:text-gray-300': !isSelected
 							})}
 						>
 							{#if isUpdating && newStatus === status}

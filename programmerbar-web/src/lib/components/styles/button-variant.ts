@@ -8,7 +8,7 @@ export const buttonVariant = cva(
 				primary:
 					'text-white bg-primary border-primary-dark hover:bg-primary-dark dark:bg-primary dark:border-primary-dark dark:hover:bg-primary-dark',
 				outline:
-					'text-gray-700 border-border hover:bg-gray-200 hover:border-gray-400 dark:text-gray-200 dark:border-slate-600 dark:hover:bg-slate-700 dark:hover:border-slate-500',
+					'text-gray-700 border-border hover:bg-gray-200 hover:border-gray-400 dark:text-gray-200 dark:border-portal-border dark:hover:bg-portal-hover dark:hover:border-portal-border',
 				danger:
 					'text-white bg-red-500 border-red-800 hover:bg-red-600 dark:bg-red-600 dark:border-red-900 dark:hover:bg-red-700',
 				warning:

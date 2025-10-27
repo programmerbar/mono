@@ -162,7 +162,7 @@
 <!-- Sidebar -->
 <aside
 	class={cn(
-		'fixed top-0 left-0 z-50 h-svh transform overflow-hidden border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out lg:w-64 dark:border-slate-700 dark:bg-slate-800',
+		'fixed top-0 left-0 z-50 h-svh transform overflow-hidden border-r border-portal-border bg-portal-card transition-transform duration-300 ease-in-out lg:w-64',
 		{
 			'w-80': isSidebarOpen && isMobile, // Large width when opened on mobile
 			'w-16 sm:w-20': !isSidebarOpen || !isMobile, // Narrow when closed or not mobile
@@ -174,7 +174,7 @@
 	<div class="flex h-full flex-col">
 		<!-- Header -->
 		<div
-			class="flex items-center justify-start gap-3 border-b border-gray-200 px-6 py-4 dark:border-slate-700"
+			class="flex items-center justify-start gap-3 border-b border-portal-border px-6 py-4"
 		>
 			<img src={logo} alt="Programmerbar" class="h-8 w-8" />
 			<div>
@@ -203,7 +203,7 @@
 									'flex items-center justify-start gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
 									{
 										'bg-blue-50 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300': isActive,
-										'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100':
+										'text-gray-600 hover:bg-portal-hover hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100':
 											!isActive
 									}
 								)}
@@ -237,7 +237,7 @@
 										{
 											'bg-amber-50 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300':
 												isActive,
-											'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100':
+											'text-gray-600 hover:bg-portal-hover hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100':
 												!isActive
 										}
 									)}
@@ -268,9 +268,9 @@
 							class={cn(
 								'relative flex items-center justify-start gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
 								{
-									'bg-gray-100 text-gray-900 dark:bg-slate-700 dark:text-gray-100':
+									'bg-gray-100 text-gray-900 dark:bg-portal-hover dark:text-gray-100':
 										page.url.pathname === notificationsHref,
-									'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100':
+									'text-gray-600 hover:bg-portal-hover hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100':
 										page.url.pathname !== notificationsHref
 								}
 							)}
@@ -292,7 +292,7 @@
 		</nav>
 
 		<!-- User section -->
-		<div class="border-t border-gray-200 p-4 dark:border-slate-700">
+		<div class="border-t border-portal-border p-4">
 			<div class="mb-3 flex items-center justify-start gap-3">
 				<div
 					class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900"
@@ -312,7 +312,7 @@
 			<div class="flex gap-2">
 				<button
 					onclick={() => theme.toggle()}
-					class="flex items-center justify-center gap-0 rounded-lg px-2 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100"
+					class="flex items-center justify-center gap-0 rounded-lg px-2 py-2 text-sm text-gray-600 transition-colors hover:bg-portal-hover hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
 					title={theme.current === 'dark' ? 'Bytt til lyst tema' : 'Bytt til mørkt tema'}
 				>
 					{#if theme.current === 'dark'}
@@ -324,7 +324,7 @@
 
 				<a
 					href={resolve('/')}
-					class="flex flex-1 items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-gray-100"
+					class="flex flex-1 items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-portal-hover hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
 					title="Hjem"
 				>
 					<House class="h-4 w-4 shrink-0" />

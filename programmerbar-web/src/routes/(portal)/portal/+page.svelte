@@ -80,7 +80,7 @@
 	<!-- Stats Overview -->
 	<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 		<!-- Personal Stats -->
-		<div class="rounded-lg border bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
+		<div class="rounded-lg border border-portal-border bg-portal-card p-6">
 			<h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Mine statistikker</h3>
 			<div class="space-y-4">
 				<div
@@ -118,7 +118,7 @@
 		</div>
 
 		<!-- Referral Stats -->
-		<div class="rounded-lg border bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
+		<div class="rounded-lg border border-portal-border bg-portal-card p-6">
 			<div class="mb-4 flex items-center gap-2">
 				<TrendingUp class="h-5 w-5 text-gray-600 dark:text-gray-400" />
 				<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
@@ -126,7 +126,7 @@
 				</h3>
 			</div>
 			<div class="space-y-4">
-				<div class="flex items-center justify-between rounded-lg bg-gray-50 p-3 dark:bg-slate-700">
+				<div class="flex items-center justify-between rounded-lg bg-gray-50 p-3 dark:bg-portal-hover">
 					<div class="flex items-center gap-3">
 						<Users class="h-4 w-4 text-gray-600 dark:text-gray-400" />
 						<span class="text-sm font-medium text-gray-700 dark:text-gray-200"
@@ -138,7 +138,7 @@
 					>
 				</div>
 
-				<div class="flex items-center justify-between rounded-lg bg-gray-50 p-3 dark:bg-slate-700">
+				<div class="flex items-center justify-between rounded-lg bg-gray-50 p-3 dark:bg-portal-hover">
 					<div class="flex items-center gap-3">
 						<CircleCheck class="h-4 w-4 text-green-600 dark:text-green-400" />
 						<span class="text-sm font-medium text-gray-700 dark:text-gray-200">Fullført 1 vakt</span
@@ -149,7 +149,7 @@
 					>
 				</div>
 
-				<div class="flex items-center justify-between rounded-lg bg-gray-50 p-3 dark:bg-slate-700">
+				<div class="flex items-center justify-between rounded-lg bg-gray-50 p-3 dark:bg-portal-hover">
 					<div class="flex items-center gap-3">
 						<Clock class="h-4 w-4 text-orange-600 dark:text-orange-400" />
 						<span class="text-sm font-medium text-gray-700 dark:text-gray-200">Ventende</span>
@@ -163,22 +163,22 @@
 	</div>
 
 	<!-- Upcoming Shifts -->
-	<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
-		<div class="border-b p-6 dark:border-slate-700">
+	<div class="rounded-lg border bg-portal-card border-portal-border">
+		<div class="border-b p-6 border-portal-border">
 			<div class="flex items-center gap-2">
 				<Calendar class="h-5 w-5 text-gray-600 dark:text-gray-400" />
 				<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Kommende vakter</h3>
 			</div>
 		</div>
 
-		<div class="divide-y dark:divide-slate-700">
+		<div class="divide-y divide-portal-border">
 			{#each data.upcomingShifts as shift (shift.shift.id)}
 				<!-- eslint-disable svelte/no-navigation-without-resolve -->
 				<a
 					href={shift.event?.id
 						? resolve('/(portal)/portal/arrangementer/[id]', { id: shift.event.id })
 						: resolve('/portal/arrangementer')}
-					class="block p-4 transition-colors hover:bg-gray-50 dark:hover:bg-slate-700"
+					class="block p-4 transition-colors hover:bg-portal-hover"
 				>
 					<div class="flex items-center justify-between">
 						<div>

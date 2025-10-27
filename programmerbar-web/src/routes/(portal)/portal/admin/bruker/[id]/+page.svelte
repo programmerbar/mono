@@ -67,7 +67,7 @@
 	</div>
 
 	<!-- User overview -->
-	<div class="rounded-lg border bg-white p-4 sm:p-6 dark:border-slate-700 dark:bg-slate-800">
+	<div class="rounded-lg border bg-portal-card p-4 sm:p-6 border-portal-border">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center gap-4">
 				<div
@@ -99,8 +99,8 @@
 
 	<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 		<div class="space-y-6 lg:col-span-2">
-			<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
-				<div class="border-b px-6 py-4 dark:border-slate-600">
+			<div class="rounded-lg border bg-portal-card border-portal-border">
+				<div class="border-b px-6 py-4 border-portal-border">
 					<div class="flex items-center gap-2">
 						<UserCog class="h-5 w-5 text-gray-600 dark:text-gray-300" />
 						<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
@@ -146,14 +146,14 @@
 				</div>
 			</div>
 
-			<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
-				<div class="border-b px-6 py-4 dark:border-slate-600">
+			<div class="rounded-lg border bg-portal-card border-portal-border">
+				<div class="border-b px-6 py-4 border-portal-border">
 					<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Verv stats</h3>
 				</div>
 				<div class="p-6">
 					<div class="space-y-3">
 						<div
-							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-slate-600"
+							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-portal-border"
 						>
 							<div class="mt-2 h-2 w-2 shrink-0 rounded-full bg-blue-400"></div>
 							<div class="flex-1">
@@ -164,7 +164,7 @@
 							</div>
 						</div>
 						<div
-							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-slate-600"
+							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-portal-border"
 						>
 							<div class="mt-2 h-2 w-2 shrink-0 rounded-full bg-green-400"></div>
 							<div class="flex-1">
@@ -175,7 +175,7 @@
 							</div>
 						</div>
 						<div
-							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-slate-600"
+							class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0 dark:border-portal-border"
 						>
 							<div class="mt-2 h-2 w-2 shrink-0 rounded-full bg-yellow-400"></div>
 							<div class="flex-1">
@@ -191,8 +191,8 @@
 		</div>
 
 		<div class="space-y-6">
-			<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
-				<div class="border-b px-6 py-4 dark:border-slate-600">
+			<div class="rounded-lg border bg-portal-card border-portal-border">
+				<div class="border-b px-6 py-4 border-portal-border">
 					<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Statistikk</h3>
 				</div>
 				<div class="space-y-4 p-6">
@@ -217,28 +217,28 @@
 				</div>
 			</div>
 
-			<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
-				<div class="border-b px-6 py-4 dark:border-slate-600">
+			<div class="rounded-lg border bg-portal-card border-portal-border">
+				<div class="border-b px-6 py-4 border-portal-border">
 					<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Handlinger</h3>
 				</div>
 				<div class="flex flex-col gap-2 p-6">
 					<!-- eslint-disable svelte/no-navigation-without-resolve -->
 					<a
-						class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-slate-700"
+						class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-portal-hover dark:text-gray-300"
 						href={mailto(data.user.altEmail || data.user.email)}
 					>
 						<Mail class="h-4 w-4" />
 						Send e-post
 					</a>
 					<button
-						class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-slate-700"
+						class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-portal-hover dark:text-gray-300"
 						onclick={() => (showAddBeers = true)}
 					>
 						<Beer class="h-4 w-4" />
 						Legg til / Fjern bonger
 					</button>
 					<button
-						class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm transition-colors hover:bg-gray-50 dark:hover:bg-slate-700 {userHasCompletedTraining
+						class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm transition-colors hover:bg-portal-hover {userHasCompletedTraining
 							? 'text-green-600 dark:text-green-400'
 							: 'text-gray-700 dark:text-gray-300'}"
 						onclick={() => (showTrainingChecklist = true)}
@@ -251,7 +251,7 @@
 							Start opplæring
 						{/if}
 					</button>
-					<div class="border-t border-gray-200 pt-2 dark:border-slate-600">
+					<div class="border-t border-gray-200 pt-2 border-portal-border">
 						<button
 							class="flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
 							onclick={() => (showDeleteConfirm = true)}
@@ -280,7 +280,7 @@
 		class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs dark:bg-black/40"
 	>
 		<div
-			class="mx-4 w-full max-w-md rounded-lg border bg-white p-6 shadow-lg dark:border-slate-600 dark:bg-slate-800"
+			class="mx-4 w-full max-w-md rounded-lg border bg-portal-card p-6 shadow-lg border-portal-border"
 		>
 			<h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">Legg til øl</h3>
 			<p class="mb-4 text-sm text-gray-600 dark:text-gray-300">
@@ -314,7 +314,7 @@
 					<button
 						type="button"
 						onclick={() => (showAddBeers = false)}
-						class="rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600"
+						class="rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 dark:bg-portal-hover dark:text-gray-300 dark:hover:bg-[#222222]"
 					>
 						Avbryt
 					</button>
@@ -335,7 +335,7 @@
 		class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs dark:bg-black/40"
 	>
 		<div
-			class="mx-4 w-full max-w-md rounded-lg border bg-white p-6 shadow-lg dark:border-slate-600 dark:bg-slate-800"
+			class="mx-4 w-full max-w-md rounded-lg border bg-portal-card p-6 shadow-lg border-portal-border"
 		>
 			<h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">Slett bruker</h3>
 			<p class="mb-4 text-sm text-gray-600 dark:text-gray-300">
@@ -375,7 +375,7 @@
 							showDeleteConfirm = false;
 							deleteConfirmName = '';
 						}}
-						class="rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600"
+						class="rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 dark:bg-portal-hover dark:text-gray-300 dark:hover:bg-[#222222]"
 					>
 						Avbryt
 					</button>

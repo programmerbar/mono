@@ -29,7 +29,7 @@
 
 	<!-- Notifications List -->
 	{#if data.notifications.length === 0}
-		<div class="rounded-lg border bg-white dark:border-slate-700 dark:bg-slate-800">
+		<div class="rounded-lg border bg-portal-card border-portal-border">
 			<div class="p-12 text-center">
 				<BellOff class="mx-auto mb-4 h-12 w-12 text-gray-300 dark:text-gray-600" />
 				<h3 class="mb-2 text-lg font-medium text-gray-500 dark:text-gray-400">
@@ -42,10 +42,10 @@
 		</div>
 	{:else}
 		<div
-			class="divide-y overflow-hidden rounded-lg border bg-white dark:divide-slate-600 dark:border-slate-700 dark:bg-slate-800"
+			class="divide-y overflow-hidden rounded-lg border bg-portal-card divide-portal-border border-portal-border"
 		>
 			{#each data.notifications as notification (notification.id)}
-				<div class="p-4 transition-colors hover:bg-gray-50 dark:hover:bg-slate-700">
+				<div class="p-4 transition-colors hover:bg-portal-hover">
 					<div class="flex items-start justify-between gap-4">
 						<div class="min-w-0 flex-1">
 							<div class="flex items-start gap-3">

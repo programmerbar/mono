@@ -25,10 +25,20 @@
 	--muted: #eeeeee;
 
 	--border: #c4c4c4;
+
+	/* Portal-specific colors */
+	--portal-background: #f9fafb;
+	--portal-card: #ffffff;
+	--portal-border: #e5e7eb;
+	--portal-hover: #f3f4f6;
+
+	/* Input colors */
+	--input-background: #ffffff;
+	--input-border: #c4c4c4;
 }
 
 .dark {
-	--background: #0f172a;
+	--background: #0a0a0a;
 	--foreground: #e2e8f0;
 
 	--primary: #14747c;
@@ -39,12 +49,22 @@
 	--secondary-light: #fff7e6;
 	--secondary-dark: #fee8b4;
 
-	--card: #1e293b;
-	--card-muted: #334155;
+	--card: #1a1a1a;
+	--card-muted: #252525;
 
-	--muted: #1e293b;
+	--muted: #1a1a1a;
 
-	--border: #475569;
+	--border: #2a2a2a;
+
+	/* Portal-specific colors - super dark */
+	--portal-background: #0a0a0a;
+	--portal-card: #0f0f0f;
+	--portal-border: #2a2a2a;
+	--portal-hover: #1a1a1a;
+
+	/* Input colors - super dark */
+	--input-background: #1a1a1a;
+	--input-border: #2a2a2a;
 }
 
 @theme inline {
@@ -65,6 +85,14 @@
 	--color-muted: var(--muted);
 
 	--color-border: var(--border);
+
+	--color-portal-background: var(--portal-background);
+	--color-portal-card: var(--portal-card);
+	--color-portal-border: var(--portal-border);
+	--color-portal-hover: var(--portal-hover);
+
+	--color-input-background: var(--input-background);
+	--color-input-border: var(--input-border);
 }
 
 @layer base {

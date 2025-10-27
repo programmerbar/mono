@@ -8,7 +8,7 @@
 	createThemeContext();
 </script>
 
-<div id="portal-layout" class="flex min-h-screen bg-gray-50 dark:bg-slate-900">
+<div id="portal-layout" class="flex min-h-screen bg-portal-background">
 	<PortalSidebar
 		notifications={data.notifications}
 		pendingApplicationsCount={data.pendingApplicationsCount}
