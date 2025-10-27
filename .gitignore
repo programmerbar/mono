@@ -7,6 +7,4 @@ dist
 .wrangler
 .idea
 .pnpm-store
-/target
-apps/*/target/
-.claude
+
