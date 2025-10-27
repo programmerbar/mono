@@ -6,83 +6,97 @@
 	let user = getUser();
 </script>
 
-<div class="border-primary-dark bg-primary-light relative mt-24 border-t-2">
-	<footer class="mx-auto flex max-w-5xl flex-col gap-10 px-4 py-16">
-		<div class="mx-auto flex w-full flex-col items-center justify-between gap-10 md:flex-row">
-			<div class="text-center md:text-left">
-				<p class="text-lg font-medium">Informasjon</p>
-				<ul>
-					<li>
-						<p>echo Programmerbar</p>
-					</li>
-					<li>
-						<p>
-							Org. nr.: <a
-								class="hover:underline"
-								href="https://www.proff.no/selskap/echo-programmerbar/bergen/medlemsorganisasjoner/IFC3FCQ10PU/"
-								>927 307 898</a
-							>
-						</p>
-					</li>
-				</ul>
-			</div>
-
-			<div class="space-y-4 text-center">
-				<p class="mx-auto text-xl font-medium">Hovedsamarbeidspartner</p>
-				<div>
-					<a href="https://lervig.no">
-						<img src={lervigLogo} alt="Lervig" class="mx-auto h-24 w-auto" /></a
-					>
+<div class="border-primary-dark bg-primary-light relative mt-32 border-t">
+	<footer class="mx-auto max-w-6xl px-6 py-20 lg:px-8">
+		<!-- Main Content -->
+		<div
+			class="mb-16 grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-8 lg:gap-12 [&>div]:mx-auto [&>div]:w-full [&>div]:max-w-xs"
+		>
+			<!-- Information Section -->
+			<div class="space-y-4 text-center md:text-left">
+				<h3 class="text-sm font-semibold tracking-wider uppercase opacity-70">Informasjon</h3>
+				<div class="space-y-2 text-base">
+					<p class="font-medium">echo Programmerbar</p>
+					<p class="text-sm opacity-80">
+						Org. nr.: <a
+							class="transition-opacity hover:opacity-100"
+							href="https://www.proff.no/selskap/echo-programmerbar/bergen/medlemsorganisasjoner/IFC3FCQ10PU/"
+							>927 307 898</a
+						>
+					</p>
 				</div>
 			</div>
 
-			<div class="text-center md:text-right">
-				<p class="text-lg font-medium">Kontakt oss</p>
-				<ul>
-					<li>
-						<a class="hover:underline" href="https://www.instagram.com/echo_programmerbar">
+			<!-- Partner Section -->
+			<div class="space-y-4 text-center">
+				<h3 class="text-sm font-semibold tracking-wider uppercase opacity-70">
+					Hovedsamarbeidspartner
+				</h3>
+				<a
+					href="https://lervig.no"
+					class="inline-block transition-opacity hover:opacity-80"
+					aria-label="Lervig"
+				>
+					<img src={lervigLogo} alt="Lervig" class="mx-auto h-20 w-auto" />
+				</a>
+			</div>
+
+			<!-- Contact Section -->
+			<div class="space-y-4 text-center md:text-right">
+				<h3 class="text-sm font-semibold tracking-wider uppercase opacity-70">Kontakt oss</h3>
+				<div class="space-y-2 text-base">
+					<div>
+						<a
+							class="opacity-80 transition-opacity hover:opacity-100"
+							href="https://www.instagram.com/echo_programmerbar"
+						>
 							@echo_programmerbar
 						</a>
-					</li>
-					<li>
-						<a class="hover:underline" href="mailto:hei@programmerbar.no">hei@programmerbar.no</a>
-					</li>
-				</ul>
+					</div>
+					<div>
+						<a
+							class="opacity-80 transition-opacity hover:opacity-100"
+							href="mailto:hei@programmerbar.no">hei@programmerbar.no</a
+						>
+					</div>
+				</div>
 			</div>
 		</div>
 
-		<div class="py-4 text-center">
-			<p class="text-lg font-medium">Lenker</p>
-			<ul class="mx-auto flex w-fit flex-col items-center gap-x-4 md:flex-row">
-				<li>
-					<a class="hover:underline" target="_blank" href="https://programmerbar.sanity.studio"
-						>Sanity</a
-					>
-				</li>
-				<li>
-					<a class="hover:underline" target="_blank" href="https://github.com/programmerbar/mono"
-						>GitHub</a
-					>
-				</li>
-				<li>
-					<a class="hover:underline" href={resolve('/beer-pong')}>Beer Pong</a>
-				</li>
+		<!-- Bottom Links -->
+		<div class="border-primary-dark space-y-6 border-t pt-12">
+			<nav
+				class="mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm font-medium"
+			>
+				<a
+					class="opacity-70 transition-opacity hover:opacity-100"
+					target="_blank"
+					href="https://programmerbar.sanity.studio">Sanity</a
+				>
+				<a
+					class="opacity-70 transition-opacity hover:opacity-100"
+					target="_blank"
+					href="https://github.com/programmerbar/mono">GitHub</a
+				>
+				<a class="opacity-70 transition-opacity hover:opacity-100" href={resolve('/beer-pong')}
+					>Beer Pong</a
+				>
 				{#if $user}
-					<li>
-						<a class="hover:underline" href={resolve('/portal')}>Portal</a>
-					</li>
+					<a class="opacity-70 transition-opacity hover:opacity-100" href={resolve('/portal')}
+						>Portal</a
+					>
 				{/if}
 				{#if $user}
-					<li>
-						<a class="hover:underline" href={resolve('/emeritus')}>Emeritus</a>
-					</li>
+					<a class="opacity-70 transition-opacity hover:opacity-100" href={resolve('/emeritus')}
+						>Emeritus</a
+					>
 				{/if}
 				{#if !$user}
-					<li>
-						<a class="hover:underline" href={resolve('/logg-inn')}>Logg inn</a>
-					</li>
+					<a class="opacity-70 transition-opacity hover:opacity-100" href={resolve('/logg-inn')}
+						>Logg inn</a
+					>
 				{/if}
-			</ul>
+			</nav>
 		</div>
 	</footer>
 </div>
