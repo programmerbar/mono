@@ -68,7 +68,7 @@
 								isSelected && color === 'orange',
 							'border-red-200 bg-red-50 shadow-red-100 hover:border-red-300 hover:shadow-red-200 dark:border-red-800 dark:bg-red-950/30 dark:shadow-red-900/20 dark:hover:border-red-700 dark:hover:shadow-red-900/30':
 								isSelected && color === 'red',
-							'border-portal-border dark:hover:border-portal-border dark:hover:bg-portal-hover border-gray-200 hover:border-gray-300 hover:bg-gray-50':
+							'dark:border-portal-border dark:hover:border-portal-border dark:hover:bg-portal-hover border-gray-200 hover:border-gray-300 hover:bg-gray-50':
 								!isSelected
 						}
 					)}
