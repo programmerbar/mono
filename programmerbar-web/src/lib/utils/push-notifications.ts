@@ -1,29 +1,4 @@
 /**
- * Utility functions for managing push notifications
- */
-
-/**
- * Register service worker
- */
-export async function registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
-	if (!('serviceWorker' in navigator)) {
-		console.warn('Service workers are not supported in this browser');
-		return null;
-	}
-
-	try {
-		const registration = await navigator.serviceWorker.register('/service-worker.js', {
-			scope: '/'
-		});
-		console.log('Service Worker registered successfully:', registration);
-		return registration;
-	} catch (error) {
-		console.error('Service Worker registration failed:', error);
-		return null;
-	}
-}
-
-/**
  * Check if push notifications are supported
  */
 export function isPushSupported(): boolean {

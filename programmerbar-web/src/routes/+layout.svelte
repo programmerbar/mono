@@ -3,9 +3,6 @@
 
 	import { setUserContext } from '$lib/states/user.svelte';
 	import { Toaster } from 'svelte-sonner';
-	import { registerServiceWorker } from '$lib/utils/push-notifications';
-	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
 
 	const { data, children } = $props();
 
@@ -18,13 +15,6 @@
 	});
 
 	setUserContext(userState);
-
-	// Register service worker for push notifications
-	onMount(() => {
-		if (browser) {
-			registerServiceWorker();
-		}
-	});
 </script>
 
 <Toaster richColors />
