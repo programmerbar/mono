@@ -8,5 +8,6 @@ onlyBuiltDependencies:
   - '@openapitools/openapi-generator-cli'
   - '@tailwindcss/oxide'
   - esbuild
+  - protobufjs
   - sharp
   - workerd
