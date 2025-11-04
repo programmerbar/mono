@@ -12,6 +12,7 @@ jobs:
 
     env:
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      PUBLIC_GITHUB_SHA: ${{ github.sha }}
 
     steps:
       - name: 🔍 Checkout

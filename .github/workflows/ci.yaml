@@ -14,6 +14,7 @@ env:
   FEIDE_CLIENT_SECRET: test
   FEIDE_REDIRECT_URI: http://localhost:8000/auth/feide/callback
   ADMIN_KEY: test-admin-key
+  PUBLIC_GITHUB_SHA: ${{ github.sha }}
   RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
   PUBLIC_VAPID_PUBLIC_KEY: ${{ secrets.PUBLIC_VAPID_PUBLIC_KEY }}
   VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}

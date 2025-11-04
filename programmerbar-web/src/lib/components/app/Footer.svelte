@@ -2,6 +2,7 @@
 	import lervigLogo from '$lib/assets/lervig-logo-black.png';
 	import { getUser } from '$lib/states/user.svelte';
 	import { resolve } from '$app/paths';
+	import { PUBLIC_GITHUB_SHA } from '$env/static/public';
 
 	let user = getUser();
 </script>
@@ -97,6 +98,19 @@
 					>
 				{/if}
 			</nav>
+
+			<!-- Version Info -->
+			{#if PUBLIC_GITHUB_SHA}
+				<div class="text-center text-xs opacity-50">
+					<a
+						class="transition-opacity hover:opacity-100"
+						target="_blank"
+						href="https://github.com/programmerbar/programmer.bar/commit/{PUBLIC_GITHUB_SHA}"
+					>
+						{PUBLIC_GITHUB_SHA.substring(0, 7)}
+					</a>
+				</div>
+			{/if}
 		</div>
 	</footer>
 </div>
