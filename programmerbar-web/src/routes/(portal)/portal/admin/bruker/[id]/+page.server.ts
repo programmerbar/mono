@@ -14,14 +14,17 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	}
 
 	const user = await locals.userService.findById(userId);
-	if (!user) {
-		throw error(404, 'User not found');
+  if (!user) {
+    throw error(404, 'User not found');
 	}
 
-	const userShifts = await locals.shiftService.findCompletedShiftsByUserId(userId);
-	const unclaimedBeers = await locals.beerService.getTotalAvailableBeers(userId);
-	const referrals = await locals.referralService.getReferralStats(userId);
-	const shifts = await locals.shiftService.findUpcomingShiftsByUserId(userId);
+  const [userShifts, unclaimedBeers, referrals, shifts] = await Promise.all([
+    await locals.shiftService.findCompletedShiftsByUserId(userId),
+    await locals.beerService.getTotalAvailableBeers(userId),
+    await locals.referralService.getReferralStats(userId),
+    await locals.shiftService.findUpcomingShiftsByUserId(userId),
+  ]);
+  
 
 	return {
 		user,
