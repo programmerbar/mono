@@ -16,14 +16,17 @@
 	const members = [
 		'Erik Fjelltveit Nyhuus',
 		'Lene Soltveit',
-		'Lars Haukland',
 		'Steffen Andre Pettersen',
 		'Siren Bjorøy',
 		'Ole Straumland',
 		'Tony Lam',
 		'Eirik Rekve Thorsheim',
-		'Ole Magnus Fon Johnsen (første CTO)',
-		'August Ebne Røeggen'
+		'Ole Magnus Fon Johnsen',
+		'August Ebne Røeggen',
+		'Fredrik Hast Sørli',
+		'Sturla Rognskog Mella',
+		'Tord Vikøren Vikestad',
+		'Henrik Sætre Breivik'
 	];
 
 	const pastMembers = [
@@ -46,7 +49,8 @@
 		'Simen Hauge Østbø',
 		'Stian Munkejord',
 		'Gard Heine Kalland',
-		'Lars Bysheim'
+		'Lars Bysheim',
+		'Lars Haukland'
 	];
 </script>
 
