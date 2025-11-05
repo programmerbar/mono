@@ -10,6 +10,7 @@
 		TriangleAlert,
 		Wifi
 	} from '@lucide/svelte';
+	import { onMount } from 'svelte';
 
 	type Icon = typeof CircleAlert;
 
@@ -51,6 +52,24 @@
 		message: 'Noe uventet skjedde. Vennligst prøv igjen.',
 		icon: CircleAlert
 	};
+
+	let rejectionReason = $state<string | null>(null);
+	let isLoadingReason = $state(true);
+
+	onMount(async () => {
+		try {
+			const response = await fetch('https://naas.isalman.dev/no');
+			if (response.ok) {
+				const data = await response.json();
+				rejectionReason = data.reason;
+			}
+		} catch (err) {
+			// Silently fail - it's just a fun feature
+			console.error('Failed to fetch rejection reason:', err);
+		} finally {
+			isLoadingReason = false;
+		}
+	});
 </script>
 
 <div class="flex min-h-screen flex-col bg-[url('/circuit-board.svg')] bg-size-[400px] px-4">
@@ -64,6 +83,19 @@
 			<h1 class="mb-4 font-mono text-5xl font-bold text-gray-700">{page.status}</h1>
 			<h2 class="mb-4 text-2xl font-semibold text-gray-800">{error.title}</h2>
 			<p class="mb-6 text-gray-600">{error.message}</p>
+
+			{#if rejectionReason}
+				<div class="mb-6 rounded-lg border-2 border-red-200 bg-red-50 p-4">
+					<p class="mb-1 text-xs font-semibold uppercase tracking-wide text-red-600">
+						Avslag fra systemet
+					</p>
+					<p class="italic text-gray-700">"{rejectionReason}"</p>
+				</div>
+			{:else if isLoadingReason}
+				<div class="mb-6 rounded-lg border-2 border-gray-200 bg-gray-50 p-4">
+					<p class="text-sm text-gray-500">Henter avslagsgrunn...</p>
+				</div>
+			{/if}
 
 			{#if page.status === 404}
 				<div class="mb-8 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-4">
