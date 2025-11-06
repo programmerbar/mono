@@ -4,7 +4,6 @@ import type { PageServerLoad } from './$types';
 const PAGE_SIZE = 20;
 
 export const load: PageServerLoad = async ({ locals, url }) => {
-	// Admin check
 	if (locals.user?.role !== 'board') {
 		throw redirect(307, '/portal');
 	}
