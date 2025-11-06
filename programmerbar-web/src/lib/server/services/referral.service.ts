@@ -1,5 +1,5 @@
 import type { Database } from '$lib/server/db/drizzle';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, count } from 'drizzle-orm';
 import { referrals, users, type ReferralInsert } from '$lib/server/db/schemas';
 import { nanoid } from 'nanoid';
 import type { ShiftService } from './shift.service';
@@ -178,5 +178,22 @@ export class ReferralService {
 		};
 
 		return stats;
+	}
+
+	async getAllReferrals(options?: { limit?: number; offset?: number }) {
+		return await this.#db.query.referrals.findMany({
+			orderBy: (row, { desc }) => [desc(row.createdAt)],
+			limit: options?.limit,
+			offset: options?.offset,
+			with: {
+				referrer: true,
+				referred: true
+			}
+		});
+	}
+
+	async countAllReferrals() {
+		const result = await this.#db.select({ count: count() }).from(referrals);
+		return result[0]?.count ?? 0;
 	}
 }

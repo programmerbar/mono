@@ -10,6 +10,7 @@
 		TriangleAlert,
 		Wifi
 	} from '@lucide/svelte';
+	import { onMount } from 'svelte';
 
 	type Icon = typeof CircleAlert;
 
@@ -51,6 +52,33 @@
 		message: 'Noe uventet skjedde. Vennligst prøv igjen.',
 		icon: CircleAlert
 	};
+
+	let rejectionReason = $state<string | null>(null);
+	let isLoadingReason = $state(true);
+	let fetchError = $state(false);
+
+	onMount(async () => {
+		try {
+			const response = await fetch('/api/rejection');
+			if (response.ok) {
+				const data = (await response.json()) as { reason?: string };
+				if (data && data.reason) {
+					rejectionReason = data.reason;
+				} else {
+					console.warn('No rejection reason in response:', data);
+					fetchError = true;
+				}
+			} else {
+				console.error('Failed to fetch rejection reason, status:', response.status);
+				fetchError = true;
+			}
+		} catch (err) {
+			console.error('Failed to fetch rejection reason:', err);
+			fetchError = true;
+		} finally {
+			isLoadingReason = false;
+		}
+	});
 </script>
 
 <div class="flex min-h-screen flex-col bg-[url('/circuit-board.svg')] bg-size-[400px] px-4">
@@ -59,11 +87,31 @@
 			class="bg-opacity-95 w-full max-w-2xl rounded-xl border-2 border-gray-300 bg-white p-8 text-center"
 		>
 			<div class="mb-4 flex justify-center">
-				<svelte:component this={error.icon} class="h-12 w-12 text-gray-600" />
+				<error.icon class="h-12 w-12 text-gray-600" />
 			</div>
 			<h1 class="mb-4 font-mono text-5xl font-bold text-gray-700">{page.status}</h1>
 			<h2 class="mb-4 text-2xl font-semibold text-gray-800">{error.title}</h2>
 			<p class="mb-6 text-gray-600">{error.message}</p>
+
+			{#if rejectionReason}
+				<div class="mb-6 rounded-lg border-2 border-red-200 bg-red-50 p-4">
+					<p class="mb-1 text-xs font-semibold tracking-wide text-red-600 uppercase">
+						Avslag fra systemet
+					</p>
+					<p class="text-gray-700 italic">"{rejectionReason}"</p>
+				</div>
+			{:else if isLoadingReason}
+				<div class="mb-6 rounded-lg border-2 border-gray-200 bg-gray-50 p-4">
+					<p class="text-sm text-gray-500">Henter avslagsgrunn...</p>
+				</div>
+			{:else if fetchError}
+				<div class="mb-6 rounded-lg border-2 border-yellow-200 bg-yellow-50 p-4">
+					<p class="mb-1 text-xs font-semibold tracking-wide text-yellow-600 uppercase">
+						No as a Service
+					</p>
+					<p class="text-sm text-gray-600">Kunne ikke hente avslagsgrunn (sjekk konsollen)</p>
+				</div>
+			{/if}
 
 			{#if page.status === 404}
 				<div class="mb-8 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-4">
