@@ -14,9 +14,10 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	}
 
 	const user = await locals.userService.findById(userId);
-	if (!user) {
-		throw error(404, 'User not found');
+  if (!user) {
+    throw error(404, 'User not found');
 	}
+
 
 	const [userShifts, unclaimedBeers, referrals, shifts] = await Promise.all([
 		locals.shiftService.findCompletedShiftsByUserId(userId),
@@ -24,6 +25,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		locals.referralService.getReferralStats(userId),
 		locals.shiftService.findUpcomingShiftsByUserId(userId)
 	]);
+
 
 	return {
 		user,
