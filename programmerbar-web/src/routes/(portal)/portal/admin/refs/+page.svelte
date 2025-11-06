@@ -115,9 +115,7 @@
 		<UserPlus class="h-6 w-6 text-gray-600 dark:text-gray-300" />
 		<div>
 			<Heading>Referrals</Heading>
-			<p class="mt-1 text-gray-600 dark:text-gray-300">
-				Oversikt over alle referrals i systemet
-			</p>
+			<p class="mt-1 text-gray-600 dark:text-gray-300">Oversikt over alle referrals i systemet</p>
 		</div>
 	</div>
 
