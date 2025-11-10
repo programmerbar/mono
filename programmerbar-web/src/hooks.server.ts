@@ -23,6 +23,7 @@ import { ImageService } from '$lib/server/services/image.service';
 import { ReferralService } from '$lib/server/services/referral.service';
 import { PendingApplicationService } from '$lib/server/services/pending-application.service';
 import { csrf } from '$lib/server/csrf';
+import { handleErrorWithSentry, initCloudflareSentryHandle, sentryHandle } from '@sentry/sveltekit';
 
 const setup: Handle = async ({ event, resolve }) => {
 	// Set up primitive services from Cloudflare environment
@@ -145,4 +146,13 @@ const setup: Handle = async ({ event, resolve }) => {
 };
 
 // Allow Slack webhook endpoint to bypass CSRF protection
-export const handle = sequence(csrf(['/slack-command']), setup);
+export const handle = sequence(
+	initCloudflareSentryHandle({
+		dsn: 'https://974f3f9038ebc2dee7636f80f1eb16d4@o4510342180634624.ingest.de.sentry.io/4510342182010960',
+		sendDefaultPii: false
+	}),
+	sentryHandle(),
+	csrf(['/slack-command']),
+	setup
+);
+export const handleError = handleErrorWithSentry();

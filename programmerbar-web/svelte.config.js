@@ -18,7 +18,12 @@ const config = {
 		},
 
 		experimental: {
-			remoteFunctions: true
+			remoteFunctions: true,
+
+			// For Sentry
+			instrumentation: {
+				server: true
+			}
 		}
 	},
 
