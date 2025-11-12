@@ -4,11 +4,9 @@
 	import { marked } from 'marked';
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import SEO from '$lib/components/SEO.svelte';
-	import { getProgrammerbarGroup } from './data.remote';
 
-	const programmerbar = await getProgrammerbarGroup();
-
-	const html = marked.parse(programmerbar.description);
+	const { data } = $props();
+	const programmerbar = $derived(data.programmerbar);
 </script>
 
 <SEO
@@ -41,7 +39,7 @@
 		</div>
 
 		<article class="prose prose-xl wrap-break-words text-xl">
-			{@html html}
+			{@html data.html}
 		</article>
 	</div>
 
@@ -68,7 +66,9 @@
 					</div>
 
 					<h3 class="text-xl font-semibold">{member.profile.name}</h3>
-					<p>{member.role}</p>
+					{#if member.role}
+						<p>{member.role}</p>
+					{/if}
 				</li>
 			{/each}
 		</ul>

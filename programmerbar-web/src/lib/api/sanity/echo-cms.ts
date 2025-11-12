@@ -187,7 +187,7 @@ export type StudentGroup = {
 	description: string;
 	image: string;
 	members: Array<{
-		role: string;
+		role: string | null;
 		profile: {
 			_id: string;
 			name: string;
