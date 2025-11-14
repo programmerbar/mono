@@ -65,7 +65,7 @@
 							</div>
 						</div>
 
-						<form {...archiveNotificationAction} class="shrink-0">
+						<form {...archiveNotificationAction.for(notification.id)} class="shrink-0">
 							<input
 								{...archiveNotificationAction.fields.notificationId.as('hidden', notification.id)}
 							/>
