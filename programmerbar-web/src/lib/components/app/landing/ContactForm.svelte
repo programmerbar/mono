@@ -7,13 +7,13 @@
 	import { createContactSubmissionAction } from '../../../../routes/(app)/common.remote';
 </script>
 
-<div class="bg-background rounded-xl border-2 p-6 shadow-md">
+<div class="bg-background flex h-full flex-col rounded-xl border-2 p-6 shadow-md">
 	<Heading level={2} class="mb-6 text-center font-mono text-3xl font-medium md:text-4xl"
 		>Kontakt oss</Heading
 	>
 
 	<form
-		class="space-y-4"
+		class="flex flex-1 flex-col space-y-4"
 		{...createContactSubmissionAction.enhance(async ({ form, submit }) => {
 			try {
 				await submit();

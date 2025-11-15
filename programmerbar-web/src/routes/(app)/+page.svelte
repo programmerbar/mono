@@ -12,21 +12,27 @@
 
 <SEO
 	title="Programmerbar"
-	description="Programmerbar er en studentbar for teknologistudenter på Universitet i Bergen. Arrangementer, øl og koding i perfekt harmoni."
-	keywords="studentbar, programmerbar, universitet i bergen, teknologistudenter, IT-studenter, bar, arrangementer"
+	description="Programmerbar er en studentbar for informatikk studenter på Universitet i Bergen. Arrangementer, øl og koding i perfekt harmoni."
+	keywords="studentbar, programmerbar, universitet i bergen, informatikk studenter, IT-studenter, bar, arrangementer"
 	canonical="/"
 	type="website"
 />
 
+<!-- Hero Section -->
 <Hero />
 
-<div class="space-y-16 py-8">
-	<section class="mx-auto grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
-		<MenuList {products} />
-		<EventList {events} />
+<!-- Main Content Sections -->
+<div class="space-y-20 py-12 md:py-16 lg:py-20">
+	<!-- Menu & Events Section -->
+	<section class="space-y-12">
+		<div class="mx-auto grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
+			<MenuList {products} />
+			<EventList {events} />
+		</div>
 	</section>
 
-	<section class="mx-auto grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
+	<!-- Contact & Location Section -->
+	<section class="mx-auto grid w-full grid-cols-1 gap-8 lg:grid-cols-2 lg:items-stretch">
 		<ContactForm />
 		<Map />
 	</section>

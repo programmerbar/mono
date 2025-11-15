@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
 
 	let displayText = $state('');
 	let showCursor = $state(true);
@@ -71,7 +72,7 @@
 	});
 </script>
 
-<div class="space-y-10 pt-32 pb-56">
+<div class="space-y-10 pt-24 pb-32 md:pt-32 md:pb-40 lg:pt-40 lg:pb-56">
 	<h1 class="text-center font-mono text-4xl text-gray-700 sm:text-5xl md:text-6xl lg:text-7xl">
 		$ <span class:text-red-500={isGlitching}>{displayText}</span><span
 			class="text-gray-500"
@@ -79,11 +80,22 @@
 		>
 	</h1>
 
-	<div class="mx-auto w-fit pt-8">
+	<p class="mx-auto max-w-2xl text-center text-lg text-gray-600 md:text-xl">
+		En studentbar for informatikkstudenter på Universitet i Bergen.
+	</p>
+
+	<div class="mx-auto flex w-fit flex-col gap-6 pt-8 sm:flex-row sm:gap-8">
 		<a
 			href="https://forms.gle/BLdygdoRJgjMbQZj6"
-			class="rounded-lg border-2 bg-gray-200 px-6 py-3 text-lg font-medium text-gray-700 shadow transition-colors hover:border-gray-400 hover:bg-gray-300"
-			>Klikk her for å booke!</a
+			target="_blank"
+			rel="noopener noreferrer"
+			class="text-center font-mono text-lg font-medium text-gray-700 underline decoration-2 underline-offset-4 transition-colors duration-200 hover:text-gray-900"
+			>Book Bar</a
+		>
+		<a
+			href={resolve('/meny')}
+			class="text-center font-mono text-lg font-medium text-gray-700 underline decoration-2 underline-offset-4 transition-colors duration-200 hover:text-gray-900"
+			>Se Menyen</a
 		>
 	</div>
 </div>
