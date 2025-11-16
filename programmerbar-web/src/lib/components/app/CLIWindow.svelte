@@ -12,12 +12,12 @@
 	<!-- Window Title Bar -->
 	<div class="border-border bg-card-muted flex items-center justify-between border-b px-3 py-1.5">
 		<div class="flex items-center gap-2">
-			<div class="flex gap-1.5">
+			<div class="flex shrink-0 gap-1.5">
 				<div class="bg-accent-error h-3 w-3 rounded-full"></div>
 				<div class="bg-accent-warning h-3 w-3 rounded-full"></div>
 				<div class="bg-accent-success h-3 w-3 rounded-full"></div>
 			</div>
-			<h1 class="text-foreground-secondary ml-2 text-xs font-medium">
+			<h1 class="text-foreground-secondary ml-2 text-xs font-medium min-w-0 flex-1 line-clamp-1">
 				<span class="text-foreground-muted">$</span>
 				<span class="ml-1">{title}</span>
 			</h1>
