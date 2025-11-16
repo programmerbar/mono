@@ -11,7 +11,7 @@
 	type="article"
 />
 
-<CLIWindow title="cat beer-pong-regler.txt" class="mx-auto max-w-screen-md">
+<CLIWindow title="cat beer-pong-regler.txt" class="mx-auto max-w-3xl">
 	<!-- Window Content -->
 	<div class="p-6 md:p-8">
 		<h2 class="text-foreground-primary mb-12 text-3xl font-semibold md:text-4xl">

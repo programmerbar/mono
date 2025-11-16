@@ -13,7 +13,7 @@
 <div class="bg-background relative flex min-h-screen flex-col">
 	<!-- Circuit board background pattern -->
 	<div
-		class="pointer-events-none fixed inset-0 bg-[url('/circuit-board.svg')] bg-[length:400px] opacity-100 dark:opacity-[0.03]"
+		class="pointer-events-none fixed inset-0 bg-[url('/circuit-board.svg')] bg-size-[400px] opacity-100 dark:opacity-[0.03]"
 		aria-hidden="true"
 	></div>
 
