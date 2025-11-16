@@ -78,7 +78,7 @@
 							<div class="flex items-center gap-4">
 								<!-- Date Badge -->
 								<div
-									class="border-primary bg-primary flex h-16 w-16 shrink-0 flex-col items-center justify-center border-2 text-white"
+									class="border-primary bg-primary hidden h-16 w-16 shrink-0 flex-col items-center justify-center border-2 text-white sm:flex"
 								>
 									<span class="text-xs leading-tight font-medium uppercase"
 										>{getDayOfWeek(date)}</span
@@ -90,7 +90,7 @@
 								<!-- Event Info -->
 								<div class="min-w-0 flex-1">
 									<h3
-										class="text-foreground-primary group-hover:text-primary mb-2 text-base leading-tight font-medium transition-colors duration-200"
+										class="text-foreground-primary group-hover:text-primary mb-2 line-clamp-2 text-base leading-tight font-medium transition-colors duration-200"
 									>
 										{title}
 									</h3>

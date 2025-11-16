@@ -40,7 +40,7 @@
 						>
 							<div class="flex items-center gap-4">
 								{#if image}
-									<div class="bg-card relative h-16 w-16 shrink-0 overflow-hidden">
+									<div class="bg-card relative hidden h-16 w-16 shrink-0 overflow-hidden sm:block">
 										<img
 											src={urlFor(image).width(100).height(100).url()}
 											alt={name}
@@ -49,7 +49,7 @@
 									</div>
 								{:else}
 									<div
-										class="from-muted-light to-border-light flex h-16 w-16 shrink-0 items-center justify-center bg-linear-to-br"
+										class="from-muted-light to-border-light hidden h-16 w-16 shrink-0 items-center justify-center bg-linear-to-br sm:flex"
 									>
 										<svg
 											class="text-foreground-subtle h-8 w-8"
@@ -69,11 +69,11 @@
 
 								<div class="min-w-0 flex-1">
 									<h3
-										class="text-foreground-primary group-hover:text-primary mb-1 text-base leading-tight font-medium transition-colors duration-200"
+										class="text-foreground-primary group-hover:text-primary mb-1 line-clamp-2 text-base leading-tight font-medium transition-colors duration-200"
 									>
 										{name}
 									</h3>
-									<p class="text-foreground-muted text-sm">
+									<p class="text-foreground-muted line-clamp-1 text-sm">
 										{producer}
 									</p>
 								</div>
