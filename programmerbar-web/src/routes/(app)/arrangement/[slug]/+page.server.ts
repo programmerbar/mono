@@ -23,8 +23,9 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				slug: repeatingEvent.slug,
 				title: repeatingEvent.title,
 				registrationStart: null,
-				_createdAt: repeatingEvent._createdAt
-			} satisfies Happening
+				_createdAt: repeatingEvent._createdAt,
+				startTime: repeatingEvent.startTime
+			} satisfies Happening & { startTime?: string | { hour: number; minute: number } }
 		};
 	}
 

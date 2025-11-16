@@ -1,10 +1,30 @@
 <script lang="ts">
 	import CLIWindow from '$lib/components/app/CLIWindow.svelte';
-	import { formatDate } from '$lib/utils/date.js';
+	import { formatDate, time } from '$lib/utils/date.js';
 	import { marked } from 'marked';
 	import { toast } from 'svelte-sonner';
-	import { Calendar, Share2, ExternalLink } from '@lucide/svelte';
+	import { Calendar, Clock, Share2, ExternalLink } from '@lucide/svelte';
 	import SEO from '$lib/components/SEO.svelte';
+
+	function formatTime(
+		timeValue: string | { hour: number; minute: number } | undefined
+	): string | null {
+		if (!timeValue) return null;
+
+		// If it's already a string, return it
+		if (typeof timeValue === 'string') {
+			return timeValue;
+		}
+
+		// If it's an object with hour and minute
+		if (typeof timeValue === 'object' && 'hour' in timeValue) {
+			const hour = timeValue.hour ?? 0;
+			const minute = timeValue.minute ?? 0;
+			return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+		}
+
+		return null;
+	}
 
 	let { data } = $props();
 
@@ -70,10 +90,26 @@
 						<Calendar class="text-primary h-5 w-5" />
 					</div>
 					<div>
-						<h3 class="text-foreground-secondary text-xs font-medium">Dato og tid</h3>
+						<h3 class="text-foreground-secondary text-xs font-medium">Dato</h3>
 						<p class="text-foreground-primary font-mono text-sm">{formatDate(data.event.date)}</p>
 					</div>
 				</div>
+
+				{#if formatTime((data.event as any).startTime) || time(data.event.date) !== '00:00'}
+					<div class="flex items-center gap-4">
+						<div
+							class="border-border bg-card-muted flex h-10 w-10 shrink-0 items-center justify-center border-2"
+						>
+							<Clock class="text-primary h-5 w-5" />
+						</div>
+						<div>
+							<h3 class="text-foreground-secondary text-xs font-medium">Tid</h3>
+							<p class="text-foreground-primary font-mono text-sm">
+								kl {formatTime((data.event as any).startTime) || time(data.event.date)}
+							</p>
+						</div>
+					</div>
+				{/if}
 
 				<div class="border-border flex flex-col gap-4 border-t pt-6">
 					<a

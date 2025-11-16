@@ -1,14 +1,36 @@
 <script lang="ts">
 	import type { Happening } from '$lib/api/sanity/echo-cms';
-	import { formatDate } from '$lib/utils/date';
+	import { time } from '$lib/utils/date';
 	import { resolve } from '$app/paths';
 	import CLIWindow from '$lib/components/app/CLIWindow.svelte';
 
+	type EventWithTime = Happening & { startTime?: string | { hour: number; minute: number } };
+
 	type Props = {
-		events: Array<Happening>;
+		events: Array<EventWithTime>;
 	};
 
 	let { events }: Props = $props();
+
+	function formatTime(
+		timeValue: string | { hour: number; minute: number } | undefined
+	): string | null {
+		if (!timeValue) return null;
+
+		// If it's already a string, return it
+		if (typeof timeValue === 'string') {
+			return timeValue;
+		}
+
+		// If it's an object with hour and minute
+		if (typeof timeValue === 'object' && 'hour' in timeValue) {
+			const hour = timeValue.hour ?? 0;
+			const minute = timeValue.minute ?? 0;
+			return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+		}
+
+		return null;
+	}
 
 	function getDayOfWeek(date: string): string {
 		const d = new Date(date);
@@ -46,7 +68,8 @@
 	<div class="flex-1 p-6 md:p-8">
 		<ul class="flex flex-col gap-4 overflow-hidden">
 			{#each events as event (`${event.slug}${event.date}`)}
-				{@const { title, date, slug } = event}
+				{@const { title, date, slug, startTime } = event}
+				{@const eventTime = formatTime(startTime) || (time(date) !== '00:00' ? time(date) : null)}
 				<li class="group">
 					<a href={resolve('/(app)/arrangement/[slug]', { slug })} class="block">
 						<div
@@ -71,11 +94,13 @@
 									>
 										{title}
 									</h3>
-									<div class="text-foreground-secondary flex items-center gap-2 text-sm">
-										<span class="text-foreground-muted">[</span>
-										<span>{formatDate(date)}</span>
-										<span class="text-foreground-muted">]</span>
-									</div>
+									{#if eventTime}
+										<div class="text-foreground-secondary flex items-center gap-2 text-sm">
+											<span class="text-foreground-muted">[</span>
+											<span>kl {eventTime}</span>
+											<span class="text-foreground-muted">]</span>
+										</div>
+									{/if}
 								</div>
 
 								<!-- Arrow -->

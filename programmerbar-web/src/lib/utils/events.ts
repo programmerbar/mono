@@ -30,8 +30,9 @@ export const flattenRepeatingEvents = (repeatingEvents: Array<RepeatingEvent>) =
 						registrationStart: null,
 						_createdAt: event._createdAt,
 						slug: event.slug,
-						title: event.title
-					}) satisfies Happening
+						title: event.title,
+						startTime: event.startTime
+					}) satisfies Happening & { startTime?: string }
 			);
 	});
 };
