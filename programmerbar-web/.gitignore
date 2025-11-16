@@ -22,3 +22,8 @@ vite.config.ts.timestamp-*
 
 # wrangler
 .dev.vars
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
