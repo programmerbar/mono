@@ -46,7 +46,7 @@
 					{min}
 					{max}
 					bind:value={minValue}
-					class="border-border bg-card-muted h-8 w-full border px-2 py-1.5 pr-8 font-mono text-sm"
+					class="border-border bg-card-muted focus:border-primary h-8 w-full border px-2 py-1.5 pr-8 font-mono text-sm focus:ring-0 focus:outline-none"
 				/>
 				<span class="text-foreground-muted absolute top-1/2 right-2 -translate-y-1/2 text-xs"
 					>kr</span
@@ -63,7 +63,7 @@
 					{min}
 					{max}
 					bind:value={maxValue}
-					class="border-border bg-card-muted h-8 w-full border px-2 py-1.5 pr-8 font-mono text-sm"
+					class="border-border bg-card-muted focus:border-primary h-8 w-full border px-2 py-1.5 pr-8 font-mono text-sm focus:ring-0 focus:outline-none"
 				/>
 				<span class="text-foreground-muted absolute top-1/2 right-2 -translate-y-1/2 text-xs"
 					>kr</span

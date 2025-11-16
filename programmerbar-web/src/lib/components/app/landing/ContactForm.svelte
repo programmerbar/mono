@@ -28,7 +28,7 @@
 					{...createContactSubmissionAction.fields.namekjkj.as('text')}
 					placeholder="Kari Nordmann"
 					required
-					class="border-border bg-card-muted text-foreground-primary focus:border-primary h-10 border px-3 py-2 font-mono text-sm focus:outline-none"
+					class="border-border bg-card-muted text-foreground-primary focus:border-primary h-10 border-2 px-3 py-2 font-mono text-sm focus:ring-0 focus:outline-none"
 				/>
 			</label>
 
@@ -38,7 +38,7 @@
 					{...createContactSubmissionAction.fields.emailkjkj.as('email')}
 					placeholder="kari@norge.no"
 					required
-					class="border-border bg-card-muted text-foreground-primary focus:border-primary h-10 border px-3 py-2 font-mono text-sm focus:outline-none"
+					class="border-border bg-card-muted text-foreground-primary focus:border-primary h-10 border-2 px-3 py-2 font-mono text-sm focus:ring-0 focus:outline-none"
 				/>
 			</label>
 
@@ -49,13 +49,13 @@
 					rows={5}
 					placeholder="Din melding her..."
 					required
-					class="border-border bg-card-muted text-foreground-primary focus:border-primary min-h-20 w-full resize-none border px-3 py-2 font-mono text-sm focus:outline-none"
+					class="border-border bg-card-muted text-foreground-primary focus:border-primary min-h-20 w-full resize-none border-2 px-3 py-2 font-mono text-sm focus:ring-0 focus:outline-none"
 				></textarea>
 			</label>
 
 			<button
 				type="submit"
-				class="border-border bg-card-muted hover:bg-card-hover hover:border-primary text-foreground-primary w-full border-2 px-4 py-2 text-center font-mono text-sm font-semibold transition-all"
+				class="border-border bg-card-muted hover:bg-card-hover hover:border-primary focus:border-primary text-foreground-primary w-full border-2 px-4 py-2 text-center font-mono text-sm font-semibold transition-all focus:ring-0 focus:outline-none"
 			>
 				Send inn
 			</button>

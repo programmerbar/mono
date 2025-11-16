@@ -61,7 +61,7 @@
 				type="text"
 				id="search"
 				placeholder="Søk etter produkt"
-				class="border-border bg-card-muted border px-2 py-1.5 text-sm"
+				class="border-border bg-card-muted focus:border-primary border px-2 py-1.5 text-sm focus:ring-0 focus:outline-none"
 				bind:value={filter.current.search}
 			/>
 		</div>

@@ -17,7 +17,7 @@
 				<div class="bg-accent-warning h-3 w-3 rounded-full"></div>
 				<div class="bg-accent-success h-3 w-3 rounded-full"></div>
 			</div>
-			<h1 class="text-foreground-secondary ml-2 text-xs font-medium min-w-0 flex-1 line-clamp-1">
+			<h1 class="text-foreground-secondary ml-2 line-clamp-1 min-w-0 flex-1 text-xs font-medium">
 				<span class="text-foreground-muted">$</span>
 				<span class="ml-1">{title}</span>
 			</h1>

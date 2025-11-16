@@ -63,7 +63,7 @@
 	<button
 		type="button"
 		class={cn(
-			'border-border bg-card-muted flex h-10 w-full items-center justify-between border px-2 py-1.5 text-left font-mono text-sm',
+			'border-border bg-card-muted focus:border-primary flex h-10 w-full items-center justify-between border px-2 py-1.5 text-left font-mono text-sm focus:ring-0 focus:outline-none',
 			{
 				'text-foreground-muted': selected.length === 0,
 				'text-foreground-secondary': selected.length > 0

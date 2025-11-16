@@ -17,4 +17,3 @@ test.describe('Mobile Responsiveness', () => {
 		}
 	});
 });
-

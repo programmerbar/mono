@@ -13,4 +13,3 @@ test.describe('Menu Page', () => {
 		await expect(productList).toBeVisible({ timeout: 10000 });
 	});
 });
-
