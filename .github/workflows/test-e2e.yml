@@ -2,9 +2,24 @@ name: 🧪 E2E Tests
 
 on:
     push:
-        branches: [main, master]
+        branches:
+            - main
     pull_request:
-        branches: [main, master]
+        branches:
+            - main
+
+env:
+    CI: true
+    # Cloudflare Wrangler will use local mode for D1/KV/R2
+    # Sanity is mocked in tests, so these env vars aren't critical
+    PUBLIC_SANITY_PROJECT_ID: test
+    PUBLIC_SANITY_DATASET: test
+    PUBLIC_ECHO_SANITY_PROJECT_ID: test
+    PUBLIC_ECHO_SANITY_DATASET: test
+
+    # Required to build and run application
+    PUBLIC_GITHUB_SHA: testing
+    RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
 
 jobs:
     test:
@@ -18,14 +33,13 @@ jobs:
 
             - name: 📦 Setup pnpm
               uses: pnpm/action-setup@v4
-              with:
-                  version: 10
 
             - name: 🐢 Setup node
               uses: actions/setup-node@v4
               with:
                   node-version: 22
                   cache: pnpm
+                  cache-dependency-path: ./pnpm-lock.yaml
 
             - name: 📦 Install dependencies
               run: pnpm install --frozen-lockfile
@@ -35,14 +49,6 @@ jobs:
 
             - name: 🧪 Run Playwright tests
               run: pnpm --filter=web test:e2e
-              env:
-                  CI: true
-                  # Cloudflare Wrangler will use local mode for D1/KV/R2
-                  # Sanity is mocked in tests, so these env vars aren't critical
-                  PUBLIC_SANITY_PROJECT_ID: test
-                  PUBLIC_SANITY_DATASET: test
-                  PUBLIC_ECHO_SANITY_PROJECT_ID: test
-                  PUBLIC_ECHO_SANITY_DATASET: test
 
             - name: 📤 Upload test results
               if: always()
