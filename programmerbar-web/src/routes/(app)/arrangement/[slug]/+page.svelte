@@ -28,6 +28,11 @@
 
 	let { data } = $props();
 
+	type EventWithTime = typeof data.event & {
+		startTime?: string | { hour: number; minute: number };
+	};
+	const event = data.event as EventWithTime;
+
 	let shareText = $state('Del arrangementet');
 
 	let html = marked.parse(data.event.body ?? '');
@@ -95,7 +100,7 @@
 					</div>
 				</div>
 
-				{#if formatTime((data.event as any).startTime) || time(data.event.date) !== '00:00'}
+				{#if formatTime(event.startTime) || time(event.date) !== '00:00'}
 					<div class="flex items-center gap-4">
 						<div
 							class="border-border bg-card-muted flex h-10 w-10 shrink-0 items-center justify-center border-2"
@@ -105,7 +110,7 @@
 						<div>
 							<h3 class="text-foreground-secondary text-xs font-medium">Tid</h3>
 							<p class="text-foreground-primary font-mono text-sm">
-								kl {formatTime((data.event as any).startTime) || time(data.event.date)}
+								kl {formatTime(event.startTime) || time(event.date)}
 							</p>
 						</div>
 					</div>
