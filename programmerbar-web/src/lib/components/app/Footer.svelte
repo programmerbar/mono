@@ -7,7 +7,7 @@
 	let user = getUser();
 </script>
 
-<div class="border-primary-dark bg-primary-light relative mt-32 border-t">
+<div class="border-footer-border bg-footer-background relative mt-32 border-t">
 	<footer class="mx-auto max-w-6xl px-6 py-20 lg:px-8">
 		<!-- Main Content -->
 		<div
@@ -38,7 +38,7 @@
 					class="inline-block transition-opacity hover:opacity-80"
 					aria-label="Lervig"
 				>
-					<img src={lervigLogo} alt="Lervig" class="mx-auto h-20 w-auto" />
+					<img src={lervigLogo} alt="Lervig" class="mx-auto h-20 w-auto dark:invert" />
 				</a>
 			</div>
 
@@ -65,7 +65,7 @@
 		</div>
 
 		<!-- Bottom Links -->
-		<div class="border-primary-dark space-y-6 border-t pt-12">
+		<div class="border-footer-border space-y-6 border-t pt-12">
 			<nav
 				class="mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm font-medium"
 			>

@@ -11,20 +11,40 @@
 	--background: #f5f5f5;
 	--foreground: #262626;
 
+	/* Text colors */
+	--text-primary: #262626;
+	--text-secondary: #525252;
+	--text-muted: #737373;
+	--text-subtle: #a3a3a3;
+
+	/* Primary colors */
 	--primary: #1fa7b2;
 	--primary-light: #8fd3d9;
 	--primary-dark: #1a8f98;
 
+	/* Secondary colors */
 	--secondary: #feeabb;
 	--secondary-light: #fff7e6;
 	--secondary-dark: #fee8b4;
 
+	/* Card colors */
 	--card: #ffffff;
 	--card-muted: #f9fafb;
+	--card-hover: #f5f5f5;
 
+	/* Background colors */
 	--muted: #eeeeee;
+	--muted-light: #f5f5f5;
 
+	/* Border colors */
 	--border: #c4c4c4;
+	--border-light: #e5e5e5;
+	--border-subtle: #f5f5f5;
+
+	/* Accent colors */
+	--accent-error: #ef4444;
+	--accent-warning: #f59e0b;
+	--accent-success: #10b981;
 
 	/* Portal-specific colors */
 	--portal-background: #f9fafb;
@@ -35,26 +55,50 @@
 	/* Input colors */
 	--input-background: #ffffff;
 	--input-border: #c4c4c4;
+
+	/* Footer colors */
+	--footer-background: var(--primary);
+	--footer-border: var(--primary-dark);
 }
 
 .dark {
 	--background: #0a0a0a;
 	--foreground: #e2e8f0;
 
+	/* Text colors */
+	--text-primary: #e2e8f0;
+	--text-secondary: #cbd5e1;
+	--text-muted: #94a3b8;
+	--text-subtle: #64748b;
+
+	/* Primary colors */
 	--primary: #14747c;
 	--primary-light: #1fa7b2;
 	--primary-dark: #0f5157;
 
+	/* Secondary colors */
 	--secondary: #feeabb;
 	--secondary-light: #fff7e6;
 	--secondary-dark: #fee8b4;
 
+	/* Card colors */
 	--card: #1a1a1a;
 	--card-muted: #252525;
+	--card-hover: #2a2a2a;
 
+	/* Background colors */
 	--muted: #1a1a1a;
+	--muted-light: #0f0f0f;
 
+	/* Border colors */
 	--border: #2a2a2a;
+	--border-light: #404040;
+	--border-subtle: #2a2a2a;
+
+	/* Accent colors */
+	--accent-error: #f87171;
+	--accent-warning: #fbbf24;
+	--accent-success: #34d399;
 
 	/* Portal-specific colors - super dark */
 	--portal-background: #0a0a0a;
@@ -65,6 +109,10 @@
 	/* Input colors - super dark */
 	--input-background: #1a1a1a;
 	--input-border: #2a2a2a;
+
+	/* Footer colors */
+	--footer-background: var(--card);
+	--footer-border: var(--border);
 }
 
 @theme inline {
@@ -74,25 +122,54 @@
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
 
+	/* Text colors - using flat names for Tailwind utilities */
+	--color-foreground-primary: var(--text-primary);
+	--color-foreground-secondary: var(--text-secondary);
+	--color-foreground-muted: var(--text-muted);
+	--color-foreground-subtle: var(--text-subtle);
+
+	/* Primary colors */
 	--color-primary: var(--primary);
 	--color-primary-light: var(--primary-light);
 	--color-primary-dark: var(--primary-dark);
 
+	/* Secondary colors */
 	--color-secondary: var(--secondary);
 	--color-secondary-light: var(--secondary-light);
 	--color-secondary-dark: var(--secondary-dark);
 
+	/* Card colors */
+	--color-card: var(--card);
+	--color-card-muted: var(--card-muted);
+	--color-card-hover: var(--card-hover);
+
+	/* Background colors */
 	--color-muted: var(--muted);
+	--color-muted-light: var(--muted-light);
 
+	/* Border colors */
 	--color-border: var(--border);
+	--color-border-light: var(--border-light);
+	--color-border-subtle: var(--border-subtle);
 
+	/* Accent colors */
+	--color-accent-error: var(--accent-error);
+	--color-accent-warning: var(--accent-warning);
+	--color-accent-success: var(--accent-success);
+
+	/* Portal-specific colors */
 	--color-portal-background: var(--portal-background);
 	--color-portal-card: var(--portal-card);
 	--color-portal-border: var(--portal-border);
 	--color-portal-hover: var(--portal-hover);
 
+	/* Input colors */
 	--color-input-background: var(--input-background);
 	--color-input-border: var(--input-border);
+
+	/* Footer colors */
+	--color-footer-background: var(--footer-background);
+	--color-footer-border: var(--footer-border);
 }
 
 @layer base {

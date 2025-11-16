@@ -1,10 +1,9 @@
 <script lang="ts">
+	import CLIWindow from '$lib/components/app/CLIWindow.svelte';
 	import { formatDate } from '$lib/utils/date.js';
 	import { marked } from 'marked';
 	import { toast } from 'svelte-sonner';
 	import { Calendar, Share2, ExternalLink } from '@lucide/svelte';
-	import Button from '$lib/components/ui/Button.svelte';
-	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 	import SEO from '$lib/components/SEO.svelte';
 
 	let { data } = $props();
@@ -41,63 +40,175 @@
 	publishedTime={data.event._createdAt ?? undefined}
 />
 
-<h1 class="mb-6 text-3xl font-bold text-gray-900 md:text-4xl">
-	{data.event.title}
-</h1>
+<div class="grid gap-8 lg:grid-cols-3 lg:gap-12">
+	<!-- Main Content Window -->
+	<CLIWindow title="cat arrangement/{data.event.slug}.txt" class="lg:col-span-2">
+		<!-- Window Content -->
+		<div class="p-6 md:p-8">
+			<h2 class="text-foreground-primary mb-6 text-2xl font-semibold md:text-3xl">
+				<span class="text-foreground-muted">##</span>
+				{data.event.title}
+			</h2>
 
-<main class="grid gap-8 lg:grid-cols-3 lg:gap-12">
-	<!-- Main Content -->
-	<div class="lg:col-span-2">
-		<article class="bg-background overflow-hidden rounded-2xl border-2 shadow-xl">
-			<div class="px-8 py-10">
-				<div
-					class="prose prose-lg prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-2xl prose-h3:text-xl prose-p:leading-relaxed prose-p:text-gray-700 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-ul:space-y-2 prose-li:leading-relaxed max-w-none font-sans"
-				>
-					{@html html}
+			<article class="bg-card overflow-hidden">
+				<div class="py-6">
+					<div class="markdown-content text-foreground-primary">{@html html}</div>
 				</div>
-			</div>
-		</article>
-	</div>
+			</article>
+		</div>
+	</CLIWindow>
 
-	<!-- Sidebar -->
-	<aside class="space-y-6">
-		<!-- Event Details Card -->
-		<div class="bg-background sticky top-6 overflow-hidden rounded-2xl border-2 shadow-xl">
-			<div class="px-6 py-4">
-				<h2 class="flex items-center gap-2 font-bold text-gray-900">Arrangementinfo</h2>
-			</div>
-			<div class="p-6">
-				<div class="space-y-6">
-					<div class="flex items-center gap-4">
-						<div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-							<Calendar class="h-5 w-5 text-blue-600" />
-						</div>
-						<div>
-							<h3 class="font-semibold text-gray-900">Dato og tid</h3>
-							<p class="font-mono text-gray-700">{formatDate(data.event.date)}</p>
-						</div>
+	<!-- Metadata Window -->
+	<CLIWindow title="cat metadata.txt" class="h-fit lg:sticky lg:top-6">
+		<!-- Window Content -->
+		<div class="p-6">
+			<div class="space-y-6">
+				<div class="flex items-center gap-4">
+					<div
+						class="border-border bg-card-muted flex h-10 w-10 shrink-0 items-center justify-center border-2"
+					>
+						<Calendar class="text-primary h-5 w-5" />
 					</div>
-
-					<div class="flex flex-col gap-4 border-t pt-6">
-						<ButtonLink
-							href={`https://echo.uib.no/arrangement/${data.event.slug}`}
-							class="w-full gap-2"
-						>
-							{#if data.event.registrationStart}
-								Til påmelding
-							{:else}
-								Se på echo.uib.no
-							{/if}
-							<ExternalLink class="h-4 w-4" />
-						</ButtonLink>
-
-						<Button class="w-full gap-2" onclick={handleShare}>
-							<Share2 class="h-4 w-4" />
-							{shareText}
-						</Button>
+					<div>
+						<h3 class="text-foreground-secondary text-xs font-medium">Dato og tid</h3>
+						<p class="text-foreground-primary font-mono text-sm">{formatDate(data.event.date)}</p>
 					</div>
+				</div>
+
+				<div class="border-border flex flex-col gap-4 border-t pt-6">
+					<a
+						href={`https://echo.uib.no/arrangement/${data.event.slug}`}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="border-border bg-card-muted hover:bg-card-hover hover:border-primary text-foreground-primary flex w-full items-center justify-center gap-2 border-2 px-4 py-2 text-center font-mono text-sm font-semibold transition-all"
+					>
+						{#if data.event.registrationStart}
+							Til påmelding
+						{:else}
+							Se på echo.uib.no
+						{/if}
+						<ExternalLink class="h-4 w-4" />
+					</a>
+
+					<button
+						onclick={handleShare}
+						class="border-border bg-card-muted hover:bg-card-hover hover:border-primary text-foreground-primary flex w-full items-center justify-center gap-2 border-2 px-4 py-2 text-center font-mono text-sm font-semibold transition-all"
+					>
+						<Share2 class="h-4 w-4" />
+						{shareText}
+					</button>
 				</div>
 			</div>
 		</div>
-	</aside>
-</main>
+	</CLIWindow>
+</div>
+
+<style>
+	:global(.markdown-content) {
+		font-family: 'IBM Plex Mono', monospace;
+		line-height: 1.6;
+	}
+
+	:global(.markdown-content h1) {
+		font-size: 1.5rem;
+		font-weight: 600;
+		margin-top: 1.5rem;
+		margin-bottom: 1rem;
+		color: var(--text-primary);
+	}
+
+	:global(.markdown-content h1:first-child) {
+		margin-top: 0;
+	}
+
+	:global(.markdown-content h2) {
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin-top: 1.25rem;
+		margin-bottom: 0.75rem;
+		color: var(--text-primary);
+	}
+
+	:global(.markdown-content h3) {
+		font-size: 1.125rem;
+		font-weight: 600;
+		margin-top: 1rem;
+		margin-bottom: 0.5rem;
+		color: var(--text-primary);
+	}
+
+	:global(.markdown-content p) {
+		margin-bottom: 1rem;
+		color: var(--text-primary);
+	}
+
+	:global(.markdown-content ul),
+	:global(.markdown-content ol) {
+		margin-bottom: 1rem;
+		padding-left: 1.5rem;
+	}
+
+	:global(.markdown-content ul > li + li),
+	:global(.markdown-content ol > li + li) {
+		margin-top: 0.5rem;
+	}
+
+	:global(.markdown-content li) {
+		color: var(--text-primary);
+	}
+
+	:global(.markdown-content ul li) {
+		list-style-type: disc;
+	}
+
+	:global(.markdown-content ol li) {
+		list-style-type: decimal;
+	}
+
+	:global(.markdown-content a) {
+		color: var(--primary);
+		text-decoration: underline;
+	}
+
+	:global(.markdown-content a:hover) {
+		color: var(--primary-dark);
+	}
+
+	:global(.markdown-content code) {
+		background-color: var(--card-muted);
+		border: 1px solid var(--border);
+		padding: 0.125rem 0.25rem;
+		border-radius: 0.25rem;
+		font-size: 0.875em;
+		color: var(--text-primary);
+	}
+
+	:global(.markdown-content pre) {
+		background-color: var(--card-muted);
+		border: 1px solid var(--border);
+		padding: 1rem;
+		border-radius: 0.25rem;
+		overflow-x: auto;
+		margin-bottom: 1rem;
+	}
+
+	:global(.markdown-content pre code) {
+		background-color: transparent;
+		border: none;
+		padding: 0;
+	}
+
+	:global(.markdown-content blockquote) {
+		border-left: 4px solid var(--primary);
+		padding-left: 1rem;
+		margin-left: 0;
+		margin-bottom: 1rem;
+		color: var(--text-secondary);
+	}
+
+	:global(.markdown-content img) {
+		max-width: 100%;
+		height: auto;
+		margin-bottom: 1rem;
+	}
+</style>

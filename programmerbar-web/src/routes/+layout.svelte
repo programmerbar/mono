@@ -3,6 +3,7 @@
 
 	import { setUserContext } from '$lib/states/user.svelte';
 	import { Toaster } from 'svelte-sonner';
+	import { createThemeContext } from '$lib/states/theme.svelte';
 
 	const { data, children } = $props();
 
@@ -14,6 +15,7 @@
 		userState.current = data.user;
 	});
 
+	createThemeContext();
 	setUserContext(userState);
 </script>
 

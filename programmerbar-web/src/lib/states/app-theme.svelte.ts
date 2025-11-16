@@ -1,46 +1,47 @@
 import { browser } from '$app/environment';
-import { page } from '$app/state';
 import { getContext, setContext } from 'svelte';
 
 type Theme = 'light' | 'dark';
 
-class ThemeState {
+class AppThemeState {
 	#theme = $state<Theme>('light');
 
 	constructor() {
-		$effect(() => {
-			if (!browser) return;
+		if (browser) {
 			// Load theme from localStorage on mount
-			const stored = localStorage.getItem('theme') as Theme | null;
+			const stored = localStorage.getItem('app-theme') as Theme | null;
 			if (stored === 'dark' || stored === 'light') {
 				this.#theme = stored;
+			} else {
+				// Check system preference
+				const prefersDark =
+					window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+				this.#theme = prefersDark ? 'dark' : 'light';
 			}
-		});
+		}
 
 		// Save to localStorage and update document class when theme changes
 		$effect(() => {
 			if (!browser) return;
-			localStorage.setItem('theme', this.#theme);
+			localStorage.setItem('app-theme', this.#theme);
 
-			const portalLayout = document.getElementById('portal-layout');
-
-			// Update document class for dark mode on both portal layout and body
+			// Update document class for dark mode
 			if (this.#theme === 'dark') {
-				portalLayout?.classList.add('dark');
+				document.documentElement.classList.add('dark');
 				document.body.classList.add('dark');
 			} else {
-				portalLayout?.classList.remove('dark');
+				document.documentElement.classList.remove('dark');
 				document.body.classList.remove('dark');
 			}
 		});
 	}
 
 	get current(): Theme {
-		return page.url.pathname.startsWith('/portal') ? this.#theme : 'light';
+		return this.#theme;
 	}
 
 	get isDark(): boolean {
-		return this.current === 'dark';
+		return this.#theme === 'dark';
 	}
 
 	toggle() {
@@ -57,22 +58,21 @@ class ThemeState {
 	#disableTransitions() {
 		if (!browser) return;
 		const doc = document.documentElement;
-		if (!doc) return;
-
 		doc.classList.add('disable-transitions');
-
 		setTimeout(() => {
 			doc.classList.remove('disable-transitions');
 		}, 0);
 	}
 }
 
-const THEME_KEY = Symbol('theme');
+const THEME_KEY = Symbol('app-theme');
 
-export function createThemeContext() {
-	return setContext(THEME_KEY, new ThemeState());
+export function createAppThemeContext() {
+	const theme = new AppThemeState();
+	setContext(THEME_KEY, theme);
+	return theme;
 }
 
-export function getThemeContext() {
-	return getContext<ReturnType<typeof createThemeContext>>(THEME_KEY);
+export function getAppThemeContext() {
+	return getContext<AppThemeState>(THEME_KEY);
 }

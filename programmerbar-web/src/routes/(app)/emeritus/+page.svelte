@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/components/SEO.svelte';
+	import CLIWindow from '$lib/components/app/CLIWindow.svelte';
 
 	const groupLogo = '/android-chrome-192x192.png';
 	const groupName = 'Programmerbar';
@@ -57,52 +58,68 @@
 <SEO
 	title="Tidligere Styremedlemmer"
 	description="Lær mer om tidligere og nåværende styremedlemmer i Programmerbar."
-	keywords="styremedlemmer, tidligere styremedlemmer, programmerbar, studentbar, teknologistudenter"
+	keywords="styremedlemmer, tidligere styremedlemmer, programmerbar, studentbar, informatikk studenter"
 	canonical="/emeritus"
 	type="website"
 />
 
-<div class="container py-10 text-center">
-	<img class="mx-auto h-32 w-auto" src={groupLogo} alt="Programmerbar logo" />
-	<h1 class="font-display mx-auto">{groupName}</h1>
-	<p class="text-muted-foreground text-xs">EST. {estYear}</p>
-	<p class="text-muted-foreground">{description}</p>
+<CLIWindow title="cat emeritus.txt" class="mx-auto max-w-xl">
+	<!-- Window Content -->
+	<div class="p-6 md:p-8">
+		<div class="mx-auto max-w-xl space-y-8 text-center">
+			<div>
+				<img class="mx-auto h-32 w-auto" src={groupLogo} alt="Programmerbar logo" />
+				<h1 class="text-foreground-primary mt-4 text-2xl font-semibold md:text-3xl">{groupName}</h1>
+				<p class="text-foreground-muted mt-1 text-xs">
+					<span class="text-foreground-subtle">#</span> EST. {estYear}
+				</p>
+				<p class="text-foreground-secondary mt-2 text-sm">{description}</p>
+			</div>
 
-	<div class="mx-auto my-10 max-w-md space-y-8">
-		<!-- Co-founders -->
-		<ul class="list-none p-0 text-lg">
-			{#each coFounders as founder (founder.name)}
-				<li class="relative mx-auto w-fit">
-					<!-- Inline crown icon -->
-					<svg
-						class="absolute top-1 -left-6 h-4 w-4 text-yellow-400"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="currentColor"
-						viewBox="0 0 16 16"
-					>
-						<path
-							d="M2.5 8a.5.5 0 0 1 .5-.5H5v-3H3a.5.5 0 0 1-.5-.5H1v9h1.5a.5.5 0 0 1 .5-.5H5v-3H3.5a.5.5 0 0 1-.5-.5zM11 8a.5.5 0 0 0-.5-.5H9v-3h2a.5.5 0 0 0 .5-.5H15v9h-1.5a.5.5 0 0 0-.5-.5H11v-3zM6 8.5a.5.5 0 0 0 .5-.5V5.5H8v2.5a.5.5 0 0 0 .5.5H10v3H6v-3h.001z"
-						/>
-					</svg>
-					<span>{founder.name} ({founder.role})</span>
-				</li>
-			{/each}
-		</ul>
+			<div class="space-y-8 text-left">
+				<!-- Co-founders -->
+				<div>
+					<h2 class="text-foreground-primary mb-4 text-lg font-semibold">
+						<span class="text-foreground-muted">##</span> Co-founders
+					</h2>
+					<ul class="space-y-2">
+						{#each coFounders as founder (founder.name)}
+							<li class="border-primary border-l-4 pl-4">
+								{founder.name}
+								<span class="text-foreground-muted">({founder.role})</span>
+							</li>
+						{/each}
+					</ul>
+				</div>
 
-		<!-- Members -->
-		<h2 class="text-xl font-bold">Styremedlemmer</h2>
-		<ul class="list-none p-0 text-lg">
-			{#each members as member (member)}
-				<li>{member}</li>
-			{/each}
-		</ul>
+				<!-- Members -->
+				<div>
+					<h2 class="text-foreground-primary mb-4 text-lg font-semibold">
+						<span class="text-foreground-muted">##</span> Styremedlemmer
+					</h2>
+					<ul class="space-y-2">
+						{#each members as member (member)}
+							<li class="border-primary border-l-4 pl-4">
+								{member}
+							</li>
+						{/each}
+					</ul>
+				</div>
 
-		<!-- Past Members -->
-		<h2 class="mt-16 text-xl font-bold">Tidligere Styremedlemmer</h2>
-		<ul class="list-none p-0 text-lg">
-			{#each pastMembers as member (member)}
-				<li>{member}</li>
-			{/each}
-		</ul>
+				<!-- Past Members -->
+				<div>
+					<h2 class="text-foreground-primary mt-12 mb-4 text-lg font-semibold">
+						<span class="text-foreground-muted">##</span> Tidligere Styremedlemmer
+					</h2>
+					<ul class="space-y-2">
+						{#each pastMembers as member (member)}
+							<li class="border-primary border-l-4 pl-4">
+								{member}
+							</li>
+						{/each}
+					</ul>
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
+</CLIWindow>

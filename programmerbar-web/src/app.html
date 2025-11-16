@@ -16,18 +16,18 @@
 
 		<script>
 			try {
-				const stored = localStorage.getItem('portal-theme');
+				const appTheme = localStorage.getItem('theme');
 				let theme;
-				if (stored === 'dark' || stored === 'light') {
-					theme = stored;
+				if (appTheme === 'dark' || appTheme === 'light') {
+					theme = appTheme;
 				} else {
 					const prefersDark =
 						window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 					theme = prefersDark ? 'dark' : 'light';
 				}
 				if (theme === 'dark') {
-					const portalLayout = document.getElementById('portal-layout');
-					portalLayout?.classList.add('dark');
+					document.documentElement.classList.add('dark');
+					document.body.classList.add('dark');
 				}
 			} catch (e) {
 				// Ignore

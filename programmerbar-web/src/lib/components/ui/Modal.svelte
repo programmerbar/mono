@@ -23,7 +23,7 @@
 
 {#if open}
 	<div
-		class="modal-content relative z-10 flex max-h-[90svh] w-full flex-col overflow-hidden rounded-2xl bg-white p-6 shadow-[0_20px_45px_rgba(15,23,42,0.35)] dark:border dark:border-[#2a2a2a] dark:bg-[#0f0f0f] {maxWidthClasses[
+		class="modal-content relative z-10 flex max-h-[90svh] w-full flex-col overflow-hidden rounded-2xl bg-white p-6 dark:border dark:border-[#2a2a2a] dark:bg-[#0f0f0f] {maxWidthClasses[
 			maxWidth
 		]} {darkClass}"
 	>

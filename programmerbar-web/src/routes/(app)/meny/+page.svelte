@@ -36,7 +36,11 @@
 
 	<div class="flex-1">
 		{#if filteredProducts.length > 0}
-			<p class="mb-2 text-sm text-gray-800">Viser {filteredProducts.length} resultater</p>
+			<div class="border-border mb-4 border-b pb-2 font-mono">
+				<p class="text-foreground-muted mt-1 text-xs">
+					Viser {filteredProducts.length} resultater
+				</p>
+			</div>
 
 			<ul class="grid w-full grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
 				{#each filteredProducts as product (product._id)}
@@ -47,14 +51,18 @@
 			</ul>
 		{:else}
 			<div
-				class="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center"
+				class="border-border bg-card-muted flex flex-col items-center justify-center border-l-4 p-12 text-center font-mono"
 			>
-				<div class="mb-4 text-6xl">🐛</div>
-				<h3 class="mb-2 font-mono text-xl font-semibold text-gray-900">
+				<p class="text-foreground-muted mb-2">$ grep produkter.txt</p>
+				<p class="text-foreground-secondary mb-4 text-sm">
+					grep: produkter.txt: No such file or directory
+				</p>
+				<h3 class="text-foreground-primary mb-2 text-lg font-semibold">
 					404: Produkter ikke funnet
 				</h3>
-				<p class="mt-2 text-sm text-gray-500">
-					Debug: Prøv å refaktorere søket ditt eller fjern noen filtre 🤓
+				<p class="text-foreground-muted mt-2 text-sm">
+					<span class="text-foreground-subtle">#</span> Debug: Prøv å refaktorere søket ditt eller fjern
+					noen filtre 🤓
 				</p>
 			</div>
 		{/if}

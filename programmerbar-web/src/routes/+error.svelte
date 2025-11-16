@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import Button from '$lib/components/ui/Button.svelte';
-	import ButtonLink from '$lib/components/ui/ButtonLink.svelte';
 	import {
 		CircleAlert,
 		Lock,
@@ -10,7 +8,7 @@
 		TriangleAlert,
 		Wifi
 	} from '@lucide/svelte';
-	import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
 
 	type Icon = typeof CircleAlert;
 
@@ -52,77 +50,44 @@
 		message: 'Noe uventet skjedde. Vennligst prøv igjen.',
 		icon: CircleAlert
 	};
-
-	let rejectionReason = $state<string | null>(null);
-	let isLoadingReason = $state(true);
-	let fetchError = $state(false);
-
-	onMount(async () => {
-		try {
-			const response = await fetch('/api/rejection');
-			if (response.ok) {
-				const data = (await response.json()) as { reason?: string };
-				if (data && data.reason) {
-					rejectionReason = data.reason;
-				} else {
-					console.warn('No rejection reason in response:', data);
-					fetchError = true;
-				}
-			} else {
-				console.error('Failed to fetch rejection reason, status:', response.status);
-				fetchError = true;
-			}
-		} catch (err) {
-			console.error('Failed to fetch rejection reason:', err);
-			fetchError = true;
-		} finally {
-			isLoadingReason = false;
-		}
-	});
 </script>
 
-<div class="flex min-h-screen flex-col bg-[url('/circuit-board.svg')] bg-size-[400px] px-4">
-	<div class="flex flex-1 items-center justify-center">
-		<div
-			class="bg-opacity-95 w-full max-w-2xl rounded-xl border-2 border-gray-300 bg-white p-8 text-center"
-		>
-			<div class="mb-4 flex justify-center">
-				<error.icon class="h-12 w-12 text-gray-600" />
-			</div>
-			<h1 class="mb-4 font-mono text-5xl font-bold text-gray-700">{page.status}</h1>
-			<h2 class="mb-4 text-2xl font-semibold text-gray-800">{error.title}</h2>
-			<p class="mb-6 text-gray-600">{error.message}</p>
+<div class="bg-background relative flex min-h-screen flex-col">
+	<!-- Circuit board background pattern -->
+	<div
+		class="pointer-events-none fixed inset-0 bg-[url('/circuit-board.svg')] bg-size-[400px] opacity-100 dark:opacity-[0.03]"
+		aria-hidden="true"
+	></div>
 
-			{#if rejectionReason}
-				<div class="mb-6 rounded-lg border-2 border-red-200 bg-red-50 p-4">
-					<p class="mb-1 text-xs font-semibold tracking-wide text-red-600 uppercase">
-						Avslag fra systemet
-					</p>
-					<p class="text-gray-700 italic">"{rejectionReason}"</p>
-				</div>
-			{:else if isLoadingReason}
-				<div class="mb-6 rounded-lg border-2 border-gray-200 bg-gray-50 p-4">
-					<p class="text-sm text-gray-500">Henter avslagsgrunn...</p>
-				</div>
-			{:else if fetchError}
-				<div class="mb-6 rounded-lg border-2 border-yellow-200 bg-yellow-50 p-4">
-					<p class="mb-1 text-xs font-semibold tracking-wide text-yellow-600 uppercase">
-						No as a Service
-					</p>
-					<p class="text-sm text-gray-600">Kunne ikke hente avslagsgrunn (sjekk konsollen)</p>
-				</div>
-			{/if}
+	<div class="relative z-10 flex flex-1 items-center justify-center px-4">
+		<div class="border-border bg-card w-full max-w-2xl border-2 p-8 text-center font-mono">
+			<div class="mb-4 flex justify-center">
+				<error.icon class="text-foreground-secondary h-12 w-12" />
+			</div>
+			<h1 class="text-foreground-primary mb-4 text-5xl font-bold">{page.status}</h1>
+			<h2 class="text-foreground-primary mb-4 text-2xl font-semibold">{error.title}</h2>
+			<p class="text-foreground-secondary mb-6">{error.message}</p>
 
 			{#if page.status === 404}
-				<div class="mb-8 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-4">
-					<p class="mb-2 text-xs font-medium text-gray-500">Den forespurte URL-en var:</p>
-					<p class="font-mono text-sm break-all text-gray-700">{page.url.pathname}</p>
+				<div class="border-border bg-card-muted mb-8 border-l-4 p-4 text-left">
+					<p class="text-foreground-muted mb-2 text-xs font-medium">Den forespurte URL-en var:</p>
+					<p class="text-foreground-primary text-sm break-all">{page.url.pathname}</p>
 				</div>
 			{/if}
 
 			<div class="flex flex-wrap justify-center gap-3">
-				<ButtonLink href="/" intent="primary">Til forsiden</ButtonLink>
-				<Button intent="outline" onclick={() => window.history.back()}>Gå tilbake</Button>
+				<a
+					href={resolve('/')}
+					class="border-border bg-card-muted hover:bg-card-hover hover:border-primary text-foreground-primary border-2 px-4 py-2 text-center font-mono text-sm font-semibold transition-all"
+				>
+					Til forsiden
+				</a>
+				<button
+					onclick={() => window.history.back()}
+					class="border-border bg-card-muted hover:bg-card-hover hover:border-primary text-foreground-primary border-2 px-4 py-2 text-center font-mono text-sm font-semibold transition-all"
+				>
+					Gå tilbake
+				</button>
 			</div>
 		</div>
 	</div>

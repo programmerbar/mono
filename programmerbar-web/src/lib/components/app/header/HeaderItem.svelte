@@ -11,5 +11,8 @@
 
 <li class="font-mono">
 	<!-- eslint-disable svelte/no-navigation-without-resolve -->
-	<a class="text-xl font-semibold text-gray-700 hover:underline" href={to}>{name}</a>
+	<a
+		class="text-foreground-primary hover:text-primary text-xl font-semibold transition-colors hover:underline"
+		href={to}>{name}</a
+	>
 </li>

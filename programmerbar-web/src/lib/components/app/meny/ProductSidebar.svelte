@@ -2,9 +2,9 @@
 	import { cn } from '$lib/utils/cn';
 	import type { extractTypes } from '$lib/utils/products';
 	import { FilterState, SORT_OPTIONS } from '$lib/states/filter-state.svelte';
-	import Button from '$lib/components/ui/Button.svelte';
-	import MultipleSelect from '$lib/components/ui/MultipleSelect.svelte';
-	import PriceRangeSlider from '$lib/components/ui/PriceRangeSlider.svelte';
+	import CLIMultipleSelect from './CLIMultipleSelect.svelte';
+	import CLISelect from './CLISelect.svelte';
+	import CLIPriceRangeSlider from './CLIPriceRangeSlider.svelte';
 
 	type Props = {
 		filter: FilterState;
@@ -33,88 +33,107 @@
 
 <div
 	class={cn(
-		'bg-background flex h-fit w-full flex-col gap-2 rounded-lg border-2 p-4 shadow-lg md:max-w-[300px]',
+		'border-border bg-card flex h-fit w-full flex-col border-2 font-mono md:max-w-[300px]',
 		{
 			'md:sticky md:top-5': !disableSticky
 		}
 	)}
 >
-	<div class="flex flex-col gap-1">
-		<label for="search" class="text-sm font-semibold">Søk</label>
-		<input
-			type="text"
-			id="search"
-			placeholder="Søk etter produkt"
-			class="border-border rounded-lg border-2 px-2 py-1"
-			bind:value={filter.current.search}
-		/>
+	<!-- Window Title Bar -->
+	<div class="border-border bg-card-muted flex items-center border-b px-3 py-1.5">
+		<div class="flex items-center gap-2">
+			<div class="flex gap-1.5">
+				<div class="bg-accent-error h-3 w-3 rounded-full"></div>
+				<div class="bg-accent-warning h-3 w-3 rounded-full"></div>
+				<div class="bg-accent-success h-3 w-3 rounded-full"></div>
+			</div>
+			<h2 class="text-foreground-secondary ml-2 text-xs font-medium">
+				<span class="text-foreground-muted">$</span>
+				<span class="ml-1">filter</span>
+			</h2>
+		</div>
 	</div>
+	<!-- Window Content -->
+	<div class="flex flex-col gap-2 p-4">
+		<div class="flex flex-col gap-1">
+			<label for="search" class="text-foreground-secondary text-xs font-medium">Søk</label>
+			<input
+				type="text"
+				id="search"
+				placeholder="Søk etter produkt"
+				class="border-border bg-card-muted border px-2 py-1.5 text-sm"
+				bind:value={filter.current.search}
+			/>
+		</div>
 
-	<div class="flex flex-col gap-1">
-		<label for="sort" class="text-sm font-semibold">Sorter etter</label>
-		<select
+		<CLISelect
 			id="sort"
-			class="border-border rounded-lg border-2 px-2 py-1"
+			label="Sorter etter"
 			bind:value={filter.current.sort}
-		>
-			{#each SORT_OPTIONS as option (option.value)}
-				<option value={option.value}>{option.label}</option>
-			{/each}
-		</select>
-	</div>
+			options={SORT_OPTIONS.map((opt) => ({ value: opt.value, label: opt.label }))}
+		/>
 
-	<MultipleSelect
-		options={typeOptions}
-		selected={Array.from(filter.current.types)}
-		onToggle={(type) => filter.toggleType(type)}
-		placeholder="Alle typer"
-		label="Type"
-	/>
+		<CLIMultipleSelect
+			options={typeOptions}
+			selected={Array.from(filter.current.types)}
+			onToggle={(type) => filter.toggleType(type)}
+			placeholder="Alle typer"
+			label="Type"
+		/>
 
-	<MultipleSelect
-		options={breweries.map((brewery) =>
-			brewery === '__no_brewery__'
-				? { id: '__no_brewery__', label: 'Uten bryggeri' }
-				: { id: brewery, label: brewery }
-		)}
-		selected={Array.from(filter.current.breweries)}
-		onToggle={(brewery) => filter.toggleBrewery(brewery)}
-		placeholder="Alle bryggerier"
-		label="Bryggeri"
-	/>
+		<CLIMultipleSelect
+			options={breweries.map((brewery) =>
+				brewery === '__no_brewery__'
+					? { id: '__no_brewery__', label: 'Uten bryggeri' }
+					: { id: brewery, label: brewery }
+			)}
+			selected={Array.from(filter.current.breweries)}
+			onToggle={(brewery) => filter.toggleBrewery(brewery)}
+			placeholder="Alle bryggerier"
+			label="Bryggeri"
+		/>
 
-	<PriceRangeSlider
-		min={priceRange.min}
-		max={priceRange.max}
-		value={filter.current.priceRange}
-		onUpdate={updatePriceRange}
-	/>
+		<CLIPriceRangeSlider
+			min={priceRange.min}
+			max={priceRange.max}
+			value={filter.current.priceRange}
+			onUpdate={updatePriceRange}
+		/>
 
-	{#if alwaysFilteredByCredits}{:else}
-		<div class="flex items-center justify-between py-2">
-			<label for="hideSoldOut" class="text-sm font-semibold">Skjul utsolgt</label>
-			<input
-				type="checkbox"
-				id="hideSoldOut"
-				class="h-4 w-4 rounded border-2"
-				bind:checked={filter.current.hideSoldOut}
-			/>
+		{#if alwaysFilteredByCredits}{:else}
+			<div class="flex items-center justify-between py-2">
+				<label for="hideSoldOut" class="text-foreground-secondary text-xs font-medium"
+					>Skjul utsolgt</label
+				>
+				<input
+					type="checkbox"
+					id="hideSoldOut"
+					class="border-border h-4 w-4 border-2"
+					bind:checked={filter.current.hideSoldOut}
+				/>
+			</div>
+
+			<div class="flex items-center justify-between py-2">
+				<label for="showStudentPrice" class="text-foreground-secondary text-xs font-medium"
+					>Vis studentpris</label
+				>
+				<input
+					type="checkbox"
+					id="showStudentPrice"
+					class="border-border h-4 w-4 border-2"
+					bind:checked={filter.current.showStudentPrice}
+				/>
+			</div>
+		{/if}
+
+		<div class="pt-2">
+			<button
+				type="button"
+				class="border-border bg-card-muted hover:bg-card-hover text-foreground-primary w-full border px-3 py-2 font-mono text-sm transition-colors"
+				onclick={() => filter.reset()}
+			>
+				$ reset filters
+			</button>
 		</div>
-
-		<div class="flex items-center justify-between py-2">
-			<label for="showStudentPrice" class="text-sm font-semibold">Vis studentpris</label>
-			<input
-				type="checkbox"
-				id="showStudentPrice"
-				class="h-4 w-4 rounded border-2"
-				bind:checked={filter.current.showStudentPrice}
-			/>
-		</div>
-	{/if}
-
-	<div class="pt-2">
-		<Button intent="outline" class="w-full" onclick={() => filter.reset()}>
-			Tilbakestill filtre
-		</Button>
 	</div>
 </div>
