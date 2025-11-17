@@ -52,6 +52,9 @@ jobs:
         run: |
           echo "RESEND_API_KEY=${{ env.RESEND_API_KEY }}" > .dev.vars
 
+      - name: 📦 Run migrations
+        run: pnpm --filter=web run db:migrate:local
+
       - name: 🧪 Run Playwright tests
         run: pnpm --filter=web test:e2e
 
