@@ -9,6 +9,10 @@
 	} from '$lib/utils/products';
 	import { FilterState } from '$lib/states/filter-state.svelte';
 	import SEO from '$lib/components/SEO.svelte';
+	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	let { data } = $props();
 
@@ -18,8 +22,142 @@
 	let priceRange = $derived(extractPriceRange(data.products, filter.current.showStudentPrice));
 	let filteredProducts = $derived(filterProducts(data.products, filter));
 
+	let isInitializing = $state(true);
+	let isUpdatingFromUrl = $state(false);
+
+	// Initialize filter from URL params
+	function initializeFromUrl() {
+		isUpdatingFromUrl = true;
+		const searchParams = page.url.searchParams;
+
+		if (searchParams.has('search')) {
+			filter.current.search = searchParams.get('search') || '';
+		}
+
+		if (searchParams.has('sort')) {
+			filter.current.sort = (searchParams.get('sort') || 'name-asc') as typeof filter.current.sort;
+		}
+
+		if (searchParams.has('types')) {
+			filter.current.types.clear();
+			const typesParam = searchParams.get('types');
+			if (typesParam) {
+				typesParam.split(',').forEach((type) => {
+					if (type) filter.current.types.add(type);
+				});
+			}
+		} else if (!isInitializing) {
+			// Only clear if not initializing (i.e., URL changed via navigation)
+			filter.current.types.clear();
+		}
+
+		if (searchParams.has('breweries')) {
+			filter.current.breweries.clear();
+			const breweriesParam = searchParams.get('breweries');
+			if (breweriesParam) {
+				breweriesParam.split(',').forEach((brewery) => {
+					if (brewery) filter.current.breweries.add(brewery);
+				});
+			}
+		} else if (!isInitializing) {
+			// Only clear if not initializing (i.e., URL changed via navigation)
+			filter.current.breweries.clear();
+		}
+
+		if (searchParams.has('priceMin') && searchParams.has('priceMax')) {
+			const priceMin = searchParams.get('priceMin');
+			const priceMax = searchParams.get('priceMax');
+			if (priceMin && priceMax) {
+				filter.current.priceRange = {
+					min: Number.parseFloat(priceMin),
+					max: Number.parseFloat(priceMax)
+				};
+			}
+		}
+
+		if (searchParams.has('hideSoldOut')) {
+			filter.current.hideSoldOut = searchParams.get('hideSoldOut') === 'true';
+		}
+
+		if (searchParams.has('showStudentPrice')) {
+			filter.current.showStudentPrice = searchParams.get('showStudentPrice') === 'true';
+		}
+
+		isUpdatingFromUrl = false;
+	}
+
+	// Update URL from filter state
+	function updateUrl() {
+		if (isInitializing || isUpdatingFromUrl) return;
+
+		const searchParams = new SvelteURLSearchParams();
+
+		if (filter.current.search) {
+			searchParams.set('search', filter.current.search);
+		}
+
+		if (filter.current.sort !== 'name-asc') {
+			searchParams.set('sort', filter.current.sort);
+		}
+
+		if (filter.current.types.size > 0) {
+			searchParams.set('types', Array.from(filter.current.types).join(','));
+		}
+
+		if (filter.current.breweries.size > 0) {
+			searchParams.set('breweries', Array.from(filter.current.breweries).join(','));
+		}
+
+		// Only include price range if it's different from the default product price range
+		if (
+			filter.current.priceRange &&
+			(filter.current.priceRange.min !== priceRange.min ||
+				filter.current.priceRange.max !== priceRange.max)
+		) {
+			searchParams.set('priceMin', filter.current.priceRange.min.toString());
+			searchParams.set('priceMax', filter.current.priceRange.max.toString());
+		}
+
+		if (!filter.current.hideSoldOut) {
+			searchParams.set('hideSoldOut', 'false');
+		}
+
+		if (!filter.current.showStudentPrice) {
+			searchParams.set('showStudentPrice', 'false');
+		}
+
+		const queryString = searchParams.toString();
+		const resolvedPath = resolve('/(app)/meny');
+		const newUrl = resolvedPath + (queryString ? '?' + queryString : '');
+		const currentUrl = resolvedPath + (page.url.search || '');
+		if (newUrl !== currentUrl) {
+			// eslint-disable-next-line svelte/no-navigation-without-resolve
+			goto(newUrl, { replaceState: true, noScroll: true, keepFocus: true });
+		}
+	}
+
+	// Initialize price range (only if not set from URL)
 	$effect(() => {
-		filter.initializePriceRange(priceRange.min, priceRange.max);
+		if (isInitializing && !page.url.searchParams.has('priceMin')) {
+			filter.initializePriceRange(priceRange.min, priceRange.max);
+		}
+	});
+
+	// Initialize from URL on mount
+	$effect(() => {
+		initializeFromUrl();
+		isInitializing = false;
+	});
+
+	$effect(() => {
+		page.url.searchParams.toString();
+		if (!isInitializing) {
+			initializeFromUrl();
+		}
+	});
+
+	$effect(() => {
+		updateUrl();
 	});
 </script>
 

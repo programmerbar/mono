@@ -130,7 +130,7 @@
 			<button
 				type="button"
 				class="border-border bg-card-muted hover:bg-card-hover text-foreground-primary w-full border px-3 py-2 font-mono text-sm transition-colors"
-				onclick={() => filter.reset()}
+				onclick={() => filter.reset(priceRange)}
 			>
 				$ reset filters
 			</button>

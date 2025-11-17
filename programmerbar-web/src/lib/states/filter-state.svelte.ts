@@ -59,8 +59,22 @@ export class FilterState {
 		}
 	}
 
-	reset() {
-		this.current = getDefaultState();
+	reset(priceRange?: { min: number; max: number }) {
+		// Reset properties individually to maintain reactivity
+		this.current.search = '';
+		this.current.sort = 'name-asc';
+		this.current.types.clear();
+		this.current.breweries.clear();
+		this.current.hideSoldOut = true;
+		this.current.showStudentPrice = true;
+		this.current.showCreditPrice = false;
+
+		// Reset price range - use provided range or default
+		if (priceRange) {
+			this.current.priceRange = { min: priceRange.min, max: priceRange.max };
+		} else {
+			this.current.priceRange = { min: 0, max: 1000 };
+		}
 	}
 
 	initializePriceRange(minPrice: number, maxPrice: number) {
