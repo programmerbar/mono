@@ -1,0 +1,64 @@
+name: 🧪 E2E Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  CI: true
+  # Cloudflare Wrangler will use local mode for D1/KV/R2
+  # Sanity is mocked in tests, so these env vars aren't critical
+  PUBLIC_SANITY_PROJECT_ID: test
+  PUBLIC_SANITY_DATASET: test
+  PUBLIC_ECHO_SANITY_PROJECT_ID: test
+  PUBLIC_ECHO_SANITY_DATASET: test
+
+  # Required to build and run application
+  PUBLIC_GITHUB_SHA: testing
+  RESEND_API_KEY: re_123something
+
+jobs:
+  test:
+    name: 🧪 Run E2E Tests
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v5
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐢 Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🎭 Install Playwright browsers
+        run: pnpm --filter=web exec playwright install --with-deps
+
+      - name: 🔧 Setup Wrangler environment variables
+        working-directory: programmerbar-web
+        run: |
+          echo "RESEND_API_KEY=${{ env.RESEND_API_KEY }}" > .dev.vars
+
+      - name: 🧪 Run Playwright tests
+        run: pnpm --filter=web test:e2e
+
+      - name: 📤 Upload test results
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-report
+          path: programmerbar-web/playwright-report/
+          retention-days: 30
