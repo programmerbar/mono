@@ -260,7 +260,7 @@
 							/>
 						</div>
 
-						{#if hasTimes && shiftLength >= 4}
+						{#if hasTimes && shiftLength > 4}
 							<div
 								class="mt-3 flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-700 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-300"
 							>
