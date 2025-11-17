@@ -55,14 +55,10 @@
 			>
 				<p class="text-foreground-muted mb-2">$ grep produkter.txt</p>
 				<p class="text-foreground-secondary mb-4 text-sm">
-					grep: produkter.txt: No such file or directory
+					grep: produkter.txt: Finner ingen produkter som matcher søket ditt
 				</p>
-				<h3 class="text-foreground-primary mb-2 text-lg font-semibold">
-					404: Produkter ikke funnet
-				</h3>
 				<p class="text-foreground-muted mt-2 text-sm">
-					<span class="text-foreground-subtle">#</span> Debug: Prøv å refaktorere søket ditt eller fjern
-					noen filtre 🤓
+					Debug: Prøv å refaktorere søket ditt eller fjern noen filtre 🤓
 				</p>
 			</div>
 		{/if}
