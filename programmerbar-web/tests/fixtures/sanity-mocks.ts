@@ -8,7 +8,7 @@ import type { Route } from '@playwright/test';
 export const mockProducts = [
 	{
 		_id: 'test-product-1',
-		name: 'Test Beer',
+		name: 'Test IPA Beer',
 		producer: 'Test Brewery',
 		priceList: {
 			ordinary: 89,
@@ -22,6 +22,8 @@ export const mockProducts = [
 			}
 		},
 		isSoldOut: false,
+		alcoholContent: 5.5,
+		volume: 500,
 		productTypes: [
 			{
 				_id: 'type-1',
@@ -41,7 +43,98 @@ export const mockProducts = [
 		},
 		image: null,
 		isSoldOut: false,
-		productTypes: []
+		alcoholContent: 4.5,
+		volume: 330,
+		productTypes: [
+			{
+				_id: 'type-2',
+				title: 'Lager'
+			}
+		]
+	},
+	{
+		_id: 'test-product-3',
+		name: 'Sold Out Stout',
+		producer: 'Test Brewery',
+		priceList: {
+			ordinary: 99,
+			student: 89,
+			internal: 79,
+			credits: 4
+		},
+		image: null,
+		isSoldOut: true,
+		alcoholContent: 6.0,
+		volume: 500,
+		productTypes: [
+			{
+				_id: 'type-3',
+				title: 'Stout'
+			}
+		]
+	},
+	{
+		_id: 'test-product-4',
+		name: 'Cheap Cider',
+		producer: 'Cider Company',
+		priceList: {
+			ordinary: 65,
+			student: 55,
+			internal: 45,
+			credits: 1
+		},
+		image: null,
+		isSoldOut: false,
+		alcoholContent: 4.0,
+		volume: 330,
+		productTypes: [
+			{
+				_id: 'type-4',
+				title: 'Cider'
+			}
+		]
+	},
+	{
+		_id: 'test-product-5',
+		name: 'Expensive IPA',
+		producer: 'Premium Brewery',
+		priceList: {
+			ordinary: 120,
+			student: 110,
+			internal: 100,
+			credits: 5
+		},
+		image: null,
+		isSoldOut: false,
+		alcoholContent: 7.5,
+		volume: 500,
+		productTypes: [
+			{
+				_id: 'type-1',
+				title: 'IPA'
+			}
+		]
+	},
+	{
+		_id: 'test-product-6',
+		name: 'No Brewery Product',
+		producer: null,
+		priceList: {
+			ordinary: 75,
+			student: 65,
+			internal: 55,
+			credits: 2
+		},
+		image: null,
+		isSoldOut: false,
+		alcoholContent: null,
+		volume: null,
+		productTypes: [
+			{
+				_id: 'type-2',
+				title: 'Lager'
+			}
+		]
 	}
 ];
 
