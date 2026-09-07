@@ -117,12 +117,9 @@
 				intent="outline"
 				onclick={() => {
 					selectedIds = [
-						...new Set([
-							...selectedIds,
-							...filteredUsers.filter((user: User) => !user.isTrained).map((user: User) => user.id)
-						])
+						...new Set([...selectedIds, ...filteredUsers.map((user: User) => user.id)])
 					];
-				}}>Velg alle viste uten opplæring</Button
+				}}>Velg alle viste</Button
 			>
 			<Button
 				intent="outline"
@@ -335,7 +332,6 @@
 		aria-label={`Velg ${user.name} til opplæring`}
 		checked={selectedIds.includes(user.id)}
 		onchange={() => toggleUser(user.id)}
-		disabled={user.isTrained}
 		class="h-5 w-5 rounded border-gray-300"
 	/>
 {/snippet}
