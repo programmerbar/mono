@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Training from '$lib/components/portal/Training.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Select from '$lib/components/ui/Select.svelte';
@@ -10,6 +12,17 @@
 
 	let { data } = $props();
 	let search = $state('');
+	let selectedIds = $state<string[]>([]);
+	let trainingOpen = $state(false);
+	let trainingFilter = $state('all');
+	let successMessage = $state('');
+	let selectedUsers = $derived(data.users.filter((user: User) => selectedIds.includes(user.id)));
+	function toggleUser(id: string) {
+		selectedIds = selectedIds.includes(id)
+			? selectedIds.filter((value) => value !== id)
+			: [...selectedIds, id];
+	}
+
 	let selectedRole = $state('all');
 	let sortBy = $state('name');
 	let sortOrder = $state<'asc' | 'desc'>('asc');
@@ -21,7 +34,11 @@
 				const matchesSearch =
 					user.name.toLowerCase().includes(searchTerm) ||
 					(user.altEmail ?? user.email).toLowerCase().includes(searchTerm);
-				return (selectedRole === 'all' || user.role === selectedRole) && matchesSearch;
+				return (
+					(selectedRole === 'all' || user.role === selectedRole) &&
+					matchesSearch &&
+					(trainingFilter === 'all' || user.isTrained === (trainingFilter === 'completed'))
+				);
 			})
 			.sort((a, b) => {
 				const getVal = (u: User) => (sortBy === 'name' ? u.name.toLowerCase() : u.role);
@@ -86,12 +103,57 @@
 		</div>
 	</div>
 
+	<div class="bg-portal-card border-portal-border space-y-3 rounded-lg border p-4">
+		<div class="flex flex-wrap items-center gap-3">
+			<Select
+				bind:value={trainingFilter}
+				options={[
+					{ label: 'All opplæring', value: 'all' },
+					{ label: 'Mangler opplæring', value: 'pending' },
+					{ label: 'Opplæring fullført', value: 'completed' }
+				]}
+			/>
+			<Button
+				intent="outline"
+				onclick={() => {
+					selectedIds = [
+						...new Set([
+							...selectedIds,
+							...filteredUsers.filter((user: User) => !user.isTrained).map((user: User) => user.id)
+						])
+					];
+				}}>Velg alle viste uten opplæring</Button
+			>
+			<Button
+				intent="outline"
+				disabled={!selectedIds.length}
+				onclick={() => {
+					selectedIds = [];
+				}}>Tøm valg</Button
+			>
+			<Button
+				disabled={!selectedUsers.length}
+				onclick={() => {
+					successMessage = '';
+					trainingOpen = true;
+				}}>Start opplæring ({selectedUsers.length})</Button
+			>
+		</div>
+		{#if selectedUsers.length}<p class="text-sm">
+				Valgte deltakere: {selectedUsers.map((user: User) => user.name).join(', ')}
+			</p>{/if}
+		{#if successMessage}<p role="status" class="text-sm text-green-700 dark:text-green-400">
+				{successMessage}
+			</p>{/if}
+	</div>
+
 	<!-- Mobile View -->
 	<div class="block space-y-3 sm:hidden">
 		{#each filteredUsers as user (user.id)}
 			<div class="bg-portal-card border-portal-border rounded-lg border p-4">
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
+						{@render trainingSelection(user)}
 						<div class="h-10 w-10 shrink-0">
 							<div
 								class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30"
@@ -111,6 +173,7 @@
 						</div>
 					</div>
 					<div class="flex flex-col items-end gap-2">
+						{@render trainingStatus(user)}
 						<Pill variant={user.role === 'board' ? 'purple' : 'blue'}>
 							{user.role === 'board' ? 'Styret' : 'Frivillig'}
 						</Pill>
@@ -186,6 +249,11 @@
 						<th
 							class="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
 						>
+							Opplæring
+						</th>
+						<th
+							class="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
+						>
 							Handlinger
 						</th>
 					</tr>
@@ -194,7 +262,8 @@
 					{#each filteredUsers as user (user.id)}
 						<tr class="hover:bg-portal-hover transition-colors">
 							<td class="px-6 py-4 whitespace-nowrap">
-								<div class="flex items-center">
+								<div class="flex items-center gap-3">
+									{@render trainingSelection(user)}
 									<div class="h-10 w-10 shrink-0">
 										<div
 											class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30"
@@ -222,6 +291,9 @@
 								</Pill>
 							</td>
 							<td class="px-6 py-4 text-right text-sm whitespace-nowrap">
+								{@render trainingStatus(user)}
+							</td>
+							<td class="px-6 py-4 text-right text-sm whitespace-nowrap">
 								<a
 									href={resolve('/(portal)/portal/admin/bruker/[id]', { id: user.id })}
 									class="inline-flex items-center gap-2 font-medium text-blue-600 transition-colors hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
@@ -234,7 +306,7 @@
 					{/each}
 					{#if filteredUsers.length === 0}
 						<tr>
-							<td colspan="4" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+							<td colspan="5" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
 								<div class="flex flex-col items-center gap-4">
 									<Users class="h-12 w-12 text-gray-300 dark:text-gray-600" />
 									<div>
@@ -256,3 +328,34 @@
 		</div>
 	</div>
 </div>
+
+{#snippet trainingSelection(user: User)}
+	<input
+		type="checkbox"
+		aria-label={`Velg ${user.name} til opplæring`}
+		checked={selectedIds.includes(user.id)}
+		onchange={() => toggleUser(user.id)}
+		disabled={user.isTrained}
+		class="h-5 w-5 rounded border-gray-300"
+	/>
+{/snippet}
+
+{#snippet trainingStatus(user: User)}
+	<Pill variant={user.isTrained ? 'green' : 'yellow'}
+		>{user.isTrained ? 'Opplæring fullført' : 'Mangler opplæring'}</Pill
+	>
+{/snippet}
+
+<Training
+	isOpen={trainingOpen}
+	userIds={selectedUsers.map((user: User) => user.id)}
+	userName={selectedUsers.map((user: User) => user.name).join(', ')}
+	onclose={() => {
+		trainingOpen = false;
+	}}
+	onsave={() => {
+		successMessage = `Opplæring registrert for ${selectedUsers.length} brukere.`;
+		trainingOpen = false;
+		selectedIds = [];
+	}}
+/>
