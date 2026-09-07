@@ -12,6 +12,7 @@
 
 	let { data } = $props();
 	let search = $state('');
+	let selectedDropdown: HTMLDetailsElement;
 	let selectedIds = $state<string[]>([]);
 	let trainingOpen = $state(false);
 	let trainingFilter = $state('all');
@@ -52,6 +53,33 @@
 		sortBy = column;
 	}
 </script>
+
+<svelte:window
+	onclick={(event) => {
+		if (
+			selectedDropdown?.open &&
+			event.target instanceof Node &&
+			!selectedDropdown.contains(event.target)
+		) {
+			selectedDropdown.open = false;
+		}
+	}}
+	onkeydown={(event) => {
+		if (event.key === 'Escape' && selectedDropdown?.open) {
+			selectedDropdown.open = false;
+			selectedDropdown.querySelector('summary')?.focus();
+		}
+	}}
+	onfocusin={(event) => {
+		if (
+			selectedDropdown?.open &&
+			event.target instanceof Node &&
+			!selectedDropdown.contains(event.target)
+		) {
+			selectedDropdown.open = false;
+		}
+	}}
+/>
 
 <svelte:head>
 	<title>Admin</title>
@@ -114,6 +142,7 @@
 				]}
 			/>
 			<Button
+				class="cursor-pointer disabled:cursor-not-allowed"
 				intent="outline"
 				onclick={() => {
 					selectedIds = [
@@ -122,6 +151,7 @@
 				}}>Velg alle viste</Button
 			>
 			<Button
+				class="cursor-pointer disabled:cursor-not-allowed"
 				intent="outline"
 				disabled={!selectedIds.length}
 				onclick={() => {
@@ -129,16 +159,35 @@
 				}}>Tøm valg</Button
 			>
 			<Button
+				class="w-56 shrink-0 cursor-pointer tabular-nums disabled:cursor-not-allowed"
 				disabled={!selectedUsers.length}
 				onclick={() => {
 					successMessage = '';
 					trainingOpen = true;
 				}}>Start opplæring ({selectedUsers.length})</Button
 			>
+			<details bind:this={selectedDropdown} class="relative w-44 max-w-full shrink-0">
+				<summary
+					class="border-portal-border w-full cursor-pointer rounded-lg border px-3 py-2 text-sm tabular-nums"
+				>
+					Vis valgte ({selectedUsers.length})
+				</summary>
+				<div
+					aria-label="Valgte deltakere"
+					class="bg-portal-card border-portal-border absolute top-full left-0 z-20 mt-2 max-h-64 w-full overflow-y-auto rounded-lg border p-3 shadow-lg"
+				>
+					{#if selectedUsers.length}
+						<ul class="space-y-2 text-sm">
+							{#each selectedUsers as user (user.id)}
+								<li class="wrap-anywhere">{user.name}</li>
+							{/each}
+						</ul>
+					{:else}
+						<p class="text-sm text-gray-500 dark:text-gray-400">Ingen deltakere valgt</p>
+					{/if}
+				</div>
+			</details>
 		</div>
-		{#if selectedUsers.length}<p class="text-sm">
-				Valgte deltakere: {selectedUsers.map((user: User) => user.name).join(', ')}
-			</p>{/if}
 		{#if successMessage}<p role="status" class="text-sm text-green-700 dark:text-green-400">
 				{successMessage}
 			</p>{/if}
@@ -210,7 +259,7 @@
 					<tr>
 						<th class="px-6 py-3 text-left">
 							<button
-								class="flex items-center gap-2 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+								class="flex cursor-pointer items-center gap-2 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
 								onclick={() => handleSort('name')}
 							>
 								Navn
@@ -230,7 +279,7 @@
 						</th>
 						<th class="px-6 py-3 text-left">
 							<button
-								class="flex items-center gap-2 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+								class="flex cursor-pointer items-center gap-2 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
 								onclick={() => handleSort('role')}
 							>
 								Rolle
@@ -332,7 +381,7 @@
 		aria-label={`Velg ${user.name} til opplæring`}
 		checked={selectedIds.includes(user.id)}
 		onchange={() => toggleUser(user.id)}
-		class="h-5 w-5 rounded border-gray-300"
+		class="h-5 w-5 cursor-pointer rounded border-gray-300"
 	/>
 {/snippet}
 
