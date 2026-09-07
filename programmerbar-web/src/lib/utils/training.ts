@@ -7,154 +7,199 @@ export interface TrainingItem {
 }
 
 export const TRAINING_CATEGORIES = {
-	BAR_USAGE: 'Bruk av bar',
-	LAWS_SAFETY: 'Lover og sikkerhet',
-	HYGIENE_CLEANING: 'Vask og hygiene'
+	STARTUP: 'Oppstart',
+	REGISTER: 'Kasse',
+	BAR_OPERATIONS: 'Bardrift',
+	HYGIENE: 'Hygiene',
+	LAWS_SAFETY: 'Lover og sikkerhet'
 } as const;
 
 export const DEFAULT_TRAINING_ITEMS: TrainingItem[] = [
 	{
 		id: 1,
-		title: 'Bytte keg på en riktig måte',
-		description: 'Lært at kegs burde bli oppbevart kjølig og stående kaldt for å holde seg',
+		title: 'Åpne kasse',
+		description: 'Logg inn, åpne kassen og gjør den klar til å ta imot betaling',
 		completed: false,
-		category: TRAINING_CATEGORIES.BAR_USAGE
+		category: TRAINING_CATEGORIES.STARTUP
 	},
 	{
 		id: 2,
-		title: 'Tappe pils på en riktig måte',
-		description: 'Riktig tapping av øl',
+		title: 'Skru på oppvaskmaskin',
+		description: 'Skru på glassvasken, og kontroller at den fylles og blir varm',
 		completed: false,
-		category: TRAINING_CATEGORIES.BAR_USAGE
+		category: TRAINING_CATEGORIES.STARTUP
 	},
 	{
 		id: 3,
-		title: 'Glassvasken',
-		description: 'Skru på/av glassvasken, tømme og skylle glass før maskinen',
+		title: 'Åpne porten',
+		description: 'Åpne porten og sikre at inngangen er klar før baren åpner',
 		completed: false,
-		category: TRAINING_CATEGORIES.BAR_USAGE
+		category: TRAINING_CATEGORIES.STARTUP
 	},
 	{
 		id: 4,
-		title: 'Isbiter og isbitmaskin',
-		description: 'Bruke dedikert isbit "skje", sjekke at maskinen er på og lager isbiter',
+		title: 'Sjekk sortiment i kjøleskapet',
+		description: 'Sjekk at kjøleskapet har riktig sortiment, og fyll på det som mangler',
 		completed: false,
-		category: TRAINING_CATEGORIES.BAR_USAGE
+		category: TRAINING_CATEGORIES.STARTUP
 	},
 	{
 		id: 5,
-		title: 'Kassesystem',
-		description:
-			'Åpne kassen, ta imot betaling (vanlig pris og internpris), slette/redigere priser, stenge kassen',
+		title: 'Kassebeholdning',
+		description: 'Tell kassebeholdningen og kontroller at beløpet stemmer før åpning',
 		completed: false,
-		category: TRAINING_CATEGORIES.BAR_USAGE
+		category: TRAINING_CATEGORIES.REGISTER
 	},
 	{
 		id: 6,
-		title: 'Påfyll av varer',
-		description: 'Fylle på varer kontinuerlig, spesielt mot slutten av vakten',
+		title: 'Ta imot betaling',
+		description:
+			'Velg riktig pris for student, ekstern eller intern, og registrer betalingen i kassen',
 		completed: false,
-		category: TRAINING_CATEGORIES.BAR_USAGE
+		category: TRAINING_CATEGORIES.REGISTER
 	},
 	{
 		id: 7,
-		title: 'Temperatursjekk',
-		description: 'Sjekke temperatur på kjøleskap (skal bli skrevet ned)',
+		title: 'Bonger',
+		description: 'Kontroller at bongen er gyldig, og registrer riktig vare i kassen',
 		completed: false,
-		category: TRAINING_CATEGORIES.BAR_USAGE
+		category: TRAINING_CATEGORIES.REGISTER
 	},
 	{
 		id: 8,
-		title: 'Ikke oversjenke',
+		title: 'Gavekort',
+		description: 'Kontroller gavekortet, og registrer beløpet riktig i kassen',
+		completed: false,
+		category: TRAINING_CATEGORIES.REGISTER
+	},
+	{
+		id: 9,
+		title: 'Dagsoppgjør',
+		description: 'Steng kassen, tell beholdningen og kontroller at oppgjøret stemmer',
+		completed: false,
+		category: TRAINING_CATEGORIES.REGISTER
+	},
+	{
+		id: 10,
+		title: 'Glass',
+		description:
+			'Bruk riktig glass til riktig drikke, ikke stable glass, og fjern skitne eller skadde glass',
+		completed: false,
+		category: TRAINING_CATEGORIES.BAR_OPERATIONS
+	},
+	{
+		id: 11,
+		title: 'Løpende påfylling av varer',
+		description: 'Fylle på varer kontinuerlig, spesielt mot slutten av vakten',
+		completed: false,
+		category: TRAINING_CATEGORIES.BAR_OPERATIONS
+	},
+	{
+		id: 12,
+		title: 'Isbitmaskin',
+		description: 'Bruke dedikert isbit "skje", sjekke at maskinen er på og lager isbiter',
+		completed: false,
+		category: TRAINING_CATEGORIES.BAR_OPERATIONS
+	},
+	{
+		id: 13,
+		title: 'Oppvaskmaskin',
+		description: 'Tømme og skylle glass før maskinen, og skru av og tømme glassvasken etter bruk',
+		completed: false,
+		category: TRAINING_CATEGORIES.BAR_OPERATIONS
+	},
+	{
+		id: 14,
+		title: 'Bruke tappetårnet',
+		description: 'Riktig tapping av øl',
+		completed: false,
+		category: TRAINING_CATEGORIES.BAR_OPERATIONS
+	},
+	{
+		id: 15,
+		title: 'Bytte keg',
+		description: 'Lært at kegs burde bli oppbevart kjølig og stående kaldt for å holde seg',
+		completed: false,
+		category: TRAINING_CATEGORIES.BAR_OPERATIONS
+	},
+	{
+		id: 16,
+		title: 'Resette skumlås',
+		description: 'Reset skumlåsen når tappelinjen bare gir skum etter et kegbytte',
+		completed: false,
+		category: TRAINING_CATEGORIES.BAR_OPERATIONS
+	},
+	{
+		id: 17,
+		title: 'Hvor ligger vaskesaker?',
+		description: 'Finn fram vaskesaker og riktig rengjøringsutstyr til de ulike områdene',
+		completed: false,
+		category: TRAINING_CATEGORIES.HYGIENE
+	},
+	{
+		id: 18,
+		title: 'Rengjøring av barområdet',
+		description:
+			'Viktigheten av å holde det rent i baren og på lageret (før, under og etter servering)',
+		completed: false,
+		category: TRAINING_CATEGORIES.HYGIENE
+	},
+	{
+		id: 19,
+		title: 'Personlig hygiene',
+		description:
+			'Viktigheten av å ha god personlig hygiene: ingen pelling, rene hender og anstendighet',
+		completed: false,
+		category: TRAINING_CATEGORIES.HYGIENE
+	},
+	{
+		id: 20,
+		title: 'Søppelhåndtering',
+		description: 'Hva å gjøre med restavfall, papp og glass, og koden til søppelstasjonen',
+		completed: false,
+		category: TRAINING_CATEGORIES.HYGIENE
+	},
+	{
+		id: 21,
+		title: 'Overskjenking',
 		description: 'Aldri oversjenke da dette er ulovlig',
 		completed: false,
 		category: TRAINING_CATEGORIES.LAWS_SAFETY
 	},
 	{
-		id: 9,
+		id: 22,
 		title: 'Autoritet til å si nei',
 		description: 'Har autoritet til å si nei til å servere alkohol',
 		completed: false,
 		category: TRAINING_CATEGORIES.LAWS_SAFETY
 	},
 	{
-		id: 10,
-		title: 'Skjenkeløyve og dokumenter',
+		id: 23,
+		title: 'Dokumenter ved kontroll',
 		description: 'Hvor skjenkeløyve og opplæringsskjema er i baren, i tilfelle kontroll',
 		completed: false,
 		category: TRAINING_CATEGORIES.LAWS_SAFETY
 	},
 	{
-		id: 11,
+		id: 24,
 		title: 'Nødsituasjoner',
 		description: 'Vite hva å gjøre i nødsituasjon, for eksempel brann',
 		completed: false,
 		category: TRAINING_CATEGORIES.LAWS_SAFETY
 	},
 	{
-		id: 12,
-		title: 'Fast skjenkeløyve',
+		id: 25,
+		title: 'Fast skjenkebevilling',
 		description: 'Baren har fast skjenkeløyve som vi kan miste hvis vi får for mange prikker',
 		completed: false,
 		category: TRAINING_CATEGORIES.LAWS_SAFETY
 	},
 	{
-		id: 13,
+		id: 26,
 		title: 'Alkoholreklame',
 		description:
 			'Ikke lov til å reklamere for alkohol, ikke foreslå alkohol men spørre "Hva vil du ha?"',
 		completed: false,
 		category: TRAINING_CATEGORIES.LAWS_SAFETY
-	},
-	{
-		id: 14,
-		title: 'Renhold i baren',
-		description:
-			'Viktigheten av å holde det rent i baren og på lageret (før, under og etter servering)',
-		completed: false,
-		category: TRAINING_CATEGORIES.HYGIENE_CLEANING
-	},
-	{
-		id: 15,
-		title: 'Personlig hygiene',
-		description: 'Viktigheten av å ha god personlig hygiene',
-		completed: false,
-		category: TRAINING_CATEGORIES.HYGIENE_CLEANING
-	},
-	{
-		id: 16,
-		title: 'Håndvask',
-		description: 'Hvordan vaske hendene ordentlig',
-		completed: false,
-		category: TRAINING_CATEGORIES.HYGIENE_CLEANING
-	},
-	{
-		id: 17,
-		title: 'Rengjøring av arbeidsflater',
-		description: 'Hvordan tørke over benk og vask av gulv',
-		completed: false,
-		category: TRAINING_CATEGORIES.HYGIENE_CLEANING
-	},
-	{
-		id: 18,
-		title: 'Søppelhåndtering',
-		description: 'Hva å gjøre med papp og annet søppel, og koden til søppelstasjonen',
-		completed: false,
-		category: TRAINING_CATEGORIES.HYGIENE_CLEANING
-	},
-	{
-		id: 19,
-		title: 'Vask etter kegbytte',
-		description: 'Bytter man keg, så vasker man hendene',
-		completed: false,
-		category: TRAINING_CATEGORIES.HYGIENE_CLEANING
-	},
-	{
-		id: 20,
-		title: 'Rengjøring av barutstyr',
-		description:
-			'Vask og rengjør barutstyr, f.eks. tappetårn, målebeger, shaker, isøse, barskje osv.',
-		completed: false,
-		category: TRAINING_CATEGORIES.HYGIENE_CLEANING
 	}
 ];
