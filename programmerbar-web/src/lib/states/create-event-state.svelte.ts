@@ -1,6 +1,11 @@
 import { slugify } from '$lib/utils/strings';
 import { CreateEventSchema } from '$lib/validators';
-import { toUtcISOStringFromLocal } from '$lib/utils/date';
+import {
+	parseDateTimeLocal,
+	toLocalDateTimeString,
+	toUtcISOStringFromLocal
+} from '$lib/utils/date';
+import { addHours, isValid } from 'date-fns';
 
 type CreateEventShiftUser = {
 	id: string;
@@ -22,9 +27,15 @@ export class CreateEventState {
 	shifts = $state<Array<CreateEventShift>>([]);
 
 	addShift() {
+		const previousShift = this.shifts.at(-1);
+		const baseTime = previousShift ? previousShift.endAt : this.date;
+		const baseDate = baseTime ? parseDateTimeLocal(baseTime) : null;
+		const startDate =
+			baseDate && isValid(baseDate) ? addHours(baseDate, previousShift ? 2 : 0) : null;
+
 		this.shifts.push({
-			startAt: '',
-			endAt: '',
+			startAt: startDate ? toLocalDateTimeString(startDate) : '',
+			endAt: startDate ? toLocalDateTimeString(addHours(startDate, 4)) : '',
 			users: []
 		});
 	}
