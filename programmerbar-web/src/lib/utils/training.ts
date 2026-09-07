@@ -203,3 +203,11 @@ export const DEFAULT_TRAINING_ITEMS: TrainingItem[] = [
 		category: TRAINING_CATEGORIES.LAWS_SAFETY
 	}
 ];
+
+export function isTrainingComplete(value: unknown): boolean {
+	if (!Array.isArray(value) || value.length !== DEFAULT_TRAINING_ITEMS.length) return false;
+	return DEFAULT_TRAINING_ITEMS.every(
+		(required) =>
+			value.filter((item) => item?.id === required.id && item.completed === true).length === 1
+	);
+}

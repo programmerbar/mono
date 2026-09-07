@@ -91,6 +91,15 @@ export class UserService {
 			.then((rows) => rows[0]);
 	}
 
+	async completeTrainingForUsers(userIds: string[]) {
+		if (userIds.length === 0) return [];
+		return await this.#db
+			.update(users)
+			.set({ isTrained: true })
+			.where(and(inArray(users.id, userIds), not(users.isDeleted)))
+			.returning({ id: users.id });
+	}
+
 	async updateTrainingStatus(userId: string, isTrained: boolean) {
 		const updatedUser = await this.#db
 			.update(users)

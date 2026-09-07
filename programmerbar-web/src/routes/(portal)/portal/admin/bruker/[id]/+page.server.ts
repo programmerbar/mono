@@ -1,3 +1,4 @@
+import { isTrainingComplete } from '$lib/utils/training';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { fail } from '@sveltejs/kit';
@@ -126,10 +127,13 @@ export const actions: Actions = {
 			return fail(400, { error: 'Training data is required' });
 		}
 
-		const trainingData = JSON.parse(trainingDataJson);
-
-		const isComplete =
-			trainingData && trainingData.every((item: { completed: boolean }) => item.completed === true);
+		let trainingData: unknown;
+		try {
+			trainingData = JSON.parse(trainingDataJson);
+		} catch {
+			return fail(400, { error: 'Invalid training data' });
+		}
+		const isComplete = isTrainingComplete(trainingData);
 
 		if (!isComplete) {
 			return fail(400, { error: 'All training items must be completed' });

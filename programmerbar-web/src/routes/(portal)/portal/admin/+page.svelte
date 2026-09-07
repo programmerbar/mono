@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Training from '$lib/components/portal/Training.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
 	import Heading from '$lib/components/ui/Heading.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Select from '$lib/components/ui/Select.svelte';
@@ -10,6 +12,18 @@
 
 	let { data } = $props();
 	let search = $state('');
+	let selectedDropdown: HTMLDetailsElement;
+	let selectedIds = $state<string[]>([]);
+	let trainingOpen = $state(false);
+	let trainingFilter = $state('all');
+	let successMessage = $state('');
+	let selectedUsers = $derived(data.users.filter((user: User) => selectedIds.includes(user.id)));
+	function toggleUser(id: string) {
+		selectedIds = selectedIds.includes(id)
+			? selectedIds.filter((value) => value !== id)
+			: [...selectedIds, id];
+	}
+
 	let selectedRole = $state('all');
 	let sortBy = $state('name');
 	let sortOrder = $state<'asc' | 'desc'>('asc');
@@ -21,7 +35,11 @@
 				const matchesSearch =
 					user.name.toLowerCase().includes(searchTerm) ||
 					(user.altEmail ?? user.email).toLowerCase().includes(searchTerm);
-				return (selectedRole === 'all' || user.role === selectedRole) && matchesSearch;
+				return (
+					(selectedRole === 'all' || user.role === selectedRole) &&
+					matchesSearch &&
+					(trainingFilter === 'all' || user.isTrained === (trainingFilter === 'completed'))
+				);
 			})
 			.sort((a, b) => {
 				const getVal = (u: User) => (sortBy === 'name' ? u.name.toLowerCase() : u.role);
@@ -35,6 +53,33 @@
 		sortBy = column;
 	}
 </script>
+
+<svelte:window
+	onclick={(event) => {
+		if (
+			selectedDropdown?.open &&
+			event.target instanceof Node &&
+			!selectedDropdown.contains(event.target)
+		) {
+			selectedDropdown.open = false;
+		}
+	}}
+	onkeydown={(event) => {
+		if (event.key === 'Escape' && selectedDropdown?.open) {
+			selectedDropdown.open = false;
+			selectedDropdown.querySelector('summary')?.focus();
+		}
+	}}
+	onfocusin={(event) => {
+		if (
+			selectedDropdown?.open &&
+			event.target instanceof Node &&
+			!selectedDropdown.contains(event.target)
+		) {
+			selectedDropdown.open = false;
+		}
+	}}
+/>
 
 <svelte:head>
 	<title>Admin</title>
@@ -86,12 +131,75 @@
 		</div>
 	</div>
 
+	<div class="bg-portal-card border-portal-border space-y-3 rounded-lg border p-4">
+		<div class="flex flex-wrap items-center gap-3">
+			<Select
+				bind:value={trainingFilter}
+				options={[
+					{ label: 'All opplæring', value: 'all' },
+					{ label: 'Mangler opplæring', value: 'pending' },
+					{ label: 'Opplæring fullført', value: 'completed' }
+				]}
+			/>
+			<Button
+				class="cursor-pointer disabled:cursor-not-allowed"
+				intent="outline"
+				onclick={() => {
+					selectedIds = [
+						...new Set([...selectedIds, ...filteredUsers.map((user: User) => user.id)])
+					];
+				}}>Velg alle viste</Button
+			>
+			<Button
+				class="cursor-pointer disabled:cursor-not-allowed"
+				intent="outline"
+				disabled={!selectedIds.length}
+				onclick={() => {
+					selectedIds = [];
+				}}>Tøm valg</Button
+			>
+			<Button
+				class="w-56 shrink-0 cursor-pointer tabular-nums disabled:cursor-not-allowed"
+				disabled={!selectedUsers.length}
+				onclick={() => {
+					successMessage = '';
+					trainingOpen = true;
+				}}>Start opplæring ({selectedUsers.length})</Button
+			>
+			<details bind:this={selectedDropdown} class="relative w-44 max-w-full shrink-0">
+				<summary
+					class="border-portal-border w-full cursor-pointer rounded-lg border px-3 py-2 text-sm tabular-nums"
+				>
+					Vis valgte ({selectedUsers.length})
+				</summary>
+				<div
+					aria-label="Valgte deltakere"
+					class="bg-portal-card border-portal-border absolute top-full left-0 z-20 mt-2 max-h-64 w-full overflow-y-auto rounded-lg border p-3 shadow-lg"
+				>
+					{#if selectedUsers.length}
+						<ul class="space-y-2 text-sm">
+							{#each selectedUsers as user (user.id)}
+								<li class="wrap-anywhere">{user.name}</li>
+							{/each}
+						</ul>
+					{:else}
+						<p class="text-sm text-gray-500 dark:text-gray-400">Ingen deltakere valgt</p>
+					{/if}
+				</div>
+			</details>
+		</div>
+		{#if successMessage}<p role="status" class="text-sm text-green-700 dark:text-green-400">
+				{successMessage}
+			</p>{/if}
+	</div>
+
 	<!-- Mobile View -->
 	<div class="block space-y-3 sm:hidden">
 		{#each filteredUsers as user (user.id)}
 			<div class="bg-portal-card border-portal-border rounded-lg border p-4">
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
+						{@render trainingSelection(user)}
 						<div class="h-10 w-10 shrink-0">
 							<div
 								class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30"
@@ -111,6 +219,7 @@
 						</div>
 					</div>
 					<div class="flex flex-col items-end gap-2">
+						{@render trainingStatus(user)}
 						<Pill variant={user.role === 'board' ? 'purple' : 'blue'}>
 							{user.role === 'board' ? 'Styret' : 'Frivillig'}
 						</Pill>
@@ -150,7 +259,7 @@
 					<tr>
 						<th class="px-6 py-3 text-left">
 							<button
-								class="flex items-center gap-2 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+								class="flex cursor-pointer items-center gap-2 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
 								onclick={() => handleSort('name')}
 							>
 								Navn
@@ -170,7 +279,7 @@
 						</th>
 						<th class="px-6 py-3 text-left">
 							<button
-								class="flex items-center gap-2 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+								class="flex cursor-pointer items-center gap-2 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
 								onclick={() => handleSort('role')}
 							>
 								Rolle
@@ -186,6 +295,11 @@
 						<th
 							class="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
 						>
+							Opplæring
+						</th>
+						<th
+							class="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
+						>
 							Handlinger
 						</th>
 					</tr>
@@ -194,7 +308,8 @@
 					{#each filteredUsers as user (user.id)}
 						<tr class="hover:bg-portal-hover transition-colors">
 							<td class="px-6 py-4 whitespace-nowrap">
-								<div class="flex items-center">
+								<div class="flex items-center gap-3">
+									{@render trainingSelection(user)}
 									<div class="h-10 w-10 shrink-0">
 										<div
 											class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30"
@@ -222,6 +337,9 @@
 								</Pill>
 							</td>
 							<td class="px-6 py-4 text-right text-sm whitespace-nowrap">
+								{@render trainingStatus(user)}
+							</td>
+							<td class="px-6 py-4 text-right text-sm whitespace-nowrap">
 								<a
 									href={resolve('/(portal)/portal/admin/bruker/[id]', { id: user.id })}
 									class="inline-flex items-center gap-2 font-medium text-blue-600 transition-colors hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
@@ -234,7 +352,7 @@
 					{/each}
 					{#if filteredUsers.length === 0}
 						<tr>
-							<td colspan="4" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+							<td colspan="5" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
 								<div class="flex flex-col items-center gap-4">
 									<Users class="h-12 w-12 text-gray-300 dark:text-gray-600" />
 									<div>
@@ -256,3 +374,33 @@
 		</div>
 	</div>
 </div>
+
+{#snippet trainingSelection(user: User)}
+	<input
+		type="checkbox"
+		aria-label={`Velg ${user.name} til opplæring`}
+		checked={selectedIds.includes(user.id)}
+		onchange={() => toggleUser(user.id)}
+		class="h-5 w-5 cursor-pointer rounded border-gray-300"
+	/>
+{/snippet}
+
+{#snippet trainingStatus(user: User)}
+	<Pill variant={user.isTrained ? 'green' : 'yellow'}
+		>{user.isTrained ? 'Opplæring fullført' : 'Mangler opplæring'}</Pill
+	>
+{/snippet}
+
+<Training
+	isOpen={trainingOpen}
+	userIds={selectedUsers.map((user: User) => user.id)}
+	userName={selectedUsers.map((user: User) => user.name).join(', ')}
+	onclose={() => {
+		trainingOpen = false;
+	}}
+	onsave={() => {
+		successMessage = `Opplæring registrert for ${selectedUsers.length} brukere.`;
+		trainingOpen = false;
+		selectedIds = [];
+	}}
+/>

@@ -13,18 +13,27 @@
 
 	interface Props {
 		userId?: string | number | null;
+		userIds?: string[];
 		isOpen: boolean;
 		userName?: string;
 		onclose?: () => void;
 		onsave?: (data: { completionStatus: { isComplete: boolean } }) => void;
 	}
 
-	let { userId = null, isOpen = false, userName = 'bruker', onclose, onsave }: Props = $props();
+	let {
+		userId = null,
+		userIds = [],
+		isOpen = false,
+		userName = 'bruker',
+		onclose,
+		onsave
+	}: Props = $props();
 
 	let trainingItems = $state<TrainingItem[]>([...DEFAULT_TRAINING_ITEMS]);
 	let isSaving = $state(false);
+	let saveError = $state('');
 
-	let isTrainingMode = $derived(userId !== null && userId !== undefined);
+	let isTrainingMode = $derived(userIds.length > 0 || (userId !== null && userId !== undefined));
 	let completedCount = $derived(trainingItems.filter((item) => item.completed).length);
 	let totalCount = $derived(trainingItems.length);
 	let isComplete = $derived(completedCount === totalCount);
@@ -35,6 +44,7 @@
 	$effect(() => {
 		if (isOpen) {
 			trainingItems = [...DEFAULT_TRAINING_ITEMS];
+			saveError = '';
 		}
 	});
 
@@ -46,7 +56,8 @@
 	}
 
 	function handleSave() {
-		if (!isComplete) return;
+		if (!isComplete || isSaving) return;
+		saveError = '';
 		isSaving = true;
 		const form = document.getElementById('trainingForm') as HTMLFormElement;
 		if (form) {
@@ -55,7 +66,7 @@
 	}
 
 	function handleClose() {
-		onclose?.();
+		if (!isSaving) onclose?.();
 	}
 
 	const groupedItems = $derived(
@@ -84,6 +95,9 @@
 		</ModalHeader>
 
 		<ModalBody>
+			{#if saveError}<p role="alert" class="mb-4 text-red-600 dark:text-red-400">
+					{saveError}
+				</p>{/if}
 			<div class="space-y-6">
 				{#each Object.entries(groupedItems) as [category, items] (category)}
 					<div class="space-y-3">
@@ -188,12 +202,16 @@
 					}
 				} else if (result.type === 'failure') {
 					const data = result.data as { error?: string } | undefined;
-					console.error('Failed to complete training:', data?.error);
+					saveError = data?.error || 'Kunne ikke lagre opplæringen. Prøv igjen.';
+				} else {
+					saveError = 'Kunne ikke lagre opplæringen. Prøv igjen.';
 				}
 			};
 		}}
 	>
-		<input type="hidden" name="userId" value={userId?.toString() || ''} />
+		{#each userIds.length ? userIds : [userId?.toString() || ''] as id (id)}
+			<input type="hidden" name="userId" value={id} />
+		{/each}
 		<input type="hidden" name="trainingData" value={JSON.stringify(trainingItems)} />
 	</form>
 {/if}
