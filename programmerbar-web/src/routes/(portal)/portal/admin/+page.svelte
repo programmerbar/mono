@@ -7,7 +7,7 @@
 	import Pill from '$lib/components/ui/Pill.svelte';
 	import type { User } from '$lib/server/db/schemas/index.js';
 	import { initials } from '$lib/utils/strings.js';
-	import { Users, Search, ChevronUp, ChevronDown, Eye, UserCog } from '@lucide/svelte';
+	import { Users, Search, ChevronUp, ChevronDown, Eye, UserCog, Check, X } from '@lucide/svelte';
 	import { resolve } from '$app/paths';
 
 	let { data } = $props();
@@ -253,11 +253,11 @@
 	<div
 		class="bg-portal-card border-portal-border hidden overflow-hidden rounded-lg border sm:block"
 	>
-		<div class="overflow-x-auto">
+		<div class="@container overflow-x-auto">
 			<table class="w-full">
 				<thead class="border-portal-border dark:bg-portal-hover border-b bg-gray-50">
 					<tr>
-						<th class="px-6 py-3 text-left">
+						<th class="px-3 py-3 text-left">
 							<button
 								class="flex cursor-pointer items-center gap-2 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
 								onclick={() => handleSort('name')}
@@ -273,11 +273,11 @@
 							</button>
 						</th>
 						<th
-							class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
+							class="px-3 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
 						>
 							E-post
 						</th>
-						<th class="px-6 py-3 text-left">
+						<th class="px-3 py-3 text-left">
 							<button
 								class="flex cursor-pointer items-center gap-2 text-xs font-medium tracking-wider text-gray-500 uppercase transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
 								onclick={() => handleSort('role')}
@@ -293,12 +293,12 @@
 							</button>
 						</th>
 						<th
-							class="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
+							class="px-3 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
 						>
 							Opplæring
 						</th>
 						<th
-							class="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
+							class="px-3 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
 						>
 							Handlinger
 						</th>
@@ -307,8 +307,8 @@
 				<tbody class="divide-portal-border divide-y divide-gray-200">
 					{#each filteredUsers as user (user.id)}
 						<tr class="hover:bg-portal-hover transition-colors">
-							<td class="px-6 py-4 whitespace-nowrap">
-								<div class="flex items-center gap-3">
+							<td class="px-3 py-4 whitespace-nowrap">
+								<div class="flex min-w-0 items-center gap-2">
 									{@render trainingSelection(user)}
 									<div class="h-10 w-10 shrink-0">
 										<div
@@ -319,40 +319,56 @@
 											</span>
 										</div>
 									</div>
-									<div class="ml-4">
+									<div class="min-w-0 flex-1">
 										<div class="text-sm font-medium text-gray-900 dark:text-gray-100">
 											{user.name}
 										</div>
 									</div>
 								</div>
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap">
+							<td class="px-3 py-4 whitespace-nowrap">
 								<div class="text-sm text-gray-600 dark:text-gray-300">
 									{user.altEmail || user.email}
 								</div>
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap">
+							<td class="px-3 py-4 whitespace-nowrap">
 								<Pill variant={user.role === 'board' ? 'purple' : 'blue'}>
 									{user.role === 'board' ? 'Styret' : 'Frivillig'}
 								</Pill>
 							</td>
-							<td class="px-6 py-4 text-right text-sm whitespace-nowrap">
-								{@render trainingStatus(user)}
+							<td class="px-3 py-4 text-right text-sm whitespace-nowrap">
+								<span class="hidden @min-[800px]:inline">{@render trainingStatus(user)}</span>
+								<span
+									class="inline-flex @min-[800px]:hidden"
+									role="img"
+									aria-label={user.isTrained ? 'Opplæring fullført' : 'Mangler opplæring'}
+									title={user.isTrained ? 'Opplæring fullført' : 'Mangler opplæring'}
+								>
+									<Pill variant={user.isTrained ? 'green' : 'red'}>
+										{#if user.isTrained}
+											<Check class="h-4 w-4" />
+										{:else}
+											<X class="h-4 w-4" />
+										{/if}
+									</Pill>
+								</span>
 							</td>
-							<td class="px-6 py-4 text-right text-sm whitespace-nowrap">
+							<td class="px-3 py-4 text-right text-sm whitespace-nowrap">
 								<a
+									aria-label={`Vis detaljer for ${user.name}`}
+									title="Vis detaljer"
 									href={resolve('/(portal)/portal/admin/bruker/[id]', { id: user.id })}
 									class="inline-flex items-center gap-2 font-medium text-blue-600 transition-colors hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
 								>
-									<Eye class="h-4 w-4" />
-									Vis detaljer
+									<Eye class="h-4 w-4 shrink-0" />
+									<span class="hidden @min-[800px]:inline">Vis detaljer</span>
 								</a>
 							</td>
 						</tr>
 					{/each}
 					{#if filteredUsers.length === 0}
 						<tr>
-							<td colspan="5" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+							<td colspan="5" class="px-3 py-12 text-center text-gray-500 dark:text-gray-400">
 								<div class="flex flex-col items-center gap-4">
 									<Users class="h-12 w-12 text-gray-300 dark:text-gray-600" />
 									<div>
@@ -381,7 +397,7 @@
 		aria-label={`Velg ${user.name} til opplæring`}
 		checked={selectedIds.includes(user.id)}
 		onchange={() => toggleUser(user.id)}
-		class="h-5 w-5 cursor-pointer rounded border-gray-300"
+		class="h-5 w-5 shrink-0 cursor-pointer rounded border-gray-300"
 	/>
 {/snippet}
 
